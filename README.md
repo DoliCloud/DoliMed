@@ -1,4 +1,4 @@
-# NLTECHNO MODULES FOR DOLIBARR ERP/CRM
+# DOLIMED MODULES FOR DOLIBARR ERP/CRM
 
-This repository contains all modules developed 
-by NLTechno Dolibarr Preferred Partner: http://www.nltechno.com
+This repository contains the DoliMed module for Dolibarr 
+Developed by NLTechno Dolibarr Preferred Partner: http://www.nltechno.com
