@@ -2,7 +2,6 @@
 CHARSET=UTF-8
 PatientsCategoriesArea=Categorieën behoorende bij patiënt
 PatientIsInCustomersCategories=Deze patiënt is onderdeel van de volgende categorieën
-PatientIsInSuppliersCategories=Deze patiënt is onderdeel van de volgende leveranciers categorieën
 PatientsCategoryShort=Patiënten categorie
 PatientsCategoriesShort=Patiënt categorieën
 ThisCategoryHasNoCustomer=Deze categorie bevat geen patiënten

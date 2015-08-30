@@ -1,8 +1,7 @@
 # Dolibarr language file - en_US - categories
 CHARSET=UTF-8
 PatientsCategoriesArea=Espace des catégories de patients
-PatientIsInCustomersCategories=This patient is inside following categories
-PatientIsInSuppliersCategories=Ce patient est dans les catégories fournisseurs suivantes
+PatientIsInCustomersCategories=Ce patient a les tags/catégories suivantes
 PatientsCategoryShort=Catégorie patients
 PatientsCategoriesShort=Catégories patients
 ThisCategoryHasNoCustomer=Cette catégorie n'a aucun patient
