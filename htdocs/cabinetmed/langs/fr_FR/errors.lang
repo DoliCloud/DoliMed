@@ -1,4 +1,4 @@
-# Dolibarr language file - fr_FR - errors
+# Dolibarr language file - en_US - errors
 CHARSET=UTF-8
 ErrorThisContactIsAlreadyDefinedAsThisType=Ce correspondant est déjà défini comme correspondant pour ce type.
 ErrorBadPatientName=Nom de patient incorrect
