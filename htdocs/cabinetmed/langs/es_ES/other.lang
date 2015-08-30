@@ -1,4 +1,4 @@
-# Dolibarr language file - es_ES - other 
+# Dolibarr language file - fr_FR - other
 CHARSET=UTF-8
 Notify_NOTIFY_VAL_FAC=Validación consulta
 ProfIdShortDesc=<b>Prof Id %s</b> es una información dependiente del país del paciente.<br>Por ejemplo, para el país  <b>%s</b>, és el código <b>%s</b>.

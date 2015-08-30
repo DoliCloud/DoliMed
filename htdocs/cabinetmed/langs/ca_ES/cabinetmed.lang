@@ -1,5 +1,6 @@
-# Dolibarr language file - ca_ES - cabinetmed 
+# Dolibarr language file - en_US - cabinetmed
 CHARSET=UTF-8
+CabinetMed=Medical center
 Module101700Name=Consulta médica
 Module101700Desc=Módulo para gestionar una consulta médica
 LastHour=Última hora
@@ -77,6 +78,7 @@ ConfirmDeleteConsultation=Esteu segur de voler eliminar la consulta <b>%s</b> ?
 DeleteAnExam=Eliminar examen
 ConfirmDeleteExam=¿Esteu segur que voleu eliminar l'examen <b>%s</b> ?
 ExamOtherNumero=Nombre examen Bio
+ExamOtherNumero=Nombre examen Bio
 HistoireDeLaMaladie=Història de la malaltia
 WarningExitPageWithoutSaving=En sortir de la pàgina, es perdran totes les dades que s'han introduït.
 SuiviPR=Seguiment PR
@@ -128,10 +130,10 @@ ThisIsADocumentForYou=Us adjuntem una o més cartes/documents relatius a un dels
 ActionAC_CABMED=Enviament document %s per e-mail
 NewOutcomeToDolibarr=Entrada consulta %s (%s)
 ZeroHereIfNoPayment=O posar zero aquí per consultes gratuïtes
-ConsultsByTownDesc=Aquesta pantalla presenta una vista estadística del nombre de consultes per la ciutat d'origen dels pacients.
 ExportDetailsIntoFile=Exportar a un fitxer xslx (incloent el detall dels pacients de cada dia)
+ConsultsByTownDesc=Aquesta pantalla presenta una vista estadística del nombre de consultes per la ciutat d'origen dels pacients.
 DemoCabinetMed=Gestió d'una consulta mèdica
-PatientsOfContact=
+PatientsOfContact=Patients
 ListOfPatients=Llistat de pacients
 NumberOfPatient=Nombre de pacients
 AverageOld=Edat mitjana
@@ -139,3 +141,26 @@ PatientsPerContacts=Aquesta pàgina proporciona estadístiques sobre els pacient
 ReportingsMed=Informes consultes
 MenuFinancialMed=Facturació consultes
 AlertTriggered=Una alerta de tipus %s ha estat comprovada %s
+CABINETMED_BANK_PATIENT_REQUIRED=Field "Bank of patient" is required when payment is a cheque
+EditPatient=Edit patient
+ClickHereToSetPrimaryReason=Click here to set the main reason of consultation
+ClickHereToSetSecondaryReason=Click here to add a secondary reason of consultation
+ClickHereToSetPrimaryDiagnostic=Click here to set the main diagnostic
+ClickHereToSetSecondaryDiagnostic=Click here to add the secondary diagnostic
+Gender=Gender
+NumberConsultByMonth=Number of consultation per month
+NumberConsult=Number of consultation
+ActivityBranch=Activity branch
+AboutInfo=This module is developped and distributed by Laurent Destailleur for NLTechno, <a href="http://www.nltechno.com">www.nltechno.com</a> (A Dolibarr Preferred Partner company).
+MoreModules=Other modules of same author are available on the official DoliStore market place...
+MoreModulesLink=<a target="_blank" href="http://www.dolistore.com/search.php?search_query=nltechno">Click here to see full list</a>
+MoreCloudHosting=To use online Dolibarr, choose the secured hosting DoliCloud.
+MoreCloudHostingLink=<a target="_blank" href="http://www.dolicloud.com">Click here for more information</a>
+CompatibleWithDoliDroid=This modules is also compatible with DoliDroid, the Android application for Dolibarr.
+HideThirdPartiesMenu=Hide thirdparty menu (all customers are patients). If you manage Suppliers (module Supplier enabled), this menu entry will still be visible to keep supplier feature accessible.
+RecordCreatedFromRDV=Outcome created from rendez-vous %s (%s)
+ConsultCreatedBy=Consultation created by
+ConsultTooOld=Can't modify consultation. This one is older than <b>%s</b> days. Note: Option CABINETMED_DELAY_TO_LOCK_RECORD can be added/modified by a technical administrator to modify/remove this delay.
+HeightPeople=Height
+WeigthPeople=Weigth
+PatientDeleted=Patient "%s" was deleted from database.

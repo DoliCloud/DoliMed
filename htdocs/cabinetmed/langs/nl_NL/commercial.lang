@@ -1,5 +1,4 @@
-# Dolibarr language file - nl_NL - commercial
-#ATH
+# Dolibarr language file - en_US - commercial
 CHARSET=UTF-8
 ActionOnCompany=Gebeurtenis betreffende een patiënt
 ActionOnContact=Gebeurtenis betreffende een contact
@@ -9,8 +8,8 @@ SalesRepresentativeFollowUp=Arts (referent)
 SalesRepresentativeSignature=Arts (handtekening)
 NoSalesRepresentativeAffected=Geen specifieke arts
 ShowPatient=Geef patiënt weer
+ListOfCustomers=Lijst van patiënten
 ListOfPatients=Lijst van patiënten
 TasksHistoryForThisContact=Activiteiten behoorende bij dit contact
 ActionAC_FAC=Verzend consult via Email
 ActionAC_REL=Verzend nogmaals consult via Email
-ListOfCustomers=Lijst van patiënten

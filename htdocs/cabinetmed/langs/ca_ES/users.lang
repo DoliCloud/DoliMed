@@ -1,9 +1,7 @@
-# Dolibarr language file - ca_ES - users
+# Dolibarr language file - fr_FR - users
 CHARSET=UTF-8
 ContactCard=Fitxa contacte
 NoContactCard=No hi ha fitxa entre els contactes
-ListOfUsers=Llistat d'usuaris
-ListOfUsersInGroup=Llista d'usuaris d'aquest grup
 LinkToCompanyContact=Enllaç pacients / contactes
 LinkedToDolibarrThirdParty=Enllaç pacient Dolibarr
 CreateDolibarrThirdParty=Crear un pacient

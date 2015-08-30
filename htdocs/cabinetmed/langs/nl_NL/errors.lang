@@ -1,5 +1,4 @@
-# Dolibarr language file - nl_NL - errors
-#ATH
+# Dolibarr language file - en_US - errors
 CHARSET=UTF-8
 ErrorThisContactIsAlreadyDefinedAsThisType=Deze correspondent is reeds gedefineerd als een correspondent van dit type
 ErrorBadPatientName=Foute patiënt naam

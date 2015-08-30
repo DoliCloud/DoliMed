@@ -1,4 +1,4 @@
-# Dolibarr language file - fr_FR - cabinetmed
+# Dolibarr language file - en_US - cabinetmed
 CHARSET=UTF-8
 CabinetMed=Cabinet médical
 Module101700Name=Cabinet médical
@@ -78,7 +78,7 @@ ConfirmDeleteConsultation=Etes-vous sur de vouloir supprimer la consultation <b>
 DeleteAnExam=Supprimer examen
 ConfirmDeleteExam=Etes-vous sur de vouloir supprimer l'examen <b>%s</b> ?
 ExamOtherNumero=Numéro examen Radio ou autre
-ExamOtherNumero=Numéro examen Bio
+ExamOtherNumero=Numéro examen Radio ou autre
 HistoireDeLaMaladie=Histoire de la maladie
 WarningExitPageWithoutSaving=En quittant la page, vous perdrez toutes les données qui y ont été saisie.
 SuiviPR=Suivi PR
@@ -130,8 +130,8 @@ ThisIsADocumentForYou=Veuillez trouver, en pièce jointe, un ou plusieurs courri
 ActionAC_CABMED=Envoi document %s par Email
 NewOutcomeToDolibarr=Consultation %s saisie (%s)
 ZeroHereIfNoPayment=Ou mettre zéro ici pour des actes gratuits
-ConsultsByTownDesc=Cet écran vous présente une vue statistique du nombre de consultation par ville d'origine des patients.
 ExportDetailsIntoFile=Exporter dans un fichier XSLX (incluant le détail des patients pour chaque jour)
+ConsultsByTownDesc=Cet écran vous présente une vue statistique du nombre de consultation par ville d'origine des patients.
 DemoCabinetMed=Gestion d'un cabinet médical
 PatientsOfContact=Patients
 ListOfPatients=Liste des patients

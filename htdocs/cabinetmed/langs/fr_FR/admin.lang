@@ -1,4 +1,4 @@
-# Dolibarr language file - fr_FR - admin
+# Dolibarr language file - en_US - admin
 CHARSET=UTF-8
 ExtraFieldsThirdParties=Attributs supplémentaires (tiers/patients)
 ExtraFieldsContacts=Attributs supplémentaires (correspondants)
@@ -19,20 +19,20 @@ Permission121= Consulter les patients liés à l'utilisateur
 Permission122= Créer/modifier les patients (+consultations et examens) liés à l'utilisateur
 Permission125= Supprimer les patients (+consultations et examens) liés à l'utilisateur
 Permission126= Exporter les patients
-Permission262= Étendre l'accès à tous les patients (Pas seulement ceux liés à l'utilisateur). Non effectif pour utilisateurs externes (toujours limité à leurs patients). 
+Permission262= Étendre l'accès à tous les patients (Pas seulement ceux liés à l'utilisateur). Non effectif pour utilisateurs externes (toujours limité à leurs patients).
 Permission281= Consulter les correspondants
 Permission282= Créer/modifier les correspondants
 Permission283= Supprimer les correspondants
 Permission286= Exporter les correspondants
 DictionaryCompanyType= Sexe du patient
-DictionaryCompanyJuridicalType= Secteurs d'activités des Patients ou formes juridiques des Tiers 
+DictionaryCompanyJuridicalType= Secteurs d'activités des Patients ou formes juridiques des Tiers
 DictionaryTypeContact= Types de correspondants
 MotifConsultation=Motif Consultation
 DiagnostiqueLesionnel=Diagnostique Lesionnel
 Examens=Examens
 ExamenConclusion=Examen Conclusion
 BankNameList=Liste des banques
-SetupDescription3= Les données du menu <b>Configuration -> Informations cabinet</b> sont requises car les informations saisies sont utilisées dans la plupart des écrans, en affichage, ou pour modifier le comportement de Dolibarr (comme par exemple des fonctions qui dépendent de votre pays).
+SetupDescription3=Les données du menu <b>Configuration -> Informations cabinet</b> sont requises car les informations saisies sont utilisées dans la plupart des écrans, en affichage, ou pour modifier le comportement de Dolibarr (comme par exemple des fonctions qui dépendent de votre pays).
 
 CompanySetup= Configuration du module Patient
 CompanyCodeChecker= Modèle de génération et contrôle des codes patient (clients/fournisseurs)

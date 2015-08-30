@@ -1,5 +1,4 @@
-# Dolibarr language file - nl_NL - companies
-#ATH
+# Dolibarr language file - en_US - companies
 CHARSET=UTF-8
 NewPatient=Nieuwe patiënt
 ErrorPatientNameAlreadyExists=Patient %s bestaat al. Kies een andere naam
@@ -36,13 +35,14 @@ CustomerCodeModel=Sjabloon voor patiënt code
 CompanyList=Lijst van patiënten
 AddContact=Creëer contact
 Contact=Contact
+NoContactDefined=Geen contacten voor deze patiënt
 DefaultContact=Standaard contact
+ListOfPatientsContacts=Lijst van contacten van de patiënt
 PatientCode=Patiënt code
 WrongPatientCode=FGoute patiënt code
+CustomerCode=Code thirdparty/patient
 CustomerCodeDesc=Patiënt code moet uniek zijn voor elke patiënt
 RequiredIfCustomer=Verplicht als een derde partij een patiënt is
-CompanyDeleted=Patiënt "%s" is verwijderd uit de database.
-ListOfPatientsContacts=Lijst van contacten van de patiënt
 ShowContact=Geef contact weer
 ContactsAllShort=Alles (geen filter)
 ContactType=Contact type
@@ -68,14 +68,8 @@ LastModifiedPatients=Laatste %s gewijzigde patiënten
 UniquePatients=Totaal aantal unieke patiënten
 InActivity=Toegewezen
 ActivityCeased=Niet (meer) toegewezen
-#ATH added
-Profession=Beroep
 MonkeyNumRefModelDesc=Geeft nummer met masker %syymm-nnnn voor patiënt code en %syymm-nnnn voor leverancier code waarbij yy het jaar is, mm de maand en nnnn is een volgnummer dat groter is dan 0.
 # Leopard
 LeopardNumRefModelDesc=Vrije patiënt code zonder controle. Kan altijd gewijzigd worden.
 ThirdPartyCustomersStats=Derden/Patiënt
 AddPatient=Voeg patiënt toe
-#ATH added
-AddContactAddress=Voeg contact toe
-NoContactDefined=Geen contacten voor deze patiënt
-ListOfContactsAddresses=Lijst van contacten

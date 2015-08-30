@@ -1,5 +1,4 @@
-# Dolibarr language file - nl_NL - admin
-#ATH
+# Dolibarr language file - en_US - admin
 CHARSET=UTF-8
 ExtraFieldsThirdParties=Extra attributen (derden/patiënt)
 ExtraFieldsContacts=Extra attributen (contacten)
@@ -11,8 +10,8 @@ CurrentHour= PHP Uur (server)
 CompanyTZ= Tijdzone
 CompanyHour= Uur
 ModuleFamilyCrm= Contact beheer
-GenericMaskCodes2=<b>{cccc}</b> patient code als n karakters<br><b>{cccc000}</b> patient code als n karakters gevolgd door een teller gerelateerd aan de klant wordt gereset gelijktijdig met de globale teller.<br><b>{tttt}</b> De code voor een bedrijf via n karakters (zij bedrijfs types woordenboek).<br>
-#GenericMaskCodes2= <b>{cccc}</b> le code patiënt sur n lettres<br><b>{cccc000}</b> le code client sur n lettres est suivi d'un compteur propre au client sans offset, complété par des zéros pour en avoir autant que dans le masque, et remis à zéro en même temps que le compteur global.<br><b>{tttt}</b> Le code type entreprise sur n caractères (voir dictionnaires-types de patiënt).<br>
+GenericMaskCodes2= <b>{cccc}</b> patient code als n karakters<br><b>{cccc000}</b> patient code als n karakters gevolgd door een teller gerelateerd aan de klant wordt gereset gelijktijdig met de globale teller.<br><b>{tttt}</b> De code voor een bedrijf via n karakters (zij bedrijfs types woordenboek).<br>
+
 # Modules= undefined
 Module1Name= Derden/Patiënt
 Module1Desc= Beheer patiënten en contacten
@@ -20,7 +19,7 @@ Permission121= Consult patiënt
 Permission122= Creëer/wijzig patiënt (+consulten en onderzoeken)
 Permission125= Verwijder patiënten (+consulten en onderzoeken)
 Permission126= Exporteer patiënten
-Permission262= Breid toegang uit naar alle patiënten (niet alleen die toegewezen zijn aan de gebruiker). 
+Permission262= Breid toegang uit naar alle patiënten (niet alleen die toegewezen zijn aan de gebruiker).
 Permission281= Consulteer alle contacten
 Permission282= Creëer/wijzig contact
 Permission283= Verwijder contacten

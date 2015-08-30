@@ -1,5 +1,6 @@
-# Dolibarr language file - es_ES - cabinetmed
+# Dolibarr language file - en_US - cabinetmed
 CHARSET=UTF-8
+CabinetMed=Medical center
 Module101700Name=Consulta médica
 Module101700Desc=Módulo para gestionar una consulta médica
 LastHour=Última hora
@@ -77,6 +78,7 @@ ConfirmDeleteConsultation=¿Está seguro de querer eliminar la consulta <b>%s</b
 DeleteAnExam=Eliminar examen
 ConfirmDeleteExam=¿Está seguro de querer eliminar el examen <b>%s</b> ?
 ExamOtherNumero=Número examen Bio
+ExamOtherNumero=Número examen Bio
 HistoireDeLaMaladie=Historia de la enfermedad
 WarningExitPageWithoutSaving=Al salir de la página, se perderán todos los datos que se han introducido.
 SuiviPR=Seguimiento PR
@@ -128,8 +130,8 @@ ThisIsADocumentForYou=Le adjuntamos uno o más cartas/documentos relativos a uno
 ActionAC_CABMED=Envío documento %s por e-mail
 NewOutcomeToDolibarr=Entrada consulta %s (%s)
 ZeroHereIfNoPayment=O poner cero aqui para consultas gratuitas
-ConsultsByTownDesc=Esta pantalla presenta una vista estadística del número de consultas por la ciudad de origen de los pacientes.
 ExportDetailsIntoFile=Exportar a un archivo xslx (incluyendo el detalle de los pacientes de cada día)
+ConsultsByTownDesc=Esta pantalla presenta una vista estadística del número de consultas por la ciudad de origen de los pacientes.
 DemoCabinetMed=Gestión de una consulta médica
 PatientsOfContact=Pacientes
 ListOfPatients=Listado de pacientes
@@ -154,4 +156,11 @@ MoreModules=Otros módulos del mismo autor se encuentran disponibles en la tiend
 MoreModulesLink=<a target="_blank" href="http://www.dolistore.com/search.php?search_query=nltechno">Haga clic aquí para ver el listado</a>
 MoreCloudHosting=Para usar Dolibarr en línea , puede optar por DoliCloud
 MoreCloudHostingLink=<a target="_blank" href="http://www.dolicloud.com">Haga clic aquí para más información</a>
+CompatibleWithDoliDroid=This modules is also compatible with DoliDroid, the Android application for Dolibarr.
+HideThirdPartiesMenu=Hide thirdparty menu (all customers are patients). If you manage Suppliers (module Supplier enabled), this menu entry will still be visible to keep supplier feature accessible.
+RecordCreatedFromRDV=Outcome created from rendez-vous %s (%s)
+ConsultCreatedBy=Consultation created by
+ConsultTooOld=Can't modify consultation. This one is older than <b>%s</b> days. Note: Option CABINETMED_DELAY_TO_LOCK_RECORD can be added/modified by a technical administrator to modify/remove this delay.
 HeightPeople=Tamaño
+WeigthPeople=Weigth
+PatientDeleted=Patient "%s" was deleted from database.

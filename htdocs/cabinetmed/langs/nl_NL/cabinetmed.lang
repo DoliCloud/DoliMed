@@ -1,10 +1,8 @@
-# Dolibarr language file - nl_NL - cabinetmed
-#ATH
+# Dolibarr language file - en_US - cabinetmed
 CHARSET=UTF-8
+CabinetMed=Medical center
 Module101700Name=Medisch centrum
 Module101700Desc=Module om een medisch centrum te beheren (patiënten en consulten)
-#ATH added next one, is used as text in Tab for Patients
-Patients=Patiënten
 LastHour=Laatste uur
 LastDay=Laatste dag
 LastWeek=Laatste week
@@ -48,7 +46,7 @@ TraitementsPrescrits=Voorgeschreven behandelingen
 ConsultationNumero=Consult nummer
 InfoGenerales=Algemene informatie
 TypeVisite=Soort Consult
-ExportDataset_patiënt_1=Patiënten en attributen (alles met historie en behandelingen) en consulten
+ExportDataset_patient_1=Patients and attributes (all with history and treatments) and consultations
 DateConsultation=Datum consult
 DateConsultationShort=Datum consult
 TypePriseEnCharge=Type de care
@@ -80,7 +78,7 @@ ConfirmDeleteConsultation=Weet je zeker dat je consult <b>%s</b> wilt verwijdere
 DeleteAnExam=Verwijder onderzoek
 ConfirmDeleteExam=Weet je zeker dat je onderzoek <b>%s</b> wilt verwijderen ?
 ExamOtherNumero=Aantal onderzoeken
-ExamOtherNumero=Aantal laboratorium onderzoeken
+ExamOtherNumero=Aantal onderzoeken
 HistoireDeLaMaladie=Historie
 WarningExitPageWithoutSaving=Als je deze pagina verlaat zonder op te slaan dan zul je alle aangepaste gegevens verliezen
 SuiviPR=PR
@@ -127,7 +125,7 @@ TreatmentSugested=Voorgeschreven behandeling
 SendOutcomeByEmail=Verzend document via Email
 SendOutcome=Verzend document %s
 CabinetMedSetup=Configuratie van de Medisch centrum module
-EnableSpecificFeaturesToRheumatology=Activeer onderdelen geralateerd aan Rheumatologie (BASDAI en DAS28 berekeningen) 
+EnableSpecificFeaturesToRheumatology=Activeer onderdelen geralateerd aan Rheumatologie (BASDAI en DAS28 berekeningen)
 ThisIsADocumentForYou=Bijgevoegd vindt je een aantal documenten die ik geschreven heb nadat een patiënt van jou bij mij op consult is geweest.
 ActionAC_CABMED=Verzend document %s per Email
 NewOutcomeToDolibarr=Consultatie %s vastgelegd (%s)
@@ -155,10 +153,14 @@ NumberConsult=Aantal consulten
 ActivityBranch=Soort beroep
 AboutInfo=Deze module is ontwikkeld en gedistribuëerd door Laurent Destailleur van NLTechno, <a href="http://www.nltechno.com">www.nltechno.com</a> (Een Dolibarr Geprefereerde Partner bedrijf).
 MoreModules=Andere modules van dezelfde auteur kunnen op de officiëele DoliStore markt gevonden worden...
-MoreModulesLink=<a target="_blank" href="http://www.dolistore.com/search.php?search_query=nltechno">Klik hier voor de volledige lijst</a>  
+MoreModulesLink=<a target="_blank" href="http://www.dolistore.com/search.php?search_query=nltechno">Klik hier voor de volledige lijst</a>
 MoreCloudHosting=Om Dolibarr online te gebruiken kun je het beste keizen voor de veilige hosting van DoliCloud.
 MoreCloudHostingLink=<a target="_blank" href="http://www.dolicloud.com">Klik hier voor meer informatie</a>
-CompatibleWithDoliDroid=Deze module is compatiebel met DoliDroid, de Android app voor Dolibarr.    
+CompatibleWithDoliDroid=Deze module is compatiebel met DoliDroid, de Android app voor Dolibarr.
 HideThirdPartiesMenu=Verberg het derden menu (alle klanten zijn patiënten)
 RecordCreatedFromRDV=Outcome created from rendez-vous %s (%s)
 ConsultCreatedBy=Consult gecreëerd door
+ConsultTooOld=Can't modify consultation. This one is older than <b>%s</b> days. Note: Option CABINETMED_DELAY_TO_LOCK_RECORD can be added/modified by a technical administrator to modify/remove this delay.
+HeightPeople=Height
+WeigthPeople=Weigth
+PatientDeleted=Patient "%s" was deleted from database.

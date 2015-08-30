@@ -1,5 +1,4 @@
-# Dolibarr language file - nl_NL - categories
-#ATH
+# Dolibarr language file - en_US - categories
 CHARSET=UTF-8
 PatientsCategoriesArea=Categorieën behoorende bij patiënt
 PatientIsInCustomersCategories=Deze patiënt is onderdeel van de volgende categorieën
