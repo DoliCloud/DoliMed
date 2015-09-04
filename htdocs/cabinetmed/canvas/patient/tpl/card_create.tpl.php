@@ -131,7 +131,11 @@ dol_htmloutput_errors($GOBALS['error'],$GLOBALS['errors']);
 <input type="hidden" name="private" value="0">
 <input type="hidden" name="status" value="1">
 <input type="hidden" name="client" value="1">
-<?php if ($modCodeClient->code_auto || $modCodeFournisseur->code_auto) print '<input type="hidden" name="code_auto" value="1">'; ?>
+<?php if ($modCodeClient->code_auto || $modCodeFournisseur->code_auto) print '<input type="hidden" name="code_auto" value="1">'; 
+
+dol_fiche_head('');
+
+?>
 
 <table class="border" style="width: 100%;">
 
@@ -295,7 +299,12 @@ dol_htmloutput_errors($GOBALS['error'],$GLOBALS['errors']);
         }
 ?>
 </table>
-<br>
+
+<?php 
+
+dol_fiche_end();
+
+?>
 
 <div align="center">
 	<input type="submit" class="button" value="<?php echo $langs->trans('AddPatient'); ?>">
