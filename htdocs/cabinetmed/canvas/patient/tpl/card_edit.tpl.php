@@ -123,6 +123,9 @@ print '<input type="hidden" name="status" value="'.$object->status.'">';
 print '<input type="hidden" name="client" value="'.$object->client.'">';
 if ($modCodeClient->code_auto || $modCodeFournisseur->code_auto) print '<input type="hidden" name="code_auto" value="1">';
 
+
+dol_fiche_head('');
+
 print '<table class="border" width="100%">';
 
 // Name
@@ -286,7 +289,8 @@ print '</td>';
 print '</tr>';
 
 print '</table>';
-print '<br>';
+
+dol_fiche_end();
 
 print '<center>';
 print '<input type="submit" class="button" name="save" value="'.$langs->trans("Save").'">';
