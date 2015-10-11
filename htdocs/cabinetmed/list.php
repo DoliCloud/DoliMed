@@ -294,7 +294,6 @@ if ($resql)
 	print '<form method="post" action="'.$_SERVER["PHP_SELF"].'" name="formfilter">';
 	print '<input type="hidden" name="token" value="'.$_SESSION['newtoken'].'">';
 
-	print '<table class="liste" width="100%">';
 
     // Filter on categories
     /* Not possible in this page because list is for ALL third parties type
@@ -320,7 +319,9 @@ if ($resql)
     }
 	*/
 
-    // Lines of titles
+    print '<table class="tagtable liste'.($moreforfilter?" listwithfilterbefore":"").'">';
+	
+	// Lines of titles
     print '<tr class="liste_titre">';
 	print_liste_field_titre($langs->trans("Company"),$_SERVER["PHP_SELF"],"s.nom","",$params,"",$sortfield,$sortorder);
 	print_liste_field_titre($langs->trans("Town"),$_SERVER["PHP_SELF"],"s.town","",$params,'',$sortfield,$sortorder);

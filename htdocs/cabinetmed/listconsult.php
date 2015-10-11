@@ -194,22 +194,23 @@ if ($result)
 	print '<form method="get" action="'.$_SERVER["PHP_SELF"].'">'."\n";
 	print '<input type="hidden" name="sortfield" value="'.$sortfield.'">';
 	print '<input type="hidden" name="sortorder" value="'.$sortorder.'">';
-	print '<table class="liste" width="100%">'."\n";
 
 	// Filter on categories
  	$moreforfilter='';
 	if ($conf->categorie->enabled)
 	{
+	 	$moreforfilter.='<div class="divsearchfield">';
 	 	$moreforfilter.=$langs->trans('Categories'). ': ';
 		$moreforfilter.=$htmlother->select_categories(2,$search_categ,'search_categ');
-	 	$moreforfilter.=' &nbsp; &nbsp; &nbsp; ';
+	 	$moreforfilter.='</div>';
 	}
  	// If the user can view prospects other than his'
  	if ($user->rights->societe->client->voir || $socid)
  	{
+	 	$moreforfilter.='<div class="divsearchfield">';
 	 	$moreforfilter.=$langs->trans('ConsultCreatedBy'). ': ';
 		$moreforfilter.=$htmlother->select_salesrepresentatives($search_sale,'search_sale',$user);
-	 	$moreforfilter.=' &nbsp; &nbsp; &nbsp; ';
+	 	$moreforfilter.='</div>';
  	}
  	// To add filter on diagnostic
  	//$width="200";
@@ -218,17 +219,23 @@ if ($result)
 	//$moreforfilter.=' &nbsp; &nbsp; &nbsp; ';
  	// To add filter on contact
 	$width="200";
+	$moreforfilter.='<div class="divsearchfield">';
  	$moreforfilter.=$langs->trans('Correspondants'). ': ';
 	$moreforfilter.=$form->selectcontacts(0, $search_contactid, 'search_contactid', 1, '', '', 1);
- 	// More filters
- 	if ($moreforfilter)
-	{
-		print '<tr class="liste_titre">';
-		print '<td class="liste_titre" colspan="9">';
-	    print $moreforfilter;
-	    print '</td></tr>';
-	}
-
+	$moreforfilter.='</div>';
+    
+    if (! empty($moreforfilter))
+    {
+        print '<div class="liste_titre liste_titre_bydiv centpercent">';
+        print $moreforfilter;
+        $parameters=array();
+        $reshook=$hookmanager->executeHooks('printFieldPreListTitle',$parameters);    // Note that $action and $object may have been modified by hook
+        print $hookmanager->resPrint;
+        print '</div>';
+    }
+	
+    print '<table class="tagtable liste'.($moreforfilter?" listwithfilterbefore":"").'">';
+    
 	print '<tr class="liste_titre">';
     print_liste_field_titre($langs->trans("IdConsultShort"),$_SERVER["PHP_SELF"],"c.rowid","",$param,"",$sortfield,$sortorder);
 	print_liste_field_titre($langs->trans("Patient"),$_SERVER["PHP_SELF"],"s.nom","",$param,"",$sortfield,$sortorder);
