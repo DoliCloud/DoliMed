@@ -171,7 +171,7 @@ if (! empty($_POST['removedfile']))
     $upload_dir_tmp = $vardir.'/temp';
 
 	// TODO Delete only files that was uploaded from email form
-    $mesg=dol_remove_file_process($_POST['removedfile'],0);
+    $mesg=dol_remove_file_process(GETPOST('removedfile','alpha'),0);
 
     $action='presend';
     $_POST["action"]='presend';
