@@ -21,5 +21,5 @@ CREATE TABLE llx_cabinetmed_examenprescrit (
   label             varchar(64) NOT NULL,
   biorad            varchar(8) NOT NULL,
   position          integer DEFAULT 10,  
-  active            tinyint DEFAULT 1  NOT NULL
+  active            smallint DEFAULT 1  NOT NULL
 ) ENGINE=innodb;

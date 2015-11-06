@@ -27,13 +27,13 @@ create table llx_cabinetmed_societe
   ref_ext                  varchar(128),                                 -- reference into an external system (not used by dolibarr)
   ref_int                  varchar(60),                                 -- reference into an internal system (used by dolibarr)
 
-  statut                   tinyint        DEFAULT 0,            		-- statut
+  statut                   smallint        DEFAULT 0,            		-- statut
   parent                   integer,
   tms                      timestamp,
   datec	                   datetime,                            		-- creation date
   datea	                   datetime,                            		-- activation date
 
-  status            	   tinyint 		  DEFAULT 1,			        -- cessation d'activité ( 1 -- en activité, 0 -- cessation d'activité)						
+  status            	   smallint 		  DEFAULT 1,			        -- cessation d'activité ( 1 -- en activité, 0 -- cessation d'activité)						
 
   code_client              varchar(24),                         		-- code client
   code_fournisseur         varchar(24),                         		-- code founisseur
@@ -63,21 +63,21 @@ create table llx_cabinetmed_societe
   fk_stcomm                integer        DEFAULT 0 NOT NULL,      		-- commercial statut
   note                     text,                                		--
   prefix_comm              varchar(5),                          		-- prefix commercial
-  client                   tinyint        DEFAULT 0,            		-- client 0/1/2
-  fournisseur              tinyint        DEFAULT 0,            		-- fournisseur 0/1
+  client                   smallint        DEFAULT 0,            		-- client 0/1/2
+  fournisseur              smallint        DEFAULT 0,            		-- fournisseur 0/1
   supplier_account         varchar(32),                         		-- compte client chez un fournisseur
   fk_prospectlevel         varchar(12),                         		-- prospect level (in llx_c_prospectlevel)
-  customer_bad             tinyint        DEFAULT 0,            		-- mauvais payeur 0/1
+  customer_bad             smallint        DEFAULT 0,            		-- mauvais payeur 0/1
   customer_rate            real           DEFAULT 0,            		-- taux fiabilite client (0 a 1)
   supplier_rate            real           DEFAULT 0,            		-- taux fiabilite fournisseur (0 a 1)
   fk_user_creat            integer NULL,                        		-- utilisateur qui a cree l'info
   fk_user_modif            integer,                             		-- utilisateur qui a modifie l'info
   remise_client            real           DEFAULT 0,            		-- remise systematique pour le client
-  mode_reglement           tinyint,                             		-- mode de reglement
-  cond_reglement           tinyint,                             		-- condition de reglement
-  tva_assuj                tinyint        DEFAULT 1,	        		-- assujeti ou non a la TVA
-  localtax1_assuj          tinyint        DEFAULT 0,	        		-- assujeti ou non a local tax 1
-  localtax2_assuj          tinyint        DEFAULT 0,	        		-- assujeti ou non a local tax 2
+  mode_reglement           smallint,                             		-- mode de reglement
+  cond_reglement           smallint,                             		-- condition de reglement
+  tva_assuj                smallint        DEFAULT 1,	        		-- assujeti ou non a la TVA
+  localtax1_assuj          smallint        DEFAULT 0,	        		-- assujeti ou non a local tax 1
+  localtax2_assuj          smallint        DEFAULT 0,	        		-- assujeti ou non a local tax 2
   barcode                  varchar(255),                        		-- barcode
   fk_barcode_type          integer NULL   DEFAULT 0,                    -- barcode type
   price_level              integer NULL,                        		-- level of price for multiprices

@@ -20,5 +20,5 @@ CREATE TABLE llx_cabinetmed_c_examconclusion (
   code              varchar(8) NOT NULL,
   label             varchar(64) NOT NULL,
   position          integer DEFAULT 10,  
-  active            tinyint DEFAULT 1  NOT NULL
+  active            smallint DEFAULT 1  NOT NULL
 ) ENGINE=innodb;
