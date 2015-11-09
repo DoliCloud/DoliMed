@@ -38,11 +38,13 @@ if (! $res) die("Include of main fails");
 require_once DOL_DOCUMENT_ROOT.'/core/lib/company.lib.php';
 require_once DOL_DOCUMENT_ROOT.'/core/lib/images.lib.php';
 require_once DOL_DOCUMENT_ROOT.'/core/lib/files.lib.php';
+require_once DOL_DOCUMENT_ROOT.'/core/lib/functions.lib.php';
 require_once DOL_DOCUMENT_ROOT.'/core/class/html.formadmin.class.php';
 require_once DOL_DOCUMENT_ROOT.'/core/class/html.formcompany.class.php';
 require_once DOL_DOCUMENT_ROOT.'/core/class/html.formfile.class.php';
 require_once DOL_DOCUMENT_ROOT.'/core/class/extrafields.class.php';
 require_once DOL_DOCUMENT_ROOT.'/contact/class/contact.class.php';
+require_once DOL_DOCUMENT_ROOT.'/categories/class/categorie.class.php';
 if (! empty($conf->adherent->enabled)) require_once DOL_DOCUMENT_ROOT.'/adherents/class/adherent.class.php';
 
 $langs->load("companies");
@@ -51,6 +53,8 @@ $langs->load("bills");
 $langs->load("banks");
 $langs->load("users");
 $langs->load("other");
+if (! empty($conf->categorie->enabled)) $langs->load("categories");
+if (! empty($conf->incoterm->enabled)) $langs->load("incoterm");
 if (! empty($conf->notification->enabled)) $langs->load("mails");
 
 $mesg=''; $error=0; $errors=array();
@@ -68,6 +72,10 @@ $extrafields = new ExtraFields($db);
 // fetch optionals attributes and labels
 $extralabels=$extrafields->fetch_name_optionals_label($object->table_element);
 
+// Initialize technical object to manage hooks of thirdparties. Note that conf->hooks_modules contains array array
+$hookmanager->initHooks(array('thirdpartycard','globalcard'));
+
+
 // Get object canvas (By default, this is not defined, so standard usage of dolibarr)
 $object->getCanvas($socid);
 $canvas = $object->canvas?$object->canvas:GETPOST("canvas");
@@ -82,8 +90,6 @@ if (! empty($canvas))
 // Security check
 $result = restrictedArea($user, 'societe', $socid, '&societe', '', 'fk_soc', 'rowid', $objcanvas);
 
-// Initialize technical object to manage hooks of thirdparties. Note that conf->hooks_modules contains array array
-$hookmanager->initHooks(array('thirdpartycard'));
 
 
 /*
@@ -92,7 +98,7 @@ $hookmanager->initHooks(array('thirdpartycard'));
 
 $parameters=array('id'=>$socid, 'objcanvas'=>$objcanvas);
 $reshook=$hookmanager->executeHooks('doActions',$parameters,$object,$action);    // Note that $action and $object may have been modified by some hooks
-$error=$hookmanager->error; $errors=array_merge($errors, (array) $hookmanager->errors);
+if ($reshook < 0) setEventMessages($hookmanager->error, $hookmanager->errors, 'errors');
 
 if (empty($reshook))
 {
@@ -108,7 +114,22 @@ if (empty($reshook))
         $_POST["code_fournisseur"]="Acompleter";
     }
 
-    // Add new third party
+    if($action=='set_localtax1')
+    {
+    	//obtidre selected del combobox
+    	$value=GETPOST('lt1');
+    	$object->fetch($socid);
+    	$res=$object->setValueFrom('localtax1_value', $value);
+    }
+    if($action=='set_localtax2')
+    {
+    	//obtidre selected del combobox
+    	$value=GETPOST('lt2');
+    	$object->fetch($socid);
+    	$res=$object->setValueFrom('localtax2_value', $value);
+    }
+
+    // Add new or update third party
     if ((! GETPOST('getcustomercode') && ! GETPOST('getsuppliercode'))
     && ($action == 'add' || $action == 'update') && $user->rights->societe->creer)
     {
@@ -125,17 +146,18 @@ if (empty($reshook))
         {
             $object->particulier       = GETPOST("private");
 
-            $object->name              = dolGetFirstLastname(GETPOST('firstname'),GETPOST('nom')?GETPOST('nom'):GETPOST('name'));
+            $object->name              = dolGetFirstLastname(GETPOST('firstname','alpha'),GETPOST('nom')?GETPOST('nom','alpha'):GETPOST('name','alpha'));
             $object->civilite_id       = GETPOST('civilite_id')?GETPOST('civilite_id'):GETPOST('civility_id');
-            $object->civility_id       = GETPOST('civilite_id')?GETPOST('civilite_id'):GETPOST('civility_id');
+            $object->civility_id       = GETPOST('civility_id');	// Note: civility id is a code, not an int
             // Add non official properties
-            $object->name_bis          = GETPOST('name')?GETPOST('name'):GETPOST('nom');
-            $object->firstname         = GETPOST('firstname');
+            $object->name_bis          = GETPOST('name','alpha');
+            $object->firstname         = GETPOST('firstname','alpha');
         }
         else
 		{
-            $object->name              = GETPOST('name')?GETPOST('name'):GETPOST('nom');
-        }
+            $object->name              = GETPOST('name')?GETPOST('name','alpha'):GETPOST('nom','alpha');
+	        $object->name_alias   = GETPOST('name_alias');
+		}
         $object->address               = GETPOST('address');
         $object->zip                   = GETPOST('zipcode');
         $object->town                  = GETPOST('town');
@@ -185,12 +207,17 @@ if (empty($reshook))
 
         // Fill array 'array_options' with data from add form
         $ret = $extrafields->setOptionalsFromPost($extralabels,$object);
-
+    	if ($ret < 0)
+		{
+			 $error++;
+			 $action = ($action=='add'?'create':'edit');
+		}
+        
         if (GETPOST('deletephoto')) $object->logo = '';
         else if (! empty($_FILES['photo']['name'])) $object->logo = dol_sanitizeFileName($_FILES['photo']['name']);
 
         // Check parameters
-        if (empty($_POST["cancel"]))
+        if (! GETPOST("cancel"))
         {
             if (! empty($object->email) && ! isValidEMail($object->email))
             {
@@ -221,7 +248,10 @@ if (empty($reshook))
             }
 
             // Check for duplicate or mandatory prof id
-        	for ($i = 1; $i < 5; $i++)
+            // Only for companies
+	        if (!($object->particulier || $private))
+        	{
+       	    for ($i = 1; $i < 5; $i++)
         	{
         	    $slabel="idprof".$i;
     			$_POST[$slabel]=trim($_POST[$slabel]);
@@ -245,6 +275,7 @@ if (empty($reshook))
 					$action = (($action=='add'||$action=='create')?'create':'edit');
 				}
 			}
+        	}
         }
 
         if (! $error)
@@ -262,34 +293,21 @@ if (empty($reshook))
                     if ($object->particulier)
                     {
                         dol_syslog("This thirdparty is a personal people",LOG_DEBUG);
-                        $contact=new Contact($db);
-
-     					$contact->civilite_id		= empty($object->civilite_id)?$object->civility_id:$object->civilite_id;
-     					$contact->civility_id		= empty($object->civilite_id)?$object->civility_id:$object->civilite_id;
-     					$contact->name				= $object->name_bis;
-                        $contact->firstname			= $object->firstname;
-                        $contact->address			= $object->address;
-                        $contact->zip				= $object->zip;
-                        $contact->town				= $object->town;
-                        $contact->state_id      	= $object->state_id;
-                        $contact->country_id		= $object->country_id;
-
-                        $contact->socid				= $object->id;
-                        $contact->fk_soc			= $object->id;
-
-                        $contact->status			= 1;
-                        $contact->email				= $object->email;
-						$contact->phone_pro			= $object->phone;
-						$contact->fax				= $object->fax;
-                        $contact->priv				= 0;
-
-                        $result=$contact->create($user);
+                        $result=$object->create_individual($user);
                         if (! $result >= 0)
                         {
-                            $error=$contact->error; $errors=$contact->errors;
+                            $error=$object->error; $errors=$object->errors;
                         }
                     }
 
+					// Customer categories association
+					$custcats = GETPOST( 'custcats', 'array' );
+					$object->setCategories($custcats, 'customer');
+
+					// Supplier categories association
+					$suppcats = GETPOST('suppcats', 'array');
+					$object->setCategories($suppcats, 'supplier');
+                        
                     // Logo/Photo save
                     $dir     = $conf->societe->multidir_output[$conf->entity]."/".$object->id."/logos/";
                     $file_OK = is_uploaded_file($_FILES['photo']['tmp_name']);
@@ -394,6 +412,14 @@ if (empty($reshook))
                     $error = $object->error; $errors = $object->errors;
                 }
 
+				// Customer categories association
+				$categories = GETPOST( 'custcats', 'array' );
+				$object->setCategories($categories, 'customer');
+
+				// Supplier categories association
+				$categories = GETPOST('suppcats', 'array');
+				$object->setCategories($categories, 'supplier');
+
                 // Logo/Photo save
                 $dir     = $conf->societe->multidir_output[$object->entity]."/".$object->id."/logos";
                 $file_OK = is_uploaded_file($_FILES['photo']['tmp_name']);
@@ -459,19 +485,25 @@ if (empty($reshook))
 
                 	$sql = "UPDATE ".MAIN_DB_PREFIX."adherent";
                 	$sql.= " SET fk_soc = NULL WHERE fk_soc = " . $id;
-                	if (! $this->db->query($sql))
+                   	if (! $object->db->query($sql))
                 	{
                 		$error++;
-                		$this->error .= $this->db->lasterror();
-                		dol_syslog(get_class($this)."::delete erreur -1 ".$this->error, LOG_ERR);
+                		$object->error .= $object->db->lasterror();
                 	}
                 }
 
                 if (! $error && ! count($errors))
                 {
-
-                    header("Location: ".$_SERVER["PHP_SELF"]."?socid=".$socid);
-                    exit;
+                    if (! empty($backtopage))
+                	{
+               		    header("Location: ".$backtopage);
+                    	exit;
+                	}
+                	else
+                	{
+	                    header("Location: ".$_SERVER["PHP_SELF"]."?socid=".$socid);
+    	                exit;
+                	}
                 }
                 else
                 {
@@ -486,7 +518,7 @@ if (empty($reshook))
     if ($action == 'confirm_delete' && $confirm == 'yes' && $user->rights->societe->supprimer)
     {
         $object->fetch($socid);
-        $result = $object->delete($socid);
+        $result = $object->delete($socid, $user);
 
         if ($result > 0)
         {
@@ -505,18 +537,27 @@ if (empty($reshook))
     // Set parent company
     if ($action == 'set_thirdparty' && $user->rights->societe->creer)
     {
-    	$result = $object->set_parent(GETPOST('editparentcompany','int'));
+    	$object->fetch($socid);
+        $result = $object->set_parent(GETPOST('editparentcompany','int'));
     }
 
-
+    // Set incoterm
+    if ($action == 'set_incoterms' && !empty($conf->incoterm->enabled))
+    {
+    	$object->fetch($socid);
+    	$result = $object->setIncoterms(GETPOST('incoterm_id', 'int'), GETPOST('location_incoterms', 'alpha'));
+    }
+    
     // Actions to send emails
     $id=$socid;
     $actiontypecode='AC_OTH_AUTO';
+    $trigger_name='COMPANY_SENTBYMAIL';
     $paramname='socid';
+    $mode='emailfromthirdparty';
     include DOL_DOCUMENT_ROOT.'/core/actions_sendmails.inc.php';
 
 
-	/*
+    /*
      * Generate document
      */
     if ($action == 'builddoc')  // En get ou en post
@@ -581,6 +622,12 @@ $formfile = new FormFile($db);
 $formadmin = new FormAdmin($db);
 $formcompany = new FormCompany($db);
 
+if ($socid > 0 && empty($object->id))
+{
+    $result=$object->fetch($socid);
+	if ($result <= 0) dol_print_error('',$object->error);
+}
+
 $countrynotdefined=$langs->trans("ErrorSetACountryFirst").' ('.$langs->trans("SeeAbove").')';
 
 
@@ -589,18 +636,8 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action))
     // -----------------------------------------
     // When used with CANVAS
     // -----------------------------------------
-    if (empty($object->error) && $socid)
- 	{
-	     $object = new Societe($db);
-	     $result=$object->fetch($socid);
-	     if ($result <= 0) dol_print_error('',$object->error);
- 	}
-
-	// Fill array 'array_options' with data from add or update form
-    $ret = $extrafields->setOptionalsFromPost($extralabels,$object);
-
- 	$objcanvas->assign_values($action, $object->id, $object->ref);	// Set value for templates
-    $objcanvas->display_canvas($action);		// Show template
+   	$objcanvas->assign_values($action, $object->id, $object->ref);	// Set value for templates
+    $objcanvas->display_canvas($action);							// Show template
 }
 else
 {

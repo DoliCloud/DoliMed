@@ -358,8 +358,12 @@ if ($object->id)
     if ($conf->notification->enabled) $langs->load("mails");
 
     $head = societe_prepare_head($object);
-    dol_fiche_head($head, 'tabdocument', $langs->trans("Patient"),0,'company');
 
+    print "<form method=\"post\" action=\"".$_SERVER["PHP_SELF"]."\">";
+    print '<input type="hidden" name="token" value="'.$_SESSION['newtoken'].'">';
+
+    
+    dol_fiche_head($head, 'tabdocument', $langs->trans("Patient"),0,'company');
 
     // Construit liste des fichiers
     $filearray=dol_dir_list($upload_dir,"files",0,'','(\.meta|_preview\.png)$',$sortfield,(strtolower($sortorder)=='desc'?SORT_DESC:SORT_ASC),1);
@@ -368,9 +372,6 @@ if ($object->id)
     {
         $totalsize+=$file['size'];
     }
-
-    print "<form method=\"post\" action=\"".$_SERVER["PHP_SELF"]."\">";
-    print '<input type="hidden" name="token" value="'.$_SESSION['newtoken'].'">';
 
     print '<table class="border" width="100%">';
 
@@ -411,11 +412,11 @@ if ($object->id)
 
     print '</table>';
 
-    print '</form>';
-
     dol_fiche_end();
 
-	/*
+    print '</form>';
+    
+    /*
 	$modulepart = 'societe';
 	$permission = $user->rights->societe->creer;
 	$param = '&id=' . $object->id;
@@ -451,7 +452,6 @@ if ($object->id)
     $formfile->form_attach_new_file($_SERVER["PHP_SELF"].'?socid='.$socid,$title,0,0,$user->rights->societe->creer, 40, $object, '', 1, '', 1);
 
 
-    print '<table width="100%"><tr><td valign="top" width="100%">';
     print '<a name="builddoc"></a>'; // ancre
 
     /*
@@ -479,12 +479,6 @@ if ($object->id)
 
 	//List of links
 	$formfile->listOfLinks($object, $delallowed, $action, GETPOST('linkid', 'int'), $param);
-
-    print '</td>';
-    print '<td>';
-    print '</td>';
-    print '</tr>';
-    print '</table>';
 
     print '<br>';
 

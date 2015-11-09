@@ -1045,7 +1045,7 @@ if ($action == '' || $action == 'delete')
     print_liste_field_titre($langs->trans('ConsultActe'),$_SERVER['PHP_SELF'],'t.typevisit','',$param,'',$sortfield,$sortorder);
     print_liste_field_titre($langs->trans('MontantPaiement'),$_SERVER['PHP_SELF'],'','',$param,'',$sortfield,$sortorder);
     print_liste_field_titre($langs->trans('TypePaiement'),$_SERVER['PHP_SELF'],'','',$param,'',$sortfield,$sortorder);
-    print '<td>&nbsp;</td>';
+    print_liste_field_titre('');
     print '</tr>';
 
 
