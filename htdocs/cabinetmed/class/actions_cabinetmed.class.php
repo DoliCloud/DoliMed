@@ -49,8 +49,8 @@ class ActionsCabinetmed
      *    Execute action
      *
      *    @param	array	$parameters		Array of parameters
-     *    @param    mixed	&$object      	Deprecated. This field is not used
-     *    @param    string	&$action      	'add', 'update', 'view'
+     *    @param    mixed	$object      	Deprecated. This field is not used
+     *    @param    string	$action      	'add', 'update', 'view'
      *    @return   int         			<0 if KO,
      *                              		=0 if OK but we want to process standard actions too,
      *                              		>0 if OK and we want to replace standard actions.
@@ -236,9 +236,9 @@ class ActionsCabinetmed
      * Add fields into tr form of objects
      *
      * @param	array	$parameters		Array of parameters
-     * @param   mixed	&$object      	Object
-     * @param   string	&$action      	'add', 'update', 'view'
-     * @param   string	&$hookmanager  	'add', 'update', 'view'
+     * @param   mixed	$object      	Object
+     * @param   string	$action      	'add', 'update', 'view'
+     * @param   string	$hookmanager  	'add', 'update', 'view'
      * @return	string					HTML content to add by hook
      */
     function formObjectOptions($parameters, &$object, &$action, &$hookmanager)
@@ -253,9 +253,9 @@ class ActionsCabinetmed
      * Add more actions buttons
      *
      * @param	array	$parameters		Array of parameters
-     * @param   mixed	&$object      	Object
-     * @param   string	&$action      	'add', 'update', 'view'
-     * @param   string	&$hookmanager  	'add', 'update', 'view'
+     * @param   mixed	$object      	Object
+     * @param   string	$action      	'add', 'update', 'view'
+     * @param   string	$hookmanager  	'add', 'update', 'view'
      * @return	string					HTML content to add by hook
      */
     function addMoreActionsButtons($parameters, &$object, &$action, &$hookmanager)

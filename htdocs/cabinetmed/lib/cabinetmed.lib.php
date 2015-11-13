@@ -388,5 +388,3 @@ function dol_cm_strptime($text, $format)
 	//var_dump($result);
 	return $result;
 }
-
-?>

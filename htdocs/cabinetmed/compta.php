@@ -355,7 +355,7 @@ print "</table>";
 
 if ($search_sale > 0)
 {
-    print '<br><form action="'.dol_buildpath('/cabinetmed/export.php',1).'" method="POST">';
+    print '<br><form action="'.dol_buildpath('/cabinetmed/export.php?output=file',1).'" method="POST">';
     print $langs->trans("ExportDetailsIntoFile").'<br>';
     print '<input type="hidden" name="search_sale" value="'.$search_sale.'">';
     print $langs->trans("Month").': <input type="text" name="month" value="'.(GETPOST('month')?GETPOST('month'):dol_print_date(dol_now(),'%m')).'" size="6"> ';

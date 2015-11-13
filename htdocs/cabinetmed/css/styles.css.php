@@ -82,5 +82,5 @@ div.mainmenu.accountancy2 {
 .cabpaymentcarte { border-top: 1px solid #AAA; margin-top: 4px; }
 .cabpaymentcash { border-top: 1px solid #AAA; margin-top: 4px; }
 .cabpaymentthirdparty { border-top: 1px solid #AAA; margin-top: 4px; }
-<?php } ?>
-
+<?php 
+}

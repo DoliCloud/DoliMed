@@ -585,4 +585,3 @@ class modCabinetMed extends DolibarrModules
     }
 }
 
-?>

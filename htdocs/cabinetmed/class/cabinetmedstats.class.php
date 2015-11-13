@@ -200,4 +200,3 @@ class CabinetMedStats extends Stats
 	}
 }
 
-?>

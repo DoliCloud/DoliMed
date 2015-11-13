@@ -163,4 +163,4 @@ complete_substitutions_array($arraylist,$langs);
 llxFooter();
 
 $db->close();
-?>
+

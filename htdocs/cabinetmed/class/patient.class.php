@@ -589,4 +589,3 @@ class Patient extends Societe
 
 }
 
-?>
