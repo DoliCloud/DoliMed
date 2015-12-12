@@ -83,7 +83,7 @@ class InterfaceActionsCabinetmed
         global $langs;
         $langs->load("admin");
 
-        if ($this->version == 'experimental') return $langs->trans("Experimental");
+        if ($this->version == 'experimental') return $langs->trans("VersionExperimental");
         elseif ($this->version == 'dolibarr') return DOL_VERSION;
         elseif ($this->version) return $this->version;
         else return $langs->trans("Unknown");
