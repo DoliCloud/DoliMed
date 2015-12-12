@@ -210,7 +210,7 @@ if ($result)
  	{
 	 	$moreforfilter.='<div class="divsearchfield">';
 	 	$moreforfilter.=$langs->trans('ConsultCreatedBy'). ': ';
-		$moreforfilter.=$htmlother->select_salesrepresentatives($search_sale,'search_sale',$user);
+		$moreforfilter.=$htmlother->select_salesrepresentatives($search_sale,'search_sale',$user, 0, 1, 'maxwidth300');
 	 	$moreforfilter.='</div>';
  	}
  	// To add filter on diagnostic
