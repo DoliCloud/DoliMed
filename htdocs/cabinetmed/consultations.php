@@ -236,8 +236,8 @@ if ($action == 'add' || $action == 'update')
                             $bankaccount=new Account($db);
                             $result=$bankaccount->fetch($banque[$key]);
                             if ($result < 0) dol_print_error($db,$bankaccount->error);
-                            if ($key == 'CHQ') $lineid=$bankaccount->addline(dol_now(), $key, $langs->trans("CustomerInvoicePayment"), $amount[$key], $consult->num_cheque, '', $user, $object->name, $consult->banque);
-                            else $lineid=$bankaccount->addline(dol_now(), $key, $langs->trans("CustomerInvoicePayment"), $amount[$key], '', '', $user, $object->name, '');
+                            if ($key == 'CHQ') $lineid=$bankaccount->addline($datecons, $key, $langs->trans("CustomerInvoicePayment"), $amount[$key], $consult->num_cheque, '', $user, $object->name, $consult->banque);
+                            else $lineid=$bankaccount->addline($datecons, $key, $langs->trans("CustomerInvoicePayment"), $amount[$key], '', '', $user, $object->name, '');
                             if ($lineid <= 0)
                             {
                                 $error++;
@@ -397,11 +397,18 @@ if ($socid > 0)
     if ($conf->notification->enabled) $langs->load("mails");
 
 	$head = societe_prepare_head($object);
-	dol_fiche_head($head, 'tabconsultations', $langs->trans("Patient"),0,'company');
 
-	print "<form method=\"post\" action=\"".$_SERVER["PHP_SELF"]."\">";
+	// General
+	print '<form method="post" action="'.$_SERVER["PHP_SELF"].'">';
+	if ($action=='create') print '<input type="hidden" name="action" value="add">';
+	if ($action=='edit')   print '<input type="hidden" name="action" value="update">';
+	print '<input type="hidden" name="socid" value="'.$socid.'">';
+	print '<input type="hidden" name="id" value="'.$id.'">';
+	print '<input type="hidden" name="backtopage" value="'.GETPOST('backtopage').'">';
 	print '<input type="hidden" name="token" value="'.$_SESSION['newtoken'].'">';
 
+	dol_fiche_head($head, 'tabconsultations', $langs->trans("Patient"),0,'company');
+	
 	print '<table class="border" width="100%">';
 
 	print '<tr><td width="25%">'.$langs->trans('PatientName').'</td>';
@@ -428,8 +435,6 @@ if ($socid > 0)
     }
 
 	print "</table>";
-
-	print '</form>';
 
     // Form to create
     if ($action == 'create' || $action == 'edit')
@@ -610,14 +615,6 @@ if ($socid > 0)
 		print ajax_combobox('listdiagles');
 		print ajax_combobox('listexamenprescrit');
 		print ajax_combobox('banque');
-
-        // General
-        print '<form method="post" action="'.$_SERVER["PHP_SELF"].'">';
-        if ($action=='create') print '<input type="hidden" name="action" value="add">';
-        if ($action=='edit')   print '<input type="hidden" name="action" value="update">';
-        print '<input type="hidden" name="socid" value="'.$socid.'">';
-        print '<input type="hidden" name="id" value="'.$id.'">';
-        print '<input type="hidden" name="backtopage" value="'.GETPOST('backtopage').'">';
 
 
         /*if ($action=='edit' || $action=='update')
@@ -956,35 +953,38 @@ if ($socid > 0)
         print '<br>';
 
         dol_htmloutput_errors($mesg,$mesgarray);
-
-
-        print '<center>';
-        if ($action == 'edit')
-        {
-        	// Set option if not defined
-        	if (! isset($conf->global->CABINETMED_DELAY_TO_LOCK_RECORD)) $conf->global->CABINETMED_DELAY_TO_LOCK_RECORD=30;
-
-        	// If consult was create before current date - CABINETMED_DELAY_TO_LOCK_RECORD days.
-        	if (! empty($conf->global->CABINETMED_DELAY_TO_LOCK_RECORD) && $consult->date_c < ($now - ($conf->global->CABINETMED_DELAY_TO_LOCK_RECORD * 24 * 3600)))
-        	{
-            	print '<input type="submit" class="button ignorechange" id="updatebutton" name="update" value="'.$langs->trans("Save").'" disabled="disabled" title="'.dol_escape_htmltag($langs->trans("ConsultTooOld",$conf->global->CABINETMED_DELAY_TO_LOCK_RECORD)).'">';
-        	}
-        	else
-        	{
-            	print '<input type="submit" class="button ignorechange" id="updatebutton" name="update" value="'.$langs->trans("Save").'">';
-        	}
-        }
-        if ($action == 'create')
-        {
-            print '<input type="submit" class="button ignorechange" id="addbutton" name="add" value="'.$langs->trans("Add").'">';
-        }
-        print ' &nbsp; &nbsp; ';
-        print '<input type="submit" class="button ignorechange" id="cancelbutton" name="cancel" value="'.$langs->trans("Cancel").'">';
-        print '</center>';
-        print '</form>';
     }
-
+    
 	dol_fiche_end();
+
+    if ($action == 'create' || $action == 'edit')
+    {
+    	print '<center>';
+    	if ($action == 'edit')
+    	{
+    	    // Set option if not defined
+    	    if (! isset($conf->global->CABINETMED_DELAY_TO_LOCK_RECORD)) $conf->global->CABINETMED_DELAY_TO_LOCK_RECORD=30;
+    	
+    	    // If consult was create before current date - CABINETMED_DELAY_TO_LOCK_RECORD days.
+    	    if (! empty($conf->global->CABINETMED_DELAY_TO_LOCK_RECORD) && $consult->date_c < ($now - ($conf->global->CABINETMED_DELAY_TO_LOCK_RECORD * 24 * 3600)))
+    	    {
+    	        print '<input type="submit" class="button ignorechange" id="updatebutton" name="update" value="'.$langs->trans("Save").'" disabled="disabled" title="'.dol_escape_htmltag($langs->trans("ConsultTooOld",$conf->global->CABINETMED_DELAY_TO_LOCK_RECORD)).'">';
+    	    }
+    	    else
+    	    {
+    	        print '<input type="submit" class="button ignorechange" id="updatebutton" name="update" value="'.$langs->trans("Save").'">';
+    	    }
+    	}
+    	if ($action == 'create')
+    	{
+    	    print '<input type="submit" class="button ignorechange" id="addbutton" name="add" value="'.$langs->trans("Add").'">';
+    	}
+    	print ' &nbsp; &nbsp; ';
+    	print '<input type="submit" class="button ignorechange" id="cancelbutton" name="cancel" value="'.$langs->trans("Cancel").'">';
+    	print '</center>';
+    }
+    
+	print '</form>';
 }
 
 
