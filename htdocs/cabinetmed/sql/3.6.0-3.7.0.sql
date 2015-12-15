@@ -16,6 +16,13 @@
 
 -- idprof1 -> extrafield   height
 -- idprof2 -> extrafield   weigth
--- idprof3 -> extrafield   birthdate
+-- idprof3/ape -> extrafield   birthdate
 -- idprof4 -> extrafield   profession
+
+
+insert into llx_societe_extrafields(fk_object) (select rowid from llx_societe where rowid not in (select fk_object from llx_societe_extrafields));
+
+update llx_societe_extrafields as se set prof = (select idprof4 from llx_societe as s where s.rowid = se.fk_object) where prof is null or prof = '';
+
+update llx_societe_extrafields as se set birthdate = (select IF(ape != '' and ape is not null and substr(ape,3,1) = '/', concat(substr(ape,7,4), '-', substr(ape,4,2), '-', substr(ape,1,2)), null) from llx_societe as s where s.rowid = se.fk_object) where birthdate is null or birthdate = '' or birthdate = '2010-10-10';
 
