@@ -112,8 +112,10 @@ if ($action == 'add' || $action == 'update')
             }
 
             $result=$consult->fetch_bankid();
-
+            
             $oldconsult=dol_clone($consult);
+            
+            $consult->datecons=$datecons;
         }
         else
         {
