@@ -152,6 +152,8 @@ function cabinetmed_completesubstitutionarray(&$substitutionarray,$langs,$object
 
     $substitutionarray['outcome_comment']=GETPOST('outcome_comment');
 
+    include_once DOL_DOCUMENT_ROOT.'/core/lib/date.lib.php';
+    
     // Patient
     //$patient=new Patient($db);
     //var_dump($object);
@@ -167,7 +169,7 @@ function cabinetmed_completesubstitutionarray(&$substitutionarray,$langs,$object
 
 	$substitutionarray['patient_size']=$object->array_options['options_size'];
 	$substitutionarray['patient_weight']=$object->array_options['options_weight'];
-    $substitutionarray['patient_birthdate']=$object->array_options['options_birthdate'];
+    $substitutionarray['patient_birthdate']=dol_print_date(dol_stringtotime($object->array_options['options_birthdate'].' 00:00:00'),'day','',$langs);
     $substitutionarray['patient_profession']=$object->array_options['options_prof'];
 
     $substitutionarray['patient_gender']=$object->typent_code;
