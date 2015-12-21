@@ -101,6 +101,14 @@ include_once DOL_DOCUMENT_ROOT . '/core/tpl/document_actions_pre_headers.tpl.php
 
 
 
+// Actions to build doc
+/* avec 3.9
+$id = $socid;
+$upload_dir = $conf->societe->dir_output;
+$permissioncreate=$user->rights->societe->creer;
+include DOL_DOCUMENT_ROOT.'/core/actions_builddoc.inc.php';
+*/
+
 // Generate document
 if ($action == 'builddoc')  // En get ou en post
 {
@@ -116,10 +124,10 @@ if ($action == 'builddoc')  // En get ou en post
     {
         require_once(DOL_DOCUMENT_ROOT.'/core/modules/societe/modules_societe.class.php');
 
-        $soc = new Societe($db);
-        $soc->fetch($socid);
-        $soc->fetch_thirdparty();
-
+        // Save last template used to generate document
+        // Possible with 3.9 only
+        //if (GETPOST('model')) $object->setDocModel($user, GETPOST('model','alpha'));
+        
         $consult = new CabinetmedCons($db);
         $consult->fetch($idconsult);
 
@@ -133,7 +141,7 @@ if ($action == 'builddoc')  // En get ou en post
             $outputlangs = new Translate("",$conf);
             $outputlangs->setDefaultLang($newlang);
         }
-        $result=thirdparty_doc_create($db, $soc, '', GETPOST('model','alpha'), $outputlangs);
+        $result=thirdparty_doc_create($db, $object, '', GETPOST('model','alpha'), $outputlangs);
         if ($result <= 0)
         {
             dol_print_error($db,$result);
