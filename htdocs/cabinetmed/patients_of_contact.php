@@ -65,7 +65,7 @@ $pageprev = $page - 1;
 $pagenext = $page + 1;
 if (! $sortfield) $sortfield='s.nom';
 if (! $sortorder) $sortorder='ASC';
-$limit = $conf->liste_limit;
+$limit = GETPOST('limit')?GETPOST('limit','int'):$conf->liste_limit;
 
 // Security check
 if ($user->societe_id) $socid=$user->societe_id;
