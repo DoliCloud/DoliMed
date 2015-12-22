@@ -1,7 +1,7 @@
 --
 -- Be carefull to requests order.
 -- This file must be loaded by calling /install/index.php page
--- when current version is 3.4.0 or higher. 
+-- when current version is 3.6.0 or higher. 
 --
 -- To rename a table:       ALTER TABLE llx_table RENAME TO llx_table_new;
 -- To add a column:         ALTER TABLE llx_table ADD COLUMN newcol varchar(60) NOT NULL DEFAULT '0' AFTER existingcol;
@@ -22,7 +22,11 @@
 
 insert into llx_societe_extrafields(fk_object) (select rowid from llx_societe where rowid not in (select fk_object from llx_societe_extrafields));
 
-update llx_societe_extrafields as se set prof = (select idprof4 from llx_societe as s where s.rowid = se.fk_object) where prof is null or prof = '';
+update llx_societe_extrafields as se set height = (select idprof1 from llx_societe as s where s.rowid = se.fk_object) where prof is null or prof = '';
+
+update llx_societe_extrafields as se set weigth = (select idprof2 from llx_societe as s where s.rowid = se.fk_object) where prof is null or prof = '';
 
 update llx_societe_extrafields as se set birthdate = (select IF(ape != '' and ape is not null and substr(ape,3,1) = '/', concat(substr(ape,7,4), '-', substr(ape,4,2), '-', substr(ape,1,2)), null) from llx_societe as s where s.rowid = se.fk_object) where birthdate is null or birthdate = '' or birthdate = '2010-10-10';
+
+update llx_societe_extrafields as se set prof = (select idprof4 from llx_societe as s where s.rowid = se.fk_object) where prof is null or prof = '';
 
