@@ -160,15 +160,18 @@ function cabinetmed_completesubstitutionarray(&$substitutionarray,$langs,$object
     //$patient->fetch($object->fk_soc);
     $substitutionarray['patient_name']=$object->name;
 	$substitutionarray['patient_code']=$object->code_client;
+
 	$substitutionarray['patient_barcode']=$object->barcode;
 	$substitutionarray['patient_barcode_type']=$object->barcode_type_code;
 	$substitutionarray['patient_country_code']=$object->country_code;
 	$substitutionarray['patient_country']=$object->country;
 	$substitutionarray['patient_email']=$object->email;
+
 	$substitutionarray['patient_size']=$object->array_options['options_size'];
 	$substitutionarray['patient_weight']=$object->array_options['options_weight'];
     $substitutionarray['patient_birthdate']=dol_print_date(dol_stringtotime($object->array_options['options_birthdate'].' 00:00:00'),'day','',$langs);
     $substitutionarray['patient_profession']=$object->array_options['options_prof'];
+
     $substitutionarray['patient_gender']=$object->typent_code;
     $substitutionarray['patient_socialnum']=$object->tva_intra;
 }
