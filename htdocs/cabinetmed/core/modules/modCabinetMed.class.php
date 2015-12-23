@@ -123,7 +123,7 @@ class modCabinetMed extends DolibarrModules
       					'thirdparty:+tabconsultations:ConsultationsShort:cabinetmed@cabinetmed:$user->rights->cabinetmed->read && ($object->canvas=="patient@cabinetmed" || $soc->canvas=="patient@cabinetmed"):/cabinetmed/consultations.php?socid=__ID__',
                         'thirdparty:+tabexambio:ResultExamBio:cabinetmed@cabinetmed:$user->rights->cabinetmed->read && ($object->canvas=="patient@cabinetmed" || $soc->canvas=="patient@cabinetmed"):/cabinetmed/exambio.php?socid=__ID__',
                         'thirdparty:+tabexamautre:ResultExamAutre:cabinetmed@cabinetmed:$user->rights->cabinetmed->read && ($object->canvas=="patient@cabinetmed" || $soc->canvas=="patient@cabinetmed"):/cabinetmed/examautre.php?socid=__ID__',
-                        'thirdparty:+tabdocument:Courriers:cabinetmed@cabinetmed:$user->rights->cabinetmed->read && ($object->canvas=="patient@cabinetmed" || $soc->canvas=="patient@cabinetmed"):/cabinetmed/documents.php?socid=__ID__',
+                        'thirdparty:+tabdocument:SUBSTITUTION_DocumentsPatient:cabinetmed@cabinetmed:$user->rights->cabinetmed->read && ($object->canvas=="patient@cabinetmed" || $soc->canvas=="patient@cabinetmed"):/cabinetmed/documents.php?socid=__ID__',
                         'thirdparty:-contact:($object->canvas=="patient@cabinetmed" || $soc->canvas=="patient@cabinetmed")',	// TODO Condition to disable is not supported by core
                         'thirdparty:-document:($object->canvas=="patient@cabinetmed" || $soc->canvas=="patient@cabinetmed")',
                         //'thirdparty:-notify:($object->canvas=="patient@cabinetmed" || $soc->canvas=="patient@cabinetmed")',
