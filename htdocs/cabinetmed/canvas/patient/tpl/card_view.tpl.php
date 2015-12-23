@@ -242,7 +242,32 @@ $reshook=$hookmanager->executeHooks('formObjectOptions',$parameters,$object,$act
 print $hookmanager->resPrint;
 if (empty($reshook) && ! empty($extrafields->attribute_label))
 {
-  	print $object->showOptionals($extrafields);
+  	$tmp=$object->showOptionals($extrafields);
+  	print '<!-- extrafields -->'."\n";
+
+  	// Replace tmp content to add age
+  	if ($object->array_options['options_birthdate'])
+  	{
+  	    $now = dol_now();
+      	//var_dump($object->array_options['options_birthdate']);
+      	$birthdate=dol_stringtotime($object->array_options['options_birthdate'].' 00:00:00', 1);
+      	if ($birthdate)
+      	{
+          	$newtmp=' &nbsp; ';
+          	//$birthdatearray=dol_cm_strptime($dateval,$conf->format_date_short);
+          	//$birthdate=dol_mktime(0,0,0,$birthdatearray['tm_mon']+1,($birthdatearray['tm_mday']),($birthdatearray['tm_year']+1900),true);
+          	$ageyear=convertSecondToTime($now-$birthdate,'year')-1970;
+          	$agemonth=convertSecondToTime($now-$birthdate,'month')-1;
+          	if ($ageyear >= 1) $newtmp.='('.$ageyear.' '.$langs->trans("DurationYears").')';
+          	else if ($agemonth >= 1) $newtmp.='('.$agemonth.' '.$langs->trans("DurationMonths").')';
+          	else $newtmp.='('.$agemonth.' '.$langs->trans("DurationMonth").')';  	
+            //print $newtmp;
+          	$tmp=preg_replace('/'.preg_quote('<td colspan="3">'.dol_print_date($birthdate, 'day').'</td>','/').'/','<td colspan="3">'.dol_print_date($birthdate, 'day').$newtmp.'</td>',$tmp);
+      	}
+  	}
+  	print $tmp;
+  	
+  	print '<!-- end extrafields -->';
 }
 
 // Ban
