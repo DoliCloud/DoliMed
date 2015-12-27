@@ -279,15 +279,6 @@ dol_fiche_head('');
             print '</tr>';
         }
 
-        // Other attributes
-        $parameters=array('colspan' => ' colspan="3"', 'colspanvalue' => '3');
-        $reshook=$hookmanager->executeHooks('formObjectOptions',$parameters,$object,$action);    // Note that $action and $object may have been modified by hook
-
-        if (empty($reshook) && ! empty($extrafields->attribute_label))
-        {
-        	print $object->showOptionals($extrafields,'edit');
-        }
-
         if ($user->rights->societe->client->voir)
         {
             // Assign a Name
@@ -297,6 +288,47 @@ dol_fiche_head('');
             $form->select_users(GETPOST('commercial_id')>0?GETPOST('commercial_id'):$user->id,'commercial_id',1);
             print '</td></tr>';
         }
+        
+        // Categories
+        if (! empty($conf->categorie->enabled)  && ! empty($user->rights->categorie->lire))
+        {
+            $langs->load('categories');
+        
+            // Customer
+            if ($object->prospect || $object->client) {
+                print '<tr><td class="toptd">' . fieldLabel('CustomersCategoriesShort', 'custcats') . '</td><td colspan="3">';
+                $cate_arbo = $form->select_all_categories(Categorie::TYPE_CUSTOMER, null, 'parent', null, null, 1);
+                print $form->multiselectarray('custcats', $cate_arbo, GETPOST('custcats', 'array'), null, null, null,
+                    null, "90%");
+                print "</td></tr>";
+            }
+        
+            // Supplier
+            if ($object->fournisseur) {
+                print '<tr><td class="toptd">' . fieldLabel('SuppliersCategoriesShort', 'suppcats') . '</td><td colspan="3">';
+                $cate_arbo = $form->select_all_categories(Categorie::TYPE_SUPPLIER, null, 'parent', null, null, 1);
+                print $form->multiselectarray('suppcats', $cate_arbo, GETPOST('suppcats', 'array'), null, null, null,
+                    null, "90%");
+                print "</td></tr>";
+            }
+        }
+        
+        // Other attributes
+        $parameters=array('colspan' => ' colspan="3"', 'colspanvalue' => '3');
+        $reshook=$hookmanager->executeHooks('formObjectOptions',$parameters,$object,$action);    // Note that $action and $object may have been modified by hook
+        print $hookmanager->resPrint;
+        if (empty($reshook) && ! empty($extrafields->attribute_label))
+        {
+            print $object->showOptionals($extrafields,'edit');
+        }
+        
+        // Ajout du logo
+        print '<tr class="hideonsmartphone">';
+        print '<td>'.fieldLabel('Logo','photoinput').'</td>';
+        print '<td colspan="3">';
+        print '<input class="flat" type="file" name="photo" id="photoinput" />';
+        print '</td>';
+        print '</tr>';
 ?>
 </table>
 

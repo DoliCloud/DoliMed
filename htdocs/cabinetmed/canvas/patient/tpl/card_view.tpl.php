@@ -236,6 +236,26 @@ if ($conf->global->MAIN_MULTILANGS)
     print '</td></tr>';
 }
 
+// Tags / categories
+if (! empty($conf->categorie->enabled)  && ! empty($user->rights->categorie->lire))
+{
+    // Customer
+    if ($object->prospect || $object->client) {
+        print '<tr><td>' . $langs->trans("CustomersCategoriesShort") . '</td>';
+        print '<td colspan="3">';
+        print $form->showCategories($object->id, 'customer', 1);
+        print "</td></tr>";
+    }
+
+    // Supplier
+    if ($object->fournisseur) {
+        print '<tr><td>' . $langs->trans("SuppliersCategoriesShort") . '</td>';
+        print '<td colspan="3">';
+        print $form->showCategories($object->id, 'supplier', 1);
+        print "</td></tr>";
+    }
+}
+
 // Other attributes
 $parameters=array('socid'=>$socid, 'colspan' => ' colspan="3"', 'colspanvalue' => '3');
 $reshook=$hookmanager->executeHooks('formObjectOptions',$parameters,$object,$action);    // Note that $action and $object may have been modified by hook

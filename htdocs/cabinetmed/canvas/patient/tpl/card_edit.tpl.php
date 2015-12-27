@@ -129,7 +129,7 @@ dol_fiche_head('');
 print '<table class="border" width="100%">';
 
 // Name
-print '<tr><td><span class="fieldrequired">'.$langs->trans('PatientName').'</span></td><td><input type="text" size="40" maxlength="60" name="nom" value="'.$object->name.'"></td>';
+print '<tr><td width="25%"><span class="fieldrequired">'.$langs->trans('PatientName').'</span></td><td><input type="text" size="40" maxlength="60" name="nom" value="'.$object->name.'"></td>';
 
 // Prospect/Customer
 print '<td width="25%">'.$langs->trans('PatientCode').'</td><td>';
@@ -277,14 +277,71 @@ if (! empty($conf->global->MAIN_MULTILANGS))
 	print '</tr>';
 }
 
+
+// Categories
+if (! empty($conf->categorie->enabled)  && ! empty($user->rights->categorie->lire))
+{
+    // Customer
+    if ($object->prospect || $object->client) {
+        print '<tr><td>' . fieldLabel('CustomersCategoriesShort', 'custcats') . '</td>';
+        print '<td colspan="3">';
+        $cate_arbo = $form->select_all_categories(Categorie::TYPE_CUSTOMER, null, null, null, null, 1);
+        $c = new Categorie($db);
+        $cats = $c->containing($object->id, Categorie::TYPE_CUSTOMER);
+        foreach ($cats as $cat) {
+            $arrayselected[] = $cat->id;
+        }
+        print $form->multiselectarray('custcats', $cate_arbo, $arrayselected, '', 0, '', 0, '90%');
+        print "</td></tr>";
+    }
+
+    // Supplier
+    if ($object->fournisseur) {
+        print '<tr><td>' . fieldLabel('SuppliersCategoriesShort', 'suppcats') . '</td>';
+        print '<td colspan="3">';
+        $cate_arbo = $form->select_all_categories(Categorie::TYPE_SUPPLIER, null, null, null, null, 1);
+        $c = new Categorie($db);
+        $cats = $c->containing($object->id, Categorie::TYPE_SUPPLIER);
+        foreach ($cats as $cat) {
+            $arrayselected[] = $cat->id;
+        }
+        print $form->multiselectarray('suppcats', $cate_arbo, $arrayselected, '', 0, '', 0, '90%');
+        print "</td></tr>";
+    }
+}
+
 // Other attributes
 $parameters=array('colspan' => ' colspan="3"', 'colspanvalue' => '3');
 $reshook=$hookmanager->executeHooks('formObjectOptions',$parameters,$object,$action);    // Note that $action and $object may have been modified by hook
+print $hookmanager->resPrint;
 if (empty($reshook) && ! empty($extrafields->attribute_label))
 {
-	print $object->showOptionals($extrafields,'edit');
+    print $object->showOptionals($extrafields,'edit');
 }
 
+// Webservices url/key
+if (!empty($conf->syncsupplierwebservices->enabled)) {
+    print '<tr><td>'.fieldLabel('WebServiceURL','webservices_url').'</td>';
+    print '<td><input type="text" name="webservices_url" id="webservices_url" size="32" value="'.$object->webservices_url.'"></td>';
+    print '<td>'.fieldLabel('WebServiceKey','webservices_key').'</td>';
+    print '<td><input type="text" name="webservices_key" id="webservices_key" size="32" value="'.$object->webservices_key.'"></td></tr>';
+}
+
+// Logo
+print '<tr class="hideonsmartphone">';
+print '<td>'.fieldLabel('Logo','photoinput').'</td>';
+print '<td colspan="3">';
+if ($object->logo) print $form->showphoto('societe',$object);
+$caneditfield=1;
+if ($caneditfield)
+{
+    if ($object->logo) print "<br>\n";
+    print '<table class="nobordernopadding">';
+    if ($object->logo) print '<tr><td><input type="checkbox" class="flat" name="deletephoto photodelete" id="photodelete"> '.$langs->trans("Delete").'<br><br></td></tr>';
+    //print '<tr><td>'.$langs->trans("PhotoFile").'</td></tr>';
+    print '<tr><td><input type="file" class="flat" name="photo" id="photoinput"></td></tr>';
+    print '</table>';
+}
 print '</td>';
 print '</tr>';
 
