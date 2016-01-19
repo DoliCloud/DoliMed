@@ -71,7 +71,13 @@ function cabinetmed_completesubstitutionarray(&$substitutionarray,$langs,$object
    	if ($object->note_traitspec) $nbofnotes++;
     if ($nbofnotes > 0) $substitutionarray['TabAntecedentsShort']=$langs->trans("AntecedentsShort").' <span class="badge">'.$nbofnotes.'</span>';
 
-
+    $substitutionarray['DocumentsPatient']=$langs->trans("Documents");
+    // Attached files
+    require_once DOL_DOCUMENT_ROOT.'/core/lib/files.lib.php';
+    $upload_dir = $conf->societe->dir_output . "/" . $object->id;
+    $nbFiles = count(dol_dir_list($upload_dir,'files',0,'','(\.meta|_preview\.png)$'));
+    if ($nbFiles > 0) $substitutionarray['DocumentsPatient']=$langs->trans("Documents").' <span class="badge">'.$nbFiles.'</span>';
+    
     // Consultation + Exams
     if (GETPOST('idconsult') > 0)
     {

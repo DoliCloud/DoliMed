@@ -663,5 +663,40 @@ class CabinetmedCons extends CommonObject
         return $result;
     }
 
+    
+    /**
+     *   Charge indicateurs this->nb de tableau de bord
+     *
+     *   @return     int         <0 si ko, >0 si ok
+     */
+    function load_state_board()
+    {
+        global $conf, $user;
+    
+        $this->nb=array();
+        $clause = "WHERE";
+    
+        $sql = "SELECT count(c.rowid) as nb";
+        $sql.= " FROM ".MAIN_DB_PREFIX."cabinetmed_cons as c";
+        //$sql.= " ".$clause." c.entity = ".$conf->entity;
+    
+        $resql=$this->db->query($sql);
+        if ($resql)
+        {
+            while ($obj=$this->db->fetch_object($resql))
+            {
+                $this->nb["Cabinetmedcons"]=$obj->nb;
+            }
+            $this->db->free($resql);
+            return 1;
+        }
+        else
+        {
+            dol_print_error($this->db);
+            $this->error=$this->db->error();
+            return -1;
+        }
+    }
+    
 }
 

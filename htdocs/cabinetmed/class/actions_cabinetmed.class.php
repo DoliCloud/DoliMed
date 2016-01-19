@@ -23,6 +23,7 @@
  */
 require_once(DOL_DOCUMENT_ROOT."/core/class/commonobject.class.php");
 dol_include_once("/cabinetmed/lib/cabinetmed.lib.php");
+dol_include_once("/cabinetmed/class/cabinetmedcons.class.php");
 
 
 /**
@@ -66,7 +67,8 @@ class ActionsCabinetmed
 
         // Define cabinetmed context
         $cabinetmedcontext=0;
-        if (isset($parameters['id']) && isset($parameters['currentcontext']) && in_array($parameters['currentcontext'],array('agendathirdparty','categorycard','infothirdparty','consumptionthirdparty')) && empty($action))
+        if (isset($parameters['id']) && isset($parameters['currentcontext']) 
+            && in_array($parameters['currentcontext'],array('agendathirdparty','categorycard','infothirdparty','consumptionthirdparty','thirdpartynotification','thirdpartymargins','thirdpartycustomerprice')) && empty($action))
         {
         	$thirdparty=new Societe($db);
         	$thirdparty->fetch($parameters['id']);
@@ -180,7 +182,31 @@ class ActionsCabinetmed
     }
 
 
-
+    /**
+     * Add statistics line
+     *
+     * @param	array	$parameters		Array of parameters
+     * @return	void
+     */
+    function addStatisticLine($parameters)
+    {
+        global $langs;
+        $langs->load("cabinetmed@cabinetmed");
+        
+        $board=new Cabinetmedcons($this->db);
+        $board->load_state_board($user);
+        
+        print '<a href="'.dol_buildpath('/cabinetmed/listconsult.php',1).'" class="nobold nounderline">';
+        print '<div class="boxstats">';
+        print img_object("",'generic').' '.$langs->trans("ConsultationsShort").'<br>';
+        //print '</a>';
+        //print '<a href="'.$links[$key].'">';
+        print $board->nb['Cabinetmedcons'];
+        print '</div>';
+        print '</a>';        
+    }
+    
+    
     /**
      * Complete doc forms
      *

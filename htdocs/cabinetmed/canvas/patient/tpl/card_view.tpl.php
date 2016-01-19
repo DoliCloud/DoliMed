@@ -236,13 +236,58 @@ if ($conf->global->MAIN_MULTILANGS)
     print '</td></tr>';
 }
 
+// Tags / categories
+if (! empty($conf->categorie->enabled)  && ! empty($user->rights->categorie->lire))
+{
+    // Customer
+    if ($object->prospect || $object->client) {
+        print '<tr><td>' . $langs->trans("CustomersCategoriesShort") . '</td>';
+        print '<td colspan="3">';
+        print $form->showCategories($object->id, 'customer', 1);
+        print "</td></tr>";
+    }
+
+    // Supplier
+    if ($object->fournisseur) {
+        print '<tr><td>' . $langs->trans("SuppliersCategoriesShort") . '</td>';
+        print '<td colspan="3">';
+        print $form->showCategories($object->id, 'supplier', 1);
+        print "</td></tr>";
+    }
+}
+
 // Other attributes
 $parameters=array('socid'=>$socid, 'colspan' => ' colspan="3"', 'colspanvalue' => '3');
 $reshook=$hookmanager->executeHooks('formObjectOptions',$parameters,$object,$action);    // Note that $action and $object may have been modified by hook
 print $hookmanager->resPrint;
 if (empty($reshook) && ! empty($extrafields->attribute_label))
 {
-  	print $object->showOptionals($extrafields);
+  	$tmp=$object->showOptionals($extrafields);
+  	print '<!-- extrafields -->'."\n";
+
+  	// Replace tmp content to add age
+  	if ($object->array_options['options_birthdate'])
+  	{
+  	    $now = dol_now();
+      	//var_dump($object->array_options['options_birthdate']);
+      	$birthdate=dol_stringtotime($object->array_options['options_birthdate'].' 00:00:00', 1);
+      	if ($birthdate)
+      	{
+          	$newtmp=' &nbsp; ';
+          	//$birthdatearray=dol_cm_strptime($dateval,$conf->format_date_short);
+          	//$birthdate=dol_mktime(0,0,0,$birthdatearray['tm_mon']+1,($birthdatearray['tm_mday']),($birthdatearray['tm_year']+1900),true);
+          	$ageyear=convertSecondToTime($now-$birthdate,'year')-1970;
+          	$agemonth=convertSecondToTime($now-$birthdate,'month')-1;
+          	if ($ageyear >= 1) $newtmp.='('.$ageyear.' '.$langs->trans("DurationYears").')';
+          	else if ($agemonth >= 1) $newtmp.='('.$agemonth.' '.$langs->trans("DurationMonths").')';
+          	else $newtmp.='('.$agemonth.' '.$langs->trans("DurationMonth").')';  	
+            //print $newtmp;
+          	$tmp=preg_replace('/'.preg_quote('<td colspan="3">'.dol_print_date($birthdate, 'day').'</td>','/').'/','<td colspan="3">'.dol_print_date($birthdate, 'day').$newtmp.'</td>',$tmp);
+      	}
+  	}
+  	print $tmp;
+  	
+  	print '<!-- end extrafields -->';
 }
 
 // Ban

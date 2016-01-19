@@ -82,7 +82,7 @@ class modCabinetMed extends DolibarrModules
         							'substitutions' => 1,
         							'menus' => 1,
         							'css' => array('/cabinetmed/css/styles.css.php'),
-        							'hooks' => array('thirdpartycard','categorycard','contactcard','actioncard','agendathirdparty','infothirdparty','consumptionthirdparty','documentcabinetmed','searchform','demo'));
+        							'hooks' => array('thirdpartycard','categorycard','contactcard','actioncard','agendathirdparty','infothirdparty','consumptionthirdparty','thirdpartynotification','thirdpartymargins','thirdpartycustomerprice','documentcabinetmed','searchform','demo'));
 
         // Dependencies
         $this->depends = array('modSociete');       // List of modules id that must be enabled if this module is enabled
@@ -123,7 +123,7 @@ class modCabinetMed extends DolibarrModules
       					'thirdparty:+tabconsultations:ConsultationsShort:cabinetmed@cabinetmed:$user->rights->cabinetmed->read && ($object->canvas=="patient@cabinetmed" || $soc->canvas=="patient@cabinetmed"):/cabinetmed/consultations.php?socid=__ID__',
                         'thirdparty:+tabexambio:ResultExamBio:cabinetmed@cabinetmed:$user->rights->cabinetmed->read && ($object->canvas=="patient@cabinetmed" || $soc->canvas=="patient@cabinetmed"):/cabinetmed/exambio.php?socid=__ID__',
                         'thirdparty:+tabexamautre:ResultExamAutre:cabinetmed@cabinetmed:$user->rights->cabinetmed->read && ($object->canvas=="patient@cabinetmed" || $soc->canvas=="patient@cabinetmed"):/cabinetmed/examautre.php?socid=__ID__',
-                        'thirdparty:+tabdocument:Courriers:cabinetmed@cabinetmed:$user->rights->cabinetmed->read && ($object->canvas=="patient@cabinetmed" || $soc->canvas=="patient@cabinetmed"):/cabinetmed/documents.php?socid=__ID__',
+                        'thirdparty:+tabdocument:SUBSTITUTION_DocumentsPatient:cabinetmed@cabinetmed:$user->rights->cabinetmed->read && ($object->canvas=="patient@cabinetmed" || $soc->canvas=="patient@cabinetmed"):/cabinetmed/documents.php?socid=__ID__',
                         'thirdparty:-contact:($object->canvas=="patient@cabinetmed" || $soc->canvas=="patient@cabinetmed")',	// TODO Condition to disable is not supported by core
                         'thirdparty:-document:($object->canvas=="patient@cabinetmed" || $soc->canvas=="patient@cabinetmed")',
                         //'thirdparty:-notify:($object->canvas=="patient@cabinetmed" || $soc->canvas=="patient@cabinetmed")',
