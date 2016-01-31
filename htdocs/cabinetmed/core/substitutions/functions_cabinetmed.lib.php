@@ -74,6 +74,7 @@ function cabinetmed_completesubstitutionarray(&$substitutionarray,$langs,$object
     $substitutionarray['DocumentsPatient']=$langs->trans("Documents");
     // Attached files
     require_once DOL_DOCUMENT_ROOT.'/core/lib/files.lib.php';
+    require_once DOL_DOCUMENT_ROOT.'/core/class/link.class.php';
     $upload_dir = $conf->societe->dir_output . "/" . $object->id;
     $nbFiles = count(dol_dir_list($upload_dir,'files',0,'','(\.meta|_preview\.png)$'));
     if ($nbFiles > 0) $substitutionarray['DocumentsPatient']=$langs->trans("Documents").' <span class="badge">'.$nbFiles.'</span>';
