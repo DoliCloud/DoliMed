@@ -180,5 +180,37 @@ function cabinetmed_completesubstitutionarray(&$substitutionarray,$langs,$object
 
     $substitutionarray['patient_gender']=$object->typent_code;
     $substitutionarray['patient_socialnum']=$object->tva_intra;
+    
+    
+    // Replace contact tabs fo GENERALREF if defined
+    $substitutionarray['contact_title']='';
+    $substitutionarray['contact_lastname']='';
+    $substitutionarray['contact_firstname']='';
+    $substitutionarray['contact_zip']='';
+    $substitutionarray['contact_town']='';
+    $substitutionarray['contact_address']='';
+    $substitutionarray['contact_email']='';
+    $tab = $object->liste_contact(-1,'external');
+    foreach($tab as $key => $tmparray)
+    {
+        if ($tmparray['code'] == 'GENERALREF' && $tmparray['id'] > 0)
+        {
+            require_once DOL_DOCUMENT_ROOT.'/contact/class/contact.class.php';
+            $contact=new Contact($db);
+            $result = $contact->fetch($tmparray['id'], $user);
+            if ($result > 0)
+            {
+                $substitutionarray['contact_title']=$contact->civility_id;
+                $substitutionarray['contact_lastname']=$contact->lastname;
+                $substitutionarray['contact_firstname']=$contact->firstname;
+                $substitutionarray['contact_zip']=$contact->zip;
+                $substitutionarray['contact_town']=$contact->town;
+                $substitutionarray['contact_address']=$contact->address;
+                $substitutionarray['contact_email']=$contact->email;
+                break;
+            }
+        }
+    }
+    
 }
 
