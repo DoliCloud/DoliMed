@@ -71,7 +71,7 @@ function cabinetmed_completesubstitutionarray(&$substitutionarray,$langs,$object
    	if ($object->note_traitspec) $nbofnotes++;
     if ($nbofnotes > 0) $substitutionarray['TabAntecedentsShort']=$langs->trans("AntecedentsShort").' <span class="badge">'.$nbofnotes.'</span>';
 
-    $substitutionarray['DocumentsPatient']=$langs->trans("Documents");
+    $substitutionarray['DocumentsPatient']=$langs->trans("DocumentsPatient");
     // Attached files
     require_once DOL_DOCUMENT_ROOT.'/core/lib/files.lib.php';
     $upload_dir = $conf->societe->dir_output . "/" . $object->id;
