@@ -196,14 +196,28 @@ class ActionsCabinetmed
         $board=new Cabinetmedcons($this->db);
         $board->load_state_board($user);
         
-        print '<a href="'.dol_buildpath('/cabinetmed/listconsult.php',1).'" class="nobold nounderline">';
-        print '<div class="boxstats">';
-        print img_object("",'generic').' '.$langs->trans("ConsultationsShort").'<br>';
-        //print '</a>';
-        //print '<a href="'.$links[$key].'">';
-        print $board->nb['Cabinetmedcons'];
-        print '</div>';
-        print '</a>';        
+        $out = '';
+       
+        $out.='<a href="'.dol_buildpath('/cabinetmed/listconsult.php',1).'" class="boxstatsindicator thumbstat nobold nounderline">';
+        $out.='<div class="boxstats">';
+        $out.='<span class="boxstatstext">';
+        $out.=img_object("",'generic').' '.$langs->trans("ConsultationsShort");
+        $out.='</span>';
+        $out.='<br>';
+        //$out.='</a>';
+        //$out.='<a href="'.$links[$key].'">';
+        $out.='<span class="boxstatsindicator">';
+        $out.=$board->nb['Cabinetmedcons'];
+        $out.='</span>';
+        $out.='</div>';
+        $out.='</a>';
+
+        include_once DOL_DOCUMENT_ROOT.'/core/lib/admin.lib.php';
+        var_dump(versiondolibarrarray());
+        if (versioncompare(versiondolibarrarray(),array(4,0,-4)) >= 0) $this->resprints=$out;
+        else print $out;
+        
+        return 0;
     }
     
     
@@ -420,8 +434,8 @@ class ActionsCabinetmed
 
         $out.='<tr><td colspan="4" valign="top" class="formdoc">';
         $out.=$langs->trans("Comment").': ';
-        $out.= '<textarea name="outcome_comment" style="width: 95%" rows="8">'.(GETPOST('outcome_comment')?GETPOST('outcome_comment'):'').'</textarea>';
-        //$out.='<input type="text" name="outcome_comment" size="90" value="'.(GETPOST('outcome_comment')?GETPOST('outcome_comment'):'').'">';
+        //$out.= '<textarea name="outcome_comment" cols="90" rows="'.ROWS_2.'">'.(GETPOST('outcome_comment')?GETPOST('outcome_comment'):'').'</textarea>';
+        $out.='<input type="text" name="outcome_comment" size="90" value="'.(GETPOST('outcome_comment')?GETPOST('outcome_comment'):'').'">';
         $out.='</td></tr>';
 
         $this->resprints = $out;
