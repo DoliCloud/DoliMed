@@ -164,3 +164,4 @@ ConsultTooOld=Can't modify consultation. This one is older than <b>%s</b> days. 
 HeightPeople=Height
 WeigthPeople=Weigth
 PatientDeleted=Patient "%s" was deleted from database.
+DocumentsPatient=Documents/Attached files

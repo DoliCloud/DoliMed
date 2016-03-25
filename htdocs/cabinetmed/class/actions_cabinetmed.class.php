@@ -196,14 +196,28 @@ class ActionsCabinetmed
         $board=new Cabinetmedcons($this->db);
         $board->load_state_board($user);
         
-        print '<a href="'.dol_buildpath('/cabinetmed/listconsult.php',1).'" class="nobold nounderline">';
-        print '<div class="boxstats">';
-        print img_object("",'generic').' '.$langs->trans("ConsultationsShort").'<br>';
-        //print '</a>';
-        //print '<a href="'.$links[$key].'">';
-        print $board->nb['Cabinetmedcons'];
-        print '</div>';
-        print '</a>';        
+        $out = '';
+       
+        $out.='<a href="'.dol_buildpath('/cabinetmed/listconsult.php',1).'" class="boxstatsindicator thumbstat nobold nounderline">';
+        $out.='<div class="boxstats">';
+        $out.='<span class="boxstatstext">';
+        $out.=img_object("",'generic').' '.$langs->trans("ConsultationsShort");
+        $out.='</span>';
+        $out.='<br>';
+        //$out.='</a>';
+        //$out.='<a href="'.$links[$key].'">';
+        $out.='<span class="boxstatsindicator">';
+        $out.=$board->nb['Cabinetmedcons'];
+        $out.='</span>';
+        $out.='</div>';
+        $out.='</a>';
+
+        include_once DOL_DOCUMENT_ROOT.'/core/lib/admin.lib.php';
+        var_dump(versiondolibarrarray());
+        if (versioncompare(versiondolibarrarray(),array(4,0,-4)) >= 0) $this->resprints=$out;
+        else print $out;
+        
+        return 0;
     }
     
     

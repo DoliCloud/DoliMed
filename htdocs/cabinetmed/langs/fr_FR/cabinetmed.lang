@@ -164,3 +164,4 @@ ConsultTooOld=Impossible de modifier la consultation, cette dernière est plus v
 HeightPeople=Taille
 WeigthPeople=Poids
 PatientDeleted=Le patient "%s" a été supprimé de la base.
+DocumentsPatient=Courriers/Pièces jointes

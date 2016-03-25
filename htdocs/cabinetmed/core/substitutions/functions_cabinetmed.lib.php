@@ -56,28 +56,37 @@ function cabinetmed_completesubstitutionarray(&$substitutionarray,$langs,$object
     }
 
     $substitutionarray['NotesPatient']=$langs->trans("Notes");
-   	$nbofnotes = ($object->note||$object->note_private)?1:0;
-    if ($nbofnotes > 0) $substitutionarray['NotesPatient']=$langs->trans("Notes").' <span class="badge">'.$nbofnotes.'</span>';
-
+    if ($object)
+    {
+       	$nbofnotes = ($object->note||$object->note_private)?1:0;
+        if ($nbofnotes > 0) $substitutionarray['NotesPatient']=$langs->trans("Notes").' <span class="badge">'.$nbofnotes.'</span>';
+    }
+    
     $substitutionarray['TabAntecedentsShort']=$langs->trans("AntecedentsShort");
-   	$nbofnotes = 0;
-   	if ($object->note_antemed) $nbofnotes++;
-   	if ($object->note_antechirgen) $nbofnotes++;
-   	if ($object->note_antechirortho) $nbofnotes++;
-   	if ($object->note_anterhum) $nbofnotes++;
-   	if ($object->note_traitallergie) $nbofnotes++;
-   	if ($object->note_traitclass) $nbofnotes++;
-   	if ($object->note_traitintol) $nbofnotes++;
-   	if ($object->note_traitspec) $nbofnotes++;
-    if ($nbofnotes > 0) $substitutionarray['TabAntecedentsShort']=$langs->trans("AntecedentsShort").' <span class="badge">'.$nbofnotes.'</span>';
-
-    $substitutionarray['DocumentsPatient']=$langs->trans("Documents");
-    // Attached files
-    require_once DOL_DOCUMENT_ROOT.'/core/lib/files.lib.php';
-    require_once DOL_DOCUMENT_ROOT.'/core/class/link.class.php';
-    $upload_dir = $conf->societe->dir_output . "/" . $object->id;
-    $nbFiles = count(dol_dir_list($upload_dir,'files',0,'','(\.meta|_preview\.png)$'));
-    if ($nbFiles > 0) $substitutionarray['DocumentsPatient']=$langs->trans("Documents").' <span class="badge">'.$nbFiles.'</span>';
+    if ($object)
+   	{
+   	    $nbofnotes = 0;
+   	    if ($object->note_antemed) $nbofnotes++;
+       	if ($object->note_antechirgen) $nbofnotes++;
+       	if ($object->note_antechirortho) $nbofnotes++;
+       	if ($object->note_anterhum) $nbofnotes++;
+       	if ($object->note_traitallergie) $nbofnotes++;
+       	if ($object->note_traitclass) $nbofnotes++;
+       	if ($object->note_traitintol) $nbofnotes++;
+       	if ($object->note_traitspec) $nbofnotes++;
+        if ($nbofnotes > 0) $substitutionarray['TabAntecedentsShort']=$langs->trans("AntecedentsShort").' <span class="badge">'.$nbofnotes.'</span>';
+   	}
+   	
+    $substitutionarray['DocumentsPatient']=$langs->trans("DocumentsPatient");
+    if ($object)
+    {
+        // Attached files
+        require_once DOL_DOCUMENT_ROOT.'/core/lib/files.lib.php';
+        require_once DOL_DOCUMENT_ROOT.'/core/class/link.class.php';
+        $upload_dir = $conf->societe->dir_output . "/" . $object->id;
+        $nbFiles = count(dol_dir_list($upload_dir,'files',0,'','(\.meta|_preview\.png)$'));
+        if ($nbFiles > 0) $substitutionarray['DocumentsPatient']=$langs->trans("DocumentsPatient").' <span class="badge">'.$nbFiles.'</span>';
+    }
     
     // Consultation + Exams
     if (GETPOST('idconsult') > 0)
@@ -165,21 +174,57 @@ function cabinetmed_completesubstitutionarray(&$substitutionarray,$langs,$object
     //$patient=new Patient($db);
     //var_dump($object);
     //$patient->fetch($object->fk_soc);
-    $substitutionarray['patient_name']=$object->name;
-	$substitutionarray['patient_code']=$object->code_client;
-
-	$substitutionarray['patient_barcode']=$object->barcode;
-	$substitutionarray['patient_barcode_type']=$object->barcode_type_code;
-	$substitutionarray['patient_country_code']=$object->country_code;
-	$substitutionarray['patient_country']=$object->country;
-	$substitutionarray['patient_email']=$object->email;
-
-	$substitutionarray['patient_size']=$object->array_options['options_size'];
-	$substitutionarray['patient_weight']=$object->array_options['options_weight'];
-    $substitutionarray['patient_birthdate']=dol_print_date(dol_stringtotime($object->array_options['options_birthdate'].' 00:00:00'),'day','',$langs);
-    $substitutionarray['patient_profession']=$object->array_options['options_prof'];
-
-    $substitutionarray['patient_gender']=$object->typent_code;
-    $substitutionarray['patient_socialnum']=$object->tva_intra;
+    if (is_object($object))
+    {
+        $substitutionarray['patient_name']=$object->name;
+    	$substitutionarray['patient_code']=$object->code_client;
+    
+    	$substitutionarray['patient_barcode']=$object->barcode;
+    	$substitutionarray['patient_barcode_type']=$object->barcode_type_code;
+    	$substitutionarray['patient_country_code']=$object->country_code;
+    	$substitutionarray['patient_country']=$object->country;
+    	$substitutionarray['patient_email']=$object->email;
+    
+    	$substitutionarray['patient_size']=$object->array_options['options_size'];
+    	$substitutionarray['patient_weight']=$object->array_options['options_weight'];
+        $substitutionarray['patient_birthdate']=dol_print_date(dol_stringtotime($object->array_options['options_birthdate'].' 00:00:00'),'day','',$langs);
+        $substitutionarray['patient_profession']=$object->array_options['options_prof'];
+    
+        $substitutionarray['patient_gender']=$object->typent_code;
+        $substitutionarray['patient_socialnum']=$object->tva_intra;
+    }        
+        
+    // Replace contact tabs fo GENERALREF if defined
+    $substitutionarray['contact_title']='';
+    $substitutionarray['contact_lastname']='';
+    $substitutionarray['contact_firstname']='';
+    $substitutionarray['contact_zip']='';
+    $substitutionarray['contact_town']='';
+    $substitutionarray['contact_address']='';
+    $substitutionarray['contact_email']='';
+    if (is_object($object))
+    {
+        $tab = $object->liste_contact(-1,'external');
+        foreach($tab as $key => $tmparray)
+        {
+            if ($tmparray['code'] == 'GENERALREF' && $tmparray['id'] > 0)
+            {
+                require_once DOL_DOCUMENT_ROOT.'/contact/class/contact.class.php';
+                $contact=new Contact($db);
+                $result = $contact->fetch($tmparray['id'], $user);
+                if ($result > 0)
+                {
+                    $substitutionarray['contact_title']=$contact->civility_id;
+                    $substitutionarray['contact_lastname']=$contact->lastname;
+                    $substitutionarray['contact_firstname']=$contact->firstname;
+                    $substitutionarray['contact_zip']=$contact->zip;
+                    $substitutionarray['contact_town']=$contact->town;
+                    $substitutionarray['contact_address']=$contact->address;
+                    $substitutionarray['contact_email']=$contact->email;
+                    break;
+                }
+            }
+        }
+    }
 }
 
