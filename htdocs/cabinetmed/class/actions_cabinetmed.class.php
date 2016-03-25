@@ -213,7 +213,6 @@ class ActionsCabinetmed
         $out.='</a>';
 
         include_once DOL_DOCUMENT_ROOT.'/core/lib/admin.lib.php';
-        var_dump(versiondolibarrarray());
         if (versioncompare(versiondolibarrarray(),array(4,0,-4)) >= 0) $this->resprints=$out;
         else print $out;
         
