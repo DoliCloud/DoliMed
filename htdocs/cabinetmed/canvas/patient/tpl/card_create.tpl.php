@@ -45,8 +45,8 @@ $formadmin=new FormAdmin($GLOBALS['db']);
 
 $object->client=1;
 
-$object->name=$_POST["nom"];
-$object->lastname=$_POST["nom"];
+$object->name=$_POST["name"];
+$object->lastname=$_POST["name"];
 $object->firstname=$_POST["firstname"];
 $object->particulier=0;
 $object->prefix_comm=$_POST["prefix_comm"];
@@ -141,7 +141,7 @@ dol_fiche_head('');
 
 <tr>
 	<td><span class="fieldrequired"><?php echo $langs->trans('PatientName'); ?></span></td>
-	<td><input type="text" size="40" maxlength="60" name="nom" value="<?php echo $object->name; ?>"></td>
+	<td><input type="text" size="40" maxlength="60" name="name" value="<?php echo $object->name; ?>"></td>
     <td width="25%"><?php echo $langs->trans('PatientCode'); ?></td>
     <td width="25%">
 <?php
