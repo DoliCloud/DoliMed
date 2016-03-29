@@ -52,11 +52,11 @@ if ($modCodeClient->code_auto)
 }
 
 
-if ($_POST["nom"])
+if ($_POST["name"])
 {
     $object->client=1;
 
-    $object->lastname=$_POST["nom"];
+    $object->lastname=$_POST["name"];
     $object->firstname=$_POST["firstname"];
     $object->particulier=0;
     $object->prefix_comm=$_POST["prefix_comm"];
@@ -129,7 +129,7 @@ dol_fiche_head('');
 print '<table class="border" width="100%">';
 
 // Name
-print '<tr><td width="25%"><span class="fieldrequired">'.$langs->trans('PatientName').'</span></td><td><input type="text" size="40" maxlength="60" name="nom" value="'.$object->name.'"></td>';
+print '<tr><td width="25%"><span class="fieldrequired">'.$langs->trans('PatientName').'</span></td><td><input type="text" size="40" maxlength="60" name="name" value="'.$object->name.'"></td>';
 
 // Prospect/Customer
 print '<td width="25%">'.$langs->trans('PatientCode').'</td><td>';
