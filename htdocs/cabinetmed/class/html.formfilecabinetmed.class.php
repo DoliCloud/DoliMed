@@ -73,7 +73,7 @@ class FormFileCabinetmed
         global $sortfield, $sortorder;
 
         // Show list of existing files
-        if (empty($useinecm)) print_titre($langs->trans("AttachedFiles"));
+        if (empty($useinecm)) print load_fiche_titre($langs->trans("AttachedFiles"));
         //else { $bc[true]=''; $bc[false]=''; };
         $url=$_SERVER["PHP_SELF"];
         print '<table width="100%" class="noborder">';

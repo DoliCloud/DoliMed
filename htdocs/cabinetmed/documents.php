@@ -98,7 +98,8 @@ $hookmanager->initHooks(array('documentcabinetmed'));
  * Actions
  */
 
-include_once DOL_DOCUMENT_ROOT . '/core/tpl/document_actions_pre_headers.tpl.php';
+$res=@include_once DOL_DOCUMENT_ROOT . '/core/actions_linkedfiles.inc.php';
+if (! $res) include_once DOL_DOCUMENT_ROOT . '/core/tpl/document_actions_pre_headers.tpl.php';
 
 
 
