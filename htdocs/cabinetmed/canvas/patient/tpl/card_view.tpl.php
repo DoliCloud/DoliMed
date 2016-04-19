@@ -453,6 +453,12 @@ if ($action == 'presend')
 	$formmail->fromid   = $user->id;
 	$formmail->fromname = $user->getFullName($langs);
 	$formmail->frommail = $user->email;
+    $formmail->trackid='pat'.$object->id;
+	if (! empty($conf->global->MAIN_EMAIL_ADD_TRACK_ID) && ($conf->global->MAIN_EMAIL_ADD_TRACK_ID & 2))	// If bit 2 is set
+	{
+	    include DOL_DOCUMENT_ROOT.'/core/lib/functions2.lib.php';
+	    $formmail->frommail=dolAddEmailTrackId($formmail->frommail, 'inv'.$object->id);
+	}
 	$formmail->withfrom=1;
 	$formmail->withtopic=1;
 	$liste=array();
