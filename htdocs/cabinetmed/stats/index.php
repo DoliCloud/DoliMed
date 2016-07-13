@@ -80,7 +80,6 @@ dol_mkdir($dir);
 
 $morefilter=($codageccam?" AND codageccam LIKE '".$db->escape(preg_replace('/\*/','%',$codageccam))."'":'');
 if ($typevisit != '-1') $morefilter.=" AND typevisit = '".$typevisit."'";
-var_dump($morefilter);
 $stats = new CabinetMedStats($db, $socid, $mode, ($userid>0?$userid:0), $morefilter);
 
 
