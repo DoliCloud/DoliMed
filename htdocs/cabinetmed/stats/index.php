@@ -79,9 +79,8 @@ print_fiche_titre($title, $mesg);
 dol_mkdir($dir);
 
 $morefilter=($codageccam?" AND codageccam LIKE '".$db->escape(preg_replace('/\*/','%',$codageccam))."'":'');
-if ($typevisit != '-1') $morefilter.=" AND typevisit = '".$typevisit."'";
+if (! empty($typevisit) && $typevisit != '-1') $morefilter.=" AND typevisit = '".$typevisit."'";
 $stats = new CabinetMedStats($db, $socid, $mode, ($userid>0?$userid:0), $morefilter);
-
 
 // Build graphic number of object
 // $data = array(array('Lib',val1,val2,val3),...)
