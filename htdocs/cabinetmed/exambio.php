@@ -588,11 +588,11 @@ if ($action == '' || $action == 'delete')
     print '<tr class="liste_titre">';
     //print_liste_field_titre($langs->trans('Num'),$_SERVER['PHP_SELF'],'t.rowid','',$param,'',$sortfield,$sortorder);
     print_liste_field_titre($langs->trans('Date'),$_SERVER['PHP_SELF'],'t.dateexam','',$param,'align="left"',$sortfield,$sortorder);
-    print '<td>'.$langs->trans("Result").'</td>';
+    print_liste_field_titre($langs->trans("Result"));
     if (! empty($conf->global->CABINETMED_RHEUMATOLOGY_ON))
     {
-        print '<td>'.$langs->trans("Das28").'</td>';
-        print '<td>'.$langs->trans("Basdai").'</td>';
+        print_liste_field_titre($langs->trans("Das28"));
+        print_liste_field_titre($langs->trans("Basdai"));
     }
     print '<td>&nbsp;</td>';
     print '</tr>';

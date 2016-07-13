@@ -31,9 +31,10 @@
  *		@param	array		$substitutionarray	Array with substitution key=>val
  *		@param	Translate	$langs				Output langs
  *		@param	Object		$object				Object to use to get values
+ *      @param  Mixed		$parameters       	Add more parameters (useful to pass product lines)
  * 		@return	void							The entry parameter $substitutionarray is modified
  */
-function cabinetmed_completesubstitutionarray(&$substitutionarray,$langs,$object)
+function cabinetmed_completesubstitutionarray(&$substitutionarray,$langs,$object,$parameters=null)
 {
 	global $conf,$db;
 
@@ -58,9 +59,84 @@ function cabinetmed_completesubstitutionarray(&$substitutionarray,$langs,$object
     $substitutionarray['NotesPatient']=$langs->trans("Notes");
     if ($object)
     {
-       	$nbofnotes = ($object->note||$object->note_private)?1:0;
+        $nbofnotes = ($object->note||$object->note_private)?1:0;
         if ($nbofnotes > 0) $substitutionarray['NotesPatient']=$langs->trans("Notes").' <span class="badge">'.$nbofnotes.'</span>';
     }
+    
+    $substitutionarray['Correspondants']=$langs->trans("Correspondants");
+    if ($object && is_array($parameters) && $parameters['needforkey'] == 'SUBSTITUTION_Correspondants')
+    {
+	    $nbChild = count($object->liste_contact(-1,'internal')) + count($object->liste_contact(-1,'external'));
+        
+        if ($nbChild > 0) $substitutionarray['Correspondants']=$langs->trans("Correspondants").' <span class="badge">'.$nbChild.'</span>';
+    }
+    
+    $substitutionarray['ConsultationsShort']=$langs->trans("ConsultationsShort");
+    if ($object && is_array($parameters) && $parameters['needforkey'] == 'SUBSTITUTION_ConsultationsShort')
+    {
+        $sql = "SELECT COUNT(n.rowid) as nb";
+        $sql .= " FROM " . MAIN_DB_PREFIX . "cabinetmed_cons as n";
+        $sql .= " WHERE fk_soc = " . $object->id;
+        $resql = $db->query($sql);
+        if ($resql) {
+            $num = $db->num_rows($resql);
+            $i = 0;
+            while ($i < $num) {
+                $obj = $db->fetch_object($resql);
+                $nbChild = $obj->nb;
+                $i ++;
+            }
+        } else {
+            dol_print_error($db);
+        }
+        
+        if ($nbChild > 0) $substitutionarray['ConsultationsShort']=$langs->trans("ConsultationsShort").' <span class="badge">'.$nbChild.'</span>';
+    }
+
+    $substitutionarray['ResultExamBio']=$langs->trans("ResultExamBio");
+    if ($object && is_array($parameters) && $parameters['needforkey'] == 'SUBSTITUTION_ResultExamBio')
+    {
+        $sql = "SELECT COUNT(n.rowid) as nb";
+        $sql .= " FROM " . MAIN_DB_PREFIX . "cabinetmed_exambio as n";
+        $sql .= " WHERE fk_soc = " . $object->id;
+        $resql = $db->query($sql);
+        if ($resql) {
+            $num = $db->num_rows($resql);
+            $i = 0;
+            while ($i < $num) {
+                $obj = $db->fetch_object($resql);
+                $nbChild = $obj->nb;
+                $i ++;
+            }
+        } else {
+            dol_print_error($db);
+        }
+        
+        if ($nbChild > 0) $substitutionarray['ResultExamBio']=$langs->trans("ResultExamBio").' <span class="badge">'.$nbChild.'</span>';
+    }
+    
+    $substitutionarray['ResultExamAutre']=$langs->trans("ResultExamAutre");
+    if ($object && is_array($parameters) && $parameters['needforkey'] == 'SUBSTITUTION_ResultExamAutre')
+    {
+        $sql = "SELECT COUNT(n.rowid) as nb";
+        $sql .= " FROM " . MAIN_DB_PREFIX . "cabinetmed_examaut as n";
+        $sql .= " WHERE fk_soc = " . $object->id;
+        $resql = $db->query($sql);
+        if ($resql) {
+            $num = $db->num_rows($resql);
+            $i = 0;
+            while ($i < $num) {
+                $obj = $db->fetch_object($resql);
+                $nbChild = $obj->nb;
+                $i ++;
+            }
+        } else {
+            dol_print_error($db);
+        }    
+    
+        if ($nbChild > 0) $substitutionarray['ResultExamAutre']=$langs->trans("ResultExamAutre").' <span class="badge">'.$nbChild.'</span>';
+    }
+    
     
     $substitutionarray['TabAntecedentsShort']=$langs->trans("AntecedentsShort");
     if ($object)
@@ -78,14 +154,16 @@ function cabinetmed_completesubstitutionarray(&$substitutionarray,$langs,$object
    	}
    	
     $substitutionarray['DocumentsPatient']=$langs->trans("DocumentsPatient");
-    if ($object)
+    if ($object && is_array($parameters) && $parameters['needforkey'] == 'SUBSTITUTION_DocumentsPatient')
     {
         // Attached files
         require_once DOL_DOCUMENT_ROOT.'/core/lib/files.lib.php';
         require_once DOL_DOCUMENT_ROOT.'/core/class/link.class.php';
         $upload_dir = $conf->societe->dir_output . "/" . $object->id;
         $nbFiles = count(dol_dir_list($upload_dir,'files',0,'','(\.meta|_preview\.png)$'));
-        if ($nbFiles > 0) $substitutionarray['DocumentsPatient']=$langs->trans("DocumentsPatient").' <span class="badge">'.$nbFiles.'</span>';
+        $nbLinks=0;
+        if ((float) DOL_VERSION >= 4.0) $nbLinks=Link::count($db, $object->element, $object->id);
+        if (($nbFiles+$nbLinks) > 0) $substitutionarray['DocumentsPatient']=$langs->trans("DocumentsPatient").' <span class="badge">'.($nbFiles+$nbLinks).'</span>';
     }
     
     // Consultation + Exams
