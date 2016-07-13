@@ -758,7 +758,7 @@ if ($socid > 0)
         print '</div><div class="fichehalfright"><div class="ficheaddleft">';
 
         print ''.$langs->trans("HistoireDeLaMaladie").'<br>';
-        print '<textarea name="hdm" id="hdm" class="flat" cols="50" rows="'.ROWS_5.'">'.$consult->hdm.'</textarea>';
+        print '<textarea name="hdm" id="hdm" class="flat centpercent" rows="'.ROWS_5.'">'.$consult->hdm.'</textarea>';
 
         //print '</td><td valign="top">';
         //print '</td></tr><tr><td>';
@@ -794,7 +794,7 @@ if ($socid > 0)
         print '</div><div class="fichehalfright"><div class="ficheaddleft">';
 
         print ''.$langs->trans("ExamensCliniques").'<br>';
-        print '<textarea name="examenclinique" id="examenclinique" class="flat" cols="50" rows="'.ROWS_6.'">'.$consult->examenclinique.'</textarea>';
+        print '<textarea name="examenclinique" id="examenclinique" class="flat centpercent" rows="'.ROWS_6.'">'.$consult->examenclinique.'</textarea>';
 
         print '</div></div></div>';
         //print '</td></tr>';
@@ -841,9 +841,9 @@ if ($socid > 0)
         print '</div><div class="fichehalfright"><div class="ficheaddleft">';
 
         print $langs->trans("TraitementsPrescrits").'<br>';
-        print '<textarea name="traitementprescrit" class="flat" cols="50" rows="'.($nboflines+1).'">'.$consult->traitementprescrit.'</textarea><br>';
+        print '<textarea name="traitementprescrit" class="flat centpercent" rows="'.($nboflines+1).'">'.$consult->traitementprescrit.'</textarea><br>';
         print $langs->trans("Infiltrations").'<br>';
-        print '<textarea name="infiltration" id="infiltration" class="flat" cols="50" rows="'.ROWS_2.'">'.$consult->infiltration.'</textarea><br>';
+        print '<textarea name="infiltration" id="infiltration" class="flat centpercent" rows="'.ROWS_2.'">'.$consult->infiltration.'</textarea><br>';
         //print '<input type="text" class="flat" name="infiltration" id="infiltration" value="'.$consult->infiltration.'" size="50">';
 
         print '<br><b>'.$langs->trans("TypeVisite").'</b>: &nbsp; &nbsp; &nbsp; ';
