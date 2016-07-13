@@ -409,7 +409,7 @@ if ($socid > 0)
 	print '<input type="hidden" name="backtopage" value="'.GETPOST('backtopage').'">';
 	print '<input type="hidden" name="token" value="'.$_SESSION['newtoken'].'">';
 
-	dol_fiche_head($head, 'tabconsultations', $langs->trans("Patient"),0,'company');
+	dol_fiche_head($head, 'tabconsultations', $langs->trans("Patient"),0,'patient@cabinetmed');
 	
 	print '<table class="border" width="100%">';
 

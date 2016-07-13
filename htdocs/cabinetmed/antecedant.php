@@ -171,7 +171,7 @@ if ($socid > 0)
 
     $head = societe_prepare_head($object);
 
-    dol_fiche_head($head, 'tabantecedents', $langs->trans("Patient"),0,'company');
+    dol_fiche_head($head, 'tabantecedents', $langs->trans("Patient"),0,'patient@cabinetmed');
 
 
     print '<script type="text/javascript">
