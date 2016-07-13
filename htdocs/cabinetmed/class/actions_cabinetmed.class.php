@@ -212,6 +212,20 @@ class ActionsCabinetmed
         $out.='</div>';
         $out.='</a>';
 
+        $out.='<a href="'.dol_buildpath('/cabinetmed/patients.php',1).'" class="boxstatsindicator thumbstat nobold nounderline">';
+        $out.='<div class="boxstats">';
+        $out.='<span class="boxstatstext">';
+        $out.=img_object("",'generic').' '.$langs->trans("Patients");
+        $out.='</span>';
+        $out.='<br>';
+        //$out.='</a>';
+        //$out.='<a href="'.$links[$key].'">';
+        $out.='<span class="boxstatsindicator">';
+        $out.=$board->nb['Patients'];
+        $out.='</span>';
+        $out.='</div>';
+        $out.='</a>';
+        
         include_once DOL_DOCUMENT_ROOT.'/core/lib/admin.lib.php';
         if (versioncompare(versiondolibarrarray(),array(4,0,-4)) >= 0) $this->resprints=$out;
         else print $out;

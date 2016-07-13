@@ -243,7 +243,7 @@ if ($socid > 0)
 
         // Editeur wysiwyg
         require_once(DOL_DOCUMENT_ROOT."/core/class/doleditor.class.php");
-        $doleditor=new DolEditor('note_antemed',$object->note_antemed,0,$height,'dolibarr_notes','In',false,false,$conf->fckeditor->enabled,8,'99%');
+        $doleditor=new DolEditor('note_antemed',$object->note_antemed,0,$height,'dolibarr_notes','In',false,false,$conf->fckeditor->enabled,8,'95%');
         $doleditor->Create();
     }
     else
@@ -269,7 +269,7 @@ if ($socid > 0)
 
         // Editeur wysiwyg
         require_once(DOL_DOCUMENT_ROOT."/core/class/doleditor.class.php");
-        $doleditor=new DolEditor('note_traitspec',$object->note_traitspec,0,$height,'dolibarr_notes','In',false,false,$conf->fckeditor->enabled,8,'99%');
+        $doleditor=new DolEditor('note_traitspec',$object->note_traitspec,0,$height,'dolibarr_notes','In',false,false,$conf->fckeditor->enabled,8,'95%');
         $doleditor->Create();
     }
     else
@@ -296,7 +296,7 @@ if ($socid > 0)
 
         // Editeur wysiwyg
         require_once(DOL_DOCUMENT_ROOT."/core/class/doleditor.class.php");
-        $doleditor=new DolEditor('note_antechirgen',$object->note_antechirgen,0,$height,'dolibarr_notes','In',false,false,$conf->fckeditor->enabled,8,'99%');
+        $doleditor=new DolEditor('note_antechirgen',$object->note_antechirgen,0,$height,'dolibarr_notes','In',false,false,$conf->fckeditor->enabled,8,'95%');
         $doleditor->Create();
     }
     else
@@ -322,7 +322,7 @@ if ($socid > 0)
 
         // Editeur wysiwyg
         require_once(DOL_DOCUMENT_ROOT."/core/class/doleditor.class.php");
-        $doleditor=new DolEditor('note_traitintol',$object->note_traitintol,0,$height,'dolibarr_notes','In',false,false,$conf->fckeditor->enabled,8,'99%');
+        $doleditor=new DolEditor('note_traitintol',$object->note_traitintol,0,$height,'dolibarr_notes','In',false,false,$conf->fckeditor->enabled,8,'95%');
         $doleditor->Create();
     }
     else
@@ -348,7 +348,7 @@ if ($socid > 0)
 
         // Editeur wysiwyg
         require_once(DOL_DOCUMENT_ROOT."/core/class/doleditor.class.php");
-        $doleditor=new DolEditor('note_antechirortho',$object->note_antechirortho,0,$height,'dolibarr_notes','In',false,false,$conf->fckeditor->enabled,6,'99%');
+        $doleditor=new DolEditor('note_antechirortho',$object->note_antechirortho,0,$height,'dolibarr_notes','In',false,false,$conf->fckeditor->enabled,6,'95%');
         $doleditor->Create();
     }
     else
@@ -373,7 +373,7 @@ if ($socid > 0)
 
         // Editeur wysiwyg
         require_once(DOL_DOCUMENT_ROOT."/core/class/doleditor.class.php");
-        $doleditor=new DolEditor('note_traitallergie',$object->note_traitallergie,0,$height,'dolibarr_notes','In',false,false,$conf->fckeditor->enabled,6,'99%');
+        $doleditor=new DolEditor('note_traitallergie',$object->note_traitallergie,0,$height,'dolibarr_notes','In',false,false,$conf->fckeditor->enabled,6,'95%');
         $doleditor->Create();
     }
     else
@@ -399,7 +399,7 @@ if ($socid > 0)
 
         // Editeur wysiwyg
         require_once(DOL_DOCUMENT_ROOT."/core/class/doleditor.class.php");
-        $doleditor=new DolEditor('note_anterhum',$object->note_anterhum,0,$height,'dolibarr_notes','In',false,false,$conf->fckeditor->enabled,6,'99%');
+        $doleditor=new DolEditor('note_anterhum',$object->note_anterhum,0,$height,'dolibarr_notes','In',false,false,$conf->fckeditor->enabled,6,'95%');
         $doleditor->Create();
     }
     else
