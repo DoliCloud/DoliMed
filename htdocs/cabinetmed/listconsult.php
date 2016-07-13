@@ -107,7 +107,7 @@ $sql = "SELECT s.rowid, s.nom as name, s.client, s.town, st.libelle as stcomm, s
 $sql.= " s.datec, s.canvas,";
 $sql.= " c.rowid as cid, c.datecons, c.typepriseencharge, c.typevisit, c.motifconsprinc, c.diaglesprinc, c.examenprescrit, c.traitementprescrit";
 // We'll need these fields in order to filter by categ
-if ($search_categ) $sql .= ", cs.fk_categorie, cs.fk_societe";
+if ($search_categ) $sql .= ", cs.fk_categorie, cs.fk_soc";
 $sql.= " FROM ".MAIN_DB_PREFIX."societe as s";
 $sql.= ", ".MAIN_DB_PREFIX."cabinetmed_cons as c,";
 $sql.= " ".MAIN_DB_PREFIX."c_stcomm as st";
@@ -134,7 +134,7 @@ if ($search_contactid)
 if (!$user->rights->societe->client->voir && ! $socid) $sql.= " AND s.rowid = sc.fk_soc AND sc.fk_user = " .$user->id;
 if ($socid) $sql.= " AND s.rowid = ".$socid;
 if ($search_ref)   $sql.= " AND c.rowid = ".$db->escape($search_ref);
-if ($search_categ) $sql.= " AND s.rowid = cs.fk_societe";	// Join for the needed table to filter by categ
+if ($search_categ) $sql.= " AND s.rowid = cs.fk_soc";	// Join for the needed table to filter by categ
 if ($search_nom)   $sql.= " AND s.nom like '%".$db->escape(strtolower($search_nom))."%'";
 if ($search_ville) $sql.= " AND s.town like '%".$db->escape(strtolower($search_ville))."%'";
 if ($search_code)  $sql.= " AND s.code_client like '%".$db->escape(strtolower($search_code))."%'";

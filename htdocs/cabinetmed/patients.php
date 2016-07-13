@@ -57,6 +57,8 @@ $pagenext = $page + 1;
 if (! $sortorder) $sortorder="ASC";
 if (! $sortfield) $sortfield="s.nom";
 
+$search_all=GETPOST('search_all');
+
 $search_nom=GETPOST("search_nom");
 $search_ville=GETPOST("search_ville");
 $search_code=GETPOST("search_code");
@@ -66,6 +68,14 @@ $search_sale = GETPOST("search_sale");
 $search_categ = GETPOST("search_categ");
 
 $search_diagles=GETPOST("search_diagles");
+
+// List of fields to search into when doing a "search in all"
+$fieldstosearchall = array(
+    's.nom'=>"ThirdPartyName",
+    's.code_client'=>"CustomerCode",
+    's.email'=>"EMail",
+    's.tva_intra'=>"PatientVATIntra"
+);
 
 
 /*
@@ -81,7 +91,7 @@ $datebirth=dol_mktime(0,0,0,GETPOST('birthmonth'),GETPOST('birthday'),GETPOST('b
 llxHeader();
 
 // Do we click on purge search criteria ?
-if (GETPOST("button_removefilter_x"))
+if (GETPOST("button_removefilter_x") || GETPOST("button_removefilter.x") || GETPOST("button_removefilter"))
 {
     $search_categ='';
     $search_sale='';
@@ -102,7 +112,7 @@ $sql.= " se.birthdate, se.prof, MAX(c.datecons) as lastcons, COUNT(c.rowid) as n
 // We'll need these fields in order to filter by sale (including the case where the user can only see his prospects)
 if ($search_sale) $sql .= ", sc.fk_soc, sc.fk_user";
 // We'll need these fields in order to filter by categ
-if ($search_categ) $sql .= ", cs.fk_categorie, cs.fk_societe";
+if ($search_categ) $sql .= ", cs.fk_categorie, cs.fk_soc";
 $sql.= " FROM (".MAIN_DB_PREFIX."c_stcomm as st";
 // We'll need this table joined to the select in order to filter by sale
 if ($search_sale || !$user->rights->societe->client->voir) $sql.= ", ".MAIN_DB_PREFIX."societe_commerciaux as sc";
@@ -124,10 +134,11 @@ if ($search_diagles)
 if (!$user->rights->societe->client->voir && ! $socid) $sql.= " AND s.rowid = sc.fk_soc AND sc.fk_user = " .$user->id;
 if ($socid) $sql.= " AND s.rowid = ".$socid;
 if ($search_sale) $sql.= " AND s.rowid = sc.fk_soc";		// Join for the needed table to filter by sale
-if ($search_categ) $sql.= " AND s.rowid = cs.fk_societe";	// Join for the needed table to filter by categ
+if ($search_categ) $sql.= " AND s.rowid = cs.fk_soc";	// Join for the needed table to filter by categ
 if ($search_nom)   $sql.= " AND s.nom like '%".$db->escape($search_nom)."%'";
 if ($search_ville) $sql.= " AND s.town like '%".$db->escape($search_ville)."%'";
 if ($search_code)  $sql.= " AND s.code_client like '%".$db->escape($search_code)."%'";
+if ($search_all)      $sql.= natural_search(array_keys($fieldstosearchall), $search_all);
 // Insert sale filter
 if ($search_sale)
 {
@@ -146,7 +157,7 @@ if ($socname)
 }
 $sql.= " GROUP BY s.rowid, s.nom, s.client, s.town, st.libelle, s.prefix_comm, s.code_client, s.datec, s.canvas, se.birthdate, se.prof";
 if ($search_sale) $sql .= ", sc.fk_soc, sc.fk_user";
-if ($search_categ) $sql .= ", cs.fk_categorie, cs.fk_societe";
+if ($search_categ) $sql .= ", cs.fk_categorie, cs.fk_soc";
 
 // Count total nb of records
 $nbtotalofrecords = 0;
@@ -173,6 +184,12 @@ if ($result)
 
 	$i = 0;
 
+	if ($search_all)
+	{
+	    foreach($fieldstosearchall as $key => $val) $fieldstosearchall[$key]=$langs->trans($val);
+	    print $langs->trans("FilterOnInto", $search_all) . join(', ',$fieldstosearchall);
+	}
+	
 	print '<form method="get" action="'.$_SERVER["PHP_SELF"].'">'."\n";
 
 	// Filter on categories

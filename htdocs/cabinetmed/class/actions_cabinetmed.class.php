@@ -47,6 +47,25 @@ class ActionsCabinetmed
 
 
     /**
+     * Complete search forms
+     *
+     * @param	array	$parameters		Array of parameters
+     * @return	string					HTML content to add by hook
+     */
+    function addSearchEntry($parameters)
+    {
+        global $langs;
+    
+        $langs->load("cabinet@cabinetmed");
+        $search_boxvalue = $parameters['search_boxvalue'];
+    
+        $this->results['searchintopatient']=array('text'=>img_picto('','object_patient@cabinetmed').' '.$langs->trans("Patients", $search_boxvalue), 'url'=>dol_buildpath('/cabinetmed/patients.php',1).'?search_all='.urlencode($search_boxvalue));
+    
+        return 0;
+    }
+    
+    
+    /**
      *    Execute action
      *
      *    @param	array	$parameters		Array of parameters
@@ -269,6 +288,7 @@ class ActionsCabinetmed
      * @param	array	$parameters		Array of parameters
      * @return	string					HTML content to add by hook
      */
+    /*
     function printSearchForm($parameters)
     {
         global $langs, $user, $conf;
@@ -283,7 +303,7 @@ class ActionsCabinetmed
 		$this->resprints = $searchform;
 
         return 0;
-    }
+    }*/
 
     /**
      * Add fields into tr form of objects
