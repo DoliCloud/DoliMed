@@ -384,8 +384,8 @@ if ($object->id)
 
     print '<table class="border" width="100%">';
 
-	$linkback = '<a href="patients.php">'.$langs->trans("BackToList").'</a>';
-	dol_banner_tab($object, 'socid', $linkback, ($user->societe_id?0:1), 'rowid', 'nom');
+    $linkback = '<a href="'.dol_buildpath('/cabinetmed/patients.php', 1).'">'.$langs->trans("BackToList").'</a>';
+    dol_banner_tab($object, 'socid', $linkback, ($user->societe_id?0:1), 'rowid', 'nom');
 
 	// Prefix
 	if (! empty($conf->global->SOCIETE_USEPREFIX))  // Old not used prefix field

@@ -197,7 +197,7 @@ if ($socid > 0)
 
     print '<table class="border" width="100%">';
 
-    $linkback = '<a href="patients.php">'.$langs->trans("BackToList").'</a>';
+    $linkback = '<a href="'.dol_buildpath('/cabinetmed/patients.php', 1).'">'.$langs->trans("BackToList").'</a>';
     dol_banner_tab($object, 'socid', $linkback, ($user->societe_id?0:1), 'rowid', 'nom');
 
     if ($object->client)
