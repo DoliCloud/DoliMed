@@ -159,7 +159,7 @@ dol_fiche_head('');
 
 <tr>
 	<td valign="top"><?php echo $langs->trans('Address'); ?></td>
-	<td colspan="3"><textarea name="address" cols="40" rows="3"><?php echo $object->address; ?></textarea></td>
+	<td colspan="3"><textarea name="address" class="quatrevingtpercent" rows="3"><?php echo $object->address; ?></textarea></td>
 </tr>
 
 <?php
