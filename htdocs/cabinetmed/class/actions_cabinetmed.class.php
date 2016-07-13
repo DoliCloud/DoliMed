@@ -59,7 +59,7 @@ class ActionsCabinetmed
         $langs->load("cabinet@cabinetmed");
         $search_boxvalue = $parameters['search_boxvalue'];
     
-        $this->results['searchintopatient']=array('text'=>img_picto('','object_patient@cabinetmed').' '.$langs->trans("Patients", $search_boxvalue), 'url'=>dol_buildpath('/cabinetmed/patients.php',1).'?search_all='.urlencode($search_boxvalue));
+        $this->results['searchintoapatient']=array('text'=>img_picto('','object_patient@cabinetmed').' '.$langs->trans("Patients", $search_boxvalue), 'url'=>dol_buildpath('/cabinetmed/patients.php',1).'?search_all='.urlencode($search_boxvalue));
     
         return 0;
     }

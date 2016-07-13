@@ -281,7 +281,7 @@ if ($result)
         $thirdpartystatic->name=$obj->name;
         $thirdpartystatic->client=$obj->client;
         $thirdpartystatic->canvas=$obj->canvas;
-        print $thirdpartystatic->getNomUrl(1);
+        print $thirdpartystatic->getNomUrl(1);      // TODO Use correct picto
 		print '</td>';
         print '<td>'.$obj->code_client.'</td>';
         print '<td align="center">';
