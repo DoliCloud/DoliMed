@@ -85,6 +85,7 @@ if (GETPOST("button_removefilter_x"))
 {
     $search_categ='';
     $search_sale='';
+    $search_diagles='';
     $socname="";
     $search_nom="";
     $search_ville="";
