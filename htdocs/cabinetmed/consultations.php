@@ -413,10 +413,8 @@ if ($socid > 0)
 	
 	print '<table class="border" width="100%">';
 
-	print '<tr><td width="25%">'.$langs->trans('PatientName').'</td>';
-	print '<td colspan="3">';
-	print $form->showrefnav($object,'socid','',($user->societe_id?0:1),'rowid','nom');
-	print '</td></tr>';
+	$linkback = '<a href="patients.php">'.$langs->trans("BackToList").'</a>';
+	dol_banner_tab($object, 'socid', $linkback, ($user->societe_id?0:1), 'rowid', 'nom');
 
     if ($object->client)
     {
@@ -651,7 +649,7 @@ if ($socid > 0)
         if ($action=='edit' || $action=='update')
         {
 			print '<tr><td width="160">'.$langs->trans('ConsultationNumero').'</td>';
-			print '<td>'.sprintf("%08d",$consult->id);
+			print '<td><strong>'.sprintf("%08d",$consult->id).'</strong>';
             if ($consult->fk_user > 0)
 	        {
 	        	$fuser->fetch($consult->fk_user);
@@ -682,8 +680,8 @@ if ($socid > 0)
         }
 		if ($action=='edit' || $action=='update' || $fk_agenda) print '</table>';
 
-		if ($action=='edit' || $action=='update' || $fk_agenda) print '<hr style="height:1px; color: #dddddd;">';
-
+		if ($action=='edit' || $action=='update' || $fk_agenda) print '<div class="centpercent" style="margin-top: 5px; margin-bottom: 8px; border-bottom: 1px solid #eee;"></div>';
+		
         print '<div class="fichecenter"><div class="fichehalfleft">';
         print '<table class="notopnoleftnoright" width="100%">';
 
@@ -723,7 +721,7 @@ if ($socid > 0)
 //        print '<legend>'.$langs->trans("Diagnostiques et prescriptions").'</legend>'."\n";
         print '<div class="fichecenter"></div>';
 
-        print '<hr style="height:1px; color: #dddddd;">';
+        print '<div class="centpercent" style="margin-top: 5px; margin-bottom: 8px; border-bottom: 1px solid #eee;"></div>';
 
         //print '<table class="notopnoleftnoright" width="100%">';
         //print '<tr><td width="60%">';
@@ -806,7 +804,7 @@ if ($socid > 0)
         // Prescriptions
         //print '<fieldset id="fieldsetprescription">';
         //print '<legend>'.$langs->trans("Prescription").'</legend>'."\n";
-        print '<hr style="height:1px; color: #dddddd;">';
+        print '<div class="centpercent" style="margin-top: 5px; margin-bottom: 8px; border-bottom: 1px solid #eee;"></div>';
 
         print '<div class="fichecenter"><div class="fichehalfleft">';
         //print '<table class="notopnoleftnoright" width="100%">';

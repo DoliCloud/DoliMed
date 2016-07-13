@@ -61,11 +61,8 @@ dol_htmloutput_errors($GLOBALS['error'],$GLOBALS['errors']);
 
 print '<table class="border" width="100%">';
 
-// Name
-print '<tr><td width="20%">'.$langs->trans('PatientName').'</td>';
-print '<td colspan="3">';
-print $form->showrefnav($object,'socid','',($user->societe_id?0:1),'rowid','nom');
-print '</td></tr>';
+$linkback = '<a href="patients.php">'.$langs->trans("BackToList").'</a>';
+dol_banner_tab($object, 'socid', $linkback, ($user->societe_id?0:1), 'rowid', 'nom');
 
 if (! empty($conf->global->SOCIETE_USEPREFIX))  // Old not used prefix field
 {
@@ -86,33 +83,6 @@ if ($conf->global->MAIN_MODULE_BARCODE)
 {
     print '<tr><td>'.$langs->trans('Gencod').'</td><td colspan="3">'.$object->barcode.'</td></tr>';
 }
-
-// Address
-print "<tr><td valign=\"top\">".$langs->trans('Address')."</td><td colspan=\"3\">";
-dol_print_address($object->address,'gmap','thirdparty',$object->id);
-print "</td></tr>";
-
-print '<tr><td width="25%">'.$langs->trans('Zip').'</td><td width="25%">'.$object->zip."</td>";
-print '<td width="25%">'.$langs->trans('Town').'</td><td width="25%">'.$object->town."</td></tr>";
-
-// Country
-print '<tr><td>'.$langs->trans("Country").'</td><td colspan="3" nowrap="nowrap">';
-$img=picto_from_langcode($object->country_code);
-if ($object->isInEEC()) print $form->textwithpicto(($img?$img.' ':'').$object->country,$langs->trans("CountryIsInEEC"),1,0);
-else print ($img?$img.' ':'').$object->country;
-print '</td></tr>';
-
-// State
-if (empty($conf->global->SOCIETE_DISABLE_STATE)) print '<tr><td>'.$langs->trans('State').'</td><td colspan="3">'.$object->state.'</td>';
-
-print '<tr><td>'.$langs->trans('PhonePerso').'</td><td>'.dol_print_phone($object->phone,$object->country_code,0,$object->id,'AC_TEL').'</td>';
-print '<td>'.$langs->trans('PhoneMobile').'</td><td>'.dol_print_phone($object->fax,$object->country_code,0,$object->id,'AC_FAX').'</td></tr>';
-
-// EMail
-print '<tr><td>'.$langs->trans('EMail').'</td><td colspan="3">';
-print dol_print_email($object->email,0,$object->id,'AC_EMAIL');
-print '</td>';
-print '</tr>';
 
 // Prof ids
 $i=1; $j=0;

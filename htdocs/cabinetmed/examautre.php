@@ -208,10 +208,8 @@ if ($socid > 0)
 
     print '<table class="border" width="100%">';
 
-    print '<tr><td width="25%">'.$langs->trans('PatientName').'</td>';
-    print '<td colspan="3">';
-    print $form->showrefnav($societe,'socid','',($user->societe_id?0:1),'rowid','nom');
-    print '</td></tr>';
+    $linkback = '<a href="patients.php">'.$langs->trans("BackToList").'</a>';
+    dol_banner_tab($object, 'socid', $linkback, ($user->societe_id?0:1), 'rowid', 'nom');
 
     if ($societe->client)
     {
@@ -359,7 +357,7 @@ if ($socid > 0)
         // Analyse
 //        print '<fieldset id="fieldsetanalyse">';
 //        print '<legend>'.$langs->trans("Diagnostiques et prescriptions").'</legend>'."\n";
-        print '<hr style="height:1px; color: #dddddd;">';
+        print '<div class="centpercent" style="margin-top: 5px; margin-bottom: 8px; border-bottom: 1px solid #eee;"></div>';
 
         print '<table class="notopnoleftnoright" width="100%">';
         print '<tr><td width="60%">';
