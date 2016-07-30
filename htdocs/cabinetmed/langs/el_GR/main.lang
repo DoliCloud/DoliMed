@@ -1,0 +1,9 @@
+# Dolibarr language file - en_US - main
+CHARSET=UTF-8
+ContactsAddressesForCompany=Επαφές/διευθύνσεις για αυτόν τον ασθενή
+ActionsOnCompany=Events on this patient or thirdparty
+ByCompanies=Ανά ασθενή
+NbOfPatients=Αριθμός ασθενών
+PatientPreview=Προεπισκόπιση ασθενούς
+ShowPatientPreview=Εμφάνιση προεπισκόπησης ασθενή
+RefPatient=Κωδ. ασθενή

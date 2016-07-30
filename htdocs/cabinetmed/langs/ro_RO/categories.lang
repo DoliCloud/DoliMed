@@ -1,0 +1,10 @@
+# Dolibarr language file - en_US - categories
+CHARSET=UTF-8
+PatientsCategoriesArea=Zona Categorii pacienti
+PatientIsInCustomersCategories=Acest pacient este in urmatoarele categorii
+PatientsCategoryShort=Categorie pacienti
+PatientsCategoriesShort=Categorii pacienti
+ThisCategoryHasNoCustomer=Aceasta categorie nu are pacienti
+AssignedToPatients=Seteaza un pacient
+AssignedToThePatients=Seteaza un pacient
+CatCusListPatients=Lista  categorii pacienti

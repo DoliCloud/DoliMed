@@ -1,0 +1,11 @@
+# Dolibarr language file - fr_FR - users
+CHARSET=UTF-8
+ContactCard=Fisa corespondenta
+NoContactCard=Nicio Fisa  prin corespondenta
+LinkToCompanyContact=Lien patient / correspondant
+LinkedToDolibarrThirdParty=Lien patient
+CreateDolibarrThirdParty=Creaza pacient
+ConfirmCreateContact=Sigur doriti sa creati un cont Dolibarr pentru acest corespondent ?
+ConfirmCreateLogin=Sigur doriti sa creati un cont Dolibarr pentru acest aderant ?
+ConfirmCreateThirdParty=Sigur doriti sa creati un pacient pentru acest aderant ?
+NameToCreate=Numele pacientului de creat

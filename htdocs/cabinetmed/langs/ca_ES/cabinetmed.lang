@@ -1,6 +1,6 @@
 # Dolibarr language file - en_US - cabinetmed
 CHARSET=UTF-8
-CabinetMed=Medical center
+CabinetMed=Centre mèdic
 Module101700Name=Consulta médica
 Module101700Desc=Módulo para gestionar una consulta médica
 LastHour=Última hora
@@ -133,7 +133,7 @@ ZeroHereIfNoPayment=O posar zero aquí per consultes gratuïtes
 ExportDetailsIntoFile=Exportar a un fitxer xslx (incloent el detall dels pacients de cada dia)
 ConsultsByTownDesc=Aquesta pantalla presenta una vista estadística del nombre de consultes per la ciutat d'origen dels pacients.
 DemoCabinetMed=Gestió d'una consulta mèdica
-PatientsOfContact=Patients
+PatientsOfContact=Pacients
 ListOfPatients=Llistat de pacients
 NumberOfPatient=Nombre de pacients
 AverageOld=Edat mitjana
@@ -141,26 +141,27 @@ PatientsPerContacts=Aquesta pàgina proporciona estadístiques sobre els pacient
 ReportingsMed=Informes consultes
 MenuFinancialMed=Facturació consultes
 AlertTriggered=Una alerta de tipus %s ha estat comprovada %s
-CABINETMED_BANK_PATIENT_REQUIRED=Field "Bank of patient" is required when payment is a cheque
-EditPatient=Edit patient
-ClickHereToSetPrimaryReason=Click here to set the main reason of consultation
-ClickHereToSetSecondaryReason=Click here to add a secondary reason of consultation
-ClickHereToSetPrimaryDiagnostic=Click here to set the main diagnostic
-ClickHereToSetSecondaryDiagnostic=Click here to add the secondary diagnostic
-Gender=Gender
-NumberConsultByMonth=Number of consultation per month
-NumberConsult=Number of consultation
-ActivityBranch=Activity branch
-AboutInfo=This module is developped and distributed by Laurent Destailleur for NLTechno, <a href="http://www.nltechno.com">www.nltechno.com</a> (A Dolibarr Preferred Partner company).
-MoreModules=Other modules of same author are available on the official DoliStore market place...
-MoreModulesLink=<a target="_blank" href="http://www.dolistore.com/search.php?search_query=nltechno">Click here to see full list</a>
-MoreCloudHosting=To use online Dolibarr, choose the secured hosting DoliCloud.
-MoreCloudHostingLink=<a target="_blank" href="http://www.dolicloud.com">Click here for more information</a>
-CompatibleWithDoliDroid=This modules is also compatible with DoliDroid, the Android application for Dolibarr.
-HideThirdPartiesMenu=Hide thirdparty menu (all customers are patients). If you manage Suppliers (module Supplier enabled), this menu entry will still be visible to keep supplier feature accessible.
+CABINETMED_BANK_PATIENT_REQUIRED=El camp "Banc del pacient" es obligatori si el pagament és un xec
+EditPatient=Editar pacient
+ClickHereToSetPrimaryReason=Fes click ací per especificar el motiu principal de la consulta
+ClickHereToSetSecondaryReason=Fes click ací per afegir un segon motiu de la consulta
+ClickHereToSetPrimaryDiagnostic=Fes clic per indicar el diagnòstic principal
+ClickHereToSetSecondaryDiagnostic=Fes clic per afegir el segon diagnòstic
+Gender=Sexe
+NumberConsultByMonth=Número de consultes per mes
+NumberConsult=Número de consulta
+ActivityBranch=Branca d'activitat
+AboutInfo=Aquest mòdul està desenvolupat i distribuït per Laurent Destailleur per NLTechno,  <a href="http://www.nltechno.com">www.nltechno.com</a> (Una empresa Preferred Partner de Dolibarr).
+MoreModules=Altres mòduls del mateix autor estan disponibles la botiga oficial DoliStore...
+MoreModulesLink=<a target="_blank" href="http://www.dolistore.com/search.php?search_query=nltechno">Fes clic per veure la llista completa</a>
+MoreCloudHosting=Per utilitzar Dolibarr online, selecciona l'allotjament segur DoliCloud.
+MoreCloudHostingLink=<a target="_blank" href="http://www.dolicloud.com">Fes clic per més informació</a>
+CompatibleWithDoliDroid=Aquests mòduls també són compatibles amb DoliDroid, la aplicació Android per Dolibarr.
+HideThirdPartiesMenu=Oculta el menú de tercer (tots els clients son pacients). Si gestiones proveïdors (mòdul de Proveïdors habilitat), aquesta entrada de menú estarà visible per mantenir accessibles les característiques de proveïdors.
 RecordCreatedFromRDV=Outcome created from rendez-vous %s (%s)
-ConsultCreatedBy=Consultation created by
-ConsultTooOld=Can't modify consultation. This one is older than <b>%s</b> days. Note: Option CABINETMED_DELAY_TO_LOCK_RECORD can be added/modified by a technical administrator to modify/remove this delay.
-HeightPeople=Height
-WeigthPeople=Weigth
-PatientDeleted=Patient "%s" was deleted from database.
+ConsultCreatedBy=Consulta creada per
+ConsultTooOld=No es pot modificar la consulta. Aquesta és més antiga de <b>%s</b> dies. Nota: L'opció CABINETMED_DELAY_TO_LOCK_RECORD es pot afegir/modificar per un administrador tècnic per modificar/eliminar aquest retard.
+HeightPeople=Alçada
+WeigthPeople=Pes
+PatientDeleted=El pacient "%s" s'ha eliminat de la base de dades
+DocumentsPatient=Documents/Attached files

@@ -1,0 +1,5 @@
+# Dolibarr language file - en_US - mails
+CHARSET=UTF-8
+MailingModuleDescContactCompanies=Contatos dos responsáveis/pacientes (por tipo)
+MailingModuleDescContactsByCompanyCategory=Contatos dos responsáveis/pacientes (por categoria)
+MailingModuleDescContactsByFunction=Contatos dos responsáveis/pacientes (por especialidade)

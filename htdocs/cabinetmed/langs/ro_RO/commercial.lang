@@ -1,0 +1,15 @@
+# Dolibarr language file - en_US - commercial
+CHARSET=UTF-8
+ActionOnCompany=Eveniment pe pacient
+ActionOnContact=Eveniment pe contact
+SalesRepresentative=Urmarit de
+SalesRepresentatives=Urmarit de
+SalesRepresentativeFollowUp=Doctori (referent)
+SalesRepresentativeSignature=Doctori (semnatura)
+NoSalesRepresentativeAffected=No particular doctor
+ShowPatient=Afiseaza Pacient
+ListOfCustomers=Lista Terti / Pacienti
+ListOfPatients=Lista pacienti
+TasksHistoryForThisContact=Actiuni referitoare la acest contact
+ActionAC_FAC=Trimite consultatie pe email
+ActionAC_REL=Retrimite consultatie pe email

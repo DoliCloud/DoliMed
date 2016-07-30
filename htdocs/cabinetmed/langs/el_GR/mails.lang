@@ -1,0 +1,5 @@
+# Dolibarr language file - en_US - mails
+CHARSET=UTF-8
+MailingModuleDescContactCompanies=Επαφές τρίτων/ασθενών (ανά τύπο)
+MailingModuleDescContactsByCompanyCategory=Επαφές τρίτων/ασθενών (ανά κατηγορία)
+MailingModuleDescContactsByFunction=Επαφές τρίτων/ασθενών (ανά ειδικότητα)

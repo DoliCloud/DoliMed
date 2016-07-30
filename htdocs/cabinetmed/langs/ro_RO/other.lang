@@ -1,0 +1,6 @@
+# Dolibarr language file - fr_FR - other
+CHARSET=UTF-8
+Notify_NOTIFY_VAL_FAC=Validare consultare pacient
+ProfIdShortDesc=<b>Id prof. %s</b> est une information qui dépend du pays du patient.<br>Par exemple, pour le pays <b>%s</b>, il s'agit du code <b>%s</b>.
+NewCompanyToDolibarr=Pacient %s adaugat
+CustomerPaymentDoneInDolibarr=Plata pacient %s

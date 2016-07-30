@@ -1,0 +1,15 @@
+# Dolibarr language file - en_US - commercial
+CHARSET=UTF-8
+ActionOnCompany=Evento do doente
+ActionOnContact=Evento do contacto
+SalesRepresentative=Followed by
+SalesRepresentatives=Followed by
+SalesRepresentativeFollowUp=Doctors (referent)
+SalesRepresentativeSignature=Doctors (signature)
+NoSalesRepresentativeAffected=No particular doctor
+ShowPatient=Mostrar doente
+ListOfCustomers=Lista de terceiros/doentes
+ListOfPatients=Lista de doentes
+TasksHistoryForThisContact=Ações sobre este contacto
+ActionAC_FAC=Enviar consulta por mensagem
+ActionAC_REL=Reenviar consulta por mensagem

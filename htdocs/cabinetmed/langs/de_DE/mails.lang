@@ -1,0 +1,5 @@
+# Dolibarr language file - en_US - mails
+CHARSET=UTF-8
+MailingModuleDescContactCompanies=Liste der Partner/Patienten (nach Typ)
+MailingModuleDescContactsByCompanyCategory=Liste der Partner/Patienten (nach Kategorie)
+MailingModuleDescContactsByFunction=Contacts of thirdparties/patients (by speciality)

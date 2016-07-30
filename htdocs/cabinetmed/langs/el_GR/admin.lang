@@ -1,0 +1,42 @@
+# Dolibarr language file - en_US - admin
+CHARSET=UTF-8
+ExtraFieldsThirdParties=Complementary attributes (thirdparty/patient)
+ExtraFieldsContacts=Complementary attributes (contacts)
+UseSearchToSelectCompany= Χρησιμοποιείστε ένα πεδδίο με αυτόματη συμπλήρωση για την επιλογή ενός ασθενούς (σε αντίθεση με πλαίσιο λίστας)
+ActivityStateToSelectCompany= Προσθήκη επιλογής φίλτρου για εμφάνιση/απόκρυψη ασθενών που πληρούν τα κριτήρια ή όχι
+ViewFullDateActions= Εμφάνιση πλήρους ημερομηνίας 
+DaylingSavingTime=Dayling time (user)
+CurrentHour= Ώρα php (εξυπηρετητής)
+CompanyTZ= Ζώνη ώρας
+CompanyHour= Ώρα
+ModuleFamilyCrm= Διαχείριση επαφών
+GenericMaskCodes2= <b>{cccc}</b> le code patient sur n lettres<br><b>{cccc000}</b> le code client sur n lettres est suivi d'un compteur propre au client sans offset, complété par des zéros pour en avoir autant que dans le masque, et remis à zéro en même temps que le compteur global.<br><b>{tttt}</b> Le code type entreprise sur n caractères (voir dictionnaires-types de patient).<br>
+
+# Modules= undefined
+Module1Name= Λίστα τρίτων/ασθενών
+Module1Desc= Διαχείριση ασθενών και επαφών
+Permission121= Γνωμάτευση ασθενούς
+Permission122= Δημιουργία/μεταβολή ασθενούς (+γνωματεύσεις και εξετάσεις)
+Permission125= Διαγραφή ασθενών (+γνωματεύσεις και εξετάσεις)
+Permission126= Εξαγωγή ασθενών
+Permission262= Εκτεταμένη πρόσβαση σε όλους τους ασθενείς (όχι μόνο σε αυτούς που σχετίζονται με τον χρήστη)
+Permission281= Consult all contacts
+Permission282= Δημιουργία/μεταβολή επαφών
+Permission283= Διαγραφή επαφών
+Permission286= Εξαγωγή επαφών
+DictionaryCompanyType= Φύλο του ασθενούς
+DictionaryCompanyJuridicalType= Activity type of patient or juridical status of thirdparties
+DictionaryTypeContact= Τύποι επαφών
+MotifConsultation=Αιτία γνωμάτευσης
+DiagnostiqueLesionnel=Lesion diagnostic
+Examens=Εξετάσεις
+ExamenConclusion=Γνωμάτευση εξέτασης
+BankNameList=Λίστα τραπεζών
+SetupDescription3=Είναι απαραίτητα τα δεδομένα στο μενού <b>Εγκατάσταση - πληροφορίες </b>για τη λειτουργία 
+
+CompanySetup= Εγκατάσταση του αρθρώματος Ασθενής
+CompanyCodeChecker= Μοτίβο για δημιουργία και έλεγχο κωδικού ασθενούς
+CashDeskThirdPartyForSell= Generic patient for sells
+CashDeskBankAccountForSell= Τραπεζικός λογαριασμός που χρησιμοποιείται για μετρητά
+CashDeskBankAccountForCheque= Τραπεζικός λογαριασμός που χρησιμοποιείται για επιταγές
+CashDeskBankAccountForCB= Τραπεζικός λογαριασμός που χρησιμοποιείται για πιστωτική κάρτα

@@ -1,0 +1,9 @@
+# Dolibarr language file - fr_FR - compta
+CHARSET=UTF-8
+PaymentCustomerInvoice=Regulamentos da consulta do paciente
+ListOfCustomerPayments=Lista de regulamentos do paciente
+CustomerAccountancyCode=Código do contato do paciente
+ByPatients=Por paciente
+ErrorWrongAccountancyCodeForCompany=Código do contado do paciente incorreto %s
+COMPTA_ACCOUNT_CUSTOMER=Código contável padrão do paciente (se não definido no arquivo de paciente)
+COMPTA_ACCOUNT_SUPPLIER=Código contável padrão do fornecedor (se não definido no arquivo de paciente)

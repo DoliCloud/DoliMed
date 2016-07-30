@@ -1,0 +1,4 @@
+# Dolibarr language file - fr_FR - members
+CHARSET=UTF-8
+SetLinkToThirdParty=Bir hastaya bağla
+ThirdPartyDolibarr=Hasta
