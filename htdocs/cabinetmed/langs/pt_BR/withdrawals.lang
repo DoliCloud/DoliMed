@@ -1,0 +1,5 @@
+# Dolibarr language file - fr_FR - withdrawals
+CHARSET=UTF-8
+NoInvoiceToWithdraw=Nenhum método de pagamento de consulta do paciente 'Coleção' tem aplicação levantamentos pendentes. Saltar sobre a "Retirada", este projeto de lei cartão para fazer um pedido.
+ThirdPartyBankCode=Código do banco do paciente
+ThirdPartyDeskCode=Código da agência do paciente

@@ -1,0 +1,42 @@
+# Dolibarr language file - en_US - admin
+CHARSET=UTF-8
+ExtraFieldsThirdParties=سمات التكميلية (مرشحين عن / المريض)
+ExtraFieldsContacts=سمات التكميلية (الأسماء)
+UseSearchToSelectCompany= استخدام حقل مع autcompletion لاختيار المريض (بدلا من قائمة التحرير والسرد).
+ActivityStateToSelectCompany= إضافة خيار تصفية لإخفاء / إظهار المرضى أو التي لم يتبع
+ViewFullDateActions= عرض تاريخ كامل من الإجراءات في بطاقة المريض
+DaylingSavingTime=Dayling الوقت (المستخدم)
+CurrentHour= PHP ساعة (الخادم)
+CompanyTZ= منطقة زمنية
+CompanyHour= ساعة
+ModuleFamilyCrm= إدارة الاتصال
+GenericMaskCodes2= <b>{CCCC}</b> لو كود المريض سور ن الآداب <br> <b>{cccc000}</b> لو رمز العميل سور ن للرسائل الإخبارية مؤسسة سويفي D'UN compteur PROPRE الاتحاد الافريقي بلا العميل تعويض، واستكمال قدم المساواة قصر الأصفار صب أون avoir autant كيو DANS LE التمثيلية، وآخرون ريمس صفر EN MEME TEMPS كيو لو compteur العالمية. <br> <b>{TTTT}</b> لو رمز نوع الأعمال سور ن caractères (استجواب dictionnaires-أنواع دي المريض). <br>
+
+# Modules= undefined
+Module1Name= Thirdparties / المريض
+Module1Desc= إدارة المرضى والاتصالات
+Permission121= استشارة المريض
+Permission122= إنشاء / تعديل المريض (+ المشاورات والامتحانات)
+Permission125= حذف المرضى (+ المشاورات والامتحانات)
+Permission126= المرضى التصدير
+Permission262= توسيع نطاق الوصول إلى جميع المرضى (وليس فقط تلك المرتبطة المستخدم).
+Permission281= التشاور مع جميع جهات الاتصال
+Permission282= إنشاء / تعديل الاتصالات
+Permission283= حذف الأسماء
+Permission286= تصدير جهات الاتصال
+DictionaryCompanyType= جنس المريض
+DictionaryCompanyJuridicalType= نوع آخر من حالة المريض أو اعتباري من thirdparties
+DictionaryTypeContact= أنواع الاتصالات
+MotifConsultation=السبب التشاور
+DiagnostiqueLesionnel=آفة التشخيص
+Examens=الامتحانات
+ExamenConclusion=امتحان الخاتمة
+BankNameList=قائمة البنوك
+SetupDescription3=بيانات من <b>إعداد</b> القائمة <b>-></b> يطلب <b>معلومات</b> للعمل.
+
+CompanySetup= إعداد وحدة المرضى
+CompanyCodeChecker= نموذج لتوليد والتحقق من كود المريض
+CashDeskThirdPartyForSell= مريض عام لتبيع
+CashDeskBankAccountForSell= حساب مصرفي لاستخدامه في النقد
+CashDeskBankAccountForCheque= COMPTE à utiliser صب L'encaissement أون الاختيار
+CashDeskBankAccountForCB= حساب مصرفي لاستخدامه بطاقة الائتمان

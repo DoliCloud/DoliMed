@@ -1,0 +1,15 @@
+# Dolibarr language file - en_US - commercial
+CHARSET=UTF-8
+ActionOnCompany=Hasta işlemi
+ActionOnContact=Kişi işlemi
+SalesRepresentative=Takip eden
+SalesRepresentatives=Takip eden
+SalesRepresentativeFollowUp=Doktorlar (ilgili)
+SalesRepresentativeSignature=Doktorlar (imzalayan)
+NoSalesRepresentativeAffected=Özel bir doktor yok
+ShowPatient=Hastayı görüntüle
+ListOfCustomers=Üçüncü taraf/hasta listesi
+ListOfPatients=Hasta listesi
+TasksHistoryForThisContact=Bu kişiyle ilgili işlemler
+ActionAC_FAC=Muayene e-postasını gönder
+ActionAC_REL=Muayene e-postasını yeniden gönder

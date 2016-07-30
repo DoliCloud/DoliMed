@@ -1,0 +1,5 @@
+# Dolibarr language file - en_US - mails
+CHARSET=UTF-8
+MailingModuleDescContactCompanies=Üçüncü taraf/hasta kişiler (tipe göre)
+MailingModuleDescContactsByCompanyCategory=Üçüncü taraf/hasta kişiler (kategoriye göre)
+MailingModuleDescContactsByFunction=Üçüncü taraf/hasta kişiler (özelliğe göre)

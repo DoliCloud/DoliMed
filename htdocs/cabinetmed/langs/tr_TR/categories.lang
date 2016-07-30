@@ -1,0 +1,10 @@
+# Dolibarr language file - en_US - categories
+CHARSET=UTF-8
+PatientsCategoriesArea=Hasta bölümü kategorileri
+PatientIsInCustomersCategories=Bu hasta şu kategorilerde bulunuyor
+PatientsCategoryShort=Hasta kategorisi
+PatientsCategoriesShort=Hasta kategorileri
+ThisCategoryHasNoCustomer=Bu kategoride henüz bir hasta yok
+AssignedToPatients=Bir hasta atayın
+AssignedToThePatients=Bir hasta atayın
+CatCusListPatients=Hasta kategorileri listesi

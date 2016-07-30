@@ -1,0 +1,15 @@
+# Dolibarr language file - en_US - commercial
+CHARSET=UTF-8
+ActionOnCompany=Δραστηριότητες για τον ασθενή
+ActionOnContact=Δραστηριότητες για την επαφή
+SalesRepresentative=Ακολουθείται από
+SalesRepresentatives=Ακολουθείται από
+SalesRepresentativeFollowUp=Ιατροί (εισηγητές)
+SalesRepresentativeSignature=Ιατροί (υπογραφές)
+NoSalesRepresentativeAffected=Μη καθορισμένος γιατρός
+ShowPatient=Εμφάνιση ασθενούς
+ListOfCustomers=Λίστα τρίτων/ασθενών
+ListOfPatients=Λίστα ασθενών
+TasksHistoryForThisContact=Ενέργειες σχετικά με αυτή την επαφή
+ActionAC_FAC=Αποστολή γνωμάτευσης με email
+ActionAC_REL=Επανάληψη αποστολής γνωμάτευσης με email

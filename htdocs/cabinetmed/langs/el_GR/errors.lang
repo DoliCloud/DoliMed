@@ -1,0 +1,7 @@
+# Dolibarr language file - en_US - errors
+CHARSET=UTF-8
+ErrorThisContactIsAlreadyDefinedAsThisType=This correspondant is already defined as a correspondant for this type
+ErrorBadPatientName=Λάθος όνομα ασθενούς
+ErrorBadCustomerCodeSyntax=Η σύνταξη του κωδικού ασθενή δεν είναι σωστή
+ErrorCustomerCodeRequired=Ο κωδικός του ασθενή είναι υποχρεωτικός
+ErrorCustomerCodeAlreadyUsed=Αυτός ο κωδικός ασθενή χρησιμοποιείται ήδη

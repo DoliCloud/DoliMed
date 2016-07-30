@@ -1,0 +1,9 @@
+# Dolibarr language file - en_US - main
+CHARSET=UTF-8
+ContactsAddressesForCompany=Bu üçüncü taraf ya da hasta için kişi ve adresler
+ActionsOnCompany=Bu üçüncü taraf ya da hasta ile ilgili işlemler
+ByCompanies=Hastaya göre
+NbOfPatients=Hasta sayısı
+PatientPreview=Hasta önizlemesi
+ShowPatientPreview=Hastayı önizle
+RefPatient=Hasta Referansı

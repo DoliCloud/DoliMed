@@ -1,0 +1,10 @@
+# Dolibarr language file - en_US - categories
+CHARSET=UTF-8
+PatientsCategoriesArea=Categories of patient area
+PatientIsInCustomersCategories=Αυτός ο ασθενής συμπεριλαμβάνεται στις παρακάτω κατηγορίες
+PatientsCategoryShort=Κατηγορία ασθενών
+PatientsCategoriesShort=Κατηγορίες ασθενών
+ThisCategoryHasNoCustomer=Δεν υπάρχουν ασθενείς σ' αυτή την κατηγορία
+AssignedToPatients=Ορισμός ενός ασθενούς
+AssignedToThePatients=Ορισμός ενός ασθενούς
+CatCusListPatients=Λίστα κατηγοριών ασθενών

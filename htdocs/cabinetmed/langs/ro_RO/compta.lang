@@ -1,0 +1,9 @@
+# Dolibarr language file - fr_FR - compta
+CHARSET=UTF-8
+PaymentCustomerInvoice=Plata consultatie pacient
+ListOfCustomerPayments=Lista plati pacienti
+CustomerAccountancyCode=Cont contabil pacient
+ByPatients=Pe pacient
+ErrorWrongAccountancyCodeForCompany=Cont contabil pacient incorect pentru %s
+COMPTA_ACCOUNT_CUSTOMER=Cont contabil pacient predefinit ( daca nu e definit pe fisa de pacient)
+COMPTA_ACCOUNT_SUPPLIER=Cont contabil furnizor predefinit ( daca nu e definit pe fisa de pacient)

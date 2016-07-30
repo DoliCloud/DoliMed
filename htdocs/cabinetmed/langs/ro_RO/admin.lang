@@ -1,0 +1,42 @@
+# Dolibarr language file - en_US - admin
+CHARSET=UTF-8
+ExtraFieldsThirdParties=Atribute complementare ( terti / pacient )
+ExtraFieldsContacts=Atribute complementare ( contacte )
+UseSearchToSelectCompany= Use a field with autcompletion to select a patient (instead of a combo list).
+ActivityStateToSelectCompany= Add a filtering option to hide/show patients that are or not followed
+ViewFullDateActions= View full date of actions into patient card
+DaylingSavingTime=Dayling time (user)
+CurrentHour= Ora  PHP (server)
+CompanyTZ= Time Zone
+CompanyHour= Ora
+ModuleFamilyCrm= Managementul  contactelor
+GenericMaskCodes2= <b>{cccc}</b> le code patient sur n lettres<br><b>{cccc000}</b> le code client sur n lettres est suivi d'un compteur propre au client sans offset, complété par des zéros pour en avoir autant que dans le masque, et remis à zéro en même temps que le compteur global.<br><b>{tttt}</b> Le code type entreprise sur n caractères (voir dictionnaires-types de patient).<br>
+
+# Modules= undefined
+Module1Name= Terti / Pacient
+Module1Desc= Gestiune pacienti si contracte
+Permission121= Consult pacient
+Permission122= Creare/modificare pacient (+ consultatii si examene)
+Permission125= Stergere pacienti( + consultatii si examene)
+Permission126= Export pacienti
+Permission262= Extinde accesul la toti pacienti( nu nimai cei legati la utilizator)
+Permission281= Consult toate contactele
+Permission282= Creaza/modifica Contacte
+Permission283= Sterge contacte
+Permission286= Exporta contacte
+DictionaryCompanyType= Sex pacient
+DictionaryCompanyJuridicalType= Tip activitate al pacientului sau statut juridic al tertillor
+DictionaryTypeContact= Tipuri contacte
+MotifConsultation=Motiv consultatie
+DiagnostiqueLesionnel=Lesion diagnostic
+Examens=Examinari
+ExamenConclusion=Concluzie Examinare
+BankNameList=Lista banci
+SetupDescription3=Data of menu <b>Setup -> Information</b> are required to work.
+
+CompanySetup= Configurare modul Pacient
+CompanyCodeChecker= Model de generat si verificat cod pacient
+CashDeskThirdPartyForSell= Pacient generic de vanzare
+CashDeskBankAccountForSell= Cont bancar pentru numerar
+CashDeskBankAccountForCheque= Cont bancar pentru cec
+CashDeskBankAccountForCB= Cont bancar pentru  credit card

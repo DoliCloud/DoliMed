@@ -1,0 +1,7 @@
+# Dolibarr language file - en_US - errors
+CHARSET=UTF-8
+ErrorThisContactIsAlreadyDefinedAsThisType=Bu tip için zaten bu muhabir atanmış
+ErrorBadPatientName=Hasta adı geçersiz
+ErrorBadCustomerCodeSyntax=Hasta kodu söz dizimi hatalı
+ErrorCustomerCodeRequired=Hasta kodu zorunludur
+ErrorCustomerCodeAlreadyUsed=Hasta kodu zaten var

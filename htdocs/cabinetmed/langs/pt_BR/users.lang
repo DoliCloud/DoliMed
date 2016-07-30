@@ -1,0 +1,11 @@
+# Dolibarr language file - fr_FR - users
+CHARSET=UTF-8
+ContactCard=Ficha correspondente
+NoContactCard=Nenhuma ficha de dados a partir dos correspondentes
+LinkToCompanyContact=Link paciente/correspondente
+LinkedToDolibarrThirdParty=Link paciente
+CreateDolibarrThirdParty=Criar um paciente
+ConfirmCreateContact=Você tem certeza que deseja criar uma conta de Dolibarr para este correspondente?
+ConfirmCreateLogin=Você tem certeza que deseja criar uma conta de Dolibarr para esse participante?
+ConfirmCreateThirdParty=Tem certeza de que deseja criar um paciente para esse participante?
+NameToCreate=Nome do paciente para criar
