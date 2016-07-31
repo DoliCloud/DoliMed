@@ -47,6 +47,25 @@ class ActionsCabinetmed
 
 
     /**
+     * Complete search forms
+     *
+     * @param	array	$parameters		Array of parameters
+     * @return	string					HTML content to add by hook
+     */
+    function addSearchEntry($parameters)
+    {
+        global $langs;
+    
+        $langs->load("cabinet@cabinetmed");
+        $search_boxvalue = $parameters['search_boxvalue'];
+    
+        $this->results['searchintoapatient']=array('text'=>img_picto('','object_patient@cabinetmed').' '.$langs->trans("Patients", $search_boxvalue), 'url'=>dol_buildpath('/cabinetmed/patients.php',1).'?search_all='.urlencode($search_boxvalue));
+    
+        return 0;
+    }
+    
+    
+    /**
      *    Execute action
      *
      *    @param	array	$parameters		Array of parameters
@@ -212,6 +231,20 @@ class ActionsCabinetmed
         $out.='</div>';
         $out.='</a>';
 
+        $out.='<a href="'.dol_buildpath('/cabinetmed/patients.php',1).'" class="boxstatsindicator thumbstat nobold nounderline">';
+        $out.='<div class="boxstats">';
+        $out.='<span class="boxstatstext">';
+        $out.=img_object("",'generic').' '.$langs->trans("Patients");
+        $out.='</span>';
+        $out.='<br>';
+        //$out.='</a>';
+        //$out.='<a href="'.$links[$key].'">';
+        $out.='<span class="boxstatsindicator">';
+        $out.=$board->nb['Patients'];
+        $out.='</span>';
+        $out.='</div>';
+        $out.='</a>';
+        
         include_once DOL_DOCUMENT_ROOT.'/core/lib/admin.lib.php';
         if (versioncompare(versiondolibarrarray(),array(4,0,-4)) >= 0) $this->resprints=$out;
         else print $out;
@@ -255,6 +288,7 @@ class ActionsCabinetmed
      * @param	array	$parameters		Array of parameters
      * @return	string					HTML content to add by hook
      */
+    /*
     function printSearchForm($parameters)
     {
         global $langs, $user, $conf;
@@ -269,7 +303,7 @@ class ActionsCabinetmed
 		$this->resprints = $searchform;
 
         return 0;
-    }
+    }*/
 
     /**
      * Add fields into tr form of objects

@@ -109,7 +109,7 @@ function listdiagles($nboflines,$newwidth=0,$htmlname='diagles',$selected='')
     if (empty($newwidth)) $newwidth=$width;
 
     $out= '<select class="flat" id="list'.$htmlname.'" name="'.$htmlname.'" '.(empty($conf->dol_use_jmobile)?' style="width: '.$newwidth.'px" ':'').'size="'.$nboflines.'"'.($nboflines > 1?' multiple':'').'>';
-    $out.= '<option value="0"></option>';
+    $out.= '<option value="0">&nbsp;</option>';
     $sql = 'SELECT s.rowid, s.code, s.label';
     $sql.= ' FROM '.MAIN_DB_PREFIX.'cabinetmed_diaglec as s';
     $sql.= ' WHERE active = 1';
@@ -131,6 +131,7 @@ function listdiagles($nboflines,$newwidth=0,$htmlname='diagles',$selected='')
         }
     }
     $out.= '</select>'."\n";
+    $out.=ajax_combobox('list'.$htmlname);
     return $out;
 }
 

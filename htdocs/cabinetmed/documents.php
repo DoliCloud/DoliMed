@@ -372,7 +372,7 @@ if ($object->id)
     print '<input type="hidden" name="token" value="'.$_SESSION['newtoken'].'">';
 
     
-    dol_fiche_head($head, 'tabdocument', $langs->trans("Patient"),0,'company');
+    dol_fiche_head($head, 'tabdocument', $langs->trans("Patient"),0,'patient@cabinetmed');
 
     // Construit liste des fichiers
     $filearray=dol_dir_list($upload_dir,"files",0,'','(\.meta|_preview\.png)$',$sortfield,(strtolower($sortorder)=='desc'?SORT_DESC:SORT_ASC),1);
@@ -384,10 +384,8 @@ if ($object->id)
 
     print '<table class="border" width="100%">';
 
-    print '<tr><td width="25%">'.$langs->trans('PatientName').'</td>';
-    print '<td colspan="3">';
-    print $form->showrefnav($object,'socid','',($user->societe_id?0:1),'rowid','nom');
-    print '</td></tr>';
+    $linkback = '<a href="'.dol_buildpath('/cabinetmed/patients.php', 1).'">'.$langs->trans("BackToList").'</a>';
+    dol_banner_tab($object, 'socid', $linkback, ($user->societe_id?0:1), 'rowid', 'nom');
 
 	// Prefix
 	if (! empty($conf->global->SOCIETE_USEPREFIX))  // Old not used prefix field

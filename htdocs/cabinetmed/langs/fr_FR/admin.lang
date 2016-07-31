@@ -32,7 +32,6 @@ DiagnostiqueLesionnel=Diagnostique Lesionnel
 Examens=Examens
 ExamenConclusion=Examen Conclusion
 BankNameList=Liste des banques
-SetupDescription3=Les données du menu <b>Configuration -> Informations cabinet</b> sont requises car les informations saisies sont utilisées dans la plupart des écrans, en affichage, ou pour modifier le comportement de Dolibarr (comme par exemple des fonctions qui dépendent de votre pays).
 
 CompanySetup= Configuration du module Patient
 CompanyCodeChecker= Modèle de génération et contrôle des codes patient (clients/fournisseurs)

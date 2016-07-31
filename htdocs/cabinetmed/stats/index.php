@@ -1,6 +1,6 @@
 <?php
 /* Copyright (C) 2003-2006 Rodolphe Quiedeville <rodolphe@quiedeville.org>
- * Copyright (c) 2004-2013 Laurent Destailleur  <eldy@users.sourceforge.net>
+ * Copyright (c) 2004-2016 Laurent Destailleur  <eldy@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -56,6 +56,7 @@ $endyear=$year;
 
 $mode=GETPOST("mode")?GETPOST("mode"):'customer';
 $codageccam=GETPOST('codageccam');
+$typevisit=GETPOST('typevisit');
 
 if (empty($conf->cabinetmed->enabled)) accessforbidden();
 
@@ -77,8 +78,9 @@ print_fiche_titre($title, $mesg);
 
 dol_mkdir($dir);
 
-$stats = new CabinetMedStats($db, $socid, $mode, ($userid>0?$userid:0), ($codageccam?" AND codageccam LIKE '".$db->escape(preg_replace('/\*/','%',$codageccam))."'":''));
-
+$morefilter=($codageccam?" AND codageccam LIKE '".$db->escape(preg_replace('/\*/','%',$codageccam))."'":'');
+if (! empty($typevisit) && $typevisit != '-1') $morefilter.=" AND typevisit = '".$typevisit."'";
+$stats = new CabinetMedStats($db, $socid, $mode, ($userid>0?$userid:0), $morefilter);
 
 // Build graphic number of object
 // $data = array(array('Lib',val1,val2,val3),...)
@@ -173,6 +175,11 @@ print $form->select_dolusers($userid, 'userid', 1, '', 0, '', '', 0, 0, 0, '', 0
 print '</td></tr>';
 print '<tr><td>'.$langs->trans("CodageCCAM").'</td><td>';
 print '<input type="text" id="codageccam" name="codageccam" value="'.$codageccam.'" size="30"><span class="hideonsmartphone"> (* = joker)</span>';
+print '</td></tr>';
+print '<tr><td>'.$langs->trans("TypeVisite").'</td><td>';
+$arraytype=array('-1'=>'&nbsp;', 'CS'=>$langs->trans("CS"), 'CS2'=>$langs->trans("CS2"), 'CCAM'=>$langs->trans("CCAM"));
+print $form->selectarray('typevisit', $arraytype, GETPOST('typevisit'));
+//print '<input type="text" id="codageccam" name="codageccam" value="'.$codageccam.'" size="30"><span class="hideonsmartphone"> (* = joker)</span>';
 print '</td></tr>';
 print '<tr><td align="center" colspan="2"><input type="submit" name="submit" class="button" value="'.$langs->trans("Refresh").'"></td></tr>';
 print '</table>';

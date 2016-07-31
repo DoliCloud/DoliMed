@@ -98,7 +98,7 @@ $sql.= " c.rowid as cid, c.datecons, c.typepriseencharge, c.typevisit, c.motifco
 // We'll need these fields in order to filter by sale (including the case where the user can only see his prospects)
 if ($search_sale) $sql .= ", sc.fk_soc, sc.fk_user";
 // We'll need these fields in order to filter by categ
-if ($search_categ) $sql .= ", cs.fk_categorie, cs.fk_societe";
+if ($search_categ) $sql .= ", cs.fk_categorie, cs.fk_soc";
 $sql.= " FROM ".MAIN_DB_PREFIX."societe as s, ".MAIN_DB_PREFIX."cabinetmed_cons as c,";
 $sql.= " ".MAIN_DB_PREFIX."c_stcomm as st";
 // We'll need this table joined to the select in order to filter by sale
@@ -111,7 +111,7 @@ $sql.= " AND s.entity = ".$conf->entity;
 if (!$user->rights->societe->client->voir && ! $socid) $sql.= " AND s.rowid = sc.fk_soc AND sc.fk_user = " .$user->id;
 if ($socid) $sql.= " AND s.rowid = ".$socid;
 if ($search_sale) $sql.= " AND s.rowid = sc.fk_soc";        // Join for the needed table to filter by sale
-if ($search_categ) $sql.= " AND s.rowid = cs.fk_societe";   // Join for the needed table to filter by categ
+if ($search_categ) $sql.= " AND s.rowid = cs.fk_soc";   // Join for the needed table to filter by categ
 if ($search_nom)   $sql.= " AND s.nom like '%".$db->escape(strtolower($search_nom))."%'";
 if ($search_ville) $sql.= " AND s.town like '%".$db->escape(strtolower($search_ville))."%'";
 if ($search_code)  $sql.= " AND s.code_client like '%".$db->escape(strtolower($search_code))."%'";

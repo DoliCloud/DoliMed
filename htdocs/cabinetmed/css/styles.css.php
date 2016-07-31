@@ -77,6 +77,11 @@ div.mainmenu.accountancy2 {
 	background-image: url(<?php echo dol_buildpath($path.'/theme/'.$theme.'/img/menus/money.png',1) ?>);
 }
 
+.quatrevingtpercent, .inputsearch {
+	width: 80%;
+}
+
+
 <?php if (! empty($dol_use_jmobile)) { ?>
 .cabpaymentcheque { border-top: 1px solid #AAA; margin-top: 4px; }
 .cabpaymentcarte { border-top: 1px solid #AAA; margin-top: 4px; }

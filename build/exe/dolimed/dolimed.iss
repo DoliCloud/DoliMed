@@ -16,9 +16,9 @@
 ; ----- Change this -----
 AppName=DoliMed
 ; DoliMed-x.x.x or DoliMed-x.x.x-dev or DoliMed-x.x.x-beta
-AppVerName=DoliMed-3.8.0
+AppVerName=DoliMed-3.9.0
 ; DoliMed-x.x x or DoliMed-x.x.x-dev or DoliMed-x.x.x-beta
-OutputBaseFilename=DoliMed-3.8.0
+OutputBaseFilename=DoliMed-3.9.0
 ; Define full path from wich all relative path are defined
 ; You must modify this to put here your dolibarr root directory
 SourceDir=..\..\..
@@ -30,7 +30,7 @@ AppPublisherURL=http://www.nltechno.com
 AppSupportURL=http://www.dolibarr.org
 AppUpdatesURL=http://www.dolibarr.org
 AppComments=DoliMed includes Dolibarr, Apache, PHP and Mysql softwares, and medical module.
-AppCopyright=Copyright (C) 2008-2015 Laurent Destailleur, NLTechno
+AppCopyright=Copyright (C) 2008-2016 Laurent Destailleur, NLTechno
 DefaultDirName=c:\dolimed
 DefaultGroupName=DoliMed
 ;LicenseFile=COPYING

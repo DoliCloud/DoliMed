@@ -126,7 +126,7 @@ if ($socid > 0)
 
     $head = societe_prepare_head($object);
 
-    dol_fiche_head($head, 'tabtraitetallergies', $langs->trans("ThirdParty"),0,'company');
+    dol_fiche_head($head, 'tabtraitetallergies', $langs->trans("ThirdParty"),0,'patient@cabinetmed');
 
 
     print '<script type="text/javascript">

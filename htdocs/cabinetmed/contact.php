@@ -151,7 +151,7 @@ if ($id > 0 || ! empty($ref))
 
 
 	$head = societe_prepare_head($societe);
-    dol_fiche_head($head, 'tabpatientcontacts', $langs->trans("Patient"),0,'company');
+    dol_fiche_head($head, 'tabpatientcontacts', $langs->trans("Patient"),0,'patient@cabinetmed');
 
     $width=300;
     print '
@@ -167,11 +167,9 @@ if ($id > 0 || ! empty($ref))
 
     print '<table class="border" width="100%">';
 
-    print '<tr><td width="25%">'.$langs->trans('PatientName').'</td>';
-    print '<td colspan="3">';
-    print $form->showrefnav($societe,'socid','',($user->societe_id?0:1),'rowid','nom');
-    print '</td></tr>';
-
+    $linkback = '<a href="'.dol_buildpath('/cabinetmed/patients.php', 1).'">'.$langs->trans("BackToList").'</a>';
+    dol_banner_tab($object, 'socid', $linkback, ($user->societe_id?0:1), 'rowid', 'nom');
+    
     if ($societe->client)
     {
         print '<tr><td>';

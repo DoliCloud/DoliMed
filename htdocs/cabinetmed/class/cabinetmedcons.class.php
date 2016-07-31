@@ -687,6 +687,21 @@ class CabinetmedCons extends CommonObject
             {
                 $this->nb["Cabinetmedcons"]=$obj->nb;
             }
+            
+            $sql = "SELECT count(rowid) as nb";
+            $sql.= " FROM ".MAIN_DB_PREFIX."societe WHERE canvas = 'patient@cabinetmed'";
+            //$sql.= " ".$clause." c.entity = ".$conf->entity;
+            
+            $resql2=$this->db->query($sql);
+            if ($resql2)
+            {
+                while ($obj=$this->db->fetch_object($resql2))
+                {
+                    $this->nb["Patients"]=$obj->nb;
+                }
+            }
+            
+            $this->db->free($resql2);
             $this->db->free($resql);
             return 1;
         }

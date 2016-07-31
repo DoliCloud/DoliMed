@@ -206,18 +206,16 @@ if ($socid > 0)
     if ($conf->notification->enabled) $langs->load("mails");
 
 	$head = societe_prepare_head($societe);
-	dol_fiche_head($head, 'tabexambio', $langs->trans("Patient"),0,'company');
+	dol_fiche_head($head, 'tabexambio', $langs->trans("Patient"),0,'patient@cabinetmed');
 
 	print "<form method=\"post\" action=\"".$_SERVER["PHP_SELF"]."\">";
 	print '<input type="hidden" name="token" value="'.$_SESSION['newtoken'].'">';
 
 	print '<table class="border" width="100%">';
 
-	print '<tr><td width="25%">'.$langs->trans('PatientName').'</td>';
-	print '<td colspan="3">';
-	print $form->showrefnav($societe,'socid','',($user->societe_id?0:1),'rowid','nom');
-	print '</td></tr>';
-
+    $linkback = '<a href="'.dol_buildpath('/cabinetmed/patients.php', 1).'">'.$langs->trans("BackToList").'</a>';
+	dol_banner_tab($object, 'socid', $linkback, ($user->societe_id?0:1), 'rowid', 'nom');
+	
     if ($societe->client)
     {
         print '<tr><td>';
@@ -434,7 +432,7 @@ if ($socid > 0)
         // Analyse
 //        print '<fieldset id="fieldsetanalyse">';
 //        print '<legend>'.$langs->trans("Diagnostiques et prescriptions").'</legend>'."\n";
-        print '<hr style="height:1px; color: #dddddd;">';
+        print '<div class="centpercent" style="margin-top: 5px; margin-bottom: 8px; border-bottom: 1px solid #eee;"></div>';
 
         //print '<table class="notopnoleftnoright" width="100%">';
         //print '<tr><td width="50%">';
@@ -588,11 +586,11 @@ if ($action == '' || $action == 'delete')
     print '<tr class="liste_titre">';
     //print_liste_field_titre($langs->trans('Num'),$_SERVER['PHP_SELF'],'t.rowid','',$param,'',$sortfield,$sortorder);
     print_liste_field_titre($langs->trans('Date'),$_SERVER['PHP_SELF'],'t.dateexam','',$param,'align="left"',$sortfield,$sortorder);
-    print '<td>'.$langs->trans("Result").'</td>';
+    print_liste_field_titre($langs->trans("Result"));
     if (! empty($conf->global->CABINETMED_RHEUMATOLOGY_ON))
     {
-        print '<td>'.$langs->trans("Das28").'</td>';
-        print '<td>'.$langs->trans("Basdai").'</td>';
+        print_liste_field_titre($langs->trans("Das28"));
+        print_liste_field_titre($langs->trans("Basdai"));
     }
     print '<td>&nbsp;</td>';
     print '</tr>';

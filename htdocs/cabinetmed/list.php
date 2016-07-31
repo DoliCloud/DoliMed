@@ -71,6 +71,15 @@ $offset = $conf->liste_limit * $page ;
 $pageprev = $page - 1;
 $pagenext = $page + 1;
 
+// List of fields to search into when doing a "search in all"
+$fieldstosearchall = array(
+    's.nom'=>"ThirdPartyName",
+    's.code_client'=>"CustomerCode",
+    's.email'=>"EMail",
+    's.url'=>"URL",
+    's.tva_intra'=>"VATIntra"
+);
+
 
 /*
  * Actions
@@ -102,7 +111,7 @@ if ($mode == 'search')
 	if (!$user->rights->societe->client->voir && !$socid) $sql.= " AND s.rowid = sc.fk_soc AND sc.fk_user = " .$user->id;
 	if ($socid) $sql.= " AND s.rowid = ".$socid;
     if ($search_sale) $sql.= " AND s.rowid = sc.fk_soc";        // Join for the needed table to filter by sale
-    if ($search_categ) $sql.= " AND s.rowid = cs.fk_societe";   // Join for the needed table to filter by categ
+    if ($search_categ) $sql.= " AND s.rowid = cs.fk_soc";   // Join for the needed table to filter by categ
 	if (! $user->rights->societe->lire || ! $user->rights->fournisseur->lire)
 	{
 		if (! $user->rights->fournisseur->lire) $sql.=" AND s.fourn != 1";
@@ -136,6 +145,20 @@ if ($mode == 'search')
 	}
 }
 
+// Do we click on purge search criteria ?
+if (GETPOST("button_removefilter_x") || GETPOST("button_removefilter.x") || GETPOST("button_removefilter"))
+{
+    $search_categ='';
+    $search_sale='';
+    $socname="";
+    $search_nom="";
+    $search_ville="";
+    $search_idprof1='';
+    $search_idprof2='';
+    $search_idprof3='';
+    $search_idprof4='';
+    $search_type='';
+}
 
 
 /*
@@ -148,22 +171,6 @@ $companystatic=new Societe($db);
 
 $help_url='EN:Module_Third_Parties|FR:Module_Tiers|ES:Empresas';
 llxHeader('',$langs->trans("ThirdParty"),$help_url);
-
-
-// Do we click on purge search criteria ?
-if (GETPOST("button_removefilter_x"))
-{
-    $search_categ='';
-    $search_sale='';
-    $socname="";
-	$search_nom="";
-	$search_ville="";
-	$search_idprof1='';
-	$search_idprof2='';
-	$search_idprof3='';
-	$search_idprof4='';
-	$search_type='';
-}
 
 if ($socname)
 {
@@ -189,7 +196,7 @@ $sql.= " s.siren as idprof1, s.siret as idprof2, ape as idprof3, idprof4 as idpr
 // We'll need these fields in order to filter by sale (including the case where the user can only see his prospects)
 if ($search_sale) $sql .= ", sc.fk_soc, sc.fk_user";
 // We'll need these fields in order to filter by categ
-if ($search_categ) $sql .= ", cs.fk_categorie, cs.fk_societe";
+if ($search_categ) $sql .= ", cs.fk_categorie, cs.fk_soc";
 $sql.= " FROM ".MAIN_DB_PREFIX."societe as s,";
 $sql.= " ".MAIN_DB_PREFIX."c_stcomm as st";
 // We'll need this table joined to the select in order to filter by sale
@@ -201,7 +208,7 @@ $sql.= " AND s.entity IN (".getEntity('societe', 1).")";
 if (! $user->rights->societe->client->voir && ! $socid)	$sql.= " AND s.rowid = sc.fk_soc AND sc.fk_user = " .$user->id;
 if ($socid)	$sql.= " AND s.rowid = ".$socid;
 if ($search_sale) $sql.= " AND s.rowid = sc.fk_soc";        // Join for the needed table to filter by sale
-if ($search_categ) $sql.= " AND s.rowid = cs.fk_societe";   // Join for the needed table to filter by categ
+if ($search_categ) $sql.= " AND s.rowid = cs.fk_soc";   // Join for the needed table to filter by categ
 if (! $user->rights->fournisseur->lire) $sql.=" AND (s.fournisseur <> 1 OR s.client <> 0)";    // client=0, fournisseur=0 must be visible
 // Insert sale filter
 if ($search_sale)
@@ -217,15 +224,7 @@ if ($search_nom_only)
 {
 	$sql.= " AND s.nom LIKE '%".$db->escape($search_nom_only)."%'";
 }
-if ($search_all)
-{
-	$sql.= " AND (";
-	$sql.= "s.nom LIKE '%".$db->escape($search_all)."%'";
-	$sql.= " OR s.code_client LIKE '%".$db->escape($search_all)."%'";
-	$sql.= " OR s.email LIKE '%".$db->escape($search_all)."%'";
-	$sql.= " OR s.url LIKE '%".$db->escape($search_all)."%'";
-	$sql.= ")";
-}
+if ($search_all)      $sql.= natural_search(array_keys($fieldstosearchall), $search_all);
 if ($search_nom)
 {
 	$sql.= " AND (";
@@ -292,6 +291,12 @@ if ($resql)
 		}
 	}
 
+	if ($search_all)
+	{
+	    foreach($fieldstosearchall as $key => $val) $fieldstosearchall[$key]=$langs->trans($val);
+	    print $langs->trans("FilterOnInto", $search_all) . join(', ',$fieldstosearchall);
+	}
+	
 	print '<form method="post" action="'.$_SERVER["PHP_SELF"].'" name="formfilter">';
 	print '<input type="hidden" name="token" value="'.$_SESSION['newtoken'].'">';
 
