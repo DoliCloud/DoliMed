@@ -121,7 +121,16 @@ $object->forme_juridique_code=$_POST['forme_juridique_code'];
 print_fiche_titre($langs->trans("NewPatient"));
 
 dol_htmloutput_errors($GOBALS['error'],$GLOBALS['errors']);
+
 ?>
+
+<script type="text/javascript">$(document).ready(function () {
+    $("#selectcountry_id").change(function() {
+        document.formsoc.action.value="create";
+        document.formsoc.submit();
+    });
+})
+</script>
 
 <form action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="POST" name="formsoc">
 
@@ -175,6 +184,14 @@ dol_fiche_head('');
         print $form->select_country($object->country_id,'country_id');
         if ($user->admin) print info_admin($langs->trans("YouCanChangeValuesForThisListFromDictionarySetup"),1);
         print '</td></tr>';
+        
+        // State
+        if (empty($conf->global->SOCIETE_DISABLE_STATE))
+        {
+            print '<tr><td>'.$langs->trans('State').'</td><td colspan="3">';
+            $formcompany->select_departement($object->state_id,$object->country_code);
+            print '</td></tr>';
+        }        
 ?>
 
 <tr>
