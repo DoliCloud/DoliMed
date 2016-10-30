@@ -472,7 +472,7 @@ if ($object->id)
     $var=true;
 
     $title=img_picto('','filenew').' '.$langs->trans("GenerateADocument");
-    //$somethingshown=$formfile->show_documents('company',$object->id,$filedir,$urlsource,$genallowed,$delallowed,'',0,0,0,64,0,'',$title,'',$object->default_lang,$hookmanager);
+
     print $formfile->showdocuments('company','','',$urlsource,$genallowed,$delallowed,'',0,0,0,64,0,'',$title,'',$object->default_lang,$hookmanager);
 
     // List of document
