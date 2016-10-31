@@ -361,6 +361,7 @@ class Patient extends Societe
         if (empty($rowid) && empty($ref) && empty($ref_ext)) return -1;
 
         $sql = 'SELECT s.rowid, s.nom as name, s.entity, s.ref_ext, s.address, s.datec as dc, s.prefix_comm';
+        $sql .= ', s.status';
         $sql .= ', s.price_level';
         $sql .= ', s.tms as date_update';
         $sql .= ', s.phone, s.fax, s.email, s.url, s.zip as zip, s.town as town, s.note_public, s.note_private, s.client, s.fournisseur';
@@ -469,7 +470,8 @@ class Patient extends Societe
 
                 $this->tva_assuj      = $obj->tva_assuj;
                 $this->tva_intra      = $obj->tva_intra;
-
+                $this->status = $obj->status;
+                
                 // Local Taxes
                 $this->localtax1_assuj      = $obj->localtax1_assuj;
                 $this->localtax2_assuj      = $obj->localtax2_assuj;

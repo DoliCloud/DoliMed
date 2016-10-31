@@ -152,12 +152,26 @@ print '<tr><td class="titlefield"><span class="fieldrequired">'.$langs->trans('P
 
 // Prospect/Customer
 print '<tr><td>'.fieldLabel('ProspectCustomer','customerprospect',1).'</td>';
-print '<td class="maxwidthonsmartphone"><select class="flat" name="client" id="customerprospect">';
-if (empty($conf->global->SOCIETE_DISABLE_PROSPECTS)) print '<option value="2"'.($object->client==2?' selected':'').'>'.$langs->trans('Prospect').'</option>';
-if (empty($conf->global->SOCIETE_DISABLE_PROSPECTS) && empty($conf->global->SOCIETE_DISABLE_CUSTOMERS)) print '<option value="3"'.($object->client==3?' selected':'').'>'.$langs->trans('ProspectCustomer').'</option>';
-if (empty($conf->global->SOCIETE_DISABLE_CUSTOMERS)) print '<option value="1"'.($object->client==1?' selected':'').'>'.$langs->trans('Customer').'</option>';
-print '<option value="0"'.($object->client==0?' selected':'').'>'.$langs->trans('NorProspectNorCustomer').'</option>';
-print '</select></td>';
+print '<td class="maxwidthonsmartphone">';
+$nothingvalue=0;
+$prospectonly=2;
+if (! empty($conf->global->SOCIETE_DISABLE_PROSPECTS))
+{
+    print '<input type="hidden" name="customerprospect" value="3">';
+    print $langs->trans("Patient");
+}
+else
+{
+    if (! empty($conf->global->SOCIETE_DISABLE_CUSTOMERS)) $nothingvalue=1;  // if feature to disable customer is on, nothing will keep value 1 in database.
+    if (! empty($conf->global->SOCIETE_DISABLE_CUSTOMERS)) $prospectonly=3;  // if feature to disable customer is on, nothing will keep value 3 in database.
+    print '<select class="flat" name="client" id="customerprospect">';
+    if (empty($conf->global->SOCIETE_DISABLE_PROSPECTS)) print '<option value="'.$prospectonly.'"'.($object->client==$prospectonly?' selected':'').'>'.$langs->trans('Prospect').'</option>';
+    if (empty($conf->global->SOCIETE_DISABLE_PROSPECTS) && empty($conf->global->SOCIETE_DISABLE_CUSTOMERS)) print '<option value="3"'.($object->client==3?' selected':'').'>'.$langs->trans('ProspectCustomer').'</option>';
+    if (empty($conf->global->SOCIETE_DISABLE_CUSTOMERS)) print '<option value="1"'.($object->client==1?' selected':'').'>'.$langs->trans('Customer').'</option>';
+    print '<option value="'.$nothingvalue.'"'.($object->client==$nothingvalue?' selected':'').'>'.$langs->trans('NorProspectNorCustomer').'</option>';
+    print '</select>';
+}
+print '</td>';
 print '<td width="25%">'.fieldLabel('CustomerCode','customer_code').'</td><td width="25%">';
 
 print '<table class="nobordernopadding"><tr><td>';
@@ -217,6 +231,11 @@ if (! empty($conf->fournisseur->enabled) && ! empty($user->rights->fournisseur->
 
     print '</td></tr>';
 }
+
+// Status
+print '<tr><td>'.fieldLabel('Status','status').'</td><td colspan="3">';
+print $form->selectarray('status', array('0'=>$langs->trans('ActivityCeased'),'1'=>$langs->trans('InActivity')),1);
+print '</td></tr>';
 
 // Barcode
 if ($conf->global->MAIN_MODULE_BARCODE)

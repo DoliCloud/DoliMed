@@ -74,7 +74,7 @@ if (! empty($conf->global->SOCIETE_USEPREFIX))  // Old not used prefix field
 //if ($object->client)
 //{
     print '<tr><td class="titlefield">';
-    print $langs->trans('PatientCode').'</td><td colspan="3">';
+    print $langs->trans('CustomerCode').'</td><td colspan="3">';
     print $object->code_client;
     if ($object->check_codeclient() <> 0) print ' <font class="error">('.$langs->trans("WrongPatientCode").')</font>';
     print '</td></tr>';

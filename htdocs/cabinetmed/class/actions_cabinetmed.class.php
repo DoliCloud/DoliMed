@@ -100,7 +100,7 @@ class ActionsCabinetmed
         {
        		$langs->tab_translate["ThirdParty"]=$langs->transnoentitiesnoconv("Patient");
        		$langs->tab_translate["ThirdPartyName"]=$langs->transnoentitiesnoconv("PatientName");
-       		$langs->tab_translate["CustomerCode"]=$langs->transnoentitiesnoconv("PatientCode");
+       		//$langs->tab_translate["CustomerCode"]=$langs->transnoentitiesnoconv("PatientCode");
        		$langs->load("errors");
         	$langs->tab_translate["ErrorBadThirdPartyName"]=$langs->transnoentitiesnoconv("ErrorBadPatientName");
         }
