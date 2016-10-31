@@ -46,7 +46,7 @@ $formadmin=new FormAdmin($GLOBALS['db']);
 $object->client=-1;
 if (empty($conf->global->SOCIETE_DISABLE_CUSTOMERS) && ! empty($conf->global->SOCIETE_DISABLE_PROSPECTS)) $object->client=1;
 if (! empty($conf->global->SOCIETE_DISABLE_CUSTOMERS) && empty($conf->global->SOCIETE_DISABLE_PROSPECTS)) $object->client=2;
-if (! empty($conf->global->SOCIETE_DISABLE_CUSTOMERS) && ! empty($conf->global->SOCIETE_DISABLE_PROSPECTS)) $object->client=0;
+if (! empty($conf->global->SOCIETE_DISABLE_CUSTOMERS) && ! empty($conf->global->SOCIETE_DISABLE_PROSPECTS)) $object->client=3;
 if (! empty($conf->global->THIRDPARTY_CUSTOMERPROSPECT_BY_DEFAULT))  { $object->client=3; }
 
 $object->name=$_POST["name"];
@@ -143,7 +143,7 @@ dol_htmloutput_errors($GOBALS['error'],$GLOBALS['errors']);
 <input type="hidden" name="token" value="<?php echo $_SESSION['newtoken']; ?>">
 <input type="hidden" name="private" value="0">
 <input type="hidden" name="status" value="1">
-<input type="hidden" name="client" value="1">
+<input type="hidden" name="client" value="<?php echo $object->client; ?>">
 <?php if ($modCodeClient->code_auto || $modCodeFournisseur->code_auto) print '<input type="hidden" name="code_auto" value="1">'; 
 
 dol_fiche_head('');
@@ -175,7 +175,7 @@ dol_fiche_head('');
     // Prospect/Customer
     if (! empty($conf->global->SOCIETE_DISABLE_CUSTOMERS) && ! empty($conf->global->SOCIETE_DISABLE_PROSPECTS))
     {
-        print '<input type="hidden" name="client" value="0">';
+        print '<!-- -->';
     }
     else
     {

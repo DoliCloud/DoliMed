@@ -206,23 +206,24 @@ if ($socid > 0)
     print "<form method=\"post\" action=\"".$_SERVER["PHP_SELF"]."\">";
     print '<input type="hidden" name="token" value="'.$_SESSION['newtoken'].'">';
 
-    print '<table class="border" width="100%">';
-
     $linkback = '<a href="'.dol_buildpath('/cabinetmed/patients.php', 1).'">'.$langs->trans("BackToList").'</a>';
     dol_banner_tab($object, 'socid', $linkback, ($user->societe_id?0:1), 'rowid', 'nom');
 
-    if ($societe->client)
-    {
-        print '<tr><td>';
+    print '<div class="underbanner clearboth"></div>';
+    print '<table class="border" width="100%">';
+
+    //if ($societe->client)
+    //{
+        print '<tr><td class="titlefield">';
         print $langs->trans('CustomerCode').'</td><td colspan="3">';
         print $societe->code_client;
         if ($societe->check_codeclient() <> 0) print ' <font class="error">('.$langs->trans("WrongCustomerCode").')</font>';
         print '</td></tr>';
-    }
+    //}
 
     if ($societe->fournisseur)
     {
-        print '<tr><td>';
+        print '<tr><td class="titlefield">';
         print $langs->trans('SupplierCode').'</td><td colspan="3">';
         print $societe->code_fournisseur;
         if ($societe->check_codefournisseur() <> 0) print ' <font class="error">('.$langs->trans("WrongSupplierCode").')</font>';

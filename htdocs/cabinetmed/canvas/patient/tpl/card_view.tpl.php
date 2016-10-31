@@ -71,14 +71,14 @@ if (! empty($conf->global->SOCIETE_USEPREFIX))  // Old not used prefix field
     print '<tr><td>'.$langs->trans('Prefix').'</td><td colspan="3">'.$object->prefix_comm.'</td></tr>';
 }
 
-if ($object->client)
-{
+//if ($object->client)
+//{
     print '<tr><td class="titlefield">';
     print $langs->trans('PatientCode').'</td><td colspan="3">';
     print $object->code_client;
     if ($object->check_codeclient() <> 0) print ' <font class="error">('.$langs->trans("WrongPatientCode").')</font>';
     print '</td></tr>';
-}
+//}
 
 // Barcode
 if ($conf->global->MAIN_MODULE_BARCODE)

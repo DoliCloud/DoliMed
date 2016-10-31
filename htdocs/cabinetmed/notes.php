@@ -133,11 +133,12 @@ if ($socid > 0)
     print '<form method="POST" action="'.$_SERVER['PHP_SELF'].'">';
     print '<input type="hidden" name="token" value="'.$_SESSION['newtoken'].'">';
 
-    print '<table class="border" width="100%">';
-
     $linkback = '<a href="'.dol_buildpath('/cabinetmed/patients.php', 1).'">'.$langs->trans("BackToList").'</a>';
     dol_banner_tab($object, 'socid', $linkback, ($user->societe_id?0:1), 'rowid', 'nom');
     
+    print '<div class="underbanner clearboth"></div>';
+    print '<table class="border" width="100%">';
+
     if (! empty($conf->global->SOCIETE_USEPREFIX))  // Old not used prefix field
     {
         print '<tr><td>'.$langs->trans('Prefix').'</td><td colspan="3">'.$object->prefix_comm.'</td></tr>';
@@ -145,7 +146,7 @@ if ($socid > 0)
 
     if ($object->client)
     {
-        print '<tr><td>';
+        print '<tr><td class="titlefield">';
         print $langs->trans('CustomerCode').'</td><td colspan="3">';
         print $object->code_client;
         if ($object->check_codeclient() <> 0) print ' <font class="error">('.$langs->trans("WrongCustomerCode").')</font>';
@@ -154,14 +155,14 @@ if ($socid > 0)
 
     if ($object->fournisseur)
     {
-        print '<tr><td>';
+        print '<tr><td class="titlefield">';
         print $langs->trans('SupplierCode').'</td><td colspan="3">';
         print $object->code_fournisseur;
         if ($object->check_codefournisseur() <> 0) print ' <font class="error">('.$langs->trans("WrongSupplierCode").')</font>';
         print '</td></tr>';
     }
 
-    print '<tr><td valign="top">'.$langs->trans("Note");
+    print '<tr><td valign="top" class="titlefield">'.$langs->trans("Note");
     print '<br><input type="checkbox" id="alert_note" name="alert_note"'.((isset($_POST['alert_note'])?GETPOST('alert_note'):$object->alert_note)?' checked="checked"':'').'"> '.$langs->trans("Alert");
     print '</td>';
     print '<td valign="top">';
@@ -173,7 +174,7 @@ if ($socid > 0)
 
         // Editeur wysiwyg
         require_once(DOL_DOCUMENT_ROOT."/core/class/doleditor.class.php");
-        $doleditor=new DolEditor('note',$note,'',360,'dolibarr_notes','In',true,false,$conf->global->FCKEDITOR_ENABLE_SOCIETE,20,70);
+        $doleditor=new DolEditor('note',$note,'',360,'dolibarr_notes','In',true,false,$conf->global->FCKEDITOR_ENABLE_SOCIETE,20,'90%');
         $doleditor->Create(0,'.on( \'saveSnapshot\', function(e) { changed=true; });');
     }
     else
