@@ -89,7 +89,7 @@ $html=new Form($db);
 
 
 $linkback='<a href="'.DOL_URL_ROOT.'/admin/modules.php">'.$langs->trans("BackToModuleList").'</a>';
-print_fiche_titre($langs->trans("CabinetMedSetup"),$linkback,'setup');
+print_fiche_titre($langs->trans("CabinetMedSetup"),$linkback,'title_setup');
 print '<br>';
 
 dol_htmloutput_mesg($mesg);
@@ -99,6 +99,11 @@ $h=0;
 $head[$h][0] = $_SERVER["PHP_SELF"];
 $head[$h][1] = $langs->trans("Setup");
 $head[$h][2] = 'tabsetup';
+$h++;
+
+$head[$h][0] = 'cabinetmed_cons_extrafields.php';
+$head[$h][1] = $langs->trans("ExtraFields").' ('.$langs->trans("Patient").')';
+$head[$h][2] = 'tabconsextrafields';
 $h++;
 
 $head[$h][0] = 'about.php';
