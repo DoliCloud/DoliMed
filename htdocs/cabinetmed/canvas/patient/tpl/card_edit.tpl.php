@@ -157,7 +157,7 @@ $nothingvalue=0;
 $prospectonly=2;
 if (! empty($conf->global->SOCIETE_DISABLE_PROSPECTS))
 {
-    print '<input type="hidden" name="customerprospect" value="3">';
+    print '<input type="hidden" name="client" value="3">';
     print $langs->trans("Patient");
 }
 else

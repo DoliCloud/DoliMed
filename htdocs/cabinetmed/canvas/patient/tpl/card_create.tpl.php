@@ -153,7 +153,7 @@ dol_fiche_head('');
 <table class="border" style="width: 100%;">
 
 <tr>
-	<td><span class="fieldrequired"><?php echo $langs->trans('PatientName'); ?></span></td>
+	<td class="titlefield"><span class="fieldrequired"><?php echo $langs->trans('PatientName'); ?></span></td>
 	<td><input type="text" size="40" maxlength="60" name="name" value="<?php echo $object->name; ?>"></td>
     <td width="25%"><?php echo $langs->trans('PatientCode'); ?></td>
     <td width="25%">
@@ -192,7 +192,7 @@ dol_fiche_head('');
     }
 ?>
 <tr>
-	<td valign="top"><?php echo $langs->trans('Address'); ?></td>
+	<td class="titlefield tdtop"><?php echo $langs->trans('Address'); ?></td>
 	<td colspan="3"><textarea name="address" class="quatrevingtpercent" rows="3"><?php echo $object->address; ?></textarea></td>
 </tr>
 
