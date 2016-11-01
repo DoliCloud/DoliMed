@@ -87,7 +87,7 @@ class ActionsCabinetmed
         // Define cabinetmed context
         $cabinetmedcontext=0;
         if ((isset($parameters['id']) || isset($parameters['socid'])) && isset($parameters['currentcontext']) 
-            && in_array($parameters['currentcontext'],array('agendathirdparty','categorycard','commcard','projectthirdparty','infothirdparty','consumptionthirdparty','thirdpartynotification','thirdpartymargins','thirdpartycustomerprice')) && empty($action))
+            && in_array($parameters['currentcontext'],array('agendathirdparty','categorycard','commcard','projectthirdparty','infothirdparty','thirdpartybancard','consumptionthirdparty','thirdpartynotification','thirdpartymargins','thirdpartycustomerprice')) && empty($action))
         {
         	$thirdparty=new Societe($db);
         	$thirdparty->fetch($parameters['id']);
@@ -352,7 +352,7 @@ class ActionsCabinetmed
      *
      * @param	array	$parameters		Array of parameters
      * @param	Object	$object			Object
-     * @return	int						0 if KO, 1 to replace, -1 if KO
+     * @return	int						0 if nothing done, 1 to replace, -1 if KO
      */
     function formBuilddocOptions($parameters, $object)
     {
@@ -365,6 +365,11 @@ class ActionsCabinetmed
 
 		if ($object->canvas != 'patient@cabinetmed') return 0;
 
+		if (! preg_match('/documentcabinetmed/', $parameters['context']))
+		{
+            return 0;
+		}
+		
         $out='';
         $out.='<tr>';
         $out.='<td align="left" colspan="4" valign="top" class="formdoc">';

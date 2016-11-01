@@ -2,7 +2,7 @@
 CHARSET=UTF-8
 CabinetMed=Medical center
 Module101700Name=Medical center
-Module101700Desc=Module to manage a medical center (patients and consultations)
+Module101700Desc=DoliMed is a module to manage a medical center (patients and consultations)
 LastHour=Last hour
 LastDay=Last day
 LastWeek=Last week
