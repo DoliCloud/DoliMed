@@ -57,7 +57,7 @@ class modCabinetMed extends DolibarrModules
         // Module label (no space allowed), used if translation string 'ModuleXXXName' not found (where XXX is value of numeric property 'numero' of module)
         $this->name = preg_replace('/^mod/i','',get_class($this));
         // Module description, used if translation string 'ModuleXXXDesc' not found (where XXX is value of numeric property 'numero' of module)
-        $this->description = "Module CabinetMed";
+        $this->description = "Module DoliMed";
         
         $this->editor_name = 'NLTechno';
         $this->editor_url = 'http://www.dolimed.com';
@@ -86,7 +86,7 @@ class modCabinetMed extends DolibarrModules
         							'substitutions' => 1,
         							'menus' => 1,
         							'css' => array('/cabinetmed/css/styles.css.php'),
-        							'hooks' => array('searchform', 'thirdpartycard','commcard','categorycard','contactcard','actioncard','agendathirdparty','projectthirdparty','infothirdparty','consumptionthirdparty','thirdpartynotification','thirdpartymargins','thirdpartycustomerprice','documentcabinetmed','searchform','demo'));
+        							'hooks' => array('searchform', 'thirdpartycard','commcard','categorycard','contactcard','actioncard','agendathirdparty','projectthirdparty','infothirdparty','thirdpartybancard','consumptionthirdparty','thirdpartynotification','thirdpartymargins','thirdpartycustomerprice','documentcabinetmed','searchform','demo'));
 
         // Dependencies
         $this->depends = array('modSociete');       // List of modules id that must be enabled if this module is enabled
