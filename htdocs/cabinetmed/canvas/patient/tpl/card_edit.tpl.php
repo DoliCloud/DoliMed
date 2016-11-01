@@ -51,6 +51,24 @@ if ($modCodeClient->code_auto)
     $prefixCustomerIsUsed = $modCodeClient->verif_prefixIsUsed();
 }
 
+$module=$conf->global->SOCIETE_CODECLIENT_ADDON;
+if (substr($module, 0, 15) == 'mod_codeclient_' && substr($module, -3) == 'php')
+{
+    $module = substr($module, 0, dol_strlen($module)-4);
+}
+$dirsociete=array_merge(array('/core/modules/societe/'),$conf->modules_parts['societe']);
+foreach ($dirsociete as $dirroot)
+{
+    $res=dol_include_once($dirroot.$module.'.php');
+    if ($res) break;
+}
+$modCodeFournisseur = new $module($db);
+// On verifie si la balise prefix est utilisee
+if ($modCodeFournisseur->code_auto)
+{
+    $prefixSupplierIsUsed = $modCodeFournisseur->verif_prefixIsUsed();
+}
+
 
 if ($_POST["name"])
 {
@@ -129,21 +147,44 @@ dol_fiche_head('');
 print '<table class="border" width="100%">';
 
 // Name
-print '<tr><td width="25%"><span class="fieldrequired">'.$langs->trans('PatientName').'</span></td><td><input type="text" size="40" maxlength="60" name="name" value="'.$object->name.'"></td>';
+print '<tr><td class="titlefield"><span class="fieldrequired">'.$langs->trans('PatientName').'</span></td><td colspan="3"><input type="text" size="40" maxlength="60" name="name" value="'.$object->name.'"></td>';
+
 
 // Prospect/Customer
-print '<td width="25%">'.$langs->trans('PatientCode').'</td><td>';
+print '<tr><td>'.fieldLabel('ProspectCustomer','customerprospect',1).'</td>';
+print '<td class="maxwidthonsmartphone">';
+$nothingvalue=0;
+$prospectonly=2;
+if (! empty($conf->global->SOCIETE_DISABLE_PROSPECTS))
+{
+    print '<input type="hidden" name="client" value="3">';
+    print $langs->trans("Patient");
+}
+else
+{
+    if (! empty($conf->global->SOCIETE_DISABLE_CUSTOMERS)) $nothingvalue=1;  // if feature to disable customer is on, nothing will keep value 1 in database.
+    if (! empty($conf->global->SOCIETE_DISABLE_CUSTOMERS)) $prospectonly=3;  // if feature to disable customer is on, nothing will keep value 3 in database.
+    print '<select class="flat" name="client" id="customerprospect">';
+    if (empty($conf->global->SOCIETE_DISABLE_PROSPECTS)) print '<option value="'.$prospectonly.'"'.($object->client==$prospectonly?' selected':'').'>'.$langs->trans('Prospect').'</option>';
+    if (empty($conf->global->SOCIETE_DISABLE_PROSPECTS) && empty($conf->global->SOCIETE_DISABLE_CUSTOMERS)) print '<option value="3"'.($object->client==3?' selected':'').'>'.$langs->trans('ProspectCustomer').'</option>';
+    if (empty($conf->global->SOCIETE_DISABLE_CUSTOMERS)) print '<option value="1"'.($object->client==1?' selected':'').'>'.$langs->trans('Customer').'</option>';
+    print '<option value="'.$nothingvalue.'"'.($object->client==$nothingvalue?' selected':'').'>'.$langs->trans('NorProspectNorCustomer').'</option>';
+    print '</select>';
+}
+print '</td>';
+print '<td width="25%">'.fieldLabel('CustomerCode','customer_code').'</td><td width="25%">';
 
 print '<table class="nobordernopadding"><tr><td>';
 if ((!$object->code_client || $object->code_client == -1) && $modCodeClient->code_auto)
 {
     $tmpcode=$object->code_client;
-    if (empty($tmpcode) && $modCodeClient->code_auto) $tmpcode=$modCodeClient->getNextValue($object,0);
-    print '<input type="text" name="code_client" size="16" value="'.$tmpcode.'" maxlength="15">';
+    if (empty($tmpcode) && ! empty($object->oldcopy->code_client)) $tmpcode=$object->oldcopy->code_client; // When there is an error to update a thirdparty, the number for supplier and customer code is kept to old value.
+    if (empty($tmpcode) && ! empty($modCodeClient->code_auto)) $tmpcode=$modCodeClient->getNextValue($object,0);
+    print '<input type="text" name="code_client" id="customer_code" size="16" value="'.dol_escape_htmltag($tmpcode).'" maxlength="15">';
 }
 else if ($object->codeclient_modifiable())
 {
-    print '<input type="text" name="code_client" size="16" value="'.$object->code_client.'" maxlength="15">';
+    print '<input type="text" name="code_client" id="customer_code" size="16" value="'.$object->code_client.'" maxlength="15">';
 }
 else
 {
@@ -155,6 +196,45 @@ $s=$modCodeClient->getToolTip($langs,$object,0);
 print $form->textwithpicto('',$s,1);
 print '</td></tr></table>';
 
+print '</td></tr>';
+
+// Supplier
+if (! empty($conf->fournisseur->enabled) && ! empty($user->rights->fournisseur->lire))
+{
+    print '<tr>';
+    print '<td>'.fieldLabel('Supplier','fournisseur',1).'</td><td class="maxwidthonsmartphone">';
+    print $form->selectyesno("fournisseur",$object->fournisseur,1);
+    print '</td>';
+    print '<td>'.fieldLabel('SupplierCode','supplier_code').'</td><td>';
+
+    print '<table class="nobordernopadding"><tr><td>';
+    if ((!$object->code_fournisseur || $object->code_fournisseur == -1) && $modCodeFournisseur->code_auto)
+    {
+        $tmpcode=$object->code_fournisseur;
+        if (empty($tmpcode) && ! empty($object->oldcopy->code_fournisseur)) $tmpcode=$object->oldcopy->code_fournisseur; // When there is an error to update a thirdparty, the number for supplier and customer code is kept to old value.
+        if (empty($tmpcode) && ! empty($modCodeFournisseur->code_auto)) $tmpcode=$modCodeFournisseur->getNextValue($object,1);
+        print '<input type="text" name="code_fournisseur" id="supplier_code" size="16" value="'.dol_escape_htmltag($tmpcode).'" maxlength="15">';
+    }
+    else if ($object->codefournisseur_modifiable())
+    {
+        print '<input type="text" name="code_fournisseur" id="supplier_code" size="16" value="'.$object->code_fournisseur.'" maxlength="15">';
+    }
+    else
+    {
+        print $object->code_fournisseur;
+        print '<input type="hidden" name="code_fournisseur" value="'.$object->code_fournisseur.'">';
+    }
+    print '</td><td>';
+    $s=$modCodeFournisseur->getToolTip($langs,$object,1);
+    print $form->textwithpicto('',$s,1);
+    print '</td></tr></table>';
+
+    print '</td></tr>';
+}
+
+// Status
+print '<tr><td>'.fieldLabel('Status','status').'</td><td colspan="3">';
+print $form->selectarray('status', array('0'=>$langs->trans('ActivityCeased'),'1'=>$langs->trans('InActivity')),1);
 print '</td></tr>';
 
 // Barcode

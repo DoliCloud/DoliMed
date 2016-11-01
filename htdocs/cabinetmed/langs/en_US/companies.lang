@@ -40,7 +40,7 @@ DefaultContact=Default contact
 ListOfPatientsContacts=List of patient contacts
 PatientCode=Patient code
 WrongPatientCode=Wrong patient code
-CustomerCode=Code thirdparty/patient
+CustomerCode=Third party/patient code
 CustomerCodeDesc=Code patient unique for each patient
 RequiredIfCustomer=Required if a third party is a patient
 ShowContact=Show contact
@@ -66,8 +66,6 @@ PatientsArea=Patients area
 LastModifiedThirdParties=Last %s modified thirdparties or patients
 LastModifiedPatients=Last %s modified patients
 UniquePatients=Total of unique patient
-InActivity=Followed
-ActivityCeased=No more followed
 MonkeyNumRefModelDesc=Return number with mask %syymm-nnnn for patient code and %syymm-nnnn for supplier codes where yy is year, mm is month and nnnn is a sequence with no hole and no back to 0.
 # Leopard
 LeopardNumRefModelDesc=Free code patient with no check. Can be modified at any time.

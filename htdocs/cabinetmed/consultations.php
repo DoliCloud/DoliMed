@@ -67,14 +67,28 @@ if (! $sortfield) $sortfield='t.datecons';
 if (! $sortorder) $sortorder='DESC';
 $limit = GETPOST('limit')?GETPOST('limit','int'):$conf->liste_limit;
 
+$object = new Patient($db);
 $consult = new CabinetmedCons($db);
+$extrafields = new ExtraFields($db);
+
+// fetch optionals attributes and labels
+$extralabels=$extrafields->fetch_name_optionals_label($consult->table_element);
+
+// Initialize technical object to manage hooks of thirdparties. Note that conf->hooks_modules contains array array
+$hookmanager->initHooks(array('thirdpartycard','consultationcard','globalcard'));
+
 
 $now=dol_now();
+
 
 
 /*
  * Actions
  */
+
+$parameters=array('id'=>$socid, 'objcanvas'=>$objcanvas);
+$reshook=$hookmanager->executeHooks('doActions',$parameters,$consult,$action);    // Note that $action and $consult may have been modified by some hooks
+if ($reshook < 0) setEventMessages($hookmanager->error, $hookmanager->errors, 'errors');
 
 // Delete consultation
 if (GETPOST("action") == 'confirm_delete' && GETPOST("confirm") == 'yes' && $user->rights->societe->supprimer)
@@ -213,6 +227,14 @@ if ($action == 'add' || $action == 'update')
             $mesgarray[]=$langs->trans("ErrorFieldRequired",$langs->transnoentities("DiagnostiqueLesionnel"));
         }
 
+        // Fill array 'array_options' with data from add form
+        if (! $error)
+        {
+            $ret = $extrafields->setOptionalsFromPost($extralabels, $consult);
+            if ($ret < 0) $error++;
+        }
+        
+        
         $db->begin();
 
         if (! $error)
@@ -228,7 +250,6 @@ if ($action == 'add' || $action == 'update')
 
                 if (! $error)
                 {
-                    $object = new Patient($db);
                     $object->fetch($consult->fk_soc);
 
                     foreach(array('CHQ','CB','LIQ','VIR') as $key)
@@ -260,7 +281,6 @@ if ($action == 'add' || $action == 'update')
             }
             if ($action == 'update')
             {
-                $object = new Patient($db);
                 $result=$object->fetch($consult->fk_soc);
 
                 $result=$consult->update($user);
@@ -380,24 +400,26 @@ llxHeader('',$langs->trans("Consultation"));
 
 if ($socid > 0)
 {
-    $object = new Patient($db);
     $result=$object->fetch($socid);
 	if ($result < 0) { dol_print_error('',$object->error); }
 
-    if ($id && ! $consult->id)
+    if ($id && ! ($consult->id > 0))
     {
         $result=$consult->fetch($id);
         if ($result < 0) dol_print_error($db,$consult->error);
-
+        
         $result=$consult->fetch_bankid();
         if ($result < 0) dol_print_error($db,$consult->error);
     }
 
+    
 	/*
 	 * Affichage onglets
 	 */
     if ($conf->notification->enabled) $langs->load("mails");
 
+    $soc=$object;  // required to have test declared in module successfull
+    
 	$head = societe_prepare_head($object);
 
 	// General
@@ -411,14 +433,15 @@ if ($socid > 0)
 
 	dol_fiche_head($head, 'tabconsultations', $langs->trans("Patient"),0,'patient@cabinetmed');
 	
-	print '<table class="border" width="100%">';
-
     $linkback = '<a href="'.dol_buildpath('/cabinetmed/patients.php', 1).'">'.$langs->trans("BackToList").'</a>';
 	dol_banner_tab($object, 'socid', $linkback, ($user->societe_id?0:1), 'rowid', 'nom');
 
-    if ($object->client)
+    print '<div class="underbanner clearboth"></div>';
+	print '<table class="border" width="100%">';
+
+	if ($object->client)
     {
-        print '<tr><td>';
+        print '<tr><td class="titlefield">';
         print $langs->trans('CustomerCode').'</td><td colspan="3">';
         print $object->code_client;
         if ($object->check_codeclient() <> 0) print ' <font class="error">('.$langs->trans("WrongCustomerCode").')</font>';
@@ -427,7 +450,7 @@ if ($socid > 0)
 
     if ($object->fournisseur)
     {
-        print '<tr><td>';
+        print '<tr><td class="titlefield">';
         print $langs->trans('SupplierCode').'</td><td colspan="3">';
         print $object->code_fournisseur;
         if ($object->check_codefournisseur() <> 0) print ' <font class="error">('.$langs->trans("WrongSupplierCode").')</font>';
@@ -688,7 +711,7 @@ if ($socid > 0)
         print '<tr><td style="width: 160px" class="fieldrequired">';
         print $langs->trans("Date").': ';
         print '</td><td align="left">';
-        $form->select_date($consult->datecons,'cons');
+        $form->select_date(($consult->datecons?$consult->datecons:-1),'cons', 0, 0, 0, '', 1, 1);
         print '</td></tr>';
         print '</table>';
 
@@ -833,6 +856,16 @@ if ($socid > 0)
         print '<textarea name="comment" id="comment" class="flat" cols="40" rows="'.($nboflines-1).'">'.$consult->comment.'</textarea>';
         print '</td></tr>';
 
+        // Other attributes
+        $parameters=array();
+        $reshook=$hookmanager->executeHooks('formObjectOptions',$parameters,$consult,$action);    // Note that $action and $object may have been modified by hook
+        print $hookmanager->resPrint;
+        if (empty($reshook) && ! empty($extrafields->attribute_label))
+        {
+            $params=array('colspan'=>1);
+            print $consult->showOptionals($extrafields,'edit',$params);
+        }
+        
         print '</table>';
 
         //print '</td><td valign="top">';
@@ -894,6 +927,7 @@ if ($socid > 0)
         }
 
 
+        // Payment area
         print '<table class="notopnoleftnoright" id="paymentsbox" width="100%">';
 
         // Cheque
@@ -940,6 +974,7 @@ if ($socid > 0)
             $form->select_comptes(GETPOST('bankespeceto')?GETPOST('bankespeceto'):($consult->bank['LIQ']['account_id']?$consult->bank['LIQ']['account_id']:$defaultbankaccountliq),'bankespeceto',2,'courant = 2',1);
         }
         print '</td></tr>';
+        
         // Third party
         print '<tr class="cabpaymentthirdparty"><td>';
         print $langs->trans("PaymentTypeThirdParty").'</td><td>';

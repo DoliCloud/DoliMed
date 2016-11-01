@@ -43,7 +43,11 @@ $formadmin=new FormAdmin($GLOBALS['db']);
 
 
 
-$object->client=1;
+$object->client=-1;
+if (empty($conf->global->SOCIETE_DISABLE_CUSTOMERS) && ! empty($conf->global->SOCIETE_DISABLE_PROSPECTS)) $object->client=1;
+if (! empty($conf->global->SOCIETE_DISABLE_CUSTOMERS) && empty($conf->global->SOCIETE_DISABLE_PROSPECTS)) $object->client=2;
+if (! empty($conf->global->SOCIETE_DISABLE_CUSTOMERS) && ! empty($conf->global->SOCIETE_DISABLE_PROSPECTS)) $object->client=3;
+if (! empty($conf->global->THIRDPARTY_CUSTOMERPROSPECT_BY_DEFAULT))  { $object->client=3; }
 
 $object->name=$_POST["name"];
 $object->lastname=$_POST["name"];
@@ -139,7 +143,7 @@ dol_htmloutput_errors($GOBALS['error'],$GLOBALS['errors']);
 <input type="hidden" name="token" value="<?php echo $_SESSION['newtoken']; ?>">
 <input type="hidden" name="private" value="0">
 <input type="hidden" name="status" value="1">
-<input type="hidden" name="client" value="1">
+<input type="hidden" name="client" value="<?php echo $object->client; ?>">
 <?php if ($modCodeClient->code_auto || $modCodeFournisseur->code_auto) print '<input type="hidden" name="code_auto" value="1">'; 
 
 dol_fiche_head('');
@@ -149,7 +153,7 @@ dol_fiche_head('');
 <table class="border" style="width: 100%;">
 
 <tr>
-	<td><span class="fieldrequired"><?php echo $langs->trans('PatientName'); ?></span></td>
+	<td class="titlefield"><span class="fieldrequired"><?php echo $langs->trans('PatientName'); ?></span></td>
 	<td><input type="text" size="40" maxlength="60" name="name" value="<?php echo $object->name; ?>"></td>
     <td width="25%"><?php echo $langs->trans('PatientCode'); ?></td>
     <td width="25%">
@@ -166,8 +170,29 @@ dol_fiche_head('');
     </td>
 </tr>
 
+<?php 
+
+    // Prospect/Customer
+    if (! empty($conf->global->SOCIETE_DISABLE_CUSTOMERS) && ! empty($conf->global->SOCIETE_DISABLE_PROSPECTS))
+    {
+        print '<!-- -->';
+    }
+    else
+    {
+        print '<tr><td class="titlefieldcreate">'.fieldLabel('ProspectCustomer','customerprospect',1).'</td>';
+        print '<td class="maxwidthonsmartphone">';
+        $selected=isset($_POST['client'])?GETPOST('client'):$object->client;
+        print '<select class="flat" name="client" id="customerprospect">';
+        if (GETPOST("type") == '') print '<option value="-1"></option>';
+        if (empty($conf->global->SOCIETE_DISABLE_PROSPECTS)) print '<option value="2"'.($selected==2?' selected':'').'>'.$langs->trans('Prospect').'</option>';
+        if (empty($conf->global->SOCIETE_DISABLE_PROSPECTS) && empty($conf->global->SOCIETE_DISABLE_CUSTOMERS)) print '<option value="3"'.($selected==3?' selected':'').'>'.$langs->trans('ProspectCustomer').'</option>';
+        if (empty($conf->global->SOCIETE_DISABLE_CUSTOMERS)) print '<option value="1"'.($selected==1?' selected':'').'>'.$langs->trans('Customer').'</option>';
+        print '<option value="0"'.((string) $selected == '0'?' selected':'').'>'.$langs->trans('NorProspectNorCustomer').'</option>';
+        print '</select></td>';
+    }
+?>
 <tr>
-	<td valign="top"><?php echo $langs->trans('Address'); ?></td>
+	<td class="titlefield tdtop"><?php echo $langs->trans('Address'); ?></td>
 	<td colspan="3"><textarea name="address" class="quatrevingtpercent" rows="3"><?php echo $object->address; ?></textarea></td>
 </tr>
 

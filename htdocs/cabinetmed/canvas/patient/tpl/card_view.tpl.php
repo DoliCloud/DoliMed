@@ -59,24 +59,26 @@ if ($action == 'delete' || ($conf->use_javascript_ajax && empty($conf->dol_use_j
 
 dol_htmloutput_errors($GLOBALS['error'],$GLOBALS['errors']);
 
-print '<table class="border" width="100%">';
 
 $linkback = '<a href="'.dol_buildpath('/cabinetmed/patients.php', 1).'">'.$langs->trans("BackToList").'</a>';
 dol_banner_tab($object, 'socid', $linkback, ($user->societe_id?0:1), 'rowid', 'nom');
 
+
+print '<div class="underbanner clearboth"></div>';
+print '<table class="border" width="100%">';
 if (! empty($conf->global->SOCIETE_USEPREFIX))  // Old not used prefix field
 {
     print '<tr><td>'.$langs->trans('Prefix').'</td><td colspan="3">'.$object->prefix_comm.'</td></tr>';
 }
 
-if ($object->client)
-{
-    print '<tr><td>';
-    print $langs->trans('PatientCode').'</td><td colspan="3">';
+//if ($object->client)
+//{
+    print '<tr><td class="titlefield">';
+    print $langs->trans('CustomerCode').'</td><td colspan="3">';
     print $object->code_client;
     if ($object->check_codeclient() <> 0) print ' <font class="error">('.$langs->trans("WrongPatientCode").')</font>';
     print '</td></tr>';
-}
+//}
 
 // Barcode
 if ($conf->global->MAIN_MODULE_BARCODE)

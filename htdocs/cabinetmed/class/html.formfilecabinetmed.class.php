@@ -144,7 +144,7 @@ class FormFileCabinetmed
         	if (empty($useinecm)) $colspan++;
 
             $var=!$var;
-        	print '<tr '.$bc[$var].'><td colspan="'.$colspan.'">';
+        	print '<tr '.$bc[$var].'><td colspan="'.$colspan.'" class="opacitymedium">';
             if (empty($textifempty)) print $langs->trans("NoFileFound");
             else print $textifempty;
             print '</td></tr>';

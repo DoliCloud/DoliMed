@@ -66,8 +66,6 @@ PatientsArea=Espace Patients
 LastModifiedThirdParties=Les %s derniers tiers et patients modifiés
 LastModifiedPatients=Les %s derniers patients modifiés
 UniquePatients=Total de patients uniques
-InActivity=Suivi
-ActivityCeased=Suivi terminé
 MonkeyNumRefModelDesc=Renvoie le numéro sous la forme %syymm-nnnn pour les codes patient et %syymm-nnnn pour les codes fournisseurs où yy est l'année, mm le mois et nnnn un compteur séquentiel sans rupture et sans remise à 0.
 # Leopard
 LeopardNumRefModelDesc=Code patient libre sans vérification. Peut être modifié à tout moment.

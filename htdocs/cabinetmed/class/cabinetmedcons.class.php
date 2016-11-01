@@ -182,7 +182,10 @@ class CabinetmedCons extends CommonObject
 		{
 			$this->id = $this->db->last_insert_id(MAIN_DB_PREFIX."cabinetmed_cons");
 
-			if (! $notrigger)
+			$result=$this->insertExtraFields();
+			if ($result < 0) $error++;
+				
+			if (! $error && ! $notrigger)
 			{
 				// Uncomment this and change MYOBJECT to your own tag if you
 				// want this action call a trigger.
@@ -292,6 +295,13 @@ class CabinetmedCons extends CommonObject
 				$this->date_c = $this->db->jdate($obj->date_c);
 				$this->date_m = $this->db->jdate($obj->date_m);
 				$this->num_cheque = $obj->num_chq;
+				
+				// Retrieve all extrafields for invoice
+				// fetch optionals attributes and labels
+				require_once DOL_DOCUMENT_ROOT.'/core/class/extrafields.class.php';
+				$extrafields=new ExtraFields($this->db);
+				$extralabels=$extrafields->fetch_name_optionals_label($this->table_element,true);
+				$this->fetch_optionals($this->id,$extralabels);
 			}
 			$this->db->free($resql);
 
@@ -422,6 +432,15 @@ class CabinetmedCons extends CommonObject
 
 		if (! $error)
 		{
+		    if (empty($conf->global->MAIN_EXTRAFIELDS_DISABLED)) // For avoid conflicts if trigger used
+		    {
+		        $result=$this->insertExtraFields();
+		        if ($result < 0)
+		        {
+		            $error++;
+		        }
+		    }
+		    
 			if (! $notrigger)
 			{
 				// Uncomment this and change MYOBJECT to your own tag if you

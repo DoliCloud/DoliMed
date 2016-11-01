@@ -63,21 +63,11 @@ if ($action == 'update')
     $res=dolibarr_set_const($db, 'CABINETMED_RHEUMATOLOGY_ON', GETPOST("CABINETMED_RHEUMATOLOGY_ON"), 'texte', 0, '', $conf->entity);
 
    	$res=dolibarr_set_const($db, 'CABINETMED_HIDETHIRPARTIESMENU', GETPOST("CABINETMED_HIDETHIRPARTIESMENU"), 'texte', 0, '', $conf->entity);
-	if (GETPOST("CABINETMED_HIDETHIRPARTIESMENU"))
-	{
-		$res=dolibarr_set_const($db, 'SOCIETE_DISABLE_CUSTOMERS', 1, 'texte', 1, '', $conf->entity);
-		$res=dolibarr_set_const($db, 'SOCIETE_DISABLE_PROSPECTS', 1, 'texte', 1, '', $conf->entity);
-		//$res=dolibarr_set_const($db, 'SOCIETE_DISABLE_CUSTOMERS_STATS', 1, 'texte', 1, '', $conf->entity);	// We need this one for stats on patients
-		$res=dolibarr_set_const($db, 'SOCIETE_DISABLE_PROSPECTS_STATS', 1, 'texte', 1, '', $conf->entity);
-	}
-	else
-	{
-		$res=dolibarr_set_const($db, 'SOCIETE_DISABLE_CUSTOMERS', 0, 'texte', 1, '', $conf->entity);
-		$res=dolibarr_set_const($db, 'SOCIETE_DISABLE_PROSPECTS', 0, 'texte', 1, '', $conf->entity);
-		//$res=dolibarr_set_const($db, 'SOCIETE_DISABLE_CUSTOMERS_STATS', 1, 'texte', 1, '', $conf->entity);	// We need this one for stats on patients
-		$res=dolibarr_set_const($db, 'SOCIETE_DISABLE_PROSPECTS_STATS', 0, 'texte', 1, '', $conf->entity);
-	}
-   	$res=dolibarr_set_const($db, 'MAIN_SEARCHFORM_SOCIETE', GETPOST("MAIN_SEARCHFORM_SOCIETE")?0:1, 'texte', 0, '', $conf->entity);        // We also hide search of companies
+
+   	$res=dolibarr_set_const($db, 'SOCIETE_DISABLE_CUSTOMERS', GETPOST("SOCIETE_DISABLE_CUSTOMERS"), 'texte', 1, '', $conf->entity);
+	$res=dolibarr_set_const($db, 'SOCIETE_DISABLE_PROSPECTS', GETPOST("SOCIETE_DISABLE_PROSPECTS"), 'texte', 1, '', $conf->entity);
+
+	$res=dolibarr_set_const($db, 'MAIN_SEARCHFORM_SOCIETE', GETPOST("MAIN_SEARCHFORM_SOCIETE")?0:1, 'texte', 0, '', $conf->entity);        // We also hide search of companies
 
     $res=dolibarr_set_const($db, 'CABINETMED_BANK_PATIENT_REQUIRED', GETPOST("CABINETMED_BANK_PATIENT_REQUIRED"), 'texte', 0, '', $conf->entity);
 
@@ -99,7 +89,7 @@ $html=new Form($db);
 
 
 $linkback='<a href="'.DOL_URL_ROOT.'/admin/modules.php">'.$langs->trans("BackToModuleList").'</a>';
-print_fiche_titre($langs->trans("CabinetMedSetup"),$linkback,'setup');
+print_fiche_titre($langs->trans("CabinetMedSetup"),$linkback,'title_setup');
 print '<br>';
 
 dol_htmloutput_mesg($mesg);
@@ -109,6 +99,11 @@ $h=0;
 $head[$h][0] = $_SERVER["PHP_SELF"];
 $head[$h][1] = $langs->trans("Setup");
 $head[$h][2] = 'tabsetup';
+$h++;
+
+$head[$h][0] = 'cabinetmed_cons_extrafields.php';
+$head[$h][1] = $langs->trans("ExtraFields").' ('.$langs->trans("Patient").')';
+$head[$h][2] = 'tabconsextrafields';
 $h++;
 
 $head[$h][0] = 'about.php';
@@ -136,8 +131,13 @@ print '<td>'.$html->selectyesno('CABINETMED_RHEUMATOLOGY_ON',$conf->global->CABI
 print '</tr>';
 
 $var=!$var;
-print '<tr '.$bc[$var].'><td>'.$langs->trans("HideThirdPartiesMenu").'</td>';
-print '<td>'.$html->selectyesno('CABINETMED_HIDETHIRPARTIESMENU',$conf->global->CABINETMED_HIDETHIRPARTIESMENU,1).'</td>';
+print '<tr '.$bc[$var].'><td>'.$langs->trans("HideCustomerFeatures").'</td>';
+print '<td>'.$html->selectyesno('SOCIETE_DISABLE_CUSTOMERS',$conf->global->SOCIETE_DISABLE_CUSTOMERS,1).'</td>';
+print '</tr>';
+
+$var=!$var;
+print '<tr '.$bc[$var].'><td>'.$langs->trans("HideProspectFeatures").'</td>';
+print '<td>'.$html->selectyesno('SOCIETE_DISABLE_PROSPECTS',$conf->global->SOCIETE_DISABLE_PROSPECTS,1).'</td>';
 print '</tr>';
 
 $var=!$var;
