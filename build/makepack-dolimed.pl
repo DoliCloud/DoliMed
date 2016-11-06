@@ -385,6 +385,7 @@ if ($nboftargetok) {
 	    $ret=`rm -fr $BUILDROOT/$PROJECT/documents`;
 	    $ret=`rm -fr $BUILDROOT/$PROJECT/htdocs/document`;
 	    $ret=`rm -fr $BUILDROOT/$PROJECT/htdocs/documents`;
+	    $ret=`rm -fr $BUILDROOT/$PROJECT/htdocs/dolimed*`;
 	    $ret=`rm -fr $BUILDROOT/$PROJECT/htdocs/bootstrap*`;
 	    $ret=`rm -fr $BUILDROOT/$PROJECT/htdocs/custom*`;
 	    $ret=`rm -fr $BUILDROOT/$PROJECT/htdocs/multicompany*`;
