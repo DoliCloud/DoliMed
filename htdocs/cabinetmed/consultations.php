@@ -711,7 +711,7 @@ if ($socid > 0)
         print '<tr><td style="width: 160px" class="fieldrequired">';
         print $langs->trans("Date").': ';
         print '</td><td align="left">';
-        $form->select_date(($consult->datecons?$consult->datecons:-1),'cons', 0, 0, 0, '', 1, 1);
+        $form->select_date(($consult->datecons?$consult->datecons:''),'cons', 0, 0, 0, '', 1, 1);
         print '</td></tr>';
         print '</table>';
 
@@ -729,6 +729,8 @@ if ($socid > 0)
             print '<input type="radio" class="flat" name="typepriseencharge" value="CMU"'.($consult->typepriseencharge=='CMU'?' checked="checked"':'').'> CMU';
             print ' &nbsp; ';
             print '<input type="radio" class="flat" name="typepriseencharge" value="AME"'.($consult->typepriseencharge=='AME'?' checked="checked"':'').'> AME';
+            print ' &nbsp; ';
+            print '<input type="radio" class="flat" name="typepriseencharge" value="ACS"'.($consult->typepriseencharge=='ACS'?' checked="checked"':'').'> ACS';
         }
 
         //print '</td></tr>';

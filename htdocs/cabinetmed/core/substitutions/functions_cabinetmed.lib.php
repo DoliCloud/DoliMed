@@ -272,7 +272,7 @@ function cabinetmed_completesubstitutionarray(&$substitutionarray,$langs,$object
         $substitutionarray['patient_socialnum']=$object->tva_intra;
     }        
         
-    // Replace contact tabs fo GENERALREF if defined
+    // Replace contact tabs with GENERALREF if defined
     $substitutionarray['contact_title']='';
     $substitutionarray['contact_lastname']='';
     $substitutionarray['contact_firstname']='';
@@ -297,8 +297,9 @@ function cabinetmed_completesubstitutionarray(&$substitutionarray,$langs,$object
                     $substitutionarray['contact_firstname']=$contact->firstname;
                     $substitutionarray['contact_zip']=$contact->zip;
                     $substitutionarray['contact_town']=$contact->town;
-                    $substitutionarray['contact_address']=$contact->address;
+                    $substitutionarray['contact_address']=preg_replace('/\n/',', ',$contact->address);
                     $substitutionarray['contact_email']=$contact->email;
+                    var_dump($substitutionarray['contact_address']);exit;
                     break;
                 }
             }
