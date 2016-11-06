@@ -299,6 +299,7 @@ function cabinetmed_completesubstitutionarray(&$substitutionarray,$langs,$object
                     $substitutionarray['contact_town']=$contact->town;
                     $substitutionarray['contact_address']=preg_replace('/\n/',', ',$contact->address);
                     $substitutionarray['contact_email']=$contact->email;
+                    var_dump($substitutionarray['contact_address']);exit;
                     break;
                 }
             }
