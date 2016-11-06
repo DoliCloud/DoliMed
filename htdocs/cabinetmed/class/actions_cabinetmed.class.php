@@ -480,5 +480,27 @@ class ActionsCabinetmed
 
         return 0;
     }
+    
+    
+    
+    /**
+     * Complete object before generationg PDF
+     *
+     * @param	array	$parameters		Array of parameters
+     * @param   mixed	&$object      	Object
+     * @param   string	&$action      	'add', 'update', 'view'
+     * @param   string	&$hookmanager  	'add', 'update', 'view'
+     * @return	string					HTML content to add by hook
+     */
+    function beforePDFCreation($parameters, &$object, &$action, &$hookmanager)
+    {
+        global $langs, $user, $conf, $db;
+    
+        //if (! in_array($object->element, array('fichinter','facture','invoice','order','commande','propal'))) return;
+
+    
+        //$object->note_public=dol_concatdesc($text,$object->note_public);
+    }
+    
 }
 
