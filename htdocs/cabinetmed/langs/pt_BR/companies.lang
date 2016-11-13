@@ -40,7 +40,7 @@ DefaultContact=Contato padrão
 ListOfPatientsContacts=Lista de contatos do pacientes
 PatientCode=Código do paciente
 WrongPatientCode=Código do paciente errado
-CustomerCode=Código do terceiro/paciente
+CustomerCode=Third party/patient code
 CustomerCodeDesc=Código do paciente único para cada paciente
 RequiredIfCustomer=Requerido se um terceiro é um paciente
 ShowContact=Mostrar contato
@@ -66,8 +66,6 @@ PatientsArea=Área de pacientes
 LastModifiedThirdParties=Últimos %s terceiros ou pacientes modificados
 LastModifiedPatients=Últimos %s pacientes modificados
 UniquePatients=Total de paciente único
-InActivity=Seguido
-ActivityCeased=Não mais seguido
 MonkeyNumRefModelDesc=Entre número com formato %syymm-nnnn para o código do paciente e %syymm-nnnn para códigos de fornecedor, onde yy é o ano, mm é o mês e nnnn é uma sequência sem espaço e sem 0 a esquerda.
 # Leopard
 LeopardNumRefModelDesc=Código do paciente livre de verificação. Pode ser modificado a qualquer momento.

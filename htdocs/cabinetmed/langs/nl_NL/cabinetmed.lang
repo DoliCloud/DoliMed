@@ -1,8 +1,8 @@
 # Dolibarr language file - en_US - cabinetmed
 CHARSET=UTF-8
-CabinetMed=Medical center
+CabinetMed=Medisch centrum
 Module101700Name=Medisch centrum
-Module101700Desc=Module om een medisch centrum te beheren (patiënten en consulten)
+Module101700Desc=DoliMed is a module to manage a medical center (patients and consultations)
 LastHour=Laatste uur
 LastDay=Laatste dag
 LastWeek=Laatste week
@@ -158,10 +158,12 @@ MoreCloudHosting=Om Dolibarr online te gebruiken kun je het beste keizen voor de
 MoreCloudHostingLink=<a target="_blank" href="http://www.dolicloud.com">Klik hier voor meer informatie</a>
 CompatibleWithDoliDroid=Deze module is compatiebel met DoliDroid, de Android app voor Dolibarr.
 HideThirdPartiesMenu=Verberg het derden menu (alle klanten zijn patiënten)
+HideCustomerFeatures=Hide features to manage customers (you don't need to make invoices).
+HideProspectFeatures=Hide features to manage prospects (you don't need to make proposals).
 RecordCreatedFromRDV=Outcome created from rendez-vous %s (%s)
 ConsultCreatedBy=Consult gecreëerd door
 ConsultTooOld=Can't modify consultation. This one is older than <b>%s</b> days. Note: Option CABINETMED_DELAY_TO_LOCK_RECORD can be added/modified by a technical administrator to modify/remove this delay.
-HeightPeople=Height
-WeigthPeople=Weigth
-PatientDeleted=Patient "%s" was deleted from database.
-DocumentsPatient=Documents/Attached files
+HeightPeople=Hoogte
+WeigthPeople=Gewicht
+PatientDeleted=Patiënt "%s" werd verwijderd van de database
+DocumentsPatient=Documenten/Bijlage bestanden

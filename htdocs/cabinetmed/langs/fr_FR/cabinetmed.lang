@@ -2,7 +2,7 @@
 CHARSET=UTF-8
 CabinetMed=Cabinet médical
 Module101700Name=Cabinet médical
-Module101700Desc=Module pour gérer un cabinet médical libéral (patients et consultations)
+Module101700Desc=DoliMed est un module pour gérer un cabinet médical libéral (patients et consultations)
 LastHour=Last hour
 LastDay=Last day
 LastWeek=Last week
@@ -158,6 +158,8 @@ MoreCloudHosting=Pour une utilisation en ligne de Dolibarr, optez pour l'héberg
 MoreCloudHostingLink=<a target="_blank" href="http://www.dolicloud.com">Cliquez ici pour plus d'information</a>
 CompatibleWithDoliDroid=Ce module est aussi compatible avec DoliDroid, l'application Android pour Dolibarr.
 HideThirdPartiesMenu=Cacher le menu Tiers (pas d'autres clients que des patients). Si vous gérez des fournisseurs (module Fournisseur actif), l'entrée de menu Tiers restera toutefois visible pour garder les fonctions fournisseurs accessibles.
+HideCustomerFeatures=Cacher les fonctionnalités pour gérer les clients (vous n'avez pas besoin de faire des factures).
+HideProspectFeatures=Cacher les fonctionnalités pour gérer les prospects (vous n'avez pas besoin de faire des propositions).
 RecordCreatedFromRDV=Consultation créée suite au rendez-vous %s (%s)
 ConsultCreatedBy=Consultation créée par
 ConsultTooOld=Impossible de modifier la consultation, cette dernière est plus vieille que <b>%s</b> jours. Rem: L'option CABINETMED_DELAY_TO_LOCK_RECORD peut être modifier/ajouter par un administrateur informatique pour modifier/supprimer ce délai.

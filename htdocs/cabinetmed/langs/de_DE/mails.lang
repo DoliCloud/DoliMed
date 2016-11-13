@@ -2,4 +2,4 @@
 CHARSET=UTF-8
 MailingModuleDescContactCompanies=Liste der Partner/Patienten (nach Typ)
 MailingModuleDescContactsByCompanyCategory=Liste der Partner/Patienten (nach Kategorie)
-MailingModuleDescContactsByFunction=Contacts of thirdparties/patients (by speciality)
+MailingModuleDescContactsByFunction=Liste der Partner/Patienten (nach Fachbereich)
