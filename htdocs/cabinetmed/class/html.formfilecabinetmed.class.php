@@ -126,7 +126,7 @@ class FormFileCabinetmed
                 }
                 // Send by email
                 print '<td align="right">';
-                print '<a href="'.$_SERVER["PHP_SELF"].'?action=presend&mode=init&socid='.$object->id.'&urlfile='.urlencode($file['name']).'">';
+                print '<a href="'.$_SERVER["PHP_SELF"].'?action=presend&mode=init&socid='.$object->id.'&urlfile='.urlencode($file['name']).'#sendform">';
                 print img_object($langs->trans("SendOutcomeByEmail"),'email');
                 print '</a>';
                 print '</td>';
