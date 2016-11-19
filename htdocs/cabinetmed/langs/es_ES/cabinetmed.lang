@@ -2,7 +2,7 @@
 CHARSET=UTF-8
 CabinetMed=Consulta médica
 Module101700Name=Consulta médica
-Module101700Desc=Módulo para gestionar una consulta médica
+Module101700Desc=DoliMed is a module to manage a medical center (patients and consultations)
 LastHour=Última hora
 LastDay=Último día
 LastWeek=Última semana
@@ -158,10 +158,12 @@ MoreCloudHosting=Para usar Dolibarr en línea , puede optar por DoliCloud
 MoreCloudHostingLink=<a target="_blank" href="http://www.dolicloud.com">Haga clic aquí para más información</a>
 CompatibleWithDoliDroid=Este módulo es compatible con DoliDroid, la aplicación Android para Dolibarr
 HideThirdPartiesMenu=Ocultar menú terceros (todos los clientes son pacientes). Si gestiona proveedores (módulo Proveedores activado), este menú debe mantenerse visible para dejar accesible la gestión de proveedores
+HideCustomerFeatures=Hide features to manage customers (you don't need to make invoices).
+HideProspectFeatures=Hide features to manage prospects (you don't need to make proposals).
 RecordCreatedFromRDV=Resultado creado a partir de la cita %s (%s)
 ConsultCreatedBy=Consulta creada por
 ConsultTooOld=No puede modificar la consulta. Tiene una antigüedad de  más de <b>%s</b> días. Nota: Un administrador del sistema puede añadir/modificar la opción CABINETMED_DELAY_TO_LOCK_RECORD para modificar/eliminar este retardo
 HeightPeople=Tamaño
 WeigthPeople=Peso
 PatientDeleted=El paciente "%s" ha sido eliminado.
-DocumentsPatient=Documents/Attached files
+DocumentsPatient=Documentos/Archivos adjuntos

@@ -2,7 +2,7 @@
 CHARSET=UTF-8
 ExtraFieldsThirdParties=Complementary attributes (thirdparty/patient)
 ExtraFieldsContacts=Complementary attributes (contacts)
-UseSearchToSelectCompany= Χρησιμοποιείστε ένα πεδδίο με αυτόματη συμπλήρωση για την επιλογή ενός ασθενούς (σε αντίθεση με πλαίσιο λίστας)
+UseSearchToSelectCompany= Χρησιμοποιείστε ένα πεδίο με αυτόματη συμπλήρωση για την επιλογή ενός ασθενούς (σε αντίθεση με πλαίσιο λίστας)
 ActivityStateToSelectCompany= Προσθήκη επιλογής φίλτρου για εμφάνιση/απόκρυψη ασθενών που πληρούν τα κριτήρια ή όχι
 ViewFullDateActions= Εμφάνιση πλήρους ημερομηνίας 
 DaylingSavingTime=Dayling time (user)

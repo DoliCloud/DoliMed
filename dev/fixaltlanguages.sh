@@ -29,7 +29,7 @@ fi
 # To fix
 if [ "x$1" = "xfix" ]
 then
-    for dir in `find htdocs/langs/$3* -type d`
+    for dir in `find htdocs/*/langs/$3* -type d`
     do
     	dirshort=`basename $dir`
     	
@@ -52,8 +52,8 @@ then
     			echo $dirshort is an alternative language of $reflang
     			echo ./dev/translation/strip_language_file.php $aa"_"$aaupper $aa"_"$bb $2
     			./dev/translation/strip_language_file.php $aa"_"$aaupper $aa"_"$bb $2
-    			for fic in `ls htdocs/langs/${aa}_${bb}/*.delta`; do f=`echo $fic | sed -e 's/\.delta//'`; echo $f; mv $f.delta $f; done 
-    			for fic in `ls htdocs/langs/${aa}_${bb}/*.lang`; 
+    			for fic in `ls htdocs/*/langs/${aa}_${bb}/*.delta`; do f=`echo $fic | sed -e 's/\.delta//'`; echo $f; mv $f.delta $f; done 
+    			for fic in `ls htdocs/*/langs/${aa}_${bb}/*.lang`; 
     			do f=`cat $fic | wc -l`; 
     			    #echo $f lines into file $fic; 
     			    if [ $f = 1 ] 

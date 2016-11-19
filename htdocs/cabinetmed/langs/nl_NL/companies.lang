@@ -40,7 +40,7 @@ DefaultContact=Standaard contact
 ListOfPatientsContacts=Lijst van contacten van de patiënt
 PatientCode=Patiënt code
 WrongPatientCode=FGoute patiënt code
-CustomerCode=Derde partij code
+CustomerCode=Third party/patient code
 CustomerCodeDesc=Patiënt code moet uniek zijn voor elke patiënt
 RequiredIfCustomer=Verplicht als een derde partij een patiënt is
 ShowContact=Geef contact weer
@@ -66,8 +66,6 @@ PatientsArea=Patiënten overzicht
 LastModifiedThirdParties=Laatste %s gewijzigde derde partijen of patiënten
 LastModifiedPatients=Laatste %s gewijzigde patiënten
 UniquePatients=Totaal aantal unieke patiënten
-InActivity=Toegewezen
-ActivityCeased=Niet (meer) toegewezen
 MonkeyNumRefModelDesc=Geeft nummer met masker %syymm-nnnn voor patiënt code en %syymm-nnnn voor leverancier code waarbij yy het jaar is, mm de maand en nnnn is een volgnummer dat groter is dan 0.
 # Leopard
 LeopardNumRefModelDesc=Vrije patiënt code zonder controle. Kan altijd gewijzigd worden.

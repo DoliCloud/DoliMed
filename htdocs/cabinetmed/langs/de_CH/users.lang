@@ -1,5 +1,5 @@
 # Dolibarr language file - fr_FR - users
-CHARSET=UTF-8
+CHARSET=UFT-8
 ContactCard=Fiche correspondant
 NoContactCard=Pas de fiche parmi les correspondants
 LinkToCompanyContact=Lien patient / correspondant
