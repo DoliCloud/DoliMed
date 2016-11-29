@@ -133,7 +133,7 @@ if ($socname)
 }
 
 // Count total nb of records
-$nbtotalofrecords = 0;
+$nbtotalofrecords = -1;
 if (empty($conf->global->MAIN_DISABLE_FULL_SCANLIST))
 {
     $result = $db->query($sql);
@@ -188,6 +188,7 @@ if ($result)
         print '</div>';
     }
     
+    print '<div class="div-table-responsive">';
     print '<table class="tagtable liste'.($moreforfilter?" listwithfilterbefore":"").'">';
     
     print '<tr class="liste_titre">';
@@ -269,6 +270,8 @@ if ($result)
     }
     //print_barre_liste($langs->trans("ListOfCustomers"), $page, $_SERVER["PHP_SELF"],'',$sortfield,$sortorder,'',$num);
     print "</table>\n";
+    print '</div>';
+    
     print "</form>\n";
     $db->free($result);
 }

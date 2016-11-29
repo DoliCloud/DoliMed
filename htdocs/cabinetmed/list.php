@@ -248,7 +248,7 @@ if ($search_type == '0') $sql .= " AND s.client = 0 AND s.fournisseur = 0";
 //print $sql;
 
 // Count total nb of records
-$nbtotalofrecords = 0;
+$nbtotalofrecords = -1;
 if (empty($conf->global->MAIN_DISABLE_FULL_SCANLIST))
 {
 	$result = $db->query($sql);
@@ -325,7 +325,8 @@ if ($resql)
     }
 	*/
 
-    print '<table class="tagtable liste'.($moreforfilter?" listwithfilterbefore":"").'">';
+    print '<div class="div-table-responsive">';
+	print '<table class="tagtable liste'.($moreforfilter?" listwithfilterbefore":"").'">';
 	
 	// Lines of titles
     print '<tr class="liste_titre">';
@@ -432,7 +433,8 @@ if ($resql)
 	$db->free($resql);
 
 	print "</table>";
-
+    print '</div>';
+    
 	print '</form>';
 
 }
