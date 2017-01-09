@@ -93,7 +93,7 @@ $sql.= ' WHERE s.entity IN ('.getEntity('societe', 1).')';
 $sql.= " AND s.canvas='patient@cabinetmed'";
 if (! $user->rights->societe->client->voir && ! $socid) $sql.= " AND s.rowid = sc.fk_soc AND sc.fk_user = " .$user->id;
 if ($socid)	$sql.= " AND s.rowid = ".$socid;
-if (! $user->rights->fournisseur->lire) $sql.=" AND (s.fournisseur <> 1 OR s.client <> 0)";    // client=0, fournisseur=0 must be visible
+//if (! $user->rights->fournisseur->lire) $sql.=" AND (s.fournisseur <> 1 OR s.client <> 0)";    // client=0, fournisseur=0 must be visible
 //print $sql;
 $result = $db->query($sql);
 if ($result)
@@ -101,7 +101,7 @@ if ($result)
     while ($objp = $db->fetch_object($result))
     {
         $found=0;
-        if ($conf->cabinetmed->enabled && ($objp->client == 1 || $objp->client == 3)) { $found=1; $third['customer']++; }
+        if ($conf->cabinetmed->enabled) { $found=1; $third['patient']++; }
         if ($found) $total++;
     }
 }
@@ -109,26 +109,14 @@ else dol_print_error($db);
 
 print '<table class="noborder" width="100%">';
 print '<tr class="liste_titre"><th colspan="2">'.$langs->trans("Statistics").'</th></tr>';
-if ($conf->use_javascript_ajax && ((round($third['prospect'])?1:0)+(round($third['customer'])?1:0)+(round($third['supplier'])?1:0)+(round($third['other'])?1:0) >= 2))
+if ($conf->cabinetmed->enabled)
 {
-    print '<tr><td align="center">';
-    $dataseries=array();
-    if ($conf->cabinetmed)     $dataseries[]=array('label'=>$langs->trans("Patients"),'data'=>round($third['customer']));
-    $data=array('series'=>$dataseries);
-    dol_print_graph('stats',300,180,$data,1,'pie',0);
-    print '</td></tr>';
+    $statstring.= "<tr $bc[0]>";
+    $statstring.= '<td><a href="'.dol_buildpath('/cabinetmed/patients.php',1).'">'.$langs->trans("Patients").'</a></td><td align="right">'.round($third['patient']).'</td>';
+    $statstring.= "</tr>";
 }
-else
-{
-    if ($conf->cabinetmed->enabled)
-    {
-        $statstring.= "<tr $bc[0]>";
-        $statstring.= '<td><a href="'.dol_buildpath('/cabinetmed/patients.php',1).'">'.$langs->trans("Patients").'</a></td><td align="right">'.round($third['customer']).'</td>';
-        $statstring.= "</tr>";
-    }
-    print $statstring;
-    print $statstring2;
-}
+print $statstring;
+print $statstring2;
 print '<tr class="liste_total"><td>'.$langs->trans("UniquePatients").'</td><td align="right">';
 print $total;
 print '</td></tr>';
@@ -149,7 +137,7 @@ $sql.= ' WHERE s.entity IN ('.getEntity('societe', 1).')';
 $sql.= " AND s.canvas='patient@cabinetmed'";
 if (! $user->rights->societe->client->voir && ! $socid) $sql.= " AND s.rowid = sc.fk_soc AND sc.fk_user = " .$user->id;
 if ($socid)	$sql.= " AND s.rowid = ".$socid;
-if (! $user->rights->fournisseur->lire) $sql.=" AND (s.fournisseur != 1 OR s.client != 0)";
+//if (! $user->rights->fournisseur->lire) $sql.=" AND (s.fournisseur <> 1 OR s.client <> 0)";
 $sql.= $db->order("s.tms","DESC");
 $sql.= $db->plimit($max,0);
 
