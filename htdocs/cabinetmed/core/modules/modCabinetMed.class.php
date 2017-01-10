@@ -86,7 +86,7 @@ class modCabinetMed extends DolibarrModules
         							'substitutions' => 1,
         							'menus' => 1,
         							'css' => array('/cabinetmed/css/styles.css.php'),
-        							'hooks' => array('searchform', 'thirdpartycard','commcard','categorycard','contactcard','actioncard','agendathirdparty','projectthirdparty','infothirdparty','thirdpartybancard','consumptionthirdparty','thirdpartynotification','thirdpartymargins','thirdpartycustomerprice','documentcabinetmed','searchform','demo'));
+        							'hooks' => array('index', 'searchform', 'thirdpartycard','commcard','categorycard','contactcard','actioncard','agendathirdparty','projectthirdparty','infothirdparty','thirdpartybancard','consumptionthirdparty','thirdpartynotification','thirdpartymargins','thirdpartycustomerprice','documentcabinetmed','searchform','demo'));
 
         // Dependencies
         $this->depends = array('modSociete');       // List of modules id that must be enabled if this module is enabled

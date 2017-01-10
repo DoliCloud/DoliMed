@@ -459,12 +459,14 @@ if ($socid > 0)
 
 	print "</table>";
 
-    // Form to create
+    dol_fiche_end();
+    
+	// Form to create
     if ($action == 'create' || $action == 'edit')
     {
-        dol_fiche_end();
-        dol_fiche_head();
-
+        //dol_fiche_head();
+        print '<br>';
+        
         $x=1;
         $nboflines=4;
 
@@ -549,7 +551,8 @@ if ($socid > 0)
                 /*alert(jQuery("#listmotifcons option:selected" ).val());
                 alert(jQuery("#listmotifcons option:selected" ).text());*/
                 var t=jQuery("#listmotifcons").children( ":selected" ).text();
-                if (t != "")
+            	console.log("Add value t="+t)
+           	    if (t != "" && t != " ")
                 {
                     jQuery("#motifconsprinc").val(t);
                     jQuery("#addmotifbox .ui-autocomplete-input").val("");
@@ -560,8 +563,9 @@ if ($socid > 0)
             });
             jQuery("#addmotifsec").click(function () {
                 var t=jQuery("#listmotifcons").children( ":selected" ).text();
-                if (t != "")
-                {
+            	console.log("Add value t="+t)
+           	    if (t != "" && t != " ")
+            	{
                     if (jQuery("#motifconsprinc").val() == t)
                     {
                         alert(\'Le motif "\'+t+\'" est deja en motif principal\');
@@ -580,7 +584,8 @@ if ($socid > 0)
             });
             jQuery("#adddiaglesprinc").click(function () {
                 var t=jQuery("#listdiagles").children( ":selected" ).text();
-                if (t != "")
+            	console.log("Add value t="+t)
+           	    if (t != "" && t != " ")
                 {
                     jQuery("#diaglesprinc").val(t);
                     jQuery("#adddiagbox .ui-autocomplete-input").val("");
@@ -591,7 +596,8 @@ if ($socid > 0)
             });
             jQuery("#adddiaglessec").click(function () {
                 var t=jQuery("#listdiagles").children( ":selected" ).text();
-                if (t != "")
+            	console.log("Add value t="+t)
+                if (t != "" && t != " ")
                 {
                     var box = jQuery("#diaglessec");
                     u=box.val() + (box.val() != \'\' ? "\n" : \'\') + t;
@@ -604,7 +610,8 @@ if ($socid > 0)
             });
             jQuery("#addexamenprescrit").click(function () {
                 var t=jQuery("#listexamenprescrit").children( ":selected" ).text();
-                if (t != "")
+            	console.log("Add value t="+t)
+            	if (t != "" && t != " ")
                 {
                     var box = jQuery("#examenprescrit");
                     u=box.val() + (box.val() != \'\' ? "\n" : \'\') + t;
@@ -671,8 +678,7 @@ if ($socid > 0)
 		if ($action=='edit' || $action=='update' || $fk_agenda) print '<table class="notopnoleftnoright" width="100%">';
         if ($action=='edit' || $action=='update')
         {
-			print '<tr><td width="160">'.$langs->trans('ConsultationNumero').'</td>';
-			print '<td><strong>'.sprintf("%08d",$consult->id).'</strong>';
+			print '<tr><td width="180px">'.$langs->trans('ConsultationNumero').': <div class="refid inline-block"><strong>'.sprintf("%08d",$consult->id).'</strong></div>';
             if ($consult->fk_user > 0)
 	        {
 	        	$fuser->fetch($consult->fk_user);
@@ -702,16 +708,17 @@ if ($socid > 0)
         	}
         }
 		if ($action=='edit' || $action=='update' || $fk_agenda) print '</table>';
-
+        
+        
 		if ($action=='edit' || $action=='update' || $fk_agenda) print '<div class="centpercent" style="margin-top: 5px; margin-bottom: 8px; border-bottom: 1px solid #eee;"></div>';
 		
         print '<div class="fichecenter"><div class="fichehalfleft">';
         print '<table class="notopnoleftnoright" width="100%">';
 
-        print '<tr><td style="width: 160px" class="fieldrequired">';
+        print '<tr><td class="titlefield fieldrequired">';
         print $langs->trans("Date").': ';
         print '</td><td align="left">';
-        $form->select_date(($consult->datecons?$consult->datecons:-1),'cons', 0, 0, 0, '', 1, 1);
+        $form->select_date(($consult->datecons?$consult->datecons:''),'cons', 0, 0, 0, '', 1, 1);
         print '</td></tr>';
         print '</table>';
 
@@ -729,6 +736,8 @@ if ($socid > 0)
             print '<input type="radio" class="flat" name="typepriseencharge" value="CMU"'.($consult->typepriseencharge=='CMU'?' checked="checked"':'').'> CMU';
             print ' &nbsp; ';
             print '<input type="radio" class="flat" name="typepriseencharge" value="AME"'.($consult->typepriseencharge=='AME'?' checked="checked"':'').'> AME';
+            print ' &nbsp; ';
+            print '<input type="radio" class="flat" name="typepriseencharge" value="ACS"'.($consult->typepriseencharge=='ACS'?' checked="checked"':'').'> ACS';
         }
 
         //print '</td></tr>';
@@ -751,7 +760,7 @@ if ($socid > 0)
         print '<div class="fichecenter"><div class="fichehalfleft">';
 
         print '<table class="notopnoleftnoright" id="addmotifbox" width="100%">';
-        print '<tr><td valign="top" width="160">';
+        print '<tr><td class="tdtop titlefield">';
         print $langs->trans("MotifConsultation").':';
         print '</td><td>';
         //print '<input type="text" size="3" class="flat" name="searchmotifcons" value="'.GETPOST("searchmotifcons").'" id="searchmotifcons">';
@@ -762,13 +771,13 @@ if ($socid > 0)
         print ' <input type="button" class="button" id="addmotifsec" name="addmotifsec" value="+S" title="'.dol_escape_htmltag($langs->trans("ClickHereToSetSecondaryReason")).'">';
         if ($user->admin) print ' '.info_admin($langs->trans("YouCanChangeValuesForThisListFromDictionarySetup"),1);
         print '</td></tr>';
-        print '<tr><td class="fieldrequired">'.$langs->trans("Primary").':';
+        print '<tr><td class="fieldrequired">'.$langs->trans("MotifPrincipal").':';
         print '</td><td>';
-        print '<input type="text" size="32" class="flat" name="motifconsprinc" value="'.$consult->motifconsprinc.'" id="motifconsprinc"><br>';
+        print '<input type="text" class="flat minwidth200" name="motifconsprinc" value="'.$consult->motifconsprinc.'" id="motifconsprinc"><br>';
         print '</td></tr>';
-        print '<tr><td valign="top">'.$langs->trans("Secondaries").':';
+        print '<tr><td valign="top">'.$langs->trans("MotifSecondaires").':';
         print '</td><td>';
-        print '<textarea class="flat" name="motifconssec" id="motifconssec" cols="40" rows="'.ROWS_3.'">';
+        print '<textarea class="flat quatrevingtpercent" name="motifconssec" id="motifconssec" rows="'.ROWS_3.'">';
         print $consult->motifconssec;
         print '</textarea>';
         print '</td>';
@@ -789,7 +798,7 @@ if ($socid > 0)
 
         print '<table class="notopnoleftnoright" id="adddiagbox" width="100%">';
         //print '<tr><td><br></td></tr>';
-        print '<tr><td valign="top" width="160">';
+        print '<tr><td class="tdtop titlefield">';
         print $langs->trans("DiagnostiqueLesionnel").':';
         print '</td><td>';
         //print '<input type="text" size="3" class="flat" name="searchdiagles" value="'.GETPOST("searchdiagles").'" id="searchdiagles">';
@@ -798,13 +807,13 @@ if ($socid > 0)
         print ' <input type="button" class="button" id="adddiaglessec" name="adddiaglessec" value="+S" title="'.dol_escape_htmltag($langs->trans("ClickHereToSetSecondaryDiagnostic")).'">';
         if ($user->admin) print ' '.info_admin($langs->trans("YouCanChangeValuesForThisListFromDictionarySetup"),1);
         print '</td></tr>';
-        print '<tr><td class="fieldrequired">'.$langs->trans("Primary").':';
+        print '<tr><td class="fieldrequired">'.$langs->trans("DiagLesPrincipal").':';
         print '</td><td>';
-        print '<input type="text" size="32" class="flat" name="diaglesprinc" value="'.$consult->diaglesprinc.'" id="diaglesprinc"><br>';
+        print '<input type="text" class="flat minwidth200" name="diaglesprinc" value="'.$consult->diaglesprinc.'" id="diaglesprinc"><br>';
         print '</td></tr>';
-        print '<tr><td valign="top">'.$langs->trans("Secondaries").':';
+        print '<tr><td valign="top">'.$langs->trans("DiagLesSecondaires").':';
         print '</td><td>';
-        print '<textarea class="flat" name="diaglessec" id="diaglessec" cols="40" rows="'.ROWS_3.'">';
+        print '<textarea class="flat quatrevingtpercent" name="diaglessec" id="diaglessec" rows="'.ROWS_3.'">';
         print $consult->diaglessec;
         print '</textarea>';
         print '</td>';
@@ -835,7 +844,7 @@ if ($socid > 0)
 
         print '<table class="notopnoleftnoright" id="addexambox" width="100%">';
 
-        print '<tr><td valign="top" width="160">';
+        print '<tr><td class="tdtop titlefield">';
         print $langs->trans("ExamensPrescrits").':';
         print '</td><td>';
         //print '<input type="text" size="3" class="flat" name="searchexamenprescrit" value="'.GETPOST("searchexamenprescrit").'" id="searchexamenprescrit">';
@@ -931,7 +940,7 @@ if ($socid > 0)
         print '<table class="notopnoleftnoright" id="paymentsbox" width="100%">';
 
         // Cheque
-        print '<tr class="cabpaymentcheque"><td width="160">';
+        print '<tr class="cabpaymentcheque"><td class="titlefield">';
         print ''.$langs->trans("PaymentTypeCheque").'</td><td>';
         //print '<table class="nobordernopadding"><tr><td>';
         print '<input type="text" class="flat" name="montant_cheque" id="idmontant_cheque" value="'.($consult->montant_cheque!=''?price($consult->montant_cheque):'').'" size="5">';
@@ -990,7 +999,7 @@ if ($socid > 0)
         dol_htmloutput_errors($mesg,$mesgarray);
     }
     
-	dol_fiche_end();
+	//dol_fiche_end();
 
     if ($action == 'create' || $action == 'edit')
     {

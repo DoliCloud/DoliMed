@@ -242,8 +242,8 @@ if (empty($reshook) && ! empty($extrafields->attribute_label))
   	{
   	    $now = dol_now();
       	//var_dump($object->array_options['options_birthdate']);
-      	$birthdate=dol_stringtotime($object->array_options['options_birthdate'].' 00:00:00', 1);
-      	if ($birthdate)
+  	    $birthdate=dol_stringtotime($object->array_options['options_birthdate'].' 00:00:00', 1);
+  	    if ($birthdate)
       	{
           	$newtmp=' &nbsp; ';
           	//$birthdatearray=dol_cm_strptime($dateval,$conf->format_date_short);
@@ -254,7 +254,7 @@ if (empty($reshook) && ! empty($extrafields->attribute_label))
           	else if ($agemonth >= 1) $newtmp.='('.$agemonth.' '.$langs->trans("DurationMonths").')';
           	else $newtmp.='('.$agemonth.' '.$langs->trans("DurationMonth").')';  	
             //print $newtmp;
-          	$tmp=preg_replace('/'.preg_quote('<td colspan="3">'.dol_print_date($birthdate, 'day').'</td>','/').'/','<td colspan="3">'.dol_print_date($birthdate, 'day').$newtmp.'</td>',$tmp);
+          	$tmp=preg_replace('/'.preg_quote('<td','/').'[^>]*'.preg_quote('colspan="3">'.dol_print_date($birthdate, 'day').'</td>','/').'/','<td colspan="3">'.dol_print_date($birthdate, 'day').$newtmp.'</td>',$tmp);
       	}
   	}
   	print $tmp;

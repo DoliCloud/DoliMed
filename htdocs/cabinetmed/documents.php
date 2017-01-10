@@ -524,7 +524,7 @@ if ($object->id)
 
         }
 
-		print '<div class="clearboth"></div>';
+		print '<div class="clearboth" id="sendform"></div>';
         print '<br>';
         print_fiche_titre($langs->trans('SendOutcomeByEmail'));
 

@@ -239,13 +239,14 @@ if ($socid > 0)
 
 	print '</form>';
 
-
+	dol_fiche_end();
+	
     // Form to create
     if ($action == 'create' || $action == 'edit')
     {
-        dol_fiche_end();
-        dol_fiche_head();
-
+        //dol_fiche_head();
+        print '<br>';
+        
         $x=1;
         $nboflines=4;
 
@@ -547,7 +548,7 @@ if ($socid > 0)
     }
 
 
-	dol_fiche_end();
+	//dol_fiche_end();
 }
 
 

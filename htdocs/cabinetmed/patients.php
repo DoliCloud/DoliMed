@@ -1,6 +1,6 @@
 <?php
 /* Copyright (C) 2001-2006 Rodolphe Quiedeville <rodolphe@quiedeville.org>
- * Copyright (C) 2004-2012 Laurent Destailleur  <eldy@users.sourceforge.net>
+ * Copyright (C) 2004-2016 Laurent Destailleur  <eldy@users.sourceforge.net>
  * Copyright (C) 2005-2009 Regis Houssin        <regis@dolibarr.fr>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -46,12 +46,13 @@ $socid = GETPOST('socid','int');
 if ($user->societe_id) $socid=$user->societe_id;
 $result = restrictedArea($user,'societe',$socid,'');
 
-
-$sortfield = isset($_GET["sortfield"])?$_GET["sortfield"]:$_POST["sortfield"];
-$sortorder = isset($_GET["sortorder"])?$_GET["sortorder"]:$_POST["sortorder"];
-$page=isset($_GET["page"])?$_GET["page"]:$_POST["page"];
-if ($page == -1) { $page = 0 ; }
-$offset = $conf->liste_limit * $page;
+// Load variable for pagination
+$limit = GETPOST("limit")?GETPOST("limit","int"):$conf->liste_limit;
+$sortfield = GETPOST('sortfield','alpha');
+$sortorder = GETPOST('sortorder','alpha');
+$page = GETPOST('page','int');
+if ($page == -1) { $page = 0; }
+$offset = $limit * $page;
 $pageprev = $page - 1;
 $pagenext = $page + 1;
 if (! $sortorder) $sortorder="ASC";
@@ -79,16 +80,8 @@ $fieldstosearchall = array(
 
 
 /*
- * view
+ * Actions
  */
-
-$form=new Form($db);
-$htmlother=new FormOther($db);
-$thirdpartystatic=new Societe($db);
-
-$datebirth=dol_mktime(0,0,0,GETPOST('birthmonth'),GETPOST('birthday'),GETPOST('birthyear'));
-
-llxHeader();
 
 // Do we click on purge search criteria ?
 if (GETPOST("button_removefilter_x") || GETPOST("button_removefilter.x") || GETPOST("button_removefilter"))
@@ -105,6 +98,22 @@ if (GETPOST("button_removefilter_x") || GETPOST("button_removefilter.x") || GETP
     $search_idprof4='';
     $datebirth='';
 }
+
+
+
+/*
+ * view
+ */
+
+$form=new Form($db);
+$htmlother=new FormOther($db);
+$thirdpartystatic=new Societe($db);
+
+$datebirth=dol_mktime(0,0,0,GETPOST('birthmonth'),GETPOST('birthday'),GETPOST('birthyear'));
+
+$title = $langs->trans("ListOfPatients");
+
+llxHeader('', $title);
 
 $sql = "SELECT s.rowid, s.nom as name, s.client, s.town, st.libelle as stcomm, s.prefix_comm, s.code_client,";
 $sql.= " s.datec, s.canvas,";
@@ -129,16 +138,16 @@ if ($datebirth != '') $sql.=" AND (se.birthdate LIKE '%".dol_print_date($datebir
 if ($search_diagles)
 {
     $label= dol_getIdFromCode($db,$search_diagles,'cabinetmed_diaglec','code','label');
-    $sql.= " AND c.diaglesprinc LIKE '%".$db->escape($label)."%'";
+    $sql.= natural_search("c.diaglesprinc", $label);
 }
 if (!$user->rights->societe->client->voir && ! $socid) $sql.= " AND s.rowid = sc.fk_soc AND sc.fk_user = " .$user->id;
 if ($socid) $sql.= " AND s.rowid = ".$socid;
 if ($search_sale) $sql.= " AND s.rowid = sc.fk_soc";		// Join for the needed table to filter by sale
 if ($search_categ) $sql.= " AND s.rowid = cs.fk_soc";	// Join for the needed table to filter by categ
-if ($search_nom)   $sql.= " AND s.nom like '%".$db->escape($search_nom)."%'";
-if ($search_ville) $sql.= " AND s.town like '%".$db->escape($search_ville)."%'";
-if ($search_code)  $sql.= " AND s.code_client like '%".$db->escape($search_code)."%'";
-if ($search_all)      $sql.= natural_search(array_keys($fieldstosearchall), $search_all);
+if ($search_nom)   $sql.= natural_search("s.nom", $search_nom);
+if ($search_ville) $sql.= natural_search("s.town", $search_ville);
+if ($search_code)  $sql.= natural_search("s.code_client", $search_code);
+if ($search_all)   $sql.= natural_search(array_keys($fieldstosearchall), $search_all);
 // Insert sale filter
 if ($search_sale)
 {
@@ -151,168 +160,192 @@ if ($search_categ)
 }
 if ($socname)
 {
-	$sql.= " AND s.nom like '%".$db->escape($socname)."%'";
-	$sortfield = "s.nom";
+	$sql.= natural_search("s.nom", $socname);
+    $sortfield = "s.nom";
 	$sortorder = "ASC";
 }
 $sql.= " GROUP BY s.rowid, s.nom, s.client, s.town, st.libelle, s.prefix_comm, s.code_client, s.datec, s.canvas, se.birthdate, se.prof";
 if ($search_sale) $sql .= ", sc.fk_soc, sc.fk_user";
 if ($search_categ) $sql .= ", cs.fk_categorie, cs.fk_soc";
 
+$sql.= $db->order($sortfield,$sortorder);
+
 // Count total nb of records
 $nbtotalofrecords = -1;
 if (empty($conf->global->MAIN_DISABLE_FULL_SCANLIST))
 {
-	$result = $db->query($sql);
-	$nbtotalofrecords = $db->num_rows($result);
+    $result = $db->query($sql);
+    $nbtotalofrecords = $db->num_rows($result);
 }
 
-$sql.= $db->order($sortfield,$sortorder);
-$sql.= $db->plimit($conf->liste_limit +1, $offset);
+$sql.= $db->plimit($limit+1, $offset);
 
-$result = $db->query($sql);
-if ($result)
+dol_syslog($script_file, LOG_DEBUG);
+$result=$db->query($sql);
+if (! $result)
 {
-	$num = $db->num_rows($result);
+    dol_print_error($db);
+    exit;
+}
 
-	$param = "&amp;search_nom=".$search_nom."&amp;search_code=".$search_code."&amp;search_ville=".$search_ville;
- 	if ($search_categ != '')   $param.='&amp;search_categ='.$search_categ;
- 	if ($search_sale != '')	   $param.='&amp;search_sale='.$search_sale;
-    if ($search_diagles != '') $param.='&amp;search_diagles='.$search_diagles;
+$num = $db->num_rows($result);
 
-	print_barre_liste($langs->trans("ListOfPatients"), $page, $_SERVER["PHP_SELF"],$param,$sortfield,$sortorder,'',$num,$nbtotalofrecords);
+// Direct jump if only one record found
+if ($num == 1 && ! empty($conf->global->MAIN_SEARCH_DIRECT_OPEN_IF_ONLY_ONE) && $search_all)
+{
+    $obj = $db->fetch_object($resql);
+    $id = $obj->rowid;
+    header("Location: ".DOL_URL_ROOT.'/societe/soc.php?socid='.$id);
+    exit;
+}
 
-	$i = 0;
+$param = '';
 
-	if ($search_all)
-	{
-	    foreach($fieldstosearchall as $key => $val) $fieldstosearchall[$key]=$langs->trans($val);
-	    print $langs->trans("FilterOnInto", $search_all) . join(', ',$fieldstosearchall);
-	}
-	
-	print '<form method="get" action="'.$_SERVER["PHP_SELF"].'">'."\n";
+if (! empty($contextpage) && $contextpage != $_SERVER["PHP_SELF"]) $param.='&contextpage='.$contextpage;
+if ($limit > 0 && $limit != $conf->liste_limit) $param.='&limit='.$limit;
+if ($search_categ != '')   $param.='&amp;search_categ='.$search_categ;
+if ($search_sale != '')	   $param.='&amp;search_sale='.$search_sale;
+if ($search_diagles != '') $param.='&amp;search_diagles='.$search_diagles;
+if ($search_nom != '')     $param.='&amp;search_nom='.$search_nom;
+if ($search_code != '')    $param.='&amp;search_code='.$search_code;
+if ($search_ville != '')   $param.='&amp;search_ville='.$search_ville;
+if ($search_birthday != '')   $param.='&amp;search_birthday='.$search_birthday;
+if ($search_birthmonth != '') $param.='&amp;search_birthmonth='.$search_birthmonth;
+if ($search_birttyear != '')  $param.='&amp;search_birthyear='.$search_birthyear;
 
-	// Filter on categories
- 	$moreforfilter='';
-	if ($conf->categorie->enabled)
-	{
-	 	$moreforfilter.='<div class="divsearchfield">';
-	 	$moreforfilter.=$langs->trans('Categories'). ': ';
-		$moreforfilter.=$htmlother->select_categories(2,$search_categ,'search_categ');
-	 	$moreforfilter.='</div>';
-	}
- 	// If the user can view prospects other than his'
- 	if ($user->rights->societe->client->voir || $socid)
- 	{
-	 	$moreforfilter.='<div class="divsearchfield">';
-	 	$moreforfilter.=$langs->trans('SalesRepresentatives'). ': ';
-		$moreforfilter.=$htmlother->select_salesrepresentatives($search_sale,'search_sale',$user, 0, 1, 'maxwidth300');
-	 	$moreforfilter.='</div>';
- 	}
- 	// To add filter on diagnostic
-    $width="200";
+print_barre_liste($title, $page, $_SERVER["PHP_SELF"],$param,$sortfield,$sortorder,'',$num,$nbtotalofrecords, 'title_companies', 0, '', '', $limit);
+
+$i = 0;
+
+if ($search_all)
+{
+    foreach($fieldstosearchall as $key => $val) $fieldstosearchall[$key]=$langs->trans($val);
+    print $langs->trans("FilterOnInto", $search_all) . join(', ',$fieldstosearchall);
+}
+
+print '<form method="POST" action="'.$_SERVER["PHP_SELF"].'">'."\n";
+
+// Filter on categories
+$moreforfilter='';
+if ($conf->categorie->enabled)
+{
  	$moreforfilter.='<div class="divsearchfield">';
-    $moreforfilter.=$langs->trans('DiagnostiqueLesionnel'). ': ';
-	$moreforfilter.=listdiagles(1,$width,'search_diagles',$search_diagles);
-	$moreforfilter.='</div>';
-    
-    if (! empty($moreforfilter))
-    {
-        print '<div class="liste_titre liste_titre_bydiv centpercent">';
-        print $moreforfilter;
-        $parameters=array();
-        $reshook=$hookmanager->executeHooks('printFieldPreListTitle',$parameters);    // Note that $action and $object may have been modified by hook
-        print $hookmanager->resPrint;
-        print '</div>';
-    }
-	
-    print '<div class="div-table-responsive">';
-    print '<table class="tagtable liste'.($moreforfilter?" listwithfilterbefore":"").'">';
-    
-	print '<tr class="liste_titre">';
-	print_liste_field_titre($langs->trans("Patient"),$_SERVER["PHP_SELF"],"s.nom","",$param,"",$sortfield,$sortorder);
-    print_liste_field_titre($langs->trans("PatientCode"),$_SERVER["PHP_SELF"],"s.code_client","",$param,"",$sortfield,$sortorder);
-	print_liste_field_titre($langs->trans("DateToBirth"),$_SERVER["PHP_SELF"],"se.birthdate","",$param,'align="center"',$sortfield,$sortorder);
-    print_liste_field_titre($langs->trans("Town"),$_SERVER["PHP_SELF"],"s.town","",$param,"",$sortfield,$sortorder);
-    print_liste_field_titre($langs->trans("Profession"),$_SERVER["PHP_SELF"],"se.prof","",$param,"",$sortfield,$sortorder);
-    print_liste_field_titre($langs->trans("NbConsult"),$_SERVER["PHP_SELF"],"nb","",$param,'align="right"',$sortfield,$sortorder);
-    print_liste_field_titre($langs->trans("LastConsultShort"),$_SERVER["PHP_SELF"],"lastcons","",$param,'align="center"',$sortfield,$sortorder);
-    print_liste_field_titre($langs->trans("DateCreation"),$_SERVER["PHP_SELF"],"datec","",$param,'align="right"',$sortfield,$sortorder);
-	print "</tr>\n";
-
-	print '<tr class="liste_titre">';
-	print '<td class="liste_titre">';
-	print '<input type="text" class="flat" size="8" name="search_nom" value="'.$search_nom.'">';
-	print '</td>';
-    print '<td class="liste_titre">';
-    print '<input type="text" class="flat" size="6" name="search_code" value="'.$search_code.'">';
-    print '</td>';
-    print '<td class="liste_titre" align="center">';
-    print $form->select_date($datebirth, 'birth', 0, 0, 1, '',1,0,1);
-    print '</td>';
-    print '<td class="liste_titre">';
-	print '<input type="text" class="flat" size="6" name="search_ville" value="'.$search_ville.'">';
-	print '</td>';
-	print '<td class="liste_titre">';
-    print '&nbsp;';
-    print '</td>';
-    print '<td class="liste_titre">';
-    print '&nbsp;';
-    print '</td>';
-    print '<td class="liste_titre">';
-    print '&nbsp;';
-    print '</td>';
-    print '<td class="liste_titre" align="right"><input class="liste_titre" type="image" src="'.DOL_URL_ROOT.'/theme/'.$conf->theme.'/img/search.png" value="'.dol_escape_htmltag($langs->trans("Search")).'" title="'.dol_escape_htmltag($langs->trans("Search")).'">';
-    print '&nbsp; ';
-    print '<input type="image" class="liste_titre" name="button_removefilter" src="'.DOL_URL_ROOT.'/theme/'.$conf->theme.'/img/searchclear.png" value="'.dol_escape_htmltag($langs->trans("RemoveFilter")).'" title="'.dol_escape_htmltag($langs->trans("RemoveFilter")).'">';
-    print '</td>';
-    print "</tr>\n";
-
-	$var=True;
-
-	while ($i < min($num,$conf->liste_limit))
-	{
-		$obj = $db->fetch_object($result);
-
-		$var=!$var;
-
-		print "<tr $bc[$var]>";
-		print '<td>';
-		$thirdpartystatic->id=$obj->rowid;
-        $thirdpartystatic->name=$obj->name;
-        $thirdpartystatic->client=$obj->client;
-        $thirdpartystatic->canvas=$obj->canvas;
-        print $thirdpartystatic->getNomUrl(1);      // TODO Use correct picto
-		print '</td>';
-        print '<td>'.$obj->code_client.'</td>';
-        print '<td align="center">';
-	    //$birthdatearray=dol_cm_strptime($db->jdate($obj->birthdate),$conf->format_date_short);
-	    //$birthdate=dol_mktime(0,0,0,$birthdatearray['tm_month']+1,($birthdatearray['tm_mday']),($birthdatearray['tm_year']+1900),true);
-	    $birthdate=$db->jdate($obj->birthdate);
-	    //var_dump($birthdatearray);
-	    print dol_print_date($birthdate, 'day');
-        print '</td>';
-		print '<td>'.$obj->town.'</td>';
-        print '<td>'.$obj->prof.'</td>';
-        print '<td align="right">'.$obj->nb.'</td>';
-        print '<td align="center">';
-        print dol_print_date($db->jdate($obj->lastcons),'day');
-        print '</td>';
-        print '<td align="right">'.dol_print_date($db->jdate($obj->datec),'day').'</td>';
-		print "</tr>\n";
-		$i++;
-	}
-	//print_barre_liste($langs->trans("ListOfCustomers"), $page, $_SERVER["PHP_SELF"],'',$sortfield,$sortorder,'',$num);
-	print "</table>\n";
-	print "</div>";
-	
-	print "</form>\n";
-	$db->free($result);
+ 	$moreforfilter.=$langs->trans('Categories'). ': ';
+	$moreforfilter.=$htmlother->select_categories(2,$search_categ,'search_categ');
+ 	$moreforfilter.='</div>';
 }
-else
+// If the user can view prospects other than his'
+if ($user->rights->societe->client->voir || $socid)
 {
-	dol_print_error($db);
+ 	$moreforfilter.='<div class="divsearchfield">';
+ 	$moreforfilter.=$langs->trans('SalesRepresentatives'). ': ';
+	$moreforfilter.=$htmlother->select_salesrepresentatives($search_sale,'search_sale',$user, 0, 1, 'maxwidth300');
+ 	$moreforfilter.='</div>';
 }
+// To add filter on diagnostic
+$width="200";
+$moreforfilter.='<div class="divsearchfield">';
+$moreforfilter.=$langs->trans('DiagnostiqueLesionnel'). ': ';
+$moreforfilter.=listdiagles(1,$width,'search_diagles',$search_diagles);
+$moreforfilter.='</div>';
+
+if (! empty($moreforfilter))
+{
+    print '<div class="liste_titre liste_titre_bydiv centpercent">';
+    print $moreforfilter;
+    $parameters=array();
+    $reshook=$hookmanager->executeHooks('printFieldPreListTitle',$parameters);    // Note that $action and $object may have been modified by hook
+    print $hookmanager->resPrint;
+    print '</div>';
+}
+
+print '<div class="div-table-responsive">';
+print '<table class="tagtable liste'.($moreforfilter?" listwithfilterbefore":"").'">';
+
+print '<tr class="liste_titre">';
+print_liste_field_titre($langs->trans("Patient"),$_SERVER["PHP_SELF"],"s.nom","",$param,"",$sortfield,$sortorder);
+print_liste_field_titre($langs->trans("PatientCode"),$_SERVER["PHP_SELF"],"s.code_client","",$param,"",$sortfield,$sortorder);
+print_liste_field_titre($langs->trans("DateToBirth"),$_SERVER["PHP_SELF"],"se.birthdate","",$param,'align="center"',$sortfield,$sortorder);
+print_liste_field_titre($langs->trans("Town"),$_SERVER["PHP_SELF"],"s.town","",$param,"",$sortfield,$sortorder);
+print_liste_field_titre($langs->trans("Profession"),$_SERVER["PHP_SELF"],"se.prof","",$param,"",$sortfield,$sortorder);
+print_liste_field_titre($langs->trans("NbConsult"),$_SERVER["PHP_SELF"],"nb","",$param,'align="right"',$sortfield,$sortorder);
+print_liste_field_titre($langs->trans("LastConsultShort"),$_SERVER["PHP_SELF"],"lastcons","",$param,'align="center"',$sortfield,$sortorder);
+print_liste_field_titre($langs->trans("DateCreation"),$_SERVER["PHP_SELF"],"datec","",$param,'align="right"',$sortfield,$sortorder);
+print_liste_field_titre("");
+print "</tr>\n";
+
+print '<tr class="liste_titre">';
+print '<td class="liste_titre">';
+print '<input type="text" class="flat" size="8" name="search_nom" value="'.$search_nom.'">';
+print '</td>';
+print '<td class="liste_titre">';
+print '<input type="text" class="flat" size="6" name="search_code" value="'.$search_code.'">';
+print '</td>';
+print '<td class="liste_titre" align="center">';
+print $form->select_date($datebirth, 'birth', 0, 0, 1, '',1,0,1);
+print '</td>';
+print '<td class="liste_titre">';
+print '<input type="text" class="flat" size="6" name="search_ville" value="'.$search_ville.'">';
+print '</td>';
+print '<td class="liste_titre">';
+print '&nbsp;';
+print '</td>';
+print '<td class="liste_titre">';
+print '&nbsp;';
+print '</td>';
+print '<td class="liste_titre">';
+print '&nbsp;';
+print '</td>';
+print '<td class="liste_titre">';
+print '&nbsp;';
+print '</td>';
+print '<td class="liste_titre" align="right">';
+$searchpitco=$form->showFilterAndCheckAddButtons($massactionbutton?1:0, 'checkforselect', 1);
+print $searchpitco;
+print '</td>';
+print "</tr>\n";
+
+$var=True;
+
+while ($i < min($num,$limit))
+{
+	$obj = $db->fetch_object($result);
+
+	$var=!$var;
+
+	print "<tr ".$bc[$var].">";
+	print '<td>';
+	$thirdpartystatic->id=$obj->rowid;
+    $thirdpartystatic->name=$obj->name;
+    $thirdpartystatic->client=$obj->client;
+    $thirdpartystatic->canvas=$obj->canvas;
+    print $thirdpartystatic->getNomUrl(1);      // TODO Use correct picto
+	print '</td>';
+    print '<td>'.$obj->code_client.'</td>';
+    print '<td align="center">';
+    //$birthdatearray=dol_cm_strptime($db->jdate($obj->birthdate),$conf->format_date_short);
+    //$birthdate=dol_mktime(0,0,0,$birthdatearray['tm_month']+1,($birthdatearray['tm_mday']),($birthdatearray['tm_year']+1900),true);
+    $birthdate=$db->jdate($obj->birthdate);
+    //var_dump($birthdatearray);
+    print dol_print_date($birthdate, 'day');
+    print '</td>';
+	print '<td>'.$obj->town.'</td>';
+    print '<td>'.$obj->prof.'</td>';
+    print '<td align="right">'.$obj->nb.'</td>';
+    print '<td align="center">';
+    print dol_print_date($db->jdate($obj->lastcons),'day');
+    print '</td>';
+    print '<td align="right">'.dol_print_date($db->jdate($obj->datec),'day').'</td>';
+	print '<td></td>';
+    print "</tr>\n";
+	$i++;
+}
+//print_barre_liste($langs->trans("ListOfCustomers"), $page, $_SERVER["PHP_SELF"],'',$sortfield,$sortorder,'',$num);
+print "</table>\n";
+print "</div>";
+
+print "</form>\n";
+$db->free($result);
 
 
 llxFooter();
