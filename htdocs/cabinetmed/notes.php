@@ -116,12 +116,15 @@ if ($socid > 0)
         jQuery(function() {
             jQuery(window).bind(\'beforeunload\', function(){
                 /* alert(changed); */
+                console.log(changed);
                 if (changed) return \''.dol_escape_js($langs->transnoentitiesnoconv("WarningExitPageWithoutSaving")).'\';
             });
             jQuery(".flat").keydown(function (e) {
+                    console.log("aa");
     			changed=true;
             });
             jQuery("#alert_note").change(function () {
+                    console.log("bb");
 			    changed=true;
             });
             jQuery(".ignorechange").click(function () {
@@ -175,7 +178,7 @@ if ($socid > 0)
         // Editeur wysiwyg
         require_once(DOL_DOCUMENT_ROOT."/core/class/doleditor.class.php");
         $doleditor=new DolEditor('note',$note,'',360,'dolibarr_notes','In',true,false,$conf->global->FCKEDITOR_ENABLE_SOCIETE,20,'90%');
-        $doleditor->Create(0,'.on( \'saveSnapshot\', function(e) { changed=true; });');
+        $doleditor->Create(0,'.on( \'key\', function(e) { console.log("changed"); changed=true; }) ');  // Add on to detect changes with key pressed
     }
     else
     {
