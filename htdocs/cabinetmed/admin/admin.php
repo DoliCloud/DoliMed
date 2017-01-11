@@ -85,8 +85,6 @@ if ($action == 'update')
 
 llxHeader("",$langs->trans("CabinetMedSetup"),'');
 
-$html=new Form($db);
-
 
 $linkback='<a href="'.DOL_URL_ROOT.'/admin/modules.php">'.$langs->trans("BackToModuleList").'</a>';
 print_fiche_titre($langs->trans("CabinetMedSetup"),$linkback,'title_setup');
@@ -127,22 +125,22 @@ print "</tr>\n";
 
 $var=!$var;
 print '<tr '.$bc[$var].'><td>'.$langs->trans("EnableSpecificFeaturesToRheumatology").'</td>';
-print '<td>'.$html->selectyesno('CABINETMED_RHEUMATOLOGY_ON',$conf->global->CABINETMED_RHEUMATOLOGY_ON,1).'</td>';
+print '<td>'.$form->selectyesno('CABINETMED_RHEUMATOLOGY_ON',$conf->global->CABINETMED_RHEUMATOLOGY_ON,1).'</td>';
 print '</tr>';
 
 $var=!$var;
 print '<tr '.$bc[$var].'><td>'.$langs->trans("HideCustomerFeatures").'</td>';
-print '<td>'.$html->selectyesno('SOCIETE_DISABLE_CUSTOMERS',$conf->global->SOCIETE_DISABLE_CUSTOMERS,1).'</td>';
+print '<td>'.$form->selectyesno('SOCIETE_DISABLE_CUSTOMERS',$conf->global->SOCIETE_DISABLE_CUSTOMERS,1).'</td>';
 print '</tr>';
 
 $var=!$var;
 print '<tr '.$bc[$var].'><td>'.$langs->trans("HideProspectFeatures").'</td>';
-print '<td>'.$html->selectyesno('SOCIETE_DISABLE_PROSPECTS',$conf->global->SOCIETE_DISABLE_PROSPECTS,1).'</td>';
+print '<td>'.$form->selectyesno('SOCIETE_DISABLE_PROSPECTS',$conf->global->SOCIETE_DISABLE_PROSPECTS,1).'</td>';
 print '</tr>';
 
 $var=!$var;
 print '<tr '.$bc[$var].'><td>'.$langs->trans("CABINETMED_BANK_PATIENT_REQUIRED").'</td>';
-print '<td>'.$html->selectyesno('CABINETMED_BANK_PATIENT_REQUIRED',$conf->global->CABINETMED_BANK_PATIENT_REQUIRED,1).'</td>';
+print '<td>'.$form->selectyesno('CABINETMED_BANK_PATIENT_REQUIRED',$conf->global->CABINETMED_BANK_PATIENT_REQUIRED,1).'</td>';
 print '</tr>';
 
 print '</table>';
