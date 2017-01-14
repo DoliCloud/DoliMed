@@ -100,7 +100,7 @@ $head[$h][2] = 'tabsetup';
 $h++;
 
 $head[$h][0] = 'cabinetmed_cons_extrafields.php';
-$head[$h][1] = $langs->trans("ExtraFields").' ('.$langs->trans("Patient").')';
+$head[$h][1] = $langs->trans("ExtraFields").' ('.$langs->trans("Consultations").')';
 $head[$h][2] = 'tabconsextrafields';
 $h++;
 
