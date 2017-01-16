@@ -248,7 +248,7 @@ if ($search_type == '0') $sql .= " AND s.client = 0 AND s.fournisseur = 0";
 //print $sql;
 
 // Count total nb of records
-$nbtotalofrecords = -1;
+$nbtotalofrecords = '';
 if (empty($conf->global->MAIN_DISABLE_FULL_SCANLIST))
 {
 	$result = $db->query($sql);

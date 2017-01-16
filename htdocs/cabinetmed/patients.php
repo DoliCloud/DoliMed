@@ -171,7 +171,7 @@ if ($search_categ) $sql .= ", cs.fk_categorie, cs.fk_soc";
 $sql.= $db->order($sortfield,$sortorder);
 
 // Count total nb of records
-$nbtotalofrecords = -1;
+$nbtotalofrecords = '';
 if (empty($conf->global->MAIN_DISABLE_FULL_SCANLIST))
 {
     $result = $db->query($sql);
