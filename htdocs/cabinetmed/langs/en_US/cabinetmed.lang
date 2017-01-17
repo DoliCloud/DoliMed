@@ -167,3 +167,4 @@ HeightPeople=Height
 WeigthPeople=Weigth
 PatientDeleted=Patient "%s" was deleted from database.
 DocumentsPatient=Documents/Attached files
+SearchIntoPatients=Patients
