@@ -167,3 +167,4 @@ HeightPeople=Taille
 WeigthPeople=Poids
 PatientDeleted=Le patient "%s" a été supprimé de la base.
 DocumentsPatient=Courriers et fichiers joints
+SearchIntoPatients=Patients

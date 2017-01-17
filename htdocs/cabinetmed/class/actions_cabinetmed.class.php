@@ -56,10 +56,10 @@ class ActionsCabinetmed
     {
         global $langs;
     
-        $langs->load("cabinet@cabinetmed");
+        $langs->load("cabinetmed@cabinetmed");
         $search_boxvalue = $parameters['search_boxvalue'];
     
-        $this->results['searchintoapatient']=array('text'=>img_picto('','object_patient@cabinetmed').' '.$langs->trans("Patients", $search_boxvalue), 'url'=>dol_buildpath('/cabinetmed/patients.php',1).'?search_all='.urlencode($search_boxvalue));
+        $this->results['searchintoapatient']=array('img'=>'object_patient@cabinetmed', 'label'=>$langs->trans("SearchIntoPatients", $search_boxvalue), 'text'=>$langs->trans("Patients", $search_boxvalue), 'url'=>dol_buildpath('/cabinetmed/patients.php',1).'?search_all='.urlencode($search_boxvalue));
     
         return 0;
     }
