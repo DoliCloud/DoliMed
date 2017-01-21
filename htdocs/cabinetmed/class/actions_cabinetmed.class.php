@@ -482,6 +482,49 @@ class ActionsCabinetmed
     }
     
     
+    /**
+     * Complete array with linkto
+     *
+     * @param	array	$parameters		Array of parameters
+     * @param   mixed	&$object      	Object
+     * @param   string	&$action      	'add', 'update', 'view'
+     * @param   string	&$hookmanager  	'add', 'update', 'view'
+     * @return	string					HTML content to add by hook
+     */
+    function showLinkToObjectBlock($parameters, &$object, &$action, &$hookmanager)
+    {
+        global $langs, $user, $conf, $db;
+        
+        $langs->load("cabinetmed@cabinetmed");
+        $this->results = array('cabinetmed_cabinetmedcons'=>array('enabled'=>$conf->cabinetmed->enabled , 'perms'=>1, 'label'=>'LinkToConsultation', 'sql'=>"SELECT s.rowid as socid, s.nom as name, t.rowid, t.rowid as ref, '' as ref_supplier, (".$db->ifsql('t.montant_cheque IS NULL','0','t.montant_cheque')." + ".$db->ifsql('t.montant_carte IS NULL','0','t.montant_carte')." + ".$db->ifsql('t.montant_espece IS NULL','0','t.montant_espece')." + ".$db->ifsql('t.montant_tiers IS NULL','0','t.montant_tiers').") as total_ht FROM ".MAIN_DB_PREFIX."societe as s, ".MAIN_DB_PREFIX."cabinetmed_cons as t WHERE t.fk_soc = s.rowid AND t.fk_soc = ".$object->thirdparty->id));
+    }
+    
+    /**
+     * Complete array with linkto
+     *
+     * @param	array	$parameters		Array of parameters
+     * @param   mixed	&$object      	Object
+     * @param   string	&$action      	'add', 'update', 'view'
+     * @param   string	&$hookmanager  	'add', 'update', 'view'
+     * @return	string					HTML content to add by hook
+     */
+    function showLinkedObjectBlock($parameters, &$object, &$action, &$hookmanager)
+    {
+        global $langs, $user, $conf, $db;
+    
+        /* not required. standard showLinkedObjectBlock already load correctly record for cabinetmed_cabinetmedcons
+        
+        $newentry=array();
+        
+        $consultation = new CabinetmedCons($db);
+        $consultation->fetch()
+        $newentry['consultation']
+        
+        if (count($newentry))
+        {
+            $object->linkedObjects = array_merge($object->linkedObjects, $newentry);
+        }*/
+    }
     
     /**
      * Complete object before generationg PDF

@@ -732,5 +732,32 @@ class CabinetmedCons extends CommonObject
         }
     }
     
+    
+    /**
+     *	Return status label of Order
+     *
+     *	@param      int		$mode       0=libelle long, 1=libelle court, 2=Picto + Libelle court, 3=Picto, 4=Picto + Libelle long, 5=Libelle court + Picto
+     *	@return     string      		Libelle
+     */
+    function getLibStatut($mode)
+    {
+        return $this->LibStatut(1,$mode);
+    }
+    
+    /**
+     *	Return label of status
+     *
+     *	@param		int		$statut      	  Id statut
+     *	@param      int		$mode        	  0=libelle long, 1=libelle court, 2=Picto + Libelle court, 3=Picto, 4=Picto + Libelle long, 5=Libelle court + Picto
+     *  @return     string					  Label of status
+     */
+    function LibStatut($statut,$mode)
+    {
+        global $langs, $conf;
+    
+        return '';
+    }
+    
+    
 }
 

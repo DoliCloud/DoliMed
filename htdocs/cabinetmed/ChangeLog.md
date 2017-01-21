@@ -1,11 +1,14 @@
 # ChangeLog
 
+***** 5.0
+- Can link elements to consultations.
+
 ***** 4.1
-Add extrafields on consultations.
+- Add extrafields on consultations.
 
 ***** 4.0
-Can keep or not feature of thirdparties (invoice, proposal) on patients.
-Use the new Dolibarr 4.0 look.
+- Can keep or not feature of thirdparties (invoice, proposal) on patients.
+- Use the new Dolibarr 4.0 look.
 
 ***** 3.7
 - Work with 3.7
@@ -36,5 +39,4 @@ Use the new Dolibarr 4.0 look.
 - Minor fixes into translation.
 - Prepare compatibility with Dolibarr 3.6.
 - Added filter on birthdate into list of patient.
-- Fix: Bug when you close an account. Closed account must appears into
-list.
+- Fix: Bug when you close an account. Closed account must appears into list.

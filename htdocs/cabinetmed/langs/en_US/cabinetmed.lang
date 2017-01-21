@@ -168,3 +168,4 @@ WeigthPeople=Weigth
 PatientDeleted=Patient "%s" was deleted from database.
 DocumentsPatient=Documents/Attached files
 SearchIntoPatients=Patients
+LinkToConsultation=Link to consultation
