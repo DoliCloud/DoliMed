@@ -165,10 +165,10 @@ if ($socid > 0)
         print '</td></tr>';
     }
 
-    print '<tr><td valign="top" class="titlefield">'.$langs->trans("Note");
+    print '<tr><td class="tdtop titlefield">'.$langs->trans("Note");
     print '<br><input type="checkbox" id="alert_note" name="alert_note"'.((isset($_POST['alert_note'])?GETPOST('alert_note'):$object->alert_note)?' checked="checked"':'').'"> '.$langs->trans("Alert");
     print '</td>';
-    print '<td valign="top">';
+    print '<td class="tdtop">';
     $note=($object->note_private?$object->note_private:$object->note);
     if ($user->rights->societe->creer)
     {

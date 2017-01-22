@@ -169,7 +169,7 @@ $head = contact_patient_stats_prepare_head(null);
 dol_fiche_head($head, 'statscontacts', $langs->trans("Contacts"), 0, 'contact');
 
 print '<table class="notopnoleftnopadd" width="100%"><tr>';
-print '<td valign="top">';
+print '<td class="tdtop">';
 
 print $langs->trans("PatientsPerContacts").'<br>';
 

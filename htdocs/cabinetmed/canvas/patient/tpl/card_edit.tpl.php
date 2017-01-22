@@ -240,12 +240,12 @@ print '</td></tr>';
 // Barcode
 if ($conf->global->MAIN_MODULE_BARCODE)
 {
-    print '<tr><td valign="top">'.$langs->trans('Gencod').'</td><td colspan="3"><input type="text" name="barcode" value="'.$object->barcode.'">';
+    print '<tr><td class="tdtop">'.$langs->trans('Gencod').'</td><td colspan="3"><input type="text" name="barcode" value="'.$object->barcode.'">';
     print '</td></tr>';
 }
 
 // Address
-print '<tr><td valign="top">'.$langs->trans('Address').'</td><td colspan="3"><textarea name="address" class="quatrevingtpercent" rows="3" wrap="soft">';
+print '<tr><td class="tdtop">'.$langs->trans('Address').'</td><td colspan="3"><textarea name="address" class="quatrevingtpercent" rows="3" wrap="soft">';
 print $object->address;
 print '</textarea></td></tr>';
 

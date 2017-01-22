@@ -234,10 +234,10 @@ if ($socid > 0)
 
     $height=120;
 
-    print '<tr height="80"><td valign="top" class="titlefield">'.$langs->trans("AntecedentsMed");
+    print '<tr height="80"><td class="tdtop titlefield">'.$langs->trans("AntecedentsMed");
     print '<br><input type="checkbox" name="alert_antemed"'.((isset($_POST['alert_antemed'])?GETPOST('alert_antemed'):$object->alert_antemed)?' checked="checked"':'').'"> '.$langs->trans("Alert");
     print '</td>';
-    print '<td valign="top">';
+    print '<td class="tdtop">';
     if ($action == 'edit' && $user->rights->societe->creer)
     {
         print "<input type=\"hidden\" name=\"socid\" value=\"".$object->id."\">";
@@ -262,10 +262,10 @@ if ($socid > 0)
 
     // Spec
     //print '<tr height="80">';
-    print '<td valign="top" class="titlefield">'.$langs->trans("SpecPharma");
+    print '<td class="tdtop titlefield">'.$langs->trans("SpecPharma");
     print '<br><input type="checkbox" name="alert_traitspec"'.((isset($_POST['alert_traitspec'])?GETPOST('alert_traitspec'):$object->alert_traitspec)?' checked="checked"':'').'"> '.$langs->trans("Alert");
     print '</td>';
-    print '<td valign="top">';
+    print '<td class="tdtop">';
     if ($action == 'edit' && $user->rights->societe->creer)
     {
         print "<input type=\"hidden\" name=\"socid\" value=\"".$object->id."\">";
@@ -289,10 +289,10 @@ if ($socid > 0)
     print '<div class="fichecenter"><div class="fichehalfleft">';
     print '<table class="border" width="100%" style="margin-bottom: 2px !important;">';
     
-    print '<tr height="80"><td valign="top" class="titlefield">'.$langs->trans("AntecedentsChirGene");
+    print '<tr height="80"><td class="tdtop titlefield">'.$langs->trans("AntecedentsChirGene");
     print '<br><input type="checkbox" name="alert_antechirgen"'.((isset($_POST['alert_antechirgen'])?GETPOST('alert_antechirgen'):$object->alert_antechirgen)?' checked="checked"':'').'"> '.$langs->trans("Alert");
     print '</td>';
-    print '<td valign="top">';
+    print '<td class="tdtop">';
     if ($action == 'edit' && $user->rights->societe->creer)
     {
         print "<input type=\"hidden\" name=\"socid\" value=\"".$object->id."\">";
@@ -315,10 +315,10 @@ if ($socid > 0)
 
     // Intolerances
     //print '<tr height="80">';
-    print '<td valign="top" class="titlefield">'.$langs->trans("Intolerances");
+    print '<td class="tdtop titlefield">'.$langs->trans("Intolerances");
     print '<br><input type="checkbox" name="alert_traitintol"'.((isset($_POST['alert_traitintol'])?GETPOST('alert_traitintol'):$object->alert_traitintol)?' checked="true"':'').'"> '.$langs->trans("Alert");
     print '</td>';
-    print '<td valign="top">';
+    print '<td class="tdtop">';
     if ($action == 'edit' && $user->rights->societe->creer)
     {
         print "<input type=\"hidden\" name=\"socid\" value=\"".$object->id."\">";
@@ -341,10 +341,10 @@ if ($socid > 0)
     print '<div class="fichecenter"><div class="fichehalfleft">';
     print '<table class="border" width="100%" style="margin-bottom: 2px !important;">';
 
-    print '<tr height="80"><td valign="top" class="titlefield">'.$langs->trans("AntecedentsChirOrtho");
+    print '<tr height="80"><td class="tdtop titlefield">'.$langs->trans("AntecedentsChirOrtho");
     print '<br><input type="checkbox" name="alert_antechirortho"'.((isset($_POST['alert_antechirortho'])?GETPOST('alert_antechirortho'):$object->alert_antechirortho)?' checked="checked"':'').'"> '.$langs->trans("Alert");
     print '</td>';
-    print '<td valign="top">';
+    print '<td class="tdtop">';
     if ($action == 'edit' && $user->rights->societe->creer)
     {
         print "<input type=\"hidden\" name=\"socid\" value=\"".$object->id."\">";
@@ -366,10 +366,10 @@ if ($socid > 0)
     print '<table class="border" width="100%" style="margin-bottom: 2px !important;"><tr height="80">';
 
     //print '<tr height="80">';
-    print '<td valign="top" class="titlefield">'.$langs->trans("Allergies");
+    print '<td class="tdtop titlefield">'.$langs->trans("Allergies");
     print '<br><input type="checkbox" name="alert_traitallergie"'.((isset($_POST['alert_traitallergie'])?GETPOST('alert_traitallergie'):$object->alert_traitallergie)?' checked="checked"':'').'""> '.$langs->trans("Alert");
     print '</td>';
-    print '<td valign="top">';
+    print '<td class="tdtop">';
     if ($action == 'edit' && $user->rights->societe->creer)
     {
         print "<input type=\"hidden\" name=\"socid\" value=\"".$object->id."\">";
@@ -392,10 +392,10 @@ if ($socid > 0)
     print '<div class="fichecenter"><div class="fichehalfleft">';
     print '<table class="border" width="100%" style="margin-bottom: 2px !important;">';
 
-    print '<tr height="80"><td valign="top" class="titlefield">'.$langs->trans("AntecedentsRhumato");
+    print '<tr height="80"><td class="tdtop titlefield">'.$langs->trans("AntecedentsRhumato");
     print '<br><input type="checkbox" name="alert_anterhum"'.((isset($_POST['alert_anterhum'])?GETPOST('alert_anterhum'):$object->alert_anterhum)?' checked="checked"':'').'"> '.$langs->trans("Alert");
     print '</td>';
-    print '<td valign="top">';
+    print '<td class="tdtop">';
     if ($action == 'edit' && $user->rights->societe->creer)
     {
         print "<input type=\"hidden\" name=\"socid\" value=\"".$object->id."\">";

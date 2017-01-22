@@ -450,7 +450,7 @@ if ($socid > 0)
         print '</tr>';
         print '</table>';
 
-        //print '</td><td valign="top">';
+        //print '</td><td class="tdtop">';
         print '</div><div class="fichehalfright"><div class="ficheaddleft">';
 
         print $langs->trans("Conclusion").':<br>';

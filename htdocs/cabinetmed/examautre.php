@@ -381,7 +381,7 @@ if ($socid > 0)
         print '</td><td>';
         print '<input type="text" size="48" class="flat" name="examprinc" value="'.$examother->examprinc.'" id="examprinc"><br>';
         print '</td></tr>';
-        print '<tr><td valign="top">'.$langs->trans("Secondaires").':';
+        print '<tr><td class="tdtop">'.$langs->trans("Secondaires").':';
         print '</td><td>';
         print '<textarea class="flat" name="examsec" id="examsec" cols="46" rows="'.ROWS_5.'">';
         print $examother->examsec;
@@ -404,7 +404,7 @@ if ($socid > 0)
         print '</td><td>';
         print '<input type="text" size="48" class="flat" name="examconcprinc" value="'.$examother->concprinc.'" id="examconcprinc"><br>';
         print '</td></tr>';
-        print '<tr><td valign="top">'.$langs->trans("Secondaires").':';
+        print '<tr><td class="tdtop">'.$langs->trans("Secondaires").':';
         print '</td><td>';
         print '<textarea class="flat" name="examconcsec" id="examconcsec" cols="46" rows="'.ROWS_5.'">';
         print $examother->concsec;
@@ -414,7 +414,7 @@ if ($socid > 0)
 
         print '</table>';
 
-        print '</td><td valign="top">';
+        print '</td><td class="tdtop">';
 
 
         print '</td></tr>';

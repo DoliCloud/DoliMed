@@ -775,7 +775,7 @@ if ($socid > 0)
         print '</td><td>';
         print '<input type="text" class="flat minwidth200" name="motifconsprinc" value="'.$consult->motifconsprinc.'" id="motifconsprinc"><br>';
         print '</td></tr>';
-        print '<tr><td valign="top">'.$langs->trans("MotifSecondaires").':';
+        print '<tr><td class="tdtop">'.$langs->trans("MotifSecondaires").':';
         print '</td><td>';
         print '<textarea class="flat quatrevingtpercent" name="motifconssec" id="motifconssec" rows="'.ROWS_3.'">';
         print $consult->motifconssec;
@@ -790,7 +790,7 @@ if ($socid > 0)
         print ''.$langs->trans("HistoireDeLaMaladie").'<br>';
         print '<textarea name="hdm" id="hdm" class="flat centpercent" rows="'.ROWS_5.'">'.$consult->hdm.'</textarea>';
 
-        //print '</td><td valign="top">';
+        //print '</td><td class="tdtop">';
         //print '</td></tr><tr><td>';
         print '</div></div></div>';
 
@@ -811,7 +811,7 @@ if ($socid > 0)
         print '</td><td>';
         print '<input type="text" class="flat minwidth200" name="diaglesprinc" value="'.$consult->diaglesprinc.'" id="diaglesprinc"><br>';
         print '</td></tr>';
-        print '<tr><td valign="top">'.$langs->trans("DiagLesSecondaires").':';
+        print '<tr><td class="tdtop">'.$langs->trans("DiagLesSecondaires").':';
         print '</td><td>';
         print '<textarea class="flat quatrevingtpercent" name="diaglessec" id="diaglessec" rows="'.ROWS_3.'">';
         print $consult->diaglessec;
@@ -852,7 +852,7 @@ if ($socid > 0)
         print ' <input type="button" class="button" id="addexamenprescrit" name="addexamenprescrit" value="+">';
         if ($user->admin) print ' '.info_admin($langs->trans("YouCanChangeValuesForThisListFromDictionarySetup"),1);
         print '</td></tr>';
-        print '<tr><td valign="top">';
+        print '<tr><td class="tdtop">';
         print '</td><td>';
         print '<textarea class="flat" name="examenprescrit" id="examenprescrit" cols="40" rows="'.ROWS_4.'">';
         print $consult->examenprescrit;
@@ -860,7 +860,7 @@ if ($socid > 0)
         print '</td>';
         print '</tr>';
 
-        print '<tr><td valign="top"><br>'.$langs->trans("Commentaires").':';
+        print '<tr><td class="tdtop"><br>'.$langs->trans("Commentaires").':';
         print '</td><td><br>';
         print '<textarea name="comment" id="comment" class="flat" cols="40" rows="'.($nboflines-1).'">'.$consult->comment.'</textarea>';
         print '</td></tr>';
@@ -877,7 +877,7 @@ if ($socid > 0)
         
         print '</table>';
 
-        //print '</td><td valign="top">';
+        //print '</td><td class="tdtop">';
         print '</div><div class="fichehalfright"><div class="ficheaddleft">';
 
         print $langs->trans("TraitementsPrescrits").'<br>';

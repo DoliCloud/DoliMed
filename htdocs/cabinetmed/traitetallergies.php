@@ -181,10 +181,10 @@ if ($socid > 0)
 
 
     // Spec
-    print '<tr height="80"><td valign="top">'.$langs->trans("SpecPharma");
+    print '<tr height="80"><td class="tdtop">'.$langs->trans("SpecPharma");
     print '<br><input type="checkbox" name="alert_traitspec"'.((isset($_POST['alert_traitspec'])?GETPOST('alert_traitspec'):$object->alert_traitspec)?' checked="checked"':'').'"> '.$langs->trans("Alert");
     print '</td>';
-    print '<td valign="top">';
+    print '<td class="tdtop">';
     if ($action == 'edit' && $user->rights->societe->creer)
     {
         print "<input type=\"hidden\" name=\"socid\" value=\"".$object->id."\">";
@@ -203,8 +203,8 @@ if ($socid > 0)
 
     // Classes
     /*
-    print '<tr height="80"><td valign="top">'.$langs->trans("Classes").'</td>';
-    print '<td valign="top">';
+    print '<tr height="80"><td class="tdtop">'.$langs->trans("Classes").'</td>';
+    print '<td class="tdtop">';
     if ($action == 'edit' && $user->rights->societe->creer)
     {
         print "<input type=\"hidden\" name=\"socid\" value=\"".$object->id."\">";
@@ -222,10 +222,10 @@ if ($socid > 0)
     */
 
     // Intolerances
-    print '<tr height="80"><td valign="top">'.$langs->trans("Intolerances");
+    print '<tr height="80"><td class="tdtop">'.$langs->trans("Intolerances");
     print '<br><input type="checkbox" name="alert_traitintol"'.((isset($_POST['alert_traitintol'])?GETPOST('alert_traitintol'):$object->alert_traitintol)?' checked="true"':'').'"> '.$langs->trans("Alert");
     print '</td>';
-    print '<td valign="top">';
+    print '<td class="tdtop">';
     if ($action == 'edit' && $user->rights->societe->creer)
     {
         print "<input type=\"hidden\" name=\"socid\" value=\"".$object->id."\">";
