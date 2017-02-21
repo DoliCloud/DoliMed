@@ -48,6 +48,7 @@ class CabinetmedCons extends CommonObject
 	var $diaglesprinc;
 	var $motifconssec;
 	var $diaglessec;
+	var $hdm;
 	var $examenclinique;
 	var $examenprescrit;
 	var $traitementprescrit;
