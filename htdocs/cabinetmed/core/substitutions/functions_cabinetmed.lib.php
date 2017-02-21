@@ -219,6 +219,9 @@ function cabinetmed_completesubstitutionarray(&$substitutionarray,$langs,$object
 	    $substitutionarray['outcome_date']=dol_print_date($outcome->datecons,'day');
 	    $substitutionarray['outcome_reason']=$outcome->motifconsprinc;
 	    $substitutionarray['outcome_diagnostic']=$outcome->diaglesprinc;
+	    $substitutionarray['outcome_history']=$outcome->hdm;
+	    $substitutionarray['outcome_exam_clinic']=$outcome->examenclinique;
+		// Sugested treatment
 	    if (! empty($outcome->traitementprescrit))
 	    {
 	        $substitutionarray['treatment_title']=$langs->transnoentitiesnoconv("TreatmentSugested"); // old string
@@ -231,7 +234,9 @@ function cabinetmed_completesubstitutionarray(&$substitutionarray,$langs,$object
 	    	$substitutionarray['outcome_treatment_title']='';
 	        $substitutionarray['outcome_treatment']='';
 	    }
-    	$substitutionarray['outcome_total_inctax_card']=$outcome->montant_carte;
+	    $substitutionarray['outcome_exam_sugested']=$outcome->examenprescrit;
+	    // Payments
+	    $substitutionarray['outcome_total_inctax_card']=$outcome->montant_carte;
     	$substitutionarray['outcome_total_inctax_cheque']=$outcome->montant_cheque;
     	$substitutionarray['outcome_total_inctax_cash']=$outcome->montant_espece;
     	$substitutionarray['outcome_total_inctax_other']=$outcome->montant_tiers;
