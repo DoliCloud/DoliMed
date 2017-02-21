@@ -536,7 +536,7 @@ else
 	 */
 
 	// Projects list
-	$result=show_projects($conf,$langs,$db,$object);
+	//$result=show_projects($conf,$langs,$db,$object);
 }
 
 ?>
