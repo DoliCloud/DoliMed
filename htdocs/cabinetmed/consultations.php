@@ -1,5 +1,5 @@
 <?php
-/* Copyright (C) 2004-2014      Laurent Destailleur  <eldy@users.sourceforge.net>
+/* Copyright (C) 2004-2017      Laurent Destailleur  <eldy@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -252,27 +252,143 @@ if ($action == 'add' || $action == 'update')
                 {
                     $object->fetch($consult->fk_soc);
 
-                    foreach(array('CHQ','CB','LIQ','VIR') as $key)
+                    if (GETPOST('generateinvoice'))
                     {
-                        if ($conf->banque->enabled && isset($banque[$key]) && $banque[$key] > 0)
+                        include_once DOL_DOCUMENT_ROOT.'/compta/facture/class/facture.class.php';
+                        include_once DOL_DOCUMENT_ROOT.'/compta/paiement/class/paiement.class.php';
+                        
+                        $invoice = new Facture($db);
+                        $invoice->socid = $object->id;
+                        $invoice->fk_soc = $object->id;
+                        $invoice->date = $datecons; 
+                        
+                        $vattouse = GETPOST('vat');
+                        
+                        $product = new Product($db);
+                        $product->type = Product::TYPE_SERVICE;
+                        
+                        if (GETPOST('prodid') > 0)      // TODO
                         {
-                            $bankaccount=new Account($db);
-                            $result=$bankaccount->fetch($banque[$key]);
-                            if ($result < 0) dol_print_error($db,$bankaccount->error);
-                            if ($key == 'CHQ') $lineid=$bankaccount->addline($datecons, $key, $langs->trans("CustomerInvoicePayment"), $amount[$key], $consult->num_cheque, '', $user, $object->name, $consult->banque);
-                            else $lineid=$bankaccount->addline($datecons, $key, $langs->trans("CustomerInvoicePayment"), $amount[$key], '', '', $user, $object->name, '');
-                            if ($lineid <= 0)
+                            $product->fetch(GETPOST('prodid'));
+                            if (GETPOST('vat') == '')
                             {
-                                $error++;
-                                $consult->error=$bankaccount->error;
+                                $vattouse = get_default_tva(societe_vendeuse,societe_acheteuse,$product);
                             }
-                            if (! $error)
+                        }
+                        
+                        $consultamount = $consult->montant_cheque + $consult->montant_carte + $consult->montant_espece + $consult->montant_tiers;
+
+                        $invoice->linked_objects['consultation']=$consult->id;
+
+                        $result = $invoice->create($user);
+                        if ($result > 0)
+                        {
+                            $result = $invoice->addline(
+                                $langs->trans('Consultation'),
+                                $consultamount,		 	// subprice
+                                1, 						// quantity
+                                $vattouse,     // vat rate
+                                0,                      // localtax1_tx
+                                0, 						// localtax2_tx
+                                $product->id, 	// fk_product
+                                0, 						// remise_percent
+                                0, 						// date_start
+                                0, 						// date_end
+                                0, 
+                                0, // info_bits
+                                0,
+                                'HT',
+                                0,
+                                $product->type, 						// product_type
+                                1,
+                                $lines[$i]->special_code,
+                                $consult->origin,
+                                $consult->id,
+                                0,
+                                0,
+                                0,
+                                ''
+                                );                            
+                            
+                            $result = $invoice->validate($user);
+                            if ($result > 0)
                             {
-                                $result1=$bankaccount->add_url_line($lineid,$consult->id,dol_buildpath('/cabinetmed/consultations.php',1).'?action=edit&socid='.$consult->fk_soc.'&id=','Consultation','consultation');
-                                $result2=$bankaccount->add_url_line($lineid,$consult->fk_soc,'',$object->name,'company');
-                                if ($result1 <= 0 || $result2 <= 0)
+                                // Enter payment
+                                foreach(array('CHQ','CB','LIQ','VIR') as $key)
+                                {
+                                    $tmpamount=0;
+                                    if ($key == 'CHQ') $tmpamount = $consult->montant_cheque;
+                                    if ($key == 'CB')  $tmpamount = $consult->montant_carte;
+                                    if ($key == 'LIQ') $tmpamount = $consult->montant_espece;
+                                    if ($key == 'VIR') $tmpamount = $consult->montant_tiers;
+                                    if (! ($tmpamount > 0)) continue;
+                                    
+                                    // Creation of payment line
+                                    $paiement = new Paiement($db);
+                                    $paiement->datepaye     = $datecons;
+                                    $paiement->amounts      = array($invoice->id => $tmpamount);    // Array with all payments dispatching
+                                    $paiement->paiementid   = dol_getIdFromCode($db, $key, 'c_paiement');
+                                    $paiement->num_paiement = $consult->num_cheque;
+                                    $paiement->note         = '';
+                                    
+                                    if (! $error)
+                                    {
+                                        $paiement_id = $paiement->create($user, 1);
+                                        if ($paiement_id < 0)
+                                        {
+                                            setEventMessages($paiement->error, $paiement->errors, 'errors');
+                                            $error++;
+                                        }
+                                    }
+                                    
+                                    // Create entry into bank account for the payment
+                                    if (! $error)
+                                    {
+                                        if ($conf->banque->enabled && isset($banque[$key]) && $banque[$key] > 0)
+                                        {
+                                            $label='(CustomerInvoicePayment)';
+                                            $result=$paiement->addPaymentToBank($user,'payment',$label,$banque[$key],$object->name,$consult->banque);
+                                            if ($result < 0)
+                                            {
+                                                setEventMessages($paiement->error, $paiement->errors, 'errors');
+                                                $error++;
+                                            }
+                                        }
+                                    }
+                                 }
+                            }
+                        }
+                        else
+                        {
+                            $error++;
+                            $consult->error = $invoice->error;
+                        }
+                    }
+                    else
+                    {
+                        // Create direct entry into bank account
+                        foreach(array('CHQ','CB','LIQ','VIR') as $key)
+                        {
+                            if ($conf->banque->enabled && isset($banque[$key]) && $banque[$key] > 0)
+                            {
+                                $bankaccount=new Account($db);
+                                $result=$bankaccount->fetch($banque[$key]);
+                                if ($result < 0) dol_print_error($db,$bankaccount->error);
+                                if ($key == 'CHQ') $lineid=$bankaccount->addline($datecons, $key, $langs->trans("CustomerInvoicePayment"), $amount[$key], $consult->num_cheque, '', $user, $object->name, $consult->banque);
+                                else $lineid=$bankaccount->addline($datecons, $key, $langs->trans("CustomerInvoicePayment"), $amount[$key], '', '', $user, $object->name, '');
+                                if ($lineid <= 0)
                                 {
                                     $error++;
+                                    $consult->error=$bankaccount->error;
+                                }
+                                if (! $error)
+                                {
+                                    $result1=$bankaccount->add_url_line($lineid,$consult->id,dol_buildpath('/cabinetmed/consultations.php',1).'?action=edit&socid='.$consult->fk_soc.'&id=','Consultation','consultation');
+                                    $result2=$bankaccount->add_url_line($lineid,$consult->fk_soc,'',$object->name,'company');
+                                    if ($result1 <= 0 || $result2 <= 0)
+                                    {
+                                        $error++;
+                                    }
                                 }
                             }
                         }
@@ -939,29 +1055,38 @@ if ($socid > 0)
         // Payment area
         print '<table class="notopnoleftnoright" id="paymentsbox" width="100%">';
 
+        if (empty($conf->global->SOCIETE_DISABLE_CUSTOMERS) && ! empty($conf->global->CABINETMED_AUTOGENERATE_INVOICE))
+        {
+            print '<tr><td></td><td>';
+            if ($consult->id > 0 && ! $error)
+            {
+                print '<input name="generateinvoice" type="checkbox" disabled="disabled"> <span class="opacitymedium">'.$langs->trans("GenerateInvoiceAndPayment").'</span> - '.$langs->trans("YouMustEditInvoiceManually");
+            }
+            else
+            {
+                print '<input name="generateinvoice" type="checkbox" checked="checked"> '.$langs->trans("GenerateInvoiceAndPayment");
+            }
+            print '</td></tr>';
+        }
+            
         // Cheque
         print '<tr class="cabpaymentcheque"><td class="titlefield">';
         print ''.$langs->trans("PaymentTypeCheque").'</td><td>';
-        //print '<table class="nobordernopadding"><tr><td>';
         print '<input type="text" class="flat" name="montant_cheque" id="idmontant_cheque" value="'.($consult->montant_cheque!=''?price($consult->montant_cheque):'').'" size="5">';
         if ($conf->banque->enabled)
         {
         	print ' &nbsp; '.$langs->trans("RecBank").' ';
             $form->select_comptes(GETPOST('bankchequeto')?GETPOST('bankchequeto'):($consult->bank['CHQ']['account_id']?$consult->bank['CHQ']['account_id']:$defaultbankaccountchq),'bankchequeto',2,'courant = 1',1);
         }
-        //print '</td><td>';
         print ' &nbsp; ';
         print $langs->trans("ChequeBank").' ';
-        //print '<input type="text" class="flat" name="banque" id="banque" value="'.$consult->banque.'" size="18"'.($consult->montant_cheque?'':' disabled="disabled"').'>';
         listebanques(1,0,$consult->banque);
         if ($user->admin) print info_admin($langs->trans("YouCanChangeValuesForThisListFromDictionarySetup"),1);
-        //print '</td></tr><tr><td></td><td>';
         if ($conf->banque->enabled)
         {
         	print ' &nbsp; '.$langs->trans("ChequeOrTransferNumber").' ';
         	print '<input type="text" class="flat" name="num_cheque" id="idnum_cheque" value="'.$consult->num_cheque.'" size="6">';
         }
-        //print '</td></tr></table>';
         print '</td></tr>';
         // Card
         print '<tr class="cabpaymentcarte"><td>';
@@ -1138,6 +1263,7 @@ if ($action == '' || $action == 'delete')
 
             $var=!$var;
             print '<tr '.$bc[$var].'><td>';
+            
             print '<a href="'.$_SERVER["PHP_SELF"].'?socid='.$obj->fk_soc.'&id='.$obj->rowid.'&action=edit">'.sprintf("%08d",$obj->rowid).'</a>';
             print '</td><td>';
             print dol_print_date($db->jdate($obj->datecons),'day');

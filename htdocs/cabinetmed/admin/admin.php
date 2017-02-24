@@ -67,7 +67,9 @@ if ($action == 'update')
    	$res=dolibarr_set_const($db, 'SOCIETE_DISABLE_CUSTOMERS', GETPOST("SOCIETE_DISABLE_CUSTOMERS"), 'texte', 1, '', $conf->entity);
 	$res=dolibarr_set_const($db, 'SOCIETE_DISABLE_PROSPECTS', GETPOST("SOCIETE_DISABLE_PROSPECTS"), 'texte', 1, '', $conf->entity);
 
-	$res=dolibarr_set_const($db, 'MAIN_SEARCHFORM_SOCIETE', GETPOST("MAIN_SEARCHFORM_SOCIETE")?0:1, 'texte', 0, '', $conf->entity);        // We also hide search of companies
+   	$res=dolibarr_set_const($db, 'CABINETMED_AUTOGENERATE_INVOICE', GETPOST("CABINETMED_AUTOGENERATE_INVOICE"), 'chaine', 1, '', $conf->entity);
+	
+   	$res=dolibarr_set_const($db, 'MAIN_SEARCHFORM_SOCIETE', GETPOST("MAIN_SEARCHFORM_SOCIETE")?0:1, 'texte', 0, '', $conf->entity);        // We also hide search of companies
 
     $res=dolibarr_set_const($db, 'CABINETMED_BANK_PATIENT_REQUIRED', GETPOST("CABINETMED_BANK_PATIENT_REQUIRED"), 'texte', 0, '', $conf->entity);
 
@@ -100,7 +102,7 @@ $head[$h][2] = 'tabsetup';
 $h++;
 
 $head[$h][0] = 'cabinetmed_cons_extrafields.php';
-$head[$h][1] = $langs->trans("ExtraFields").' ('.$langs->trans("Consultations").')';
+$head[$h][1] = $langs->trans("ExtraFields").' ('.$langs->trans("Patient").')';
 $head[$h][2] = 'tabconsextrafields';
 $h++;
 
@@ -124,8 +126,8 @@ print '<td>'.$langs->trans("Value").'</td>';
 print "</tr>\n";
 
 $var=!$var;
-print '<tr '.$bc[$var].'><td>'.$langs->trans("EnableSpecificFeaturesToRheumatology").'</td>';
-print '<td>'.$form->selectyesno('CABINETMED_RHEUMATOLOGY_ON',$conf->global->CABINETMED_RHEUMATOLOGY_ON,1).'</td>';
+print '<tr '.$bc[$var].'><td>'.$langs->trans("HideProspectFeatures").'</td>';
+print '<td>'.$form->selectyesno('SOCIETE_DISABLE_PROSPECTS',$conf->global->SOCIETE_DISABLE_PROSPECTS,1).'</td>';
 print '</tr>';
 
 $var=!$var;
@@ -133,14 +135,22 @@ print '<tr '.$bc[$var].'><td>'.$langs->trans("HideCustomerFeatures").'</td>';
 print '<td>'.$form->selectyesno('SOCIETE_DISABLE_CUSTOMERS',$conf->global->SOCIETE_DISABLE_CUSTOMERS,1).'</td>';
 print '</tr>';
 
-$var=!$var;
-print '<tr '.$bc[$var].'><td>'.$langs->trans("HideProspectFeatures").'</td>';
-print '<td>'.$form->selectyesno('SOCIETE_DISABLE_PROSPECTS',$conf->global->SOCIETE_DISABLE_PROSPECTS,1).'</td>';
-print '</tr>';
+if (empty($conf->global->SOCIETE_DISABLE_CUSTOMERS))
+{
+    $var=!$var;
+    print '<tr '.$bc[$var].'><td>'.$langs->trans("CABINETMED_AUTOGENERATE_INVOICE").'</td>';
+    print '<td>'.$form->selectyesno('CABINETMED_AUTOGENERATE_INVOICE',$conf->global->CABINETMED_AUTOGENERATE_INVOICE,1).'</td>';
+    print '</tr>';
+}
 
 $var=!$var;
 print '<tr '.$bc[$var].'><td>'.$langs->trans("CABINETMED_BANK_PATIENT_REQUIRED").'</td>';
 print '<td>'.$form->selectyesno('CABINETMED_BANK_PATIENT_REQUIRED',$conf->global->CABINETMED_BANK_PATIENT_REQUIRED,1).'</td>';
+print '</tr>';
+
+$var=!$var;
+print '<tr '.$bc[$var].'><td>'.$langs->trans("EnableSpecificFeaturesToRheumatology").'</td>';
+print '<td>'.$form->selectyesno('CABINETMED_RHEUMATOLOGY_ON',$conf->global->CABINETMED_RHEUMATOLOGY_ON,1).'</td>';
 print '</tr>';
 
 print '</table>';
