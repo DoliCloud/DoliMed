@@ -1,6 +1,6 @@
 <?php
 /* Copyright (C) 2003      Rodolphe Quiedeville <rodolphe@quiedeville.org>
- * Copyright (C) 2004-2014 Laurent Destailleur  <eldy@users.sourceforge.net>
+ * Copyright (C) 2004-2017 Laurent Destailleur  <eldy@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -63,7 +63,7 @@ class modCabinetMed extends DolibarrModules
         $this->editor_url = 'http://www.dolimed.com';
         
         // Possible values for version are: 'development', 'experimental', 'dolibarr' or version
-        $this->version = '4.1.0';
+        $this->version = '4.2.0';
         // Key used in llx_const table to save module status enabled/disabled (where MYMODULE is value of property name of module in uppercase)
         $this->const_name = 'MAIN_MODULE_'.strtoupper($this->name);
         // Where to store the module in setup page (0=common,1=interface,2=others,3=very specific)
