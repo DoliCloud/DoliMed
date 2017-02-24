@@ -278,7 +278,7 @@ if ($action == 'add' || $action == 'update')
                         
                         $consultamount = $consult->montant_cheque + $consult->montant_carte + $consult->montant_espece + $consult->montant_tiers;
 
-                        $invoice->linked_objects['consultation']=$consult->id;
+                        $invoice->linked_objects['cabinetmed_cabinetmedcons']=$consult->id;
 
                         $result = $invoice->create($user);
                         if ($result > 0)
