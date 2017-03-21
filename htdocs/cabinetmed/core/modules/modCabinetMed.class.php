@@ -57,7 +57,7 @@ class modCabinetMed extends DolibarrModules
         // Module label (no space allowed), used if translation string 'ModuleXXXName' not found (where XXX is value of numeric property 'numero' of module)
         $this->name = preg_replace('/^mod/i','',get_class($this));
         // Module description, used if translation string 'ModuleXXXDesc' not found (where XXX is value of numeric property 'numero' of module)
-        $this->description = "Module DoliMed";
+        $this->description = "Module DoliMed - Manage your patients and consutlations";
         
         $this->editor_name = 'NLTechno';
         $this->editor_url = 'http://www.dolimed.com';
@@ -587,5 +587,27 @@ class modCabinetMed extends DolibarrModules
 
         return $this->_load_tables('/cabinetmed/sql/');
     }
+    
+
+    /**
+     * Gives the translated module description if translation exists in admin.lang or the default module description
+     *
+     * @return  string  Translated module description
+     */
+    function getDescLong()
+    {
+        global $langs;
+        $langs->load("admin");
+        
+        include_once DOL_DOCUMENT_ROOT.'/core/lib/geturl.lib.php';
+        $path = dol_buildpath('cabinetmed/README.md', 0);
+        $content = file_get_contents($path);
+        
+        @include_once DOL_DOCUMENT_ROOT.'/core/lib/parsemd.lib.php';
+        $content = dolMd2Html($content); 
+        
+        return $content;
+    }
+    
 }
 
