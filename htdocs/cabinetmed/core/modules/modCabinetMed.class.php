@@ -588,26 +588,5 @@ class modCabinetMed extends DolibarrModules
         return $this->_load_tables('/cabinetmed/sql/');
     }
     
-
-    /**
-     * Gives the translated module description if translation exists in admin.lang or the default module description
-     *
-     * @return  string  Translated module description
-     */
-    function getDescLong()
-    {
-        global $langs;
-        $langs->load("admin");
-        
-        include_once DOL_DOCUMENT_ROOT.'/core/lib/geturl.lib.php';
-        $path = dol_buildpath('cabinetmed/README.md', 0);
-        $content = file_get_contents($path);
-        
-        @include_once DOL_DOCUMENT_ROOT.'/core/lib/parsemd.lib.php';
-        $content = dolMd2Html($content); 
-        
-        return $content;
-    }
-    
 }
 
