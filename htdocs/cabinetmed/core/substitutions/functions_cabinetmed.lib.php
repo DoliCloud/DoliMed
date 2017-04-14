@@ -160,7 +160,7 @@ function cabinetmed_completesubstitutionarray(&$substitutionarray,$langs,$object
         require_once DOL_DOCUMENT_ROOT.'/core/lib/files.lib.php';
         require_once DOL_DOCUMENT_ROOT.'/core/class/link.class.php';
         $upload_dir = $conf->societe->dir_output . "/" . $object->id;
-        $nbFiles = count(dol_dir_list($upload_dir,'files',0,'','(\.meta|_preview\.png)$'));
+        $nbFiles = count(dol_dir_list($upload_dir,'files',0,'','(\.meta|_preview.*\.png)$'));
         $nbLinks=0;
         if ((float) DOL_VERSION >= 4.0) $nbLinks=Link::count($db, $object->element, $object->id);
         if (($nbFiles+$nbLinks) > 0) $substitutionarray['DocumentsPatient']=$langs->trans("DocumentsPatient").' <span class="badge">'.($nbFiles+$nbLinks).'</span>';
