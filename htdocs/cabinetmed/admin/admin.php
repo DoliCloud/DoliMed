@@ -126,30 +126,30 @@ print '<td>'.$langs->trans("Value").'</td>';
 print "</tr>\n";
 
 $var=!$var;
-print '<tr '.$bc[$var].'><td>'.$langs->trans("HideProspectFeatures").'</td>';
+print '<tr class="oddeven"><td>'.$langs->trans("HideProspectFeatures").'</td>';
 print '<td>'.$form->selectyesno('SOCIETE_DISABLE_PROSPECTS',$conf->global->SOCIETE_DISABLE_PROSPECTS,1).'</td>';
 print '</tr>';
 
 $var=!$var;
-print '<tr '.$bc[$var].'><td>'.$langs->trans("HideCustomerFeatures").'</td>';
+print '<tr class="oddeven"><td>'.$langs->trans("HideCustomerFeatures").'</td>';
 print '<td>'.$form->selectyesno('SOCIETE_DISABLE_CUSTOMERS',$conf->global->SOCIETE_DISABLE_CUSTOMERS,1).'</td>';
 print '</tr>';
 
 if (empty($conf->global->SOCIETE_DISABLE_CUSTOMERS))
 {
     $var=!$var;
-    print '<tr '.$bc[$var].'><td>'.$langs->trans("CABINETMED_AUTOGENERATE_INVOICE").'</td>';
+    print '<tr class="oddeven"><td>'.$langs->trans("CABINETMED_AUTOGENERATE_INVOICE").'</td>';
     print '<td>'.$form->selectyesno('CABINETMED_AUTOGENERATE_INVOICE',$conf->global->CABINETMED_AUTOGENERATE_INVOICE,1).'</td>';
     print '</tr>';
 }
 
 $var=!$var;
-print '<tr '.$bc[$var].'><td>'.$langs->trans("CABINETMED_BANK_PATIENT_REQUIRED").'</td>';
+print '<tr class="oddeven"><td>'.$langs->trans("CABINETMED_BANK_PATIENT_REQUIRED").'</td>';
 print '<td>'.$form->selectyesno('CABINETMED_BANK_PATIENT_REQUIRED',$conf->global->CABINETMED_BANK_PATIENT_REQUIRED,1).'</td>';
 print '</tr>';
 
 $var=!$var;
-print '<tr '.$bc[$var].'><td>'.$langs->trans("EnableSpecificFeaturesToRheumatology").'</td>';
+print '<tr class="oddeven"><td>'.$langs->trans("EnableSpecificFeaturesToRheumatology").'</td>';
 print '<td>'.$form->selectyesno('CABINETMED_RHEUMATOLOGY_ON',$conf->global->CABINETMED_RHEUMATOLOGY_ON,1).'</td>';
 print '</tr>';
 

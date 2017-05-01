@@ -195,7 +195,7 @@ for ($mois = 1+$nb_mois_decalage ; $mois <= 12+$nb_mois_decalage ; $mois++)
 	$mois_modulo = $mois;
 	if($mois>12) {$mois_modulo = $mois-12;}
 	$var=!$var;
-	print '<tr '.$bc[$var].'>';
+	print '<tr class="oddeven">';
 	print "<td>";
 	print '<table class="nobordernopadding"><tr valign="middle"><td width="24px">';
 	print img_picto_common($langs->trans("Expand"),'treemenu/plustop3.gif','class="imgtoexpand" id="img_'.$mois_modulo.'"').'</td><td>';

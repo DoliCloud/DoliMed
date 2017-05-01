@@ -222,7 +222,7 @@ if ($resql)
         $societestatic->name=$obj->name;
 
         $var=!$var;
-        print '<tr '.$bc[$var].'>';
+        print '<tr class="oddeven">';
 
         print '<td>';
         print $societestatic->getNomUrl(1);

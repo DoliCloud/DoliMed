@@ -624,7 +624,7 @@ if ($action == '' || $action == 'delete')
             $obj = $db->fetch_object($resql);
 
             $var=!$var;
-            print '<tr '.$bc[$var].'>';
+            print '<tr class="oddeven">';
             //print '<td>';
             //print '<a href="'.$_SERVER["PHP_SELF"].'?socid='.$obj->fk_soc.'&id='.$obj->rowid.'&action=edit">'.sprintf("%08d",$obj->rowid).'</a>';
             //print '</td>';

@@ -223,7 +223,7 @@ if ($resql)
             $contactstatic->firstname=$obj->firstname;
 
             $var=!$var;
-            print '<tr '.$bc[$var].'>';
+            print '<tr class="oddeven">';
         	print '<td>'.$contactstatic->getNomUrl(1).'</td>';
         	print '<td align="right">'.round($obj->nb).'</td>';
         	print '<td align="right">';
