@@ -48,122 +48,125 @@ function cabinetmed_completesubstitutionarray(&$substitutionarray,$langs,$object
     $isbio=0;
     $isother=0;
 
-    // If $object is Societe and not extended Patient, we reload object Patient to have all information specific to patient.
-    if ($object && get_class($object) == 'Societe' && $object->canvas == 'patient@cabinetmed')
+    if (empty($parameters['mode']))	// For exemple when called by FormMail::getAvailableSubstitKey()
     {
-    	$patientobj=new Patient($db);
-    	$patientobj->fetch($object->id);
-    	$object = $patientobj;
-    }
-
-    $substitutionarray['NotesPatient']=$langs->trans("Notes");
-    if ($object)
-    {
-        $nbofnotes = ($object->note||$object->note_private)?1:0;
-        if ($nbofnotes > 0) $substitutionarray['NotesPatient']=$langs->trans("Notes").' <span class="badge">'.$nbofnotes.'</span>';
-    }
+        // If $object is Societe and not extended Patient, we reload object Patient to have all information specific to patient.
+        if ($object && get_class($object) == 'Societe' && $object->canvas == 'patient@cabinetmed')
+        {
+        	$patientobj=new Patient($db);
+        	$patientobj->fetch($object->id);
+        	$object = $patientobj;
+        }
     
-    $substitutionarray['Correspondants']=$langs->trans("Correspondants");
-    if ($object && is_array($parameters) && $parameters['needforkey'] == 'SUBSTITUTION_Correspondants')
-    {
-	    $nbChild = count($object->liste_contact(-1,'internal')) + count($object->liste_contact(-1,'external'));
-        
-        if ($nbChild > 0) $substitutionarray['Correspondants']=$langs->trans("Correspondants").' <span class="badge">'.$nbChild.'</span>';
-    }
-    
-    $substitutionarray['ConsultationsShort']=$langs->trans("ConsultationsShort");
-    if ($object && is_array($parameters) && $parameters['needforkey'] == 'SUBSTITUTION_ConsultationsShort')
-    {
-        $sql = "SELECT COUNT(n.rowid) as nb";
-        $sql .= " FROM " . MAIN_DB_PREFIX . "cabinetmed_cons as n";
-        $sql .= " WHERE fk_soc = " . $object->id;
-        $resql = $db->query($sql);
-        if ($resql) {
-            $num = $db->num_rows($resql);
-            $i = 0;
-            while ($i < $num) {
-                $obj = $db->fetch_object($resql);
-                $nbChild = $obj->nb;
-                $i ++;
-            }
-        } else {
-            dol_print_error($db);
+        $substitutionarray['NotesPatient']=$langs->trans("Notes");
+        if ($object)
+        {
+            $nbofnotes = ($object->note||$object->note_private)?1:0;
+            if ($nbofnotes > 0) $substitutionarray['NotesPatient']=$langs->trans("Notes").' <span class="badge">'.$nbofnotes.'</span>';
         }
         
-        if ($nbChild > 0) $substitutionarray['ConsultationsShort']=$langs->trans("ConsultationsShort").' <span class="badge">'.$nbChild.'</span>';
-    }
-
-    $substitutionarray['ResultExamBio']=$langs->trans("ResultExamBio");
-    if ($object && is_array($parameters) && $parameters['needforkey'] == 'SUBSTITUTION_ResultExamBio')
-    {
-        $sql = "SELECT COUNT(n.rowid) as nb";
-        $sql .= " FROM " . MAIN_DB_PREFIX . "cabinetmed_exambio as n";
-        $sql .= " WHERE fk_soc = " . $object->id;
-        $resql = $db->query($sql);
-        if ($resql) {
-            $num = $db->num_rows($resql);
-            $i = 0;
-            while ($i < $num) {
-                $obj = $db->fetch_object($resql);
-                $nbChild = $obj->nb;
-                $i ++;
-            }
-        } else {
-            dol_print_error($db);
+        $substitutionarray['Correspondants']=$langs->trans("Correspondants");
+        if ($object && is_array($parameters) && $parameters['needforkey'] == 'SUBSTITUTION_Correspondants')
+        {
+    	    $nbChild = count($object->liste_contact(-1,'internal')) + count($object->liste_contact(-1,'external'));
+            
+            if ($nbChild > 0) $substitutionarray['Correspondants']=$langs->trans("Correspondants").' <span class="badge">'.$nbChild.'</span>';
         }
         
-        if ($nbChild > 0) $substitutionarray['ResultExamBio']=$langs->trans("ResultExamBio").' <span class="badge">'.$nbChild.'</span>';
-    }
-    
-    $substitutionarray['ResultExamAutre']=$langs->trans("ResultExamAutre");
-    if ($object && is_array($parameters) && $parameters['needforkey'] == 'SUBSTITUTION_ResultExamAutre')
-    {
-        $sql = "SELECT COUNT(n.rowid) as nb";
-        $sql .= " FROM " . MAIN_DB_PREFIX . "cabinetmed_examaut as n";
-        $sql .= " WHERE fk_soc = " . $object->id;
-        $resql = $db->query($sql);
-        if ($resql) {
-            $num = $db->num_rows($resql);
-            $i = 0;
-            while ($i < $num) {
-                $obj = $db->fetch_object($resql);
-                $nbChild = $obj->nb;
-                $i ++;
+        $substitutionarray['ConsultationsShort']=$langs->trans("ConsultationsShort");
+        if ($object && is_array($parameters) && $parameters['needforkey'] == 'SUBSTITUTION_ConsultationsShort')
+        {
+            $sql = "SELECT COUNT(n.rowid) as nb";
+            $sql .= " FROM " . MAIN_DB_PREFIX . "cabinetmed_cons as n";
+            $sql .= " WHERE fk_soc = " . $object->id;
+            $resql = $db->query($sql);
+            if ($resql) {
+                $num = $db->num_rows($resql);
+                $i = 0;
+                while ($i < $num) {
+                    $obj = $db->fetch_object($resql);
+                    $nbChild = $obj->nb;
+                    $i ++;
+                }
+            } else {
+                dol_print_error($db);
             }
-        } else {
-            dol_print_error($db);
-        }    
+            
+            if ($nbChild > 0) $substitutionarray['ConsultationsShort']=$langs->trans("ConsultationsShort").' <span class="badge">'.$nbChild.'</span>';
+        }
     
-        if ($nbChild > 0) $substitutionarray['ResultExamAutre']=$langs->trans("ResultExamAutre").' <span class="badge">'.$nbChild.'</span>';
-    }
-    
-    
-    $substitutionarray['TabAntecedentsShort']=$langs->trans("AntecedentsShort");
-    if ($object)
-   	{
-   	    $nbofnotes = 0;
-   	    if ($object->note_antemed) $nbofnotes++;
-       	if ($object->note_antechirgen) $nbofnotes++;
-       	if ($object->note_antechirortho) $nbofnotes++;
-       	if ($object->note_anterhum) $nbofnotes++;
-       	if ($object->note_traitallergie) $nbofnotes++;
-       	if ($object->note_traitclass) $nbofnotes++;
-       	if ($object->note_traitintol) $nbofnotes++;
-       	if ($object->note_traitspec) $nbofnotes++;
-        if ($nbofnotes > 0) $substitutionarray['TabAntecedentsShort']=$langs->trans("AntecedentsShort").' <span class="badge">'.$nbofnotes.'</span>';
-   	}
-   	
-    $substitutionarray['DocumentsPatient']=$langs->trans("DocumentsPatient");
-    if ($object && is_array($parameters) && $parameters['needforkey'] == 'SUBSTITUTION_DocumentsPatient')
-    {
-        // Attached files
-        require_once DOL_DOCUMENT_ROOT.'/core/lib/files.lib.php';
-        require_once DOL_DOCUMENT_ROOT.'/core/class/link.class.php';
-        $upload_dir = $conf->societe->dir_output . "/" . $object->id;
-        $nbFiles = count(dol_dir_list($upload_dir,'files',0,'','(\.meta|_preview.*\.png)$'));
-        $nbLinks=0;
-        if ((float) DOL_VERSION >= 4.0) $nbLinks=Link::count($db, $object->element, $object->id);
-        if (($nbFiles+$nbLinks) > 0) $substitutionarray['DocumentsPatient']=$langs->trans("DocumentsPatient").' <span class="badge">'.($nbFiles+$nbLinks).'</span>';
+        $substitutionarray['ResultExamBio']=$langs->trans("ResultExamBio");
+        if ($object && is_array($parameters) && $parameters['needforkey'] == 'SUBSTITUTION_ResultExamBio')
+        {
+            $sql = "SELECT COUNT(n.rowid) as nb";
+            $sql .= " FROM " . MAIN_DB_PREFIX . "cabinetmed_exambio as n";
+            $sql .= " WHERE fk_soc = " . $object->id;
+            $resql = $db->query($sql);
+            if ($resql) {
+                $num = $db->num_rows($resql);
+                $i = 0;
+                while ($i < $num) {
+                    $obj = $db->fetch_object($resql);
+                    $nbChild = $obj->nb;
+                    $i ++;
+                }
+            } else {
+                dol_print_error($db);
+            }
+            
+            if ($nbChild > 0) $substitutionarray['ResultExamBio']=$langs->trans("ResultExamBio").' <span class="badge">'.$nbChild.'</span>';
+        }
+        
+        $substitutionarray['ResultExamAutre']=$langs->trans("ResultExamAutre");
+        if ($object && is_array($parameters) && $parameters['needforkey'] == 'SUBSTITUTION_ResultExamAutre')
+        {
+            $sql = "SELECT COUNT(n.rowid) as nb";
+            $sql .= " FROM " . MAIN_DB_PREFIX . "cabinetmed_examaut as n";
+            $sql .= " WHERE fk_soc = " . $object->id;
+            $resql = $db->query($sql);
+            if ($resql) {
+                $num = $db->num_rows($resql);
+                $i = 0;
+                while ($i < $num) {
+                    $obj = $db->fetch_object($resql);
+                    $nbChild = $obj->nb;
+                    $i ++;
+                }
+            } else {
+                dol_print_error($db);
+            }    
+        
+            if ($nbChild > 0) $substitutionarray['ResultExamAutre']=$langs->trans("ResultExamAutre").' <span class="badge">'.$nbChild.'</span>';
+        }
+        
+        
+        $substitutionarray['TabAntecedentsShort']=$langs->trans("AntecedentsShort");
+        if ($object)
+       	{
+       	    $nbofnotes = 0;
+       	    if ($object->note_antemed) $nbofnotes++;
+           	if ($object->note_antechirgen) $nbofnotes++;
+           	if ($object->note_antechirortho) $nbofnotes++;
+           	if ($object->note_anterhum) $nbofnotes++;
+           	if ($object->note_traitallergie) $nbofnotes++;
+           	if ($object->note_traitclass) $nbofnotes++;
+           	if ($object->note_traitintol) $nbofnotes++;
+           	if ($object->note_traitspec) $nbofnotes++;
+            if ($nbofnotes > 0) $substitutionarray['TabAntecedentsShort']=$langs->trans("AntecedentsShort").' <span class="badge">'.$nbofnotes.'</span>';
+       	}
+       	
+        $substitutionarray['DocumentsPatient']=$langs->trans("DocumentsPatient");
+        if ($object && is_array($parameters) && $parameters['needforkey'] == 'SUBSTITUTION_DocumentsPatient')
+        {
+            // Attached files
+            require_once DOL_DOCUMENT_ROOT.'/core/lib/files.lib.php';
+            require_once DOL_DOCUMENT_ROOT.'/core/class/link.class.php';
+            $upload_dir = $conf->societe->dir_output . "/" . $object->id;
+            $nbFiles = count(dol_dir_list($upload_dir,'files',0,'','(\.meta|_preview.*\.png)$'));
+            $nbLinks=0;
+            if ((float) DOL_VERSION >= 4.0) $nbLinks=Link::count($db, $object->element, $object->id);
+            if (($nbFiles+$nbLinks) > 0) $substitutionarray['DocumentsPatient']=$langs->trans("DocumentsPatient").' <span class="badge">'.($nbFiles+$nbLinks).'</span>';
+        }
     }
     
     // Consultation + Exams
@@ -188,7 +191,7 @@ function cabinetmed_completesubstitutionarray(&$substitutionarray,$langs,$object
 
     if ($isother || $isbio) $substitutionarray['examshows']=$langs->transnoentitiesnoconv("ExamsShow");
     else $substitutionarray['examshows']='';
-
+    
     if ($isother)	// An image exam was selected
     {
         $substitutionarray['examother_title']=$langs->transnoentitiesnoconv("BilanImage").':';
@@ -244,9 +247,22 @@ function cabinetmed_completesubstitutionarray(&$substitutionarray,$langs,$object
 	}
 	else
 	{
-		$substitutionarray['treatment_title']='';	// old string
+	    $substitutionarray['outcome_date']='';
+	    $substitutionarray['outcome_reason']='';
+	    $substitutionarray['outcome_diagnostic']='';
+	    $substitutionarray['outcome_history']='';
+	    $substitutionarray['outcome_exam_clinic']='';
+	    
+	    $substitutionarray['treatment_title']='';	// old string
 		$substitutionarray['outcome_treatment_title']='';	// old string
 		$substitutionarray['outcome_treatment']='';
+
+	    $substitutionarray['outcome_exam_sugested']='';
+		$substitutionarray['outcome_total_inctax_card']='';
+    	$substitutionarray['outcome_total_inctax_cheque']='';
+    	$substitutionarray['outcome_total_inctax_cash']='';
+    	$substitutionarray['outcome_total_inctax_other']='';
+    	$substitutionarray['outcome_total_ttc']='';
 	}
 
     $substitutionarray['outcome_comment']=GETPOST('outcome_comment');
