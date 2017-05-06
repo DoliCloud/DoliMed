@@ -102,7 +102,7 @@ class FormFileCabinetmed
                 if (! $relativepath) $relativepath=dol_sanitizeFileName($object->ref).'/';
 
                 $var=!$var;
-                print '<tr '.$bc[$var].'>';
+                print '<tr class="oddeven">';
                 print '<td align="left">'.dol_print_date($file['date'],"dayhour").'</td>';
                 print '<td>';
                 //print "XX".$file['name']; //$file['name'] must be utf8
@@ -144,7 +144,7 @@ class FormFileCabinetmed
         	if (empty($useinecm)) $colspan++;
 
             $var=!$var;
-        	print '<tr '.$bc[$var].'><td colspan="'.$colspan.'" class="opacitymedium">';
+        	print '<tr class="oddeven"><td colspan="'.$colspan.'" class="opacitymedium">';
             if (empty($textifempty)) print $langs->trans("NoFileFound");
             else print $textifempty;
             print '</td></tr>';

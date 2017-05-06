@@ -1262,7 +1262,7 @@ if ($action == '' || $action == 'delete')
             $consult->fetch_bankid();
 
             $var=!$var;
-            print '<tr '.$bc[$var].'><td>';
+            print '<tr class="oddeven"><td>';
             
             print '<a href="'.$_SERVER["PHP_SELF"].'?socid='.$obj->fk_soc.'&id='.$obj->rowid.'&action=edit">'.sprintf("%08d",$obj->rowid).'</a>';
             print '</td><td>';

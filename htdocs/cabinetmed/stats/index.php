@@ -154,7 +154,7 @@ if (! $mesg)
 
 $head = patient_stats_prepare_head(null);
 
-dol_fiche_head($head, 'statsconsultations', $langs->trans("Consultations"), 0, 'generic');
+dol_fiche_head($head, 'statsconsultations', $langs->trans("Consultations"), -1, 'generic');
 
 
 print '<div class="fichecenter"><div class="fichethirdleft">';
