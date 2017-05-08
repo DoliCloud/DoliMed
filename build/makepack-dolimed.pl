@@ -93,11 +93,11 @@ $SOURCEMOD="$DIR/..";
 $SOURCEMOD1="$DIR/../htdocs/cabinetmed";
 $SOURCEMOD2="$DIR/../build/exe/dolimed";
 # Change SOURCEDOL to use another dolibarr source directory
-$SOURCEDOL="$DIR/../../dolibarr_4.0/.";	
+$SOURCEDOL="$DIR/../../dolibarr_5.0/.";	
 
 if (! -d $ENV{"DESTIDOLIMEDBETARC"} || ! -d $ENV{"DESTIDOLIMEDSTABLE"})
 {
-    print "Error: Directory of environment variable DESTIBETARC or DESTISTABLE does not exist.\n";
+    print "Error: Directory of environment variable DESTIDOLIMEDBETARC or DESTIDOLIMEDSTABLE does not exist.\n";
 	print "$PROG.$Extension aborted.\n";
     sleep 2;
 	exit 1;
