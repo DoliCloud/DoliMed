@@ -60,7 +60,7 @@ class modCabinetMed extends DolibarrModules
         $this->description = "Module DoliMed - Manage your patients and consutlations";
         
         $this->editor_name = 'NLTechno';
-        $this->editor_url = 'http://www.dolimed.com';
+        $this->editor_url = 'https://www.dolimed.com';
         
         // Possible values for version are: 'development', 'experimental', 'dolibarr' or version
         $this->version = '5.0.0';
