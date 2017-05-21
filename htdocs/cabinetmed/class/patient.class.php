@@ -353,9 +353,11 @@ class Patient extends Societe
      *    @param      int		$idprof2		Prof id 2 of third party (Warning, this can return several records)
      *    @param      int		$idprof3		Prof id 3 of third party (Warning, this can return several records)
      *    @param      int		$idprof4		Prof id 4 of third party (Warning, this can return several records)
+     *    @param      int		$idprof5		Prof id 5 of third party (Warning, this can return several records)
+     *    @param      int		$idprof6		Prof id 6 of third party (Warning, this can return several records)
      *    @return     $int						>0 if OK, <0 if KO or if two records found for same ref or idprof.
      */
-    function fetch($rowid, $ref='', $ref_ext='', $idprof1='',$idprof2='',$idprof3='',$idprof4='')
+    function fetch($rowid, $ref='', $ref_ext='', $idprof1='',$idprof2='',$idprof3='',$idprof4='', $idprof5 = '', $idprof6 = '')
     {
         global $langs;
         global $conf;
@@ -402,6 +404,8 @@ class Patient extends Societe
         if ($idprof2) $sql .= " WHERE s.siret = '".$this->db->escape($siret)."' AND s.entity = ".$conf->entity;
         if ($idprof3) $sql .= " WHERE s.ape = '".$this->db->escape($ape)."' AND s.entity = ".$conf->entity;
         if ($idprof4) $sql .= " WHERE s.idprof4 = '".$this->db->escape($idprof4)."' AND s.entity = ".$conf->entity;
+        if ($idprof5) $sql .= " WHERE s.idprof5 = '".$this->db->escape($idprof5)."' AND s.entity = ".$conf->entity;
+        if ($idprof6) $sql .= " WHERE s.idprof6 = '".$this->db->escape($idprof6)."' AND s.entity = ".$conf->entity;
         //print $sql;
 
         $resql=$this->db->query($sql);
