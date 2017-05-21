@@ -40,7 +40,7 @@ include_once("./lib/cabinetmed.lib.php");
 $langs->load("companies");
 $langs->load("cabinetmed@cabinetmed");
 
-$action = GETPOST('action');
+$action = GETPOST('action','aZ09');
 if (empty($action)) $action='edit';
 
 // Security check

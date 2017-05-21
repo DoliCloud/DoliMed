@@ -195,7 +195,8 @@ if ($result)
 	print '<form method="get" action="'.$_SERVER["PHP_SELF"].'">'."\n";
 	print '<input type="hidden" name="sortfield" value="'.$sortfield.'">';
 	print '<input type="hidden" name="sortorder" value="'.$sortorder.'">';
-
+	print '<input type="hidden" name="page" value="'.$page.'">';
+	
 	// Filter on categories
  	$moreforfilter='';
 	if ($conf->categorie->enabled)
