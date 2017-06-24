@@ -87,7 +87,7 @@ if ($id > 0 || ! empty($ref))
 	$courrier_dir = $conf->societe->multidir_output[$object->entity] . "/courrier/" . get_exdir($object->id,0,0,0,$object,'thirdparty');
 }
 
-// Initialize technical object to manage hooks of thirdparties. Note that conf->hooks_modules contains array array
+// Initialize technical object to manage hooks of page. Note that conf->hooks_modules contains array array
 include_once(DOL_DOCUMENT_ROOT.'/core/class/hookmanager.class.php');
 $hookmanager=new HookManager($db);
 $hookmanager->initHooks(array('documentcabinetmed'));
@@ -129,7 +129,7 @@ if ($action == 'builddoc')  // En get ou en post
         // Save last template used to generate document
         // Possible with 3.9 only
         //if (GETPOST('model')) $object->setDocModel($user, GETPOST('model','alpha'));
-        
+
         $consult = new CabinetmedCons($db);
         $consult->fetch($idconsult);
 
@@ -371,7 +371,7 @@ if ($object->id)
     print "<form method=\"post\" action=\"".$_SERVER["PHP_SELF"]."\">";
     print '<input type="hidden" name="token" value="'.$_SESSION['newtoken'].'">';
 
-    
+
     dol_fiche_head($head, 'tabdocument', $langs->trans("Patient"),0,'patient@cabinetmed');
 
     // Construit liste des fichiers
@@ -423,7 +423,7 @@ if ($object->id)
     dol_fiche_end();
 
     print '</form>';
-    
+
     /*
 	$modulepart = 'societe';
 	$permission = $user->rights->societe->creer;
@@ -524,7 +524,7 @@ if ($object->id)
 
         }
 
-		print '<div class="clearboth" id="sendform"></div>';
+		print '<div id="formmailbeforetitle" name="formmailbeforetitle"></div>';
         print '<br>';
         print_fiche_titre($langs->trans('SendOutcomeByEmail'));
 
