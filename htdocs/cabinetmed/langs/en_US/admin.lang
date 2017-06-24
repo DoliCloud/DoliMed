@@ -28,7 +28,6 @@ DiagnostiqueLesionnel=Lesion diagnostic
 Examens=Exams
 ExamenConclusion=Exam Conclusion
 BankNameList=List of banks
-SetupDescription3=Data of menu <b>Setup -> Information</b> are required to work.
 
 CompanySetup= Setup of Patient module
 CompanyCodeChecker= Model to generate and check patient code
