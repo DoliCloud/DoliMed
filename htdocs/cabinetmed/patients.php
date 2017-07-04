@@ -58,7 +58,7 @@ $pagenext = $page + 1;
 if (! $sortorder) $sortorder="ASC";
 if (! $sortfield) $sortfield="s.nom";
 
-$search_all=GETPOST('search_all');
+$search_all=GETPOST('search_all', 'alpha');
 
 $search_nom=GETPOST("search_nom");
 $search_ville=GETPOST("search_ville");
