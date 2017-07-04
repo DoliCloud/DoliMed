@@ -194,9 +194,9 @@ $sql.= " s.nom as name,";
 $sql.= " s.code_client as customer_code,";
 $sql.= " s.zip as zip,";
 $sql.= " s.town as town,";
-$sql.= " s.ape,";
+$sql.= " se.birthdate,";
 $sql.= " tc.code, tc.libelle as label_type";
-$sql.= " FROM ".MAIN_DB_PREFIX."societe as s,";
+$sql.= " FROM ".MAIN_DB_PREFIX."societe as s LEFT JOIN ".MAIN_DB_PREFIX."societe_extrafields as se on se.fk_object = s.rowid,";
 $sql.= " ".MAIN_DB_PREFIX."element_contact as ec,";
 $sql.= " ".MAIN_DB_PREFIX."c_type_contact as tc";
 $sql.= " WHERE ec.fk_socpeople = ".$id;
@@ -205,6 +205,7 @@ $sql.= " AND ec.fk_c_type_contact = tc.rowid";
 $sql.= " AND tc.element = 'societe'";
 $sql.= " ORDER BY ".$sortfield." ".$sortorder.", s.rowid DESC";
 
+//print $sql;
 $resql=$db->query($sql);
 if ($resql)
 {
@@ -237,7 +238,7 @@ if ($resql)
         print $obj->town;
         print '</td>';
         print '<td>';
-        print $obj->ape;
+        print $obj->birthdate;
         print '</td>';
         print '<td>';
         print $obj->label_type;

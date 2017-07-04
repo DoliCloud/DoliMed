@@ -187,14 +187,15 @@ print '</tr>';
 
 $sql = "SELECT";
 $sql.= " COUNT(s.rowid) as nb,";
-$sql.= " AVG(DATEDIFF(NOW(), STR_TO_DATE(s.ape, '%d/%m/%Y'))) as averageold,";
+$sql.= " AVG(DATEDIFF(NOW(), se.birthdate)) as averageold,";
 $sql.= " c.rowid,";
 $sql.= " c.lastname as lastname,";
 $sql.= " c.firstname as firstname";
-$sql.= " FROM (".MAIN_DB_PREFIX."societe as s,";
+$sql.= " FROM ".MAIN_DB_PREFIX."societe as s";
+$sql.= " LEFT JOIN ".MAIN_DB_PREFIX."societe_extrafields as se on s.rowid = se.fk_object,";
 $sql.= " ".MAIN_DB_PREFIX."element_contact as ec,";
 $sql.= " ".MAIN_DB_PREFIX."c_type_contact as tc,";
-$sql.= " ".MAIN_DB_PREFIX."socpeople as c)";
+$sql.= " ".MAIN_DB_PREFIX."socpeople as c";
 $sql.= " WHERE ec.fk_socpeople = c.rowid";
 $sql.= " AND ec.element_id = s.rowid";
 $sql.= " AND ec.fk_c_type_contact = tc.rowid";
