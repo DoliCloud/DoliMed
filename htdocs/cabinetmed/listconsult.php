@@ -86,7 +86,7 @@ $datecons=dol_mktime(0,0,0,GETPOST('consmonth'),GETPOST('consday'),GETPOST('cons
 llxHeader();
 
 // Do we click on purge search criteria ?
-if (GETPOST("button_removefilter_x"))
+if (GETPOST("button_removefilter_x") || GETPOST("button_removefilter.x") || GETPOST("button_removefilter"))
 {
     $search_categ='';
     $search_sale='';
@@ -186,17 +186,17 @@ if ($result)
  	if ($search_diaglesprinc != '')	$param.='&amp;search_diaglesprinc='.urlencode($search_diaglesprinc);
  	if ($search_contactid != '')	$param.='&amp;search_contactid='.$search_contactid;
 
-	print_barre_liste($langs->trans("ListOfConsultations"), $page, $_SERVER["PHP_SELF"],$param,$sortfield,$sortorder,'',$num,$nbtotalofrecords);
+	print '<form method="get" action="'.$_SERVER["PHP_SELF"].'">'."\n";
+	print '<input type="hidden" name="sortfield" value="'.$sortfield.'">';
+	print '<input type="hidden" name="sortorder" value="'.$sortorder.'">';
+	print '<input type="hidden" name="page" value="'.$page.'">';
+
+ 	print_barre_liste($langs->trans("ListOfConsultations"), $page, $_SERVER["PHP_SELF"],$param,$sortfield,$sortorder,'',$num,$nbtotalofrecords);
 
 	$i = 0;
 
 	//print '<div class="error">PAGE EN DEVELOPPEMENT ...</div><br>';
 
-	print '<form method="get" action="'.$_SERVER["PHP_SELF"].'">'."\n";
-	print '<input type="hidden" name="sortfield" value="'.$sortfield.'">';
-	print '<input type="hidden" name="sortorder" value="'.$sortorder.'">';
-	print '<input type="hidden" name="page" value="'.$page.'">';
-	
 	// Filter on categories
  	$moreforfilter='';
 	if ($conf->categorie->enabled)
@@ -225,7 +225,7 @@ if ($result)
  	$moreforfilter.=$langs->trans('Correspondants'). ': ';
 	$moreforfilter.=$form->selectcontacts(0, $search_contactid, 'search_contactid', 1, '', '', 1);
 	$moreforfilter.='</div>';
-    
+
     if (! empty($moreforfilter))
     {
         print '<div class="liste_titre liste_titre_bydiv centpercent">';
@@ -235,25 +235,11 @@ if ($result)
         print $hookmanager->resPrint;
         print '</div>';
     }
-	
+
     print '<div class="div-table-responsive">';
     print '<table class="tagtable liste'.($moreforfilter?" listwithfilterbefore":"").'">';
-    
-	print '<tr class="liste_titre">';
-    print_liste_field_titre($langs->trans("IdConsultShort"),$_SERVER["PHP_SELF"],"c.rowid","",$param,"",$sortfield,$sortorder);
-	print_liste_field_titre($langs->trans("Patient"),$_SERVER["PHP_SELF"],"s.nom","",$param,"",$sortfield,$sortorder);
-	print_liste_field_titre($langs->trans("CustomerCode"),$_SERVER["PHP_SELF"],"s.code_client","",$param,"",$sortfield,$sortorder);
-	print_liste_field_titre($langs->trans("DateConsultationShort"),$_SERVER["PHP_SELF"],"c.datecons,c.rowid","",$param,'align="center"',$sortfield,$sortorder);
-    print_liste_field_titre($langs->trans("MotifPrincipal"),$_SERVER["PHP_SELF"],"c.motifconsprinc","",$param,'',$sortfield,$sortorder);
-	print_liste_field_titre($langs->trans("DiagLesPrincipal"),$_SERVER["PHP_SELF"],"c.diaglesprinc","",$param,'',$sortfield,$sortorder);
-    if (! empty($conf->global->CABINETMED_FRENCH_PRISEENCHARGE))
-    {
-	    print_liste_field_titre($langs->trans('Prise en charge'),$_SERVER['PHP_SELF'],'c.typepriseencharge','',$param,'',$sortfield,$sortorder);
-    }
-	print_liste_field_titre($langs->trans('ConsultActe'),$_SERVER['PHP_SELF'],'c.typevisit','',$param,'align="right"',$sortfield,$sortorder);
-	print "</tr>\n";
 
-	print '<tr class="liste_titre">';
+	print '<tr class="liste_titre_filter">';
     print '<td class="liste_titre">';
 	print '<input type="text" class="flat" size="6" name="search_ref" value="'.$search_ref.'">';
     print '</td>';
@@ -285,6 +271,20 @@ if ($result)
     print '<input type="image" class="liste_titre" name="button_removefilter" src="'.DOL_URL_ROOT.'/theme/'.$conf->theme.'/img/searchclear.png" value="'.dol_escape_htmltag($langs->trans("RemoveFilter")).'" title="'.dol_escape_htmltag($langs->trans("RemoveFilter")).'">';
     print '</td>';
     print "</tr>\n";
+
+    print '<tr class="liste_titre">';
+    print_liste_field_titre($langs->trans("IdConsultShort"),$_SERVER["PHP_SELF"],"c.rowid","",$param,"",$sortfield,$sortorder);
+	print_liste_field_titre($langs->trans("Patient"),$_SERVER["PHP_SELF"],"s.nom","",$param,"",$sortfield,$sortorder);
+	print_liste_field_titre($langs->trans("CustomerCode"),$_SERVER["PHP_SELF"],"s.code_client","",$param,"",$sortfield,$sortorder);
+	print_liste_field_titre($langs->trans("DateConsultationShort"),$_SERVER["PHP_SELF"],"c.datecons,c.rowid","",$param,'align="center"',$sortfield,$sortorder);
+    print_liste_field_titre($langs->trans("MotifPrincipal"),$_SERVER["PHP_SELF"],"c.motifconsprinc","",$param,'',$sortfield,$sortorder);
+	print_liste_field_titre($langs->trans("DiagLesPrincipal"),$_SERVER["PHP_SELF"],"c.diaglesprinc","",$param,'',$sortfield,$sortorder);
+    if (! empty($conf->global->CABINETMED_FRENCH_PRISEENCHARGE))
+    {
+	    print_liste_field_titre($langs->trans('Prise en charge'),$_SERVER['PHP_SELF'],'c.typepriseencharge','',$param,'',$sortfield,$sortorder);
+    }
+	print_liste_field_titre($langs->trans('ConsultActe'),$_SERVER['PHP_SELF'],'c.typevisit','',$param,'align="right"',$sortfield,$sortorder);
+	print "</tr>\n";
 
 	$var=True;
 
@@ -331,7 +331,7 @@ if ($result)
 	//print_barre_liste($langs->trans("ListOfCustomers"), $page, $_SERVER["PHP_SELF"],'',$sortfield,$sortorder,'',$num);
 	print "</table>\n";
 	print '</div>';
-	
+
 	print "</form>\n";
 	$db->free($result);
 }

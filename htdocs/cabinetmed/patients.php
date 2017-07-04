@@ -88,6 +88,7 @@ if (GETPOST("button_removefilter_x") || GETPOST("button_removefilter.x") || GETP
 {
     $search_categ='';
     $search_sale='';
+    $search_code='';
     $search_diagles='';
     $socname="";
     $search_nom="";
@@ -262,19 +263,7 @@ if (! empty($moreforfilter))
 print '<div class="div-table-responsive">';
 print '<table class="tagtable liste'.($moreforfilter?" listwithfilterbefore":"").'">';
 
-print '<tr class="liste_titre">';
-print_liste_field_titre($langs->trans("Patient"),$_SERVER["PHP_SELF"],"s.nom","",$param,"",$sortfield,$sortorder);
-print_liste_field_titre($langs->trans("PatientCode"),$_SERVER["PHP_SELF"],"s.code_client","",$param,"",$sortfield,$sortorder);
-print_liste_field_titre($langs->trans("DateToBirth"),$_SERVER["PHP_SELF"],"se.birthdate","",$param,'align="center"',$sortfield,$sortorder);
-print_liste_field_titre($langs->trans("Town"),$_SERVER["PHP_SELF"],"s.town","",$param,"",$sortfield,$sortorder);
-print_liste_field_titre($langs->trans("Profession"),$_SERVER["PHP_SELF"],"se.prof","",$param,"",$sortfield,$sortorder);
-print_liste_field_titre($langs->trans("NbConsult"),$_SERVER["PHP_SELF"],"nb","",$param,'align="right"',$sortfield,$sortorder);
-print_liste_field_titre($langs->trans("LastConsultShort"),$_SERVER["PHP_SELF"],"lastcons","",$param,'align="center"',$sortfield,$sortorder);
-print_liste_field_titre($langs->trans("DateCreation"),$_SERVER["PHP_SELF"],"datec","",$param,'align="right"',$sortfield,$sortorder);
-print_liste_field_titre("");
-print "</tr>\n";
-
-print '<tr class="liste_titre">';
+print '<tr class="liste_titre_filter">';
 print '<td class="liste_titre">';
 print '<input type="text" class="flat" size="8" name="search_nom" value="'.$search_nom.'">';
 print '</td>';
@@ -303,6 +292,18 @@ print '<td class="liste_titre" align="right">';
 $searchpitco=$form->showFilterAndCheckAddButtons($massactionbutton?1:0, 'checkforselect', 1);
 print $searchpitco;
 print '</td>';
+print "</tr>\n";
+
+print '<tr class="liste_titre">';
+print_liste_field_titre($langs->trans("Patient"),$_SERVER["PHP_SELF"],"s.nom","",$param,"",$sortfield,$sortorder);
+print_liste_field_titre($langs->trans("PatientCode"),$_SERVER["PHP_SELF"],"s.code_client","",$param,"",$sortfield,$sortorder);
+print_liste_field_titre($langs->trans("DateToBirth"),$_SERVER["PHP_SELF"],"se.birthdate","",$param,'align="center"',$sortfield,$sortorder);
+print_liste_field_titre($langs->trans("Town"),$_SERVER["PHP_SELF"],"s.town","",$param,"",$sortfield,$sortorder);
+print_liste_field_titre($langs->trans("Profession"),$_SERVER["PHP_SELF"],"se.prof","",$param,"",$sortfield,$sortorder);
+print_liste_field_titre($langs->trans("NbConsult"),$_SERVER["PHP_SELF"],"nb","",$param,'align="right"',$sortfield,$sortorder);
+print_liste_field_titre($langs->trans("LastConsultShort"),$_SERVER["PHP_SELF"],"lastcons","",$param,'align="center"',$sortfield,$sortorder);
+print_liste_field_titre($langs->trans("DateCreation"),$_SERVER["PHP_SELF"],"datec","",$param,'align="right"',$sortfield,$sortorder);
+print_liste_field_titre("");
 print "</tr>\n";
 
 $var=True;
