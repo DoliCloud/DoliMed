@@ -477,7 +477,7 @@ class Patient extends Societe
                 $this->tva_assuj      = $obj->tva_assuj;
                 $this->tva_intra      = $obj->tva_intra;
                 $this->status = $obj->status;
-                
+
                 // Local Taxes
                 $this->localtax1_assuj      = $obj->localtax1_assuj;
                 $this->localtax2_assuj      = $obj->localtax2_assuj;
@@ -503,8 +503,12 @@ class Patient extends Societe
                 $this->client      = $obj->client;
                 $this->fournisseur = $obj->fournisseur;
 
+                $this->note = $obj->note_private; // TODO Deprecated for backward comtability
                 $this->note_private = $obj->note_private;
+                $this->note_public = $obj->note_public;
+                $this->modelpdf = $obj->model_pdf;
                 $this->default_lang = $obj->default_lang;
+                $this->logo = $obj->logo;
 
                 // multiprix
                 $this->price_level = $obj->price_level;
@@ -534,7 +538,7 @@ class Patient extends Societe
                 $this->alert_note = $obj->alert_note;
 
                 $this->fetch_optionals();
-                
+
                 $result = 1;
             }
             else
