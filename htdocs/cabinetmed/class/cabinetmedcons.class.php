@@ -146,31 +146,33 @@ class CabinetmedCons extends CommonObject
 		$sql.= "montant_carte,";
 		$sql.= "montant_tiers,";
 		$sql.= "banque,";
-		$sql.= "fk_agenda";
+		$sql.= "fk_agenda,";
+		$sql.= "fk_user_creation";
 		$sql.= ") VALUES (";
 		$sql.= " ".(! isset($this->fk_soc)?'NULL':"'".$this->fk_soc."'").",";
         $sql.= " ".$user->id.",";
 		$sql.= " ".(! isset($this->datecons) || dol_strlen($this->datecons)==0?'NULL':"'".$this->db->idate($this->datecons))."',";
 		$sql.= " '".$this->db->idate($now)."',";
-		$sql.= " ".(! isset($this->typepriseencharge)?'NULL':"'".addslashes($this->typepriseencharge)."'").",";
-		$sql.= " ".(! isset($this->motifconsprinc)?'NULL':"'".addslashes($this->motifconsprinc)."'").",";
-		$sql.= " ".(! isset($this->diaglesprinc)?'NULL':"'".addslashes($this->diaglesprinc)."'").",";
-		$sql.= " ".(! isset($this->motifconssec)?'NULL':"'".addslashes($this->motifconssec)."'").",";
-		$sql.= " ".(! isset($this->diaglessec)?'NULL':"'".addslashes($this->diaglessec)."'").",";
-		$sql.= " ".(! isset($this->hdm)?'NULL':"'".addslashes($this->hdm)."'").",";
-        $sql.= " ".(! isset($this->examenclinique)?'NULL':"'".addslashes($this->examenclinique)."'").",";
-		$sql.= " ".(! isset($this->examenprescrit)?'NULL':"'".addslashes($this->examenprescrit)."'").",";
-		$sql.= " ".(! isset($this->traitementprescrit)?'NULL':"'".addslashes($this->traitementprescrit)."'").",";
-		$sql.= " ".(! isset($this->comment)?'NULL':"'".addslashes($this->comment)."'").",";
-		$sql.= " ".(! isset($this->typevisit)?'NULL':"'".addslashes($this->typevisit)."'").",";
-		$sql.= " ".(! isset($this->infiltration)?'NULL':"'".addslashes($this->infiltration)."'").",";
-		$sql.= " ".(! isset($this->codageccam)?'NULL':"'".addslashes($this->codageccam)."'").",";
+		$sql.= " ".(! isset($this->typepriseencharge)?'NULL':"'".$this->db->escape($this->typepriseencharge)."'").",";
+		$sql.= " ".(! isset($this->motifconsprinc)?'NULL':"'".$this->db->escape($this->motifconsprinc)."'").",";
+		$sql.= " ".(! isset($this->diaglesprinc)?'NULL':"'".$this->db->escape($this->diaglesprinc)."'").",";
+		$sql.= " ".(! isset($this->motifconssec)?'NULL':"'".$this->db->escape($this->motifconssec)."'").",";
+		$sql.= " ".(! isset($this->diaglessec)?'NULL':"'".$this->db->escape($this->diaglessec)."'").",";
+		$sql.= " ".(! isset($this->hdm)?'NULL':"'".$this->db->escape($this->hdm)."'").",";
+        $sql.= " ".(! isset($this->examenclinique)?'NULL':"'".$this->db->escape($this->examenclinique)."'").",";
+		$sql.= " ".(! isset($this->examenprescrit)?'NULL':"'".$this->db->escape($this->examenprescrit)."'").",";
+		$sql.= " ".(! isset($this->traitementprescrit)?'NULL':"'".$this->db->escape($this->traitementprescrit)."'").",";
+		$sql.= " ".(! isset($this->comment)?'NULL':"'".$this->db->escape($this->comment)."'").",";
+		$sql.= " ".(! isset($this->typevisit)?'NULL':"'".$this->db->escape($this->typevisit)."'").",";
+		$sql.= " ".(! isset($this->infiltration)?'NULL':"'".$this->db->escape($this->infiltration)."'").",";
+		$sql.= " ".(! isset($this->codageccam)?'NULL':"'".$this->db->escape($this->codageccam)."'").",";
 		$sql.= " ".(! isset($this->montant_cheque)?'NULL':"'".$this->montant_cheque."'").",";
 		$sql.= " ".(! isset($this->montant_espece)?'NULL':"'".$this->montant_espece."'").",";
 		$sql.= " ".(! isset($this->montant_carte)?'NULL':"'".$this->montant_carte."'").",";
 		$sql.= " ".(! isset($this->montant_tiers)?'NULL':"'".$this->montant_tiers."'").",";
-		$sql.= " ".(! isset($this->banque)?'NULL':"'".addslashes($this->banque)."'").",";
-		$sql.= " ".(empty($this->fk_agenda)?'NULL':"'".addslashes($this->fk_agenda)."'")."";
+		$sql.= " ".(! isset($this->banque)?'NULL':"'".$this->db->escape($this->banque)."'").",";
+		$sql.= " ".(empty($this->fk_agenda)?'NULL':"'".$this->db->escape($this->fk_agenda)."'").",";
+		$sql.= " ".(empty($this->fk_user_creation)?$user->id:"'".$this->db->escape($this->fk_user_creation)."'")."";
 		$sql.= ")";
 
 		$this->db->begin();
@@ -185,7 +187,7 @@ class CabinetmedCons extends CommonObject
 
 			$result=$this->insertExtraFields();
 			if ($result < 0) $error++;
-				
+
 			if (! $error && ! $notrigger)
 			{
 				// Uncomment this and change MYOBJECT to your own tag if you
@@ -296,7 +298,7 @@ class CabinetmedCons extends CommonObject
 				$this->date_c = $this->db->jdate($obj->date_c);
 				$this->date_m = $this->db->jdate($obj->date_m);
 				$this->num_cheque = $obj->num_chq;
-				
+
 				// Retrieve all extrafields for invoice
 				// fetch optionals attributes and labels
 				require_once DOL_DOCUMENT_ROOT.'/core/class/extrafields.class.php';
@@ -401,25 +403,25 @@ class CabinetmedCons extends CommonObject
 		$sql = "UPDATE ".MAIN_DB_PREFIX."cabinetmed_cons SET";
 		$sql.= " fk_soc=".(isset($this->fk_soc)?$this->fk_soc:"null").",";
 		$sql.= " datecons=".(dol_strlen($this->datecons)!=0 ? "'".$this->db->idate($this->datecons)."'" : 'null').",";
-		$sql.= " typepriseencharge=".(isset($this->typepriseencharge)?"'".addslashes($this->typepriseencharge)."'":"null").",";
-		$sql.= " motifconsprinc=".(isset($this->motifconsprinc)?"'".addslashes($this->motifconsprinc)."'":"null").",";
-		$sql.= " diaglesprinc=".(isset($this->diaglesprinc)?"'".addslashes($this->diaglesprinc)."'":"null").",";
-		$sql.= " motifconssec=".(isset($this->motifconssec)?"'".addslashes($this->motifconssec)."'":"null").",";
-		$sql.= " diaglessec=".(isset($this->diaglessec)?"'".addslashes($this->diaglessec)."'":"null").",";
-		$sql.= " hdm=".(isset($this->hdm)?"'".addslashes($this->hdm)."'":"null").",";
-		$sql.= " examenclinique=".(isset($this->examenclinique)?"'".addslashes($this->examenclinique)."'":"null").",";
-		$sql.= " examenprescrit=".(isset($this->examenprescrit)?"'".addslashes($this->examenprescrit)."'":"null").",";
-		$sql.= " traitementprescrit=".(isset($this->traitementprescrit)?"'".addslashes($this->traitementprescrit)."'":"null").",";
-		$sql.= " comment=".(isset($this->comment)?"'".addslashes($this->comment)."'":"null").",";
-		$sql.= " typevisit=".(isset($this->typevisit)?"'".addslashes($this->typevisit)."'":"null").",";
-		$sql.= " infiltration=".(isset($this->infiltration)?"'".addslashes($this->infiltration)."'":"null").",";
-		$sql.= " codageccam=".(isset($this->codageccam)?"'".addslashes($this->codageccam)."'":"null").",";
+		$sql.= " typepriseencharge=".(isset($this->typepriseencharge)?"'".$this->db->escape($this->typepriseencharge)."'":"null").",";
+		$sql.= " motifconsprinc=".(isset($this->motifconsprinc)?"'".$this->db->escape($this->motifconsprinc)."'":"null").",";
+		$sql.= " diaglesprinc=".(isset($this->diaglesprinc)?"'".$this->db->escape($this->diaglesprinc)."'":"null").",";
+		$sql.= " motifconssec=".(isset($this->motifconssec)?"'".$this->db->escape($this->motifconssec)."'":"null").",";
+		$sql.= " diaglessec=".(isset($this->diaglessec)?"'".$this->db->escape($this->diaglessec)."'":"null").",";
+		$sql.= " hdm=".(isset($this->hdm)?"'".$this->db->escape($this->hdm)."'":"null").",";
+		$sql.= " examenclinique=".(isset($this->examenclinique)?"'".$this->db->escape($this->examenclinique)."'":"null").",";
+		$sql.= " examenprescrit=".(isset($this->examenprescrit)?"'".$this->db->escape($this->examenprescrit)."'":"null").",";
+		$sql.= " traitementprescrit=".(isset($this->traitementprescrit)?"'".$this->db->escape($this->traitementprescrit)."'":"null").",";
+		$sql.= " comment=".(isset($this->comment)?"'".$this->db->escape($this->comment)."'":"null").",";
+		$sql.= " typevisit=".(isset($this->typevisit)?"'".$this->db->escape($this->typevisit)."'":"null").",";
+		$sql.= " infiltration=".(isset($this->infiltration)?"'".$this->db->escape($this->infiltration)."'":"null").",";
+		$sql.= " codageccam=".(isset($this->codageccam)?"'".$this->db->escape($this->codageccam)."'":"null").",";
 		$sql.= " montant_cheque=".(isset($this->montant_cheque)?$this->montant_cheque:"null").",";
 		$sql.= " montant_espece=".(isset($this->montant_espece)?$this->montant_espece:"null").",";
 		$sql.= " montant_carte=".(isset($this->montant_carte)?$this->montant_carte:"null").",";
 		$sql.= " montant_tiers=".(isset($this->montant_tiers)?$this->montant_tiers:"null").",";
-		$sql.= " banque=".(isset($this->banque)?"'".addslashes($this->banque)."'":"null").",";
-		$sql.= " fk_agenda=".((! empty($this->fk_agenda))?"'".addslashes($this->fk_agenda)."'":"null")."";
+		$sql.= " banque=".(isset($this->banque)?"'".$this->db->escape($this->banque)."'":"null").",";
+		$sql.= " fk_agenda=".((! empty($this->fk_agenda))?"'".$this->db->escape($this->fk_agenda)."'":"null")."";
 		// date_c must not be edited by an update
 		// tms is modified automatically
 
@@ -441,7 +443,7 @@ class CabinetmedCons extends CommonObject
 		            $error++;
 		        }
 		    }
-		    
+
 			if (! $notrigger)
 			{
 				// Uncomment this and change MYOBJECT to your own tag if you
@@ -683,7 +685,7 @@ class CabinetmedCons extends CommonObject
         return $result;
     }
 
-    
+
     /**
      *   Charge indicateurs this->nb de tableau de bord
      *
@@ -692,14 +694,14 @@ class CabinetmedCons extends CommonObject
     function load_state_board()
     {
         global $conf, $user;
-    
+
         $this->nb=array();
         $clause = "WHERE";
-    
+
         $sql = "SELECT count(c.rowid) as nb";
         $sql.= " FROM ".MAIN_DB_PREFIX."cabinetmed_cons as c";
         //$sql.= " ".$clause." c.entity = ".$conf->entity;
-    
+
         $resql=$this->db->query($sql);
         if ($resql)
         {
@@ -707,11 +709,11 @@ class CabinetmedCons extends CommonObject
             {
                 $this->nb["Cabinetmedcons"]=$obj->nb;
             }
-            
+
             $sql = "SELECT count(rowid) as nb";
             $sql.= " FROM ".MAIN_DB_PREFIX."societe WHERE canvas = 'patient@cabinetmed'";
             //$sql.= " ".$clause." c.entity = ".$conf->entity;
-            
+
             $resql2=$this->db->query($sql);
             if ($resql2)
             {
@@ -720,7 +722,7 @@ class CabinetmedCons extends CommonObject
                     $this->nb["Patients"]=$obj->nb;
                 }
             }
-            
+
             $this->db->free($resql2);
             $this->db->free($resql);
             return 1;
@@ -732,8 +734,8 @@ class CabinetmedCons extends CommonObject
             return -1;
         }
     }
-    
-    
+
+
     /**
      *	Return status label of Order
      *
@@ -744,7 +746,7 @@ class CabinetmedCons extends CommonObject
     {
         return $this->LibStatut(1,$mode);
     }
-    
+
     /**
      *	Return label of status
      *
@@ -755,10 +757,10 @@ class CabinetmedCons extends CommonObject
     function LibStatut($statut,$mode)
     {
         global $langs, $conf;
-    
+
         return '';
     }
-    
-    
+
+
 }
 

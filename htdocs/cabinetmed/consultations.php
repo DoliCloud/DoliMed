@@ -127,9 +127,9 @@ if ($action == 'add' || $action == 'update')
             }
 
             $result=$consult->fetch_bankid();
-            
+
             $oldconsult=dol_clone($consult);
-            
+
             $consult->datecons=$datecons;
         }
         else
@@ -233,8 +233,8 @@ if ($action == 'add' || $action == 'update')
             $ret = $extrafields->setOptionalsFromPost($extralabels, $consult);
             if ($ret < 0) $error++;
         }
-        
-        
+
+
         $db->begin();
 
         if (! $error)
@@ -256,17 +256,17 @@ if ($action == 'add' || $action == 'update')
                     {
                         include_once DOL_DOCUMENT_ROOT.'/compta/facture/class/facture.class.php';
                         include_once DOL_DOCUMENT_ROOT.'/compta/paiement/class/paiement.class.php';
-                        
+
                         $invoice = new Facture($db);
                         $invoice->socid = $object->id;
                         $invoice->fk_soc = $object->id;
-                        $invoice->date = $datecons; 
-                        
+                        $invoice->date = $datecons;
+
                         $vattouse = GETPOST('vat');
-                        
+
                         $product = new Product($db);
                         $product->type = Product::TYPE_SERVICE;
-                        
+
                         if (GETPOST('prodid') > 0)      // TODO
                         {
                             $product->fetch(GETPOST('prodid'));
@@ -275,7 +275,7 @@ if ($action == 'add' || $action == 'update')
                                 $vattouse = get_default_tva(societe_vendeuse,societe_acheteuse,$product);
                             }
                         }
-                        
+
                         $consultamount = $consult->montant_cheque + $consult->montant_carte + $consult->montant_espece + $consult->montant_tiers;
 
                         $invoice->linked_objects['cabinetmed_cabinetmedcons']=$consult->id;
@@ -294,7 +294,7 @@ if ($action == 'add' || $action == 'update')
                                 0, 						// remise_percent
                                 0, 						// date_start
                                 0, 						// date_end
-                                0, 
+                                0,
                                 0, // info_bits
                                 0,
                                 'HT',
@@ -308,8 +308,8 @@ if ($action == 'add' || $action == 'update')
                                 0,
                                 0,
                                 ''
-                                );                            
-                            
+                                );
+
                             $result = $invoice->validate($user);
                             if ($result > 0)
                             {
@@ -322,7 +322,7 @@ if ($action == 'add' || $action == 'update')
                                     if ($key == 'LIQ') $tmpamount = $consult->montant_espece;
                                     if ($key == 'VIR') $tmpamount = $consult->montant_tiers;
                                     if (! ($tmpamount > 0)) continue;
-                                    
+
                                     // Creation of payment line
                                     $paiement = new Paiement($db);
                                     $paiement->datepaye     = $datecons;
@@ -330,7 +330,7 @@ if ($action == 'add' || $action == 'update')
                                     $paiement->paiementid   = dol_getIdFromCode($db, $key, 'c_paiement');
                                     $paiement->num_paiement = $consult->num_cheque;
                                     $paiement->note         = '';
-                                    
+
                                     if (! $error)
                                     {
                                         $paiement_id = $paiement->create($user, 1);
@@ -340,7 +340,7 @@ if ($action == 'add' || $action == 'update')
                                             $error++;
                                         }
                                     }
-                                    
+
                                     // Create entry into bank account for the payment
                                     if (! $error)
                                     {
@@ -523,19 +523,19 @@ if ($socid > 0)
     {
         $result=$consult->fetch($id);
         if ($result < 0) dol_print_error($db,$consult->error);
-        
+
         $result=$consult->fetch_bankid();
         if ($result < 0) dol_print_error($db,$consult->error);
     }
 
-    
+
 	/*
 	 * Affichage onglets
 	 */
     if ($conf->notification->enabled) $langs->load("mails");
 
     $soc=$object;  // required to have test declared in module successfull
-    
+
 	$head = societe_prepare_head($object);
 
 	// General
@@ -547,10 +547,12 @@ if ($socid > 0)
 	print '<input type="hidden" name="backtopage" value="'.GETPOST('backtopage').'">';
 	print '<input type="hidden" name="token" value="'.$_SESSION['newtoken'].'">';
 
-	dol_fiche_head($head, 'tabconsultations', $langs->trans("Patient"),0,'patient@cabinetmed');
-	
+	dol_fiche_head($head, 'tabconsultations', $langs->trans("Patient"), 0, 'patient@cabinetmed');
+
     $linkback = '<a href="'.dol_buildpath('/cabinetmed/patients.php', 1).'">'.$langs->trans("BackToList").'</a>';
 	dol_banner_tab($object, 'socid', $linkback, ($user->societe_id?0:1), 'rowid', 'nom');
+
+	print '<div class="fichecenter">';
 
     print '<div class="underbanner clearboth"></div>';
 	print '<table class="border" width="100%">';
@@ -575,14 +577,16 @@ if ($socid > 0)
 
 	print "</table>";
 
+	print '</div>';
+
     dol_fiche_end();
-    
+
 	// Form to create
     if ($action == 'create' || $action == 'edit')
     {
         //dol_fiche_head();
         print '<br>';
-        
+
         $x=1;
         $nboflines=4;
 
@@ -824,10 +828,10 @@ if ($socid > 0)
         	}
         }
 		if ($action=='edit' || $action=='update' || $fk_agenda) print '</table>';
-        
-        
+
+
 		if ($action=='edit' || $action=='update' || $fk_agenda) print '<div class="centpercent" style="margin-top: 5px; margin-bottom: 8px; border-bottom: 1px solid #eee;"></div>';
-		
+
         print '<div class="fichecenter"><div class="fichehalfleft">';
         print '<table class="notopnoleftnoright" width="100%">';
 
@@ -990,7 +994,7 @@ if ($socid > 0)
             $params=array('colspan'=>1);
             print $consult->showOptionals($extrafields,'edit',$params);
         }
-        
+
         print '</table>';
 
         //print '</td><td class="tdtop">';
@@ -1068,7 +1072,7 @@ if ($socid > 0)
             }
             print '</td></tr>';
         }
-            
+
         // Cheque
         print '<tr class="cabpaymentcheque"><td class="titlefield">';
         print ''.$langs->trans("PaymentTypeCheque").'</td><td>';
@@ -1108,7 +1112,7 @@ if ($socid > 0)
             $form->select_comptes(GETPOST('bankespeceto')?GETPOST('bankespeceto'):($consult->bank['LIQ']['account_id']?$consult->bank['LIQ']['account_id']:$defaultbankaccountliq),'bankespeceto',2,'courant = 2',1);
         }
         print '</td></tr>';
-        
+
         // Third party
         print '<tr class="cabpaymentthirdparty"><td>';
         print $langs->trans("PaymentTypeThirdParty").'</td><td>';
@@ -1123,7 +1127,7 @@ if ($socid > 0)
 
         dol_htmloutput_errors($mesg,$mesgarray);
     }
-    
+
 	//dol_fiche_end();
 
     if ($action == 'create' || $action == 'edit')
@@ -1133,7 +1137,7 @@ if ($socid > 0)
     	{
     	    // Set option if not defined
     	    if (! isset($conf->global->CABINETMED_DELAY_TO_LOCK_RECORD)) $conf->global->CABINETMED_DELAY_TO_LOCK_RECORD=30;
-    	
+
     	    // If consult was create before current date - CABINETMED_DELAY_TO_LOCK_RECORD days.
     	    if (! empty($conf->global->CABINETMED_DELAY_TO_LOCK_RECORD) && $consult->date_c < ($now - ($conf->global->CABINETMED_DELAY_TO_LOCK_RECORD * 24 * 3600)))
     	    {
@@ -1152,7 +1156,7 @@ if ($socid > 0)
     	print '<input type="submit" class="button ignorechange" id="cancelbutton" name="cancel" value="'.$langs->trans("Cancel").'">';
     	print '</center>';
     }
-    
+
 	print '</form>';
 }
 
@@ -1263,7 +1267,7 @@ if ($action == '' || $action == 'delete')
 
             $var=!$var;
             print '<tr class="oddeven"><td>';
-            
+
             print '<a href="'.$_SERVER["PHP_SELF"].'?socid='.$obj->fk_soc.'&id='.$obj->rowid.'&action=edit">'.sprintf("%08d",$obj->rowid).'</a>';
             print '</td><td>';
             print dol_print_date($db->jdate($obj->datecons),'day');

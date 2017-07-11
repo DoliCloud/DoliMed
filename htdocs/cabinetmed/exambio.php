@@ -213,8 +213,10 @@ if ($socid > 0)
 
     $linkback = '<a href="'.dol_buildpath('/cabinetmed/patients.php', 1).'">'.$langs->trans("BackToList").'</a>';
 	dol_banner_tab($object, 'socid', $linkback, ($user->societe_id?0:1), 'rowid', 'nom');
-	
-    print '<div class="underbanner clearboth"></div>';
+
+    print '<div class="fichecenter">';
+
+	print '<div class="underbanner clearboth"></div>';
 	print '<table class="border" width="100%">';
 
 	//if ($societe->client)
@@ -237,16 +239,18 @@ if ($socid > 0)
 
 	print "</table>";
 
+	print '</div>';
+
 	print '</form>';
 
 	dol_fiche_end();
-	
+
     // Form to create
     if ($action == 'create' || $action == 'edit')
     {
         //dol_fiche_head();
         print '<br>';
-        
+
         $x=1;
         $nboflines=4;
 

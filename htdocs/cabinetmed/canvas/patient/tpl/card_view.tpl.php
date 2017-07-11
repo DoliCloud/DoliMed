@@ -45,7 +45,7 @@ $now=dol_now();
 }*/
 
 //dol_fiche_head($head, 'tabpatientcard', $langs->trans("Patient"),0,'company');
-dol_fiche_head($head, 'card', $langs->trans("Patient"), -1, 'patient@cabinetmed');
+dol_fiche_head($head, 'card', $langs->trans("Patient"), 0, 'patient@cabinetmed');
 
 dol_htmloutput_errors($error,$errors);
 
