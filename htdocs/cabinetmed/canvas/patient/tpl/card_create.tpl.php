@@ -136,7 +136,7 @@ dol_htmloutput_errors($GOBALS['error'],$GLOBALS['errors']);
 })
 </script>
 
-<form action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="POST" name="formsoc">
+<form action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="POST" name="formsoc" enctype="multipart/form-data">
 
 <input type="hidden" name="canvas" value="<?php echo $GLOBALS['canvas'] ?>">
 <input type="hidden" name="action" value="add">
@@ -144,7 +144,7 @@ dol_htmloutput_errors($GOBALS['error'],$GLOBALS['errors']);
 <input type="hidden" name="private" value="0">
 <input type="hidden" name="status" value="1">
 <input type="hidden" name="client" value="<?php echo $object->client; ?>">
-<?php if ($modCodeClient->code_auto || $modCodeFournisseur->code_auto) print '<input type="hidden" name="code_auto" value="1">'; 
+<?php if ($modCodeClient->code_auto || $modCodeFournisseur->code_auto) print '<input type="hidden" name="code_auto" value="1">';
 
 dol_fiche_head('');
 
@@ -170,7 +170,7 @@ dol_fiche_head('');
     </td>
 </tr>
 
-<?php 
+<?php
 
     // Prospect/Customer
     if (! empty($conf->global->SOCIETE_DISABLE_CUSTOMERS) && ! empty($conf->global->SOCIETE_DISABLE_PROSPECTS))
@@ -209,14 +209,14 @@ dol_fiche_head('');
         print $form->select_country($object->country_id,'country_id');
         if ($user->admin) print info_admin($langs->trans("YouCanChangeValuesForThisListFromDictionarySetup"),1);
         print '</td></tr>';
-        
+
         // State
         if (empty($conf->global->SOCIETE_DISABLE_STATE))
         {
             print '<tr><td>'.$langs->trans('State').'</td><td colspan="3">';
             $formcompany->select_departement($object->state_id,$object->country_code);
             print '</td></tr>';
-        }        
+        }
 ?>
 
 <tr>
@@ -330,12 +330,12 @@ dol_fiche_head('');
             $form->select_users(GETPOST('commercial_id')>0?GETPOST('commercial_id'):$user->id,'commercial_id',1);
             print '</td></tr>';
         }
-        
+
         // Categories
         if (! empty($conf->categorie->enabled)  && ! empty($user->rights->categorie->lire))
         {
             $langs->load('categories');
-        
+
             // Customer
             if ($object->prospect || $object->client) {
                 print '<tr><td class="toptd">' . fieldLabel('CustomersCategoriesShort', 'custcats') . '</td><td colspan="3">';
@@ -344,7 +344,7 @@ dol_fiche_head('');
                     null, "90%");
                 print "</td></tr>";
             }
-        
+
             // Supplier
             if ($object->fournisseur) {
                 print '<tr><td class="toptd">' . fieldLabel('SuppliersCategoriesShort', 'suppcats') . '</td><td colspan="3">';
@@ -354,7 +354,7 @@ dol_fiche_head('');
                 print "</td></tr>";
             }
         }
-        
+
         // Other attributes
         $parameters=array('colspan' => ' colspan="3"', 'colspanvalue' => '3');
         $reshook=$hookmanager->executeHooks('formObjectOptions',$parameters,$object,$action);    // Note that $action and $object may have been modified by hook
@@ -363,7 +363,7 @@ dol_fiche_head('');
         {
             print $object->showOptionals($extrafields,'edit');
         }
-        
+
         // Ajout du logo
         print '<tr class="hideonsmartphone">';
         print '<td>'.fieldLabel('Logo','photoinput').'</td>';
@@ -374,7 +374,7 @@ dol_fiche_head('');
 ?>
 </table>
 
-<?php 
+<?php
 
 dol_fiche_end();
 
