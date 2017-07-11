@@ -26,7 +26,7 @@ ALTER TABLE llx_cabinetmed_cons ADD COLUMN fk_agenda integer;
 ALTER TABLE llx_cabinetmed_c_examconclusion ADD COLUMN position integer DEFAULT 10;
 ALTER TABLE llx_cabinetmed_examenprescrit ADD COLUMN position integer DEFAULT 10;
 ALTER TABLE llx_cabinetmed_motifcons ADD COLUMN position integer DEFAULT 10;
-ALTER TABLE llx_cabinetmed_diagleg ADD COLUMN position integer DEFAULT 10;
+ALTER TABLE llx_cabinetmed_diaglec ADD COLUMN position integer DEFAULT 10;
 
 UPDATE llx_cabinetmed_examenprescrit SET position = 1 where code in ('AUTRE','OTHER');
 
