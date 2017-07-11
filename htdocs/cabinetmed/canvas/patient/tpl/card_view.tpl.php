@@ -45,7 +45,7 @@ $now=dol_now();
 }*/
 
 //dol_fiche_head($head, 'tabpatientcard', $langs->trans("Patient"),0,'company');
-dol_fiche_head($head, 'card', $langs->trans("Patient"),0,'patient@cabinetmed');
+dol_fiche_head($head, 'card', $langs->trans("Patient"), -1, 'patient@cabinetmed');
 
 dol_htmloutput_errors($error,$errors);
 
@@ -63,6 +63,7 @@ dol_htmloutput_errors($GLOBALS['error'],$GLOBALS['errors']);
 $linkback = '<a href="'.dol_buildpath('/cabinetmed/patients.php', 1).'">'.$langs->trans("BackToList").'</a>';
 dol_banner_tab($object, 'socid', $linkback, ($user->societe_id?0:1), 'rowid', 'nom');
 
+print '<div class="fichecenter">';
 
 print '<div class="underbanner clearboth"></div>';
 print '<table class="border" width="100%">';
@@ -252,13 +253,13 @@ if (empty($reshook) && ! empty($extrafields->attribute_label))
           	$agemonth=convertSecondToTime($now-$birthdate,'month')-1;
           	if ($ageyear >= 1) $newtmp.='('.$ageyear.' '.$langs->trans("DurationYears").')';
           	else if ($agemonth >= 1) $newtmp.='('.$agemonth.' '.$langs->trans("DurationMonths").')';
-          	else $newtmp.='('.$agemonth.' '.$langs->trans("DurationMonth").')';  	
+          	else $newtmp.='('.$agemonth.' '.$langs->trans("DurationMonth").')';
             //print $newtmp;
           	$tmp=preg_replace('/'.preg_quote('<td','/').'[^>]*'.preg_quote('colspan="3">'.dol_print_date($birthdate, 'day').'</td>','/').'/','<td colspan="3">'.dol_print_date($birthdate, 'day').$newtmp.'</td>',$tmp);
       	}
   	}
   	print $tmp;
-  	
+
   	print '<!-- end extrafields -->';
 }
 
@@ -348,6 +349,8 @@ else print $langs->trans("NoSalesRepresentativeAffected");
 print '</td></tr>';
 
 print '</table>';
+
+print '</div>';
 
 dol_fiche_end();
 
