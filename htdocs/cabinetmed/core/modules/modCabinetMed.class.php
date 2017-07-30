@@ -278,7 +278,7 @@ class modCabinetMed extends DolibarrModules
 						        'type'=>'left',         // This is a Left menu entry
 						        'titre'=>'MenuNewPatient',
 						        'mainmenu'=>'patients',
-						        'leftmenu'=>'',
+						        'leftmenu'=>'patients_new',
 						        'url'=>'/cabinetmed/card.php?action=create&canvas=patient@cabinetmed',
 						        'langs'=>'cabinetmed@cabinetmed',  // Lang file to use (without .lang) by module. File must be in langs/code_CODE/ directory.
 						        'position'=>110,
@@ -290,7 +290,7 @@ class modCabinetMed extends DolibarrModules
 						        'type'=>'left',         // This is a Left menu entry
 						        'titre'=>'ListPatient',
 						        'mainmenu'=>'patients',
-						        'leftmenu'=>'',
+						        'leftmenu'=>'patients_list',
 						        'url'=>'/cabinetmed/patients.php?leftmenu=customers&search_sale=__USERID__',
 						        'langs'=>'cabinetmed@cabinetmed',  // Lang file to use (without .lang) by module. File must be in langs/code_CODE/ directory.
 						        'position'=>110,
@@ -302,7 +302,7 @@ class modCabinetMed extends DolibarrModules
 						        'type'=>'left',         // This is a Left menu entry
 						        'titre'=>'ListConsult',
 						        'mainmenu'=>'patients',
-						        'leftmenu'=>'',
+						        'leftmenu'=>'patients_consult',
 						        'url'=>'/cabinetmed/listconsult.php?leftmenu=customers&search_sale=__USERID__',
 						        'langs'=>'cabinetmed@cabinetmed',  // Lang file to use (without .lang) by module. File must be in langs/code_CODE/ directory.
 						        'position'=>110,
@@ -314,7 +314,7 @@ class modCabinetMed extends DolibarrModules
 						        'type'=>'left',         // This is a Left menu entry
 						        'titre'=>'Statistics',
 						        'mainmenu'=>'patients',
-						        'leftmenu'=>'',
+						        'leftmenu'=>'patients_stats',
 						        'url'=>'/cabinetmed/stats/index.php?leftmenu=customers&userid=__USERID__',
 						        'langs'=>'cabinetmed@cabinetmed',  // Lang file to use (without .lang) by module. File must be in langs/code_CODE/ directory.
 						        'position'=>110,
@@ -330,7 +330,7 @@ class modCabinetMed extends DolibarrModules
 						        'leftmenu'=>'categorypatients',
 						        'url'=>'/categories/index.php?leftmenu=categorypatients&type=2',
 						        'langs'=>'categories',  // Lang file to use (without .lang) by module. File must be in langs/code_CODE/ directory.
-						        'position'=>110,
+						        'position'=>111,
 						        'enabled'=>'$conf->categorie->enabled',         // Define condition to show or hide menu entry. Use '$conf->voyage->enabled' if entry must be visible if module is enabled.
 						        'perms'=>'$user->rights->categorie->lire',           // Use 'perms'=>'$user->rights->voyage->level1->level2' if you want your menu with a permission rules
 						        'target'=>'',
@@ -340,10 +340,10 @@ class modCabinetMed extends DolibarrModules
 						        'type'=>'left',         // This is a Left menu entry
 						        'titre'=>'NewCategory',
 						        'mainmenu'=>'patients',
-						        'leftmenu'=>'',
+						        'leftmenu'=>'categorypatients_new',
 						        'url'=>'/categories/card.php?action=create&type=2',
 						        'langs'=>'categories',  // Lang file to use (without .lang) by module. File must be in langs/code_CODE/ directory.
-						        'position'=>110,
+						        'position'=>112,
 						        'enabled'=>'$conf->categorie->enabled',         // Define condition to show or hide menu entry. Use '$conf->voyage->enabled' if entry must be visible if module is enabled.
 						        'perms'=>'$user->rights->categorie->lire',           // Use 'perms'=>'$user->rights->voyage->level1->level2' if you want your menu with a permission rules
 						        'target'=>'',
