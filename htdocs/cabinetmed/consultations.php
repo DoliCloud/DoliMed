@@ -1217,6 +1217,7 @@ if ($action == '' || $action == 'delete')
     print '<tr class="liste_titre">';
     print_liste_field_titre($langs->trans('Num'),$_SERVER['PHP_SELF'],'t.rowid','',$param,'',$sortfield,$sortorder);
     print_liste_field_titre($langs->trans('Date'),$_SERVER['PHP_SELF'],'t.datecons','',$param,'',$sortfield,$sortorder);
+    print_liste_field_titre($langs->trans('CreatedBy'),$_SERVER['PHP_SELF'],'t.fk_user','',$param,'',$sortfield,$sortorder);
     if (! empty($conf->global->CABINETMED_FRENCH_PRISEENCHARGE))
     {
         print_liste_field_titre($langs->trans('Priseencharge'),$_SERVER['PHP_SELF'],'t.typepriseencharge','',$param,'',$sortfield,$sortorder);
@@ -1251,7 +1252,9 @@ if ($action == '' || $action == 'delete')
     $sql.= " t.montant_espece,";
     $sql.= " t.montant_carte,";
     $sql.= " t.montant_tiers,";
-    $sql.= " t.banque";
+    $sql.= " t.banque,";
+    $sql.= " t.fk_user_creation,";
+    $sql.= " t.fk_user";
 //    $sql.= " bu.fk_bank, b.fk_account, b.fk_type";
     $sql.= " FROM ".MAIN_DB_PREFIX."cabinetmed_cons as t";
 //    $sql.= " LEFT JOIN ".MAIN_DB_PREFIX."bank_url as bu on bu.url_id = t.rowid AND type = 'consultation'";
@@ -1273,11 +1276,17 @@ if ($action == '' || $action == 'delete')
             $consult->fetch_bankid();
 
             $var=!$var;
-            print '<tr class="oddeven"><td>';
-
+            print '<tr class="oddeven">';
+            print '<td>';
             print '<a href="'.$_SERVER["PHP_SELF"].'?socid='.$obj->fk_soc.'&id='.$obj->rowid.'&action=edit">'.sprintf("%08d",$obj->rowid).'</a>';
-            print '</td><td>';
+            print '</td>';
+            print '<td>';
             print dol_print_date($db->jdate($obj->datecons),'day');
+            print '</td>';
+            print '<td>';
+            $usertmp=new User($db);
+            $usertmp->fetch($obj->fk_user_creation);
+            print $usertmp->getNomUrl(1);
             print '</td>';
             if (! empty($conf->global->CABINETMED_FRENCH_PRISEENCHARGE))
             {

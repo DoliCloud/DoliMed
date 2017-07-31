@@ -87,6 +87,7 @@ $form=new Form($db);
 $htmlother=new FormOther($db);
 $thirdpartystatic=new Societe($db);
 $consultstatic = new CabinetmedCons($db);
+$userstatic = new User($db);
 
 $datecons=dol_mktime(0,0,0,GETPOST('consmonth'),GETPOST('consday'),GETPOST('consyear'));
 
@@ -112,7 +113,7 @@ if (GETPOST("button_removefilter_x") || GETPOST("button_removefilter.x") || GETP
 
 $sql = "SELECT s.rowid, s.nom as name, s.client, s.town, st.libelle as stcomm, s.prefix_comm, s.code_client,";
 $sql.= " s.datec, s.canvas,";
-$sql.= " c.rowid as cid, c.datecons, c.typepriseencharge, c.typevisit, c.motifconsprinc, c.diaglesprinc, c.examenprescrit, c.traitementprescrit";
+$sql.= " c.rowid as cid, c.datecons, c.typepriseencharge, c.typevisit, c.motifconsprinc, c.diaglesprinc, c.examenprescrit, c.traitementprescrit, c.fk_user, c.fk_user_creation";
 // We'll need these fields in order to filter by categ
 if ($search_categ) $sql .= ", cs.fk_categorie, cs.fk_soc";
 $sql.= " FROM ".MAIN_DB_PREFIX."societe as s";
@@ -259,6 +260,7 @@ if ($result)
 	print '<td class="liste_titre" align="center">';
 	print $form->select_date($datecons, 'cons', 0, 0, 1, '',1,0,1);
 	print '</td>';
+	print '<td class="liste_titre"></td>';
     print '<td class="liste_titre">';
     $width='200';
     print listmotifcons(1,$width,'search_motifprinc',$search_motifprinc);
@@ -284,7 +286,8 @@ if ($result)
 	print_liste_field_titre($langs->trans("Patient"),$_SERVER["PHP_SELF"],"s.nom","",$param,"",$sortfield,$sortorder);
 	print_liste_field_titre($langs->trans("CustomerCode"),$_SERVER["PHP_SELF"],"s.code_client","",$param,"",$sortfield,$sortorder);
 	print_liste_field_titre($langs->trans("DateConsultationShort"),$_SERVER["PHP_SELF"],"c.datecons,c.rowid","",$param,'align="center"',$sortfield,$sortorder);
-    print_liste_field_titre($langs->trans("MotifPrincipal"),$_SERVER["PHP_SELF"],"c.motifconsprinc","",$param,'',$sortfield,$sortorder);
+	print_liste_field_titre($langs->trans("CreatedBy"),$_SERVER["PHP_SELF"],"","",$param,'',$sortfield,$sortorder);
+	print_liste_field_titre($langs->trans("MotifPrincipal"),$_SERVER["PHP_SELF"],"c.motifconsprinc","",$param,'',$sortfield,$sortorder);
 	print_liste_field_titre($langs->trans("DiagLesPrincipal"),$_SERVER["PHP_SELF"],"c.diaglesprinc","",$param,'',$sortfield,$sortorder);
     if (! empty($conf->global->CABINETMED_FRENCH_PRISEENCHARGE))
     {
@@ -293,15 +296,11 @@ if ($result)
 	print_liste_field_titre($langs->trans('ConsultActe'),$_SERVER['PHP_SELF'],'c.typevisit','',$param,'align="right"',$sortfield,$sortorder);
 	print "</tr>\n";
 
-	$var=True;
-
 	while ($i < min($num,$conf->liste_limit))
 	{
 		$obj = $db->fetch_object($result);
 
-		$var=!$var;
-
-		print "<tr ".$bc[$var].">";
+		print '<tr class="oddeven">';
         print '<td>';
         $consultstatic->id=$obj->cid;
         $consultstatic->fk_soc=$obj->rowid;
@@ -316,7 +315,11 @@ if ($result)
 		print '</td>';
 		print '<td>'.$obj->code_client.'</td>';
 		print '<td align="center">'.dol_print_date($db->jdate($obj->datecons),'day').'</td>';
-        print '<td>'.$obj->motifconsprinc.'</td>';
+		print '<td>';
+		$userstatic->fetch($obj->fk_user_creation);
+        print $userstatic->getNomUrl(1);
+		print '</td>';
+		print '<td>'.$obj->motifconsprinc.'</td>';
         print '<td>';
         print dol_trunc($obj->diaglesprinc,20);
         /*$val=dol_trunc($obj->examenprescrit,20);
