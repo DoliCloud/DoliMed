@@ -57,22 +57,22 @@ function cabinetmed_completesubstitutionarray(&$substitutionarray,$langs,$object
         	$patientobj->fetch($object->id);
         	$object = $patientobj;
         }
-    
+
         $substitutionarray['NotesPatient']=$langs->trans("Notes");
         if ($object)
         {
             $nbofnotes = ($object->note||$object->note_private)?1:0;
             if ($nbofnotes > 0) $substitutionarray['NotesPatient']=$langs->trans("Notes").' <span class="badge">'.$nbofnotes.'</span>';
         }
-        
+
         $substitutionarray['Correspondants']=$langs->trans("Correspondants");
         if ($object && is_array($parameters) && $parameters['needforkey'] == 'SUBSTITUTION_Correspondants')
         {
     	    $nbChild = count($object->liste_contact(-1,'internal')) + count($object->liste_contact(-1,'external'));
-            
+
             if ($nbChild > 0) $substitutionarray['Correspondants']=$langs->trans("Correspondants").' <span class="badge">'.$nbChild.'</span>';
         }
-        
+
         $substitutionarray['ConsultationsShort']=$langs->trans("ConsultationsShort");
         if ($object && is_array($parameters) && $parameters['needforkey'] == 'SUBSTITUTION_ConsultationsShort')
         {
@@ -91,10 +91,10 @@ function cabinetmed_completesubstitutionarray(&$substitutionarray,$langs,$object
             } else {
                 dol_print_error($db);
             }
-            
+
             if ($nbChild > 0) $substitutionarray['ConsultationsShort']=$langs->trans("ConsultationsShort").' <span class="badge">'.$nbChild.'</span>';
         }
-    
+
         $substitutionarray['ResultExamBio']=$langs->trans("ResultExamBio");
         if ($object && is_array($parameters) && $parameters['needforkey'] == 'SUBSTITUTION_ResultExamBio')
         {
@@ -113,10 +113,10 @@ function cabinetmed_completesubstitutionarray(&$substitutionarray,$langs,$object
             } else {
                 dol_print_error($db);
             }
-            
+
             if ($nbChild > 0) $substitutionarray['ResultExamBio']=$langs->trans("ResultExamBio").' <span class="badge">'.$nbChild.'</span>';
         }
-        
+
         $substitutionarray['ResultExamAutre']=$langs->trans("ResultExamAutre");
         if ($object && is_array($parameters) && $parameters['needforkey'] == 'SUBSTITUTION_ResultExamAutre')
         {
@@ -134,12 +134,12 @@ function cabinetmed_completesubstitutionarray(&$substitutionarray,$langs,$object
                 }
             } else {
                 dol_print_error($db);
-            }    
-        
+            }
+
             if ($nbChild > 0) $substitutionarray['ResultExamAutre']=$langs->trans("ResultExamAutre").' <span class="badge">'.$nbChild.'</span>';
         }
-        
-        
+
+
         $substitutionarray['TabAntecedentsShort']=$langs->trans("AntecedentsShort");
         if ($object)
        	{
@@ -154,7 +154,7 @@ function cabinetmed_completesubstitutionarray(&$substitutionarray,$langs,$object
            	if ($object->note_traitspec) $nbofnotes++;
             if ($nbofnotes > 0) $substitutionarray['TabAntecedentsShort']=$langs->trans("AntecedentsShort").' <span class="badge">'.$nbofnotes.'</span>';
        	}
-       	
+
         $substitutionarray['DocumentsPatient']=$langs->trans("DocumentsPatient");
         if ($object && is_array($parameters) && $parameters['needforkey'] == 'SUBSTITUTION_DocumentsPatient')
         {
@@ -168,7 +168,7 @@ function cabinetmed_completesubstitutionarray(&$substitutionarray,$langs,$object
             if (($nbFiles+$nbLinks) > 0) $substitutionarray['DocumentsPatient']=$langs->trans("DocumentsPatient").' <span class="badge">'.($nbFiles+$nbLinks).'</span>';
         }
     }
-    
+
     // Consultation + Exams
     if (GETPOST('idconsult') > 0)
     {
@@ -191,7 +191,7 @@ function cabinetmed_completesubstitutionarray(&$substitutionarray,$langs,$object
 
     if ($isother || $isbio) $substitutionarray['examshows']=$langs->transnoentitiesnoconv("ExamsShow");
     else $substitutionarray['examshows']='';
-    
+
     if ($isother)	// An image exam was selected
     {
         $substitutionarray['examother_title']=$langs->transnoentitiesnoconv("BilanImage").':';
@@ -252,7 +252,7 @@ function cabinetmed_completesubstitutionarray(&$substitutionarray,$langs,$object
 	    $substitutionarray['outcome_diagnostic']='';
 	    $substitutionarray['outcome_history']='';
 	    $substitutionarray['outcome_exam_clinic']='';
-	    
+
 	    $substitutionarray['treatment_title']='';	// old string
 		$substitutionarray['outcome_treatment_title']='';	// old string
 		$substitutionarray['outcome_treatment']='';
@@ -268,7 +268,7 @@ function cabinetmed_completesubstitutionarray(&$substitutionarray,$langs,$object
     $substitutionarray['outcome_comment']=GETPOST('outcome_comment');
 
     include_once DOL_DOCUMENT_ROOT.'/core/lib/date.lib.php';
-    
+
     // Patient
     //$patient=new Patient($db);
     //var_dump($object);
@@ -277,22 +277,22 @@ function cabinetmed_completesubstitutionarray(&$substitutionarray,$langs,$object
     {
         $substitutionarray['patient_name']=$object->name;
     	$substitutionarray['patient_code']=$object->code_client;
-    
+
     	$substitutionarray['patient_barcode']=$object->barcode;
     	$substitutionarray['patient_barcode_type']=$object->barcode_type_code;
     	$substitutionarray['patient_country_code']=$object->country_code;
     	$substitutionarray['patient_country']=$object->country;
     	$substitutionarray['patient_email']=$object->email;
-    
+
     	$substitutionarray['patient_size']=$object->array_options['options_size'];
     	$substitutionarray['patient_weight']=$object->array_options['options_weight'];
         $substitutionarray['patient_birthdate']=dol_print_date(dol_stringtotime($object->array_options['options_birthdate'].' 00:00:00'),'day','',$langs);
         $substitutionarray['patient_profession']=$object->array_options['options_prof'];
-    
+
         $substitutionarray['patient_gender']=$object->typent_code;
         $substitutionarray['patient_socialnum']=$object->tva_intra;
-    }        
-        
+    }
+
     // Replace contact tabs with GENERALREF if defined
     $substitutionarray['contact_title']='';
     $substitutionarray['contact_lastname']='';
@@ -301,7 +301,8 @@ function cabinetmed_completesubstitutionarray(&$substitutionarray,$langs,$object
     $substitutionarray['contact_town']='';
     $substitutionarray['contact_address']='';
     $substitutionarray['contact_email']='';
-    if (is_object($object))
+
+    if (is_object($object) && method_exists($object, 'liste_contact'))
     {
         $tab = $object->liste_contact(-1,'external');
         foreach($tab as $key => $tmparray)
