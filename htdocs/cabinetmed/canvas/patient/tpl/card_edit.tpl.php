@@ -275,7 +275,7 @@ print '<tr><td>'.$langs->trans('PhonePerso').'</td><td><input type="text" name="
 print '<td>'.$langs->trans('PhoneMobile').'</td><td><input type="text" name="fax" value="'.$object->fax.'"></td></tr>';
 
 // EMail / Web
-print '<tr><td>'.$langs->trans('EMail').($conf->global->SOCIETE_MAIL_REQUIRED?'*':'').'</td><td colspan="3"><input type="text" name="email" size="32" value="'.$object->email.'"></td>';
+print '<tr><td>'.$langs->trans('EMail').($conf->global->SOCIETE_EMAIL_MANDATORY?'*':'').'</td><td colspan="3"><input type="text" name="email" size="32" value="'.$object->email.'"></td>';
 print '</tr>';
 
 // Prof ids

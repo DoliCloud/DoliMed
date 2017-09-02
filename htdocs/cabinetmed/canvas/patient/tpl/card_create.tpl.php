@@ -227,7 +227,7 @@ dol_fiche_head('');
 </tr>
 
 <tr>
-	<td><?php echo $langs->trans('EMail').($conf->global->SOCIETE_MAIL_REQUIRED?'*':''); ?></td>
+	<td><?php echo $langs->trans('EMail').($conf->global->SOCIETE_EMAIL_MANDATORY?'*':''); ?></td>
 	<td colspan="3"><input type="text" name="email" size="32" value="<?php echo $object->email; ?>"></td>
 </tr>
 
