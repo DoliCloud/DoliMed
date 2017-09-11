@@ -93,7 +93,7 @@ if ($user->rights->societe->client->voir || $socid)
 }
 $periodlink=($year_start?"<a href='".$_SERVER["PHP_SELF"]."?year_start=".($year_start-1)."&search_sale=".$search_sale."'>".img_previous()."</a> <a href='".$_SERVER["PHP_SELF"]."?year_start=".($year_start+1)."&search_sale=".$search_sale."'>".img_next()."</a>":"");
 $description=$langs->trans("CabinetMedRulesResultInOut");
-$builddate=time();
+$builddate=dol_now();
 $exportlink='';
 
 report_header($nom,$nomlink,$period,$periodlink,$description,$builddate,$exportlink);
