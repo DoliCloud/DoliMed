@@ -224,7 +224,7 @@ if (empty($reshook))
         else if (! empty($_FILES['photo']['name'])) $object->logo = dol_sanitizeFileName($_FILES['photo']['name']);
 
         // Check parameters
-        if (! GETPOST("cancel"))
+        if (! GETPOST('cancel','alpha'))
         {
             if (! empty($object->email) && ! isValidEMail($object->email))
             {
@@ -394,7 +394,7 @@ if (empty($reshook))
 
             if ($action == 'update')
             {
-                if (GETPOST("cancel"))
+                if (GETPOST('cancel','alpha'))
                 {
                 	if (! empty($backtopage))
                 	{

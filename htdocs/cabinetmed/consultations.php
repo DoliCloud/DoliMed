@@ -118,7 +118,7 @@ if (GETPOST("action") == 'confirm_delete' && GETPOST("confirm") == 'yes' && $use
 // Add consultation
 if ($action == 'add' || $action == 'update')
 {
-    if (! GETPOST('cancel'))
+    if (! GETPOST('cancel','alpha'))
     {
         $error=0;
 
@@ -500,9 +500,9 @@ if ($action == 'add' || $action == 'update')
     }
     else
     {
-        if (GETPOST("backtopage"))
+        if (GETPOST('backtopage','alpha'))
         {
-            header("Location: ".GETPOST("backtopage"));
+            header("Location: ".GETPOST('backtopage','alpha'));
             exit(0);
         }
         $action='';
@@ -551,7 +551,7 @@ if ($socid > 0)
 	if ($action=='edit')   print '<input type="hidden" name="action" value="update">';
 	print '<input type="hidden" name="socid" value="'.$socid.'">';
 	print '<input type="hidden" name="id" value="'.$id.'">';
-	print '<input type="hidden" name="backtopage" value="'.GETPOST('backtopage').'">';
+	print '<input type="hidden" name="backtopage" value="'.GETPOST('backtopage','alpha').'">';
 	print '<input type="hidden" name="token" value="'.$_SESSION['newtoken'].'">';
 
 	dol_fiche_head($head, 'tabconsultations', $langs->trans("Patient"), 0, 'patient@cabinetmed');

@@ -62,7 +62,7 @@ if ($socid > 0) $object->fetch($socid);
  * Actions
  */
 
-if ($action == 'add' && ! GETPOST('cancel'))
+if ($action == 'add' && ! GETPOST('cancel','alpha'))
 {
     $error=0;
 

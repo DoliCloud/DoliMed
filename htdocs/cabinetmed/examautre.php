@@ -101,7 +101,7 @@ if (GETPOST("action") == 'confirm_delete' && GETPOST("confirm") == 'yes' && $use
 
 if ($action == 'add' || $action == 'update')
 {
-    if (! GETPOST('cancel'))
+    if (! GETPOST('cancel','alpha'))
     {
         $error=0;
 
