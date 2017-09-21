@@ -308,7 +308,7 @@ if (empty($reshook))
                     }
 
 					// Customer categories association
-					$custcats = GETPOST( 'custcats', 'array' );
+					$custcats = GETPOST('custcats', 'array');
 					$object->setCategories($custcats, 'customer');
 
 					// Supplier categories association
@@ -420,7 +420,7 @@ if (empty($reshook))
                 }
 
 				// Customer categories association
-				$categories = GETPOST( 'custcats', 'array' );
+				$categories = GETPOST('custcats', 'array');
 				$object->setCategories($categories, 'customer');
 
 				// Supplier categories association
