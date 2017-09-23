@@ -571,7 +571,7 @@ if ($object->id)
         // Tableau des substitutions
         $formmail->substit['__NAME__']=$object->getFullAddress();
         $formmail->substit['__SIGNATURE__']=$user->signature;
-        $formmail->substit['__PERSONALIZED__']='';
+        $formmail->substit['__PERSONALIZED__']='';	// deprecated
         // Tableau des parametres complementaires
         $formmail->param['action']='send';
         $formmail->param['models']='outcome_send';

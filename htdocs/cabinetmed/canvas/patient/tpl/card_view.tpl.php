@@ -448,7 +448,7 @@ if ($action == 'presend')
 	$formmail->withcancel=1;
 	// Tableau des substitutions
 	$formmail->substit['__SIGNATURE__']=$user->signature;
-	$formmail->substit['__PERSONALIZED__']='';
+	$formmail->substit['__PERSONALIZED__']='';		// deprecated
 	$formmail->substit['__CONTACTCIVNAME__']='';
 
 	//Find the good contact adress
