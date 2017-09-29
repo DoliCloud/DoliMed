@@ -68,7 +68,7 @@ if ($action == 'add' && ! GETPOST('cancel','alpha'))
 
     $db->begin();
 
-    $result=$object->update_note(dol_html_entity_decode(dol_htmlcleanlastbr(GETPOST('note_private')?GETPOST('note_private'):GETPOST('note')), ENT_QUOTES),'_private');
+    $result=$object->update_note(dol_html_entity_decode(dol_htmlcleanlastbr(GETPOST('note_private','none')?GETPOST('note_private','none'):GETPOST('note','none')), ENT_QUOTES),'_private');
     if ($result < 0)
     {
         $error++;
