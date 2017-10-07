@@ -7,13 +7,15 @@
 # Usage: txpush.sh (source|xx_XX) [-r dolimed.file] [-f]
 #------------------------------------------------------
 
+export project='dolimed'
+
 # Syntax
 if [ "x$1" = "x" ]
 then
 	echo "This push local files to transifex."
 	echo "Note:  If you push a language file (not source), file will be skipped if transifex file is newer."
 	echo "       Using -f will overwrite translation but not memory."
-	echo "Usage: ./dev/translation/txpush.sh (source|xx_XX) [-r dolimed.file] [-f] [--no-interactive]"
+	echo "Usage: ./dev/translation/txpush.sh (source|xx_XX) [-r ".$project.".file] [-f] [--no-interactive]"
 	exit
 fi
 
@@ -31,7 +33,7 @@ else
 	for file in `find htdocs/cabinetmed/langs/$1/*.lang -type f`
 	do
 		export basefile=`basename $file | sed -s s/\.lang//g`
-		echo "tx push --skip -r dolimed.$basfile -t -l $1 $2 $3 $4"
-		tx push --skip -r dolimed.$basefile -t -l $1 $2 $3 $4
+		echo "tx push --skip -r project.$basfile -t -l $1 $2 $3 $4"
+		tx push --skip -r project.$basefile -t -l $1 $2 $3 $4
 	done
 fi
