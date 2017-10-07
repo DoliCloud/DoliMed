@@ -5,12 +5,8 @@ ExtraFieldsContacts=Complementary attributes (contacts)
 UseSearchToSelectCompany= Χρησιμοποιείστε ένα πεδίο με αυτόματη συμπλήρωση για την επιλογή ενός ασθενούς (σε αντίθεση με πλαίσιο λίστας)
 ActivityStateToSelectCompany= Προσθήκη επιλογής φίλτρου για εμφάνιση/απόκρυψη ασθενών που πληρούν τα κριτήρια ή όχι
 ViewFullDateActions= Εμφάνιση πλήρους ημερομηνίας 
-DaylingSavingTime=Dayling time (user)
-CurrentHour= Ώρα php (εξυπηρετητής)
-CompanyTZ= Ζώνη ώρας
-CompanyHour= Ώρα
 ModuleFamilyCrm= Διαχείριση επαφών
-GenericMaskCodes2= <b>{cccc}</b> le code patient sur n lettres<br><b>{cccc000}</b> le code client sur n lettres est suivi d'un compteur propre au client sans offset, complété par des zéros pour en avoir autant que dans le masque, et remis à zéro en même temps que le compteur global.<br><b>{tttt}</b> Le code type entreprise sur n caractères (voir dictionnaires-types de patient).<br>
+GenericMaskCodes2=<b>{cccc}</b> the client/patient code on n characters<br><b>{cccc000}</b> the client/patient code on n characters is followed by a counter dedicated for customer. This counter dedicated to customer is reset at same time than global counter.<br><b>{tttt}</b> The code of third party type on n characters (see dictionary-thirdparty types).<br>
 
 # Modules= undefined
 Module1Name= Λίστα τρίτων/ασθενών
@@ -32,7 +28,6 @@ DiagnostiqueLesionnel=Lesion diagnostic
 Examens=Εξετάσεις
 ExamenConclusion=Γνωμάτευση εξέτασης
 BankNameList=Λίστα τραπεζών
-SetupDescription3=Είναι απαραίτητα τα δεδομένα στο μενού <b>Εγκατάσταση - πληροφορίες </b>για τη λειτουργία 
 
 CompanySetup= Εγκατάσταση του αρθρώματος Ασθενής
 CompanyCodeChecker= Μοτίβο για δημιουργία και έλεγχο κωδικού ασθενούς

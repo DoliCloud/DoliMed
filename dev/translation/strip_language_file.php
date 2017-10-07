@@ -79,7 +79,7 @@ $aEnglish = array();
 // Define array $filesToProcess
 if ($filesToProcess == 'all')
 {
-	$dir = new DirectoryIterator('htdocs/langs/'.$lPrimary);
+	$dir = new DirectoryIterator('htdocs/cabinetmed/langs/'.$lPrimary);
 	while($dir->valid()) {
 		if(!$dir->isDot() && $dir->isFile() && ! preg_match('/^\./',$dir->getFilename())) {
 			$files[] =  $dir->getFilename();
@@ -96,9 +96,9 @@ else $filesToProcess=explode(',',$filesToProcess);
 // Loop on each file
 foreach($filesToProcess as $fileToProcess)
 {
-	$lPrimaryFile = 'htdocs/langs/'.$lPrimary.'/'.$fileToProcess;
-	$lSecondaryFile = 'htdocs/langs/'.$lSecondary.'/'.$fileToProcess;
-	$lEnglishFile = 'htdocs/langs/'.$lEnglish.'/'.$fileToProcess;
+	$lPrimaryFile = 'htdocs/cabinetmed/langs/'.$lPrimary.'/'.$fileToProcess;
+	$lSecondaryFile = 'htdocs/cabinetmed/langs/'.$lSecondary.'/'.$fileToProcess;
+	$lEnglishFile = 'htdocs/cabinetmed/langs/'.$lEnglish.'/'.$fileToProcess;
 	$output = $lSecondaryFile . '.delta';
 
 	print "---- Process language file ".$lSecondaryFile."\n";
@@ -344,7 +344,7 @@ foreach($filesToProcess as $fileToProcess)
 	print "Output can be found at $output.\n";
 
 	print "To rename all .delta files, you can do:\n";
-	print '> for fic in `ls htdocs/langs/'.$lSecondary.'/*.delta`; do f=`echo $fic | sed -e \'s/\.delta//\'`; echo $f; mv $f.delta $f; done'."\n";
+	print '> for fic in `ls htdocs/cabinetmed/langs/'.$lSecondary.'/*.delta`; do f=`echo $fic | sed -e \'s/\.delta//\'`; echo $f; mv $f.delta $f; done'."\n";
 }
 
 

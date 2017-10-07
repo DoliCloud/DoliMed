@@ -2,15 +2,11 @@
 CHARSET=UTF-8
 ExtraFieldsThirdParties=Atributos complementares (terceiros/paciente)
 ExtraFieldsContacts=Atributos complementares (contactos)
-UseSearchToSelectCompany= Use a field with autcompletion to select a patient (instead of a combo list).
-ActivityStateToSelectCompany= Add a filtering option to hide/show patients that are or not followed
+UseSearchToSelectCompany= Utilize um campo com conclusão automática para selecionar um doente (em vez de uma lista combo).
+ActivityStateToSelectCompany= Adicione uma opção de filtragem para ocultar/mostrar os doentes que são seguidos ou não
 ViewFullDateActions= Ver data completa das ações para ficha do paciente
-DaylingSavingTime=Dayling time (user)
-CurrentHour= PHP Hour (server)
-CompanyTZ= Zona Horária
-CompanyHour= Hora
 ModuleFamilyCrm= Gestão de contactos
-GenericMaskCodes2= <b>{cccc}</b> le code patient sur n lettres<br><b>{cccc000}</b> le code client sur n lettres est suivi d'un compteur propre au client sans offset, complété par des zéros pour en avoir autant que dans le masque, et remis à zéro en même temps que le compteur global.<br><b>{tttt}</b> Le code type entreprise sur n caractères (voir dictionnaires-types de patient).<br>
+GenericMaskCodes2=<b>{cccc}</b> the client/patient code on n characters<br><b>{cccc000}</b> the client/patient code on n characters is followed by a counter dedicated for customer. This counter dedicated to customer is reset at same time than global counter.<br><b>{tttt}</b> The code of third party type on n characters (see dictionary-thirdparty types).<br>
 
 # Modules= undefined
 Module1Name= Terceiros/Paciente
@@ -25,14 +21,13 @@ Permission282= Criar/modificar contactos
 Permission283= Eliminar contactos
 Permission286= Exportar contactos
 DictionaryCompanyType= Sexo do paciente
-DictionaryCompanyJuridicalType= Activity type of patient or juridical status of thirdparties
+DictionaryCompanyJuridicalType= Tipo de  atividade do doente ou estado jurídico de terceiros
 DictionaryTypeContact= Tipos de contactos
 MotifConsultation=Motivo da consulta
 DiagnostiqueLesionnel=Diagnóstico de lesão
 Examens=Exames
 ExamenConclusion=Conclusão do Exame
 BankNameList=Lista de bancos
-SetupDescription3=Dados do menu <b>Configurar -> Informação</b> são obrigatórios para funcionar.
 
 CompanySetup= Configuração do módulo de Pacientes
 CompanyCodeChecker= Modelo para gerar e verificar o código do paciente

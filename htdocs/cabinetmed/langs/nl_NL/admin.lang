@@ -5,12 +5,8 @@ ExtraFieldsContacts=Extra attributen (contacten)
 UseSearchToSelectCompany= Gebruik een veld met automatisch aanvullen om een patiënt te selecteren (in plaats van een combo lijst).
 ActivityStateToSelectCompany= Voeg een filter optie toe om patiënten te verbergen/weer te geven die niet toegestaan zijn
 ViewFullDateActions= Geef de volledige datum weer bij acties op de aptiënt kaart
-DaylingSavingTime=Zomertijd (gebruiker)
-CurrentHour= PHP Uur (server)
-CompanyTZ= Tijdzone
-CompanyHour= Uur
 ModuleFamilyCrm= Contact beheer
-GenericMaskCodes2= <b>{cccc}</b> patient code als n karakters<br><b>{cccc000}</b> patient code als n karakters gevolgd door een teller gerelateerd aan de klant wordt gereset gelijktijdig met de globale teller.<br><b>{tttt}</b> De code voor een bedrijf via n karakters (zij bedrijfs types woordenboek).<br>
+GenericMaskCodes2=<b>{cccc}</b> the client/patient code on n characters<br><b>{cccc000}</b> the client/patient code on n characters is followed by a counter dedicated for customer. This counter dedicated to customer is reset at same time than global counter.<br><b>{tttt}</b> The code of third party type on n characters (see dictionary-thirdparty types).<br>
 
 # Modules= undefined
 Module1Name= Derden/Patiënt
@@ -32,7 +28,6 @@ DiagnostiqueLesionnel=Diagnose
 Examens=Onderzoeken
 ExamenConclusion=Onderzoeks conclusie
 BankNameList=Lijst van banken
-SetupDescription3=Gegevens in menu <b>Configuratie -> Informatie</b> zijn verplicht voor een goede werking.
 
 CompanySetup= Configuratie van de Patiënten module
 CompanyCodeChecker= Sjabloon om patiënt code te genereren en te controleren

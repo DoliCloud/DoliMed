@@ -5,12 +5,8 @@ ExtraFieldsContacts=Complementary attributes (contacts)
 UseSearchToSelectCompany= Use a field with autcompletion to select a patient (instead of a combo list).
 ActivityStateToSelectCompany= Add a filtering option to hide/show patients that are or not followed
 ViewFullDateActions= View full date of actions into patient card
-DaylingSavingTime=Dayling time (user)
-CurrentHour= PHP Hour (server)
-CompanyTZ= Time Zone
-CompanyHour= Jam
 ModuleFamilyCrm= Manajement Kontak
-GenericMaskCodes2= <b>{cccc}</b> le code patient sur n lettres<br><b>{cccc000}</b> le code client sur n lettres est suivi d'un compteur propre au client sans offset, complété par des zéros pour en avoir autant que dans le masque, et remis à zéro en même temps que le compteur global.<br><b>{tttt}</b> Le code type entreprise sur n caractères (voir dictionnaires-types de patient).<br>
+GenericMaskCodes2=<b>{cccc}</b> the client/patient code on n characters<br><b>{cccc000}</b> the client/patient code on n characters is followed by a counter dedicated for customer. This counter dedicated to customer is reset at same time than global counter.<br><b>{tttt}</b> The code of third party type on n characters (see dictionary-thirdparty types).<br>
 
 # Modules= undefined
 Module1Name= Thirdparties/Patient
@@ -32,7 +28,6 @@ DiagnostiqueLesionnel=Lesion diagnostic
 Examens=Exams
 ExamenConclusion=Exam Conclusion
 BankNameList=List of banks
-SetupDescription3=Data of menu <b>Setup -> Information</b> are required to work.
 
 CompanySetup= Setup of Patient module
 CompanyCodeChecker= Model to generate and check patient code

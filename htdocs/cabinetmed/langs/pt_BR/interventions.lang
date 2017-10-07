@@ -1,4 +1,3 @@
-# Dolibarr language file - fr_FR - interventions
-CHARSET=UTF-8
+# Dolibarr language file - Source file is en_US - interventions
 CustomerDoesNotHavePrefix=O responsável/paciente não tem um prefixo definido
 NameAndSignatureOfExternalContact=Nome e assinatura do responsável/paciente:

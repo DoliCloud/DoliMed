@@ -5,12 +5,8 @@ ExtraFieldsContacts=Atributs complementaris (contactes)
 UseSearchToSelectCompany= Utilitzar un formulari de cerca per buscar pacients (en comptes de llista desplegable)<br><br>Tingueu en compte que si té un gran nombre de productes o serveis (> 100 000), pot millorar el rendiment mitjançant la constant SOCIETE_DONOTSEARCH_ANYWHERE a 1 a Configuració-> Varis. La recerca es limitarà llavors a l'inici de la cadena.
 ActivityStateToSelectCompany= Afegir un filtre en la recerca per mostrar/ocultar els pacients en actiu o que hagin deixat d'exercir
 ViewFullDateActions= Mostra la data completa de les accions en la fitxa del pacient
-DaylingSavingTime=Horari d'estiu (usuari)
-CurrentHour= Hora PHP (servidor)
-CompanyTZ= Zona Horària empresa (casa mare)
-CompanyHour= Hora empresa (casa mare)
 ModuleFamilyCrm= Gestió de contactes
-GenericMaskCodes2= <b>{cccc}</b> codi de pacient en lletres<br><b>{cccc000}</b> codi de pacient en lletres seguit d'un comptador propre au client sans offset, complété par des zéros pour en avoir autant que dans le masque, et remis à zéro en même temps que le compteur global.<br><b>{tttt}</b> Le code type entreprise sur n caractères (voir dictionnaires-types de patient).<br>
+GenericMaskCodes2=<b>{cccc}</b> el codi de client/pacient en n caracters<br><b>{cccc000}</b> El codi de client/pacient en n caracters seguit per un contador independent per a cada client. Aquest contador dedicat al client és resetejat al mateix temps que el contador global.<br><b>{tttt}</b> El codi del tipus de tercer en n caracteres (veure diccionari tipus de tercer).<br>
 
 # Modules= undefined
 Module1Name= Pacients
@@ -32,7 +28,6 @@ DiagnostiqueLesionnel=Diagnòstics
 Examens=Exàmens mèdics
 ExamenConclusion=Conclusions exàmens
 BankNameList=Llista de bancs
-SetupDescription3=La configuració <b>Empresa/institució</b> a administrar és requerida ja que s'utilitza la informació per a la introducció de dades en la majoria de les pantalles, a insercions, o per modificar el comportament de Dolibarr (com, per exemple, de les funcions que depenen del seu país).
 
 CompanySetup= Configuració del mòdul empreses
 CompanyCodeChecker= Mòdul de generació i control dels codis de pacients (pacients/proveïdors)

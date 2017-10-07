@@ -5,12 +5,8 @@ ExtraFieldsContacts=سمات التكميلية (الأسماء)
 UseSearchToSelectCompany= استخدام حقل مع autcompletion لاختيار المريض (بدلا من قائمة التحرير والسرد).
 ActivityStateToSelectCompany= إضافة خيار تصفية لإخفاء / إظهار المرضى أو التي لم يتبع
 ViewFullDateActions= عرض تاريخ كامل من الإجراءات في بطاقة المريض
-DaylingSavingTime=Dayling الوقت (المستخدم)
-CurrentHour= PHP ساعة (الخادم)
-CompanyTZ= منطقة زمنية
-CompanyHour= ساعة
 ModuleFamilyCrm= إدارة الاتصال
-GenericMaskCodes2= <b>{CCCC}</b> لو كود المريض سور ن الآداب <br> <b>{cccc000}</b> لو رمز العميل سور ن للرسائل الإخبارية مؤسسة سويفي D'UN compteur PROPRE الاتحاد الافريقي بلا العميل تعويض، واستكمال قدم المساواة قصر الأصفار صب أون avoir autant كيو DANS LE التمثيلية، وآخرون ريمس صفر EN MEME TEMPS كيو لو compteur العالمية. <br> <b>{TTTT}</b> لو رمز نوع الأعمال سور ن caractères (استجواب dictionnaires-أنواع دي المريض). <br>
+GenericMaskCodes2=<b>{cccc}</b> the client/patient code on n characters<br><b>{cccc000}</b> the client/patient code on n characters is followed by a counter dedicated for customer. This counter dedicated to customer is reset at same time than global counter.<br><b>{tttt}</b> The code of third party type on n characters (see dictionary-thirdparty types).<br>
 
 # Modules= undefined
 Module1Name= Thirdparties / المريض
@@ -32,7 +28,6 @@ DiagnostiqueLesionnel=آفة التشخيص
 Examens=الامتحانات
 ExamenConclusion=امتحان الخاتمة
 BankNameList=قائمة البنوك
-SetupDescription3=بيانات من <b>إعداد</b> القائمة <b>-></b> يطلب <b>معلومات</b> للعمل.
 
 CompanySetup= إعداد وحدة المرضى
 CompanyCodeChecker= نموذج لتوليد والتحقق من كود المريض

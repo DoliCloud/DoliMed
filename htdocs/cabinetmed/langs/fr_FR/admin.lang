@@ -5,12 +5,8 @@ ExtraFieldsContacts=Attributs supplémentaires (correspondants)
 UseSearchToSelectCompany= Utiliser un champ avec autocomplétion pour choisir un patient (plutôt qu'une liste déroulante).<br><br>Notez que si vous avez un nombre important de produits ou services (> 100 000), vous pouvez améliorer les performances en définissant la constante SOCIETE_DONOTSEARCH_ANYWHERE à 1 dans Configuration->Divers. La recherche sera alors limitée au début de la chaine.
 ActivityStateToSelectCompany= Ajouter une option de filtrage lors des recherches pour afficher/masquer les patients en exercice ou ayant cessés d'exercer
 ViewFullDateActions= Visualiser les dates des actions en entier dans la fiche patient
-DaylingSavingTime=Heure d'été (utilisateur)
-CurrentHour= Heure PHP (serveur)
-CompanyTZ= Time Zone cabinet
-CompanyHour= Heure cabinet
 ModuleFamilyCrm= Gestion contacts
-GenericMaskCodes2= <b>{cccc}</b> le code patient sur n lettres<br><b>{cccc000}</b> le code client sur n lettres est suivi d'un compteur propre au client sans offset, complété par des zéros pour en avoir autant que dans le masque, et remis à zéro en même temps que le compteur global.<br><b>{tttt}</b> Le code type entreprise sur n caractères (voir dictionnaires-types de patient).<br>
+GenericMaskCodes2=<b> {cccc} </b> le code client / patient sur n caractères <br> <b> {cccc000} </b> le code client / patient sur n caractères est suivi d'un compteur dédié au client. Ce compteur dédié au client est réinitialisé au même moment que le compteur global.<br> <b> {tttt} </b> Le code de type tiers sur n caractères (voir les types de dictionnaire-tier).<br>
 
 # Modules= undefined
 Module1Name= Tiers/Patient
