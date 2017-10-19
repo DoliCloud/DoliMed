@@ -172,6 +172,7 @@ if ($conf->use_javascript_ajax)
 }
 
 
+print '<div class="div-table-responsive-no-min">';
 print '<table class="noborder" width="100%">';
 print '<tr class="liste_titre"><td>&nbsp;</td>';
 
@@ -359,6 +360,7 @@ for ($annee = $year_start ; $annee <= $year_end ; $annee++)
 print "</tr>\n";
 
 print "</table>";
+print '</div>';
 
 if ($search_sale > 0)
 {
