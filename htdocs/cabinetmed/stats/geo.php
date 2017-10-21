@@ -262,7 +262,7 @@ if ($mode)
     print '<tr class="liste_titre">';
     print '<td align="center">'.$label.'</td>';
     if ($label2) print '<td align="center">'.$label2.'</td>';
-    print '<td align="center">'.$langs->trans("NbConsult").'</td>';
+    print '<td align="right">'.$langs->trans("NbConsult").'</td>';
     print '<td align="center">'.$langs->trans("LastConsultShort").'</td>';
     print '</tr>';
 
@@ -276,7 +276,7 @@ if ($mode)
         print '<td align="center">'.$val['label'].'</td>';
         if ($label2) print '<td align="center">'.$val['label2'].'</td>';
         print '<td align="right">'.$val['nb'].'</td>';
-        print '<td align="right">'.dol_print_date($val['lastdate'],'dayhour').'</td>';
+        print '<td align="center">'.dol_print_date($val['lastdate'],'dayhour').'</td>';
         print '</tr>';
         $oldyear=$year;
     }
