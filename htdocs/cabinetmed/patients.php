@@ -317,7 +317,7 @@ $var=True;
 
 while ($i < min($num,$limit))
 {
-	$obj = $db->fetch_object($result);
+	$obj = $db->fetch_object($resql);
 
 	$var=!$var;
 
@@ -353,7 +353,7 @@ print "</table>\n";
 print "</div>";
 
 print "</form>\n";
-$db->free($result);
+$db->free($resql);
 
 
 llxFooter();
