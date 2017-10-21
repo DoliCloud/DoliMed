@@ -55,16 +55,16 @@ class ActionsCabinetmed
     function addSearchEntry($parameters)
     {
         global $langs;
-    
+
         $langs->load("cabinetmed@cabinetmed");
         $search_boxvalue = $parameters['search_boxvalue'];
-    
-        $this->results['searchintoapatient']=array('img'=>'object_patient@cabinetmed', 'label'=>$langs->trans("SearchIntoPatients", $search_boxvalue), 'text'=>$langs->trans("Patients", $search_boxvalue), 'url'=>dol_buildpath('/cabinetmed/patients.php',1).'?search_all='.urlencode($search_boxvalue));
-    
+
+        $this->results['searchintoapatient']=array('position'=>5, 'img'=>'object_patient@cabinetmed', 'label'=>$langs->trans("SearchIntoPatients", $search_boxvalue), 'text'=>img_picto('','object_patient@cabinetmed').' '.$langs->trans("Patients", $search_boxvalue), 'url'=>dol_buildpath('/cabinetmed/patients.php',1).'?search_all='.urlencode($search_boxvalue));
+
         return 0;
     }
-    
-    
+
+
     /**
      *    Execute action
      *
@@ -86,7 +86,7 @@ class ActionsCabinetmed
 
         // Define cabinetmed context
         $cabinetmedcontext=0;
-        if ((isset($parameters['id']) || isset($parameters['socid'])) && isset($parameters['currentcontext']) 
+        if ((isset($parameters['id']) || isset($parameters['socid'])) && isset($parameters['currentcontext'])
             && in_array($parameters['currentcontext'],array('agendathirdparty','categorycard','commcard','projectthirdparty','infothirdparty','thirdpartybancard','consumptionthirdparty','thirdpartynotification','thirdpartymargins','thirdpartycustomerprice')) && empty($action))
         {
         	$thirdparty=new Societe($db);
@@ -211,12 +211,12 @@ class ActionsCabinetmed
     {
         global $langs;
         $langs->load("cabinetmed@cabinetmed");
-        
+
         $board=new Cabinetmedcons($this->db);
         $board->load_state_board();
-        
+
         $out = '';
-       
+
         $out.='<a href="'.dol_buildpath('/cabinetmed/listconsult.php',1).'" class="boxstatsindicator thumbstat nobold nounderline">';
         $out.='<div class="boxstats">';
         $out.='<span class="boxstatstext">';
@@ -244,15 +244,15 @@ class ActionsCabinetmed
         $out.='</span>';
         $out.='</div>';
         $out.='</a>';
-        
+
         include_once DOL_DOCUMENT_ROOT.'/core/lib/admin.lib.php';
         if (versioncompare(versiondolibarrarray(),array(4,0,-4)) >= 0) $this->resprints=$out;
         else print $out;
-        
+
         return 0;
     }
-    
-    
+
+
     /**
      * Complete doc forms
      *
@@ -369,7 +369,7 @@ class ActionsCabinetmed
 		{
             return 0;
 		}
-		
+
         $out='';
         $out.='<tr>';
         $out.='<td align="left" colspan="4" valign="top" class="formdoc">';
@@ -480,70 +480,70 @@ class ActionsCabinetmed
 
         return 0;
     }
-    
-    
+
+
     /**
      * Complete array with linkto
      *
      * @param	array	$parameters		Array of parameters
-     * @param   mixed	&$object      	Object
-     * @param   string	&$action      	'add', 'update', 'view'
-     * @param   string	&$hookmanager  	'add', 'update', 'view'
+     * @param   mixed	$object      	Object
+     * @param   string	$action      	'add', 'update', 'view'
+     * @param   string	$hookmanager  	'add', 'update', 'view'
      * @return	string					HTML content to add by hook
      */
     function showLinkToObjectBlock($parameters, &$object, &$action, &$hookmanager)
     {
         global $langs, $user, $conf, $db;
-        
+
         $langs->load("cabinetmed@cabinetmed");
         $this->results = array('cabinetmed_cabinetmedcons'=>array('enabled'=>$conf->cabinetmed->enabled , 'perms'=>1, 'label'=>'LinkToConsultation', 'sql'=>"SELECT s.rowid as socid, s.nom as name, t.rowid, t.rowid as ref, '' as ref_supplier, (".$db->ifsql('t.montant_cheque IS NULL','0','t.montant_cheque')." + ".$db->ifsql('t.montant_carte IS NULL','0','t.montant_carte')." + ".$db->ifsql('t.montant_espece IS NULL','0','t.montant_espece')." + ".$db->ifsql('t.montant_tiers IS NULL','0','t.montant_tiers').") as total_ht FROM ".MAIN_DB_PREFIX."societe as s, ".MAIN_DB_PREFIX."cabinetmed_cons as t WHERE t.fk_soc = s.rowid AND t.fk_soc = ".$object->thirdparty->id));
     }
-    
+
     /**
      * Complete array with linkto
      *
      * @param	array	$parameters		Array of parameters
-     * @param   mixed	&$object      	Object
-     * @param   string	&$action      	'add', 'update', 'view'
-     * @param   string	&$hookmanager  	'add', 'update', 'view'
+     * @param   mixed	$object      	Object
+     * @param   string	$action      	'add', 'update', 'view'
+     * @param   string	$hookmanager  	'add', 'update', 'view'
      * @return	string					HTML content to add by hook
      */
     function showLinkedObjectBlock($parameters, &$object, &$action, &$hookmanager)
     {
         global $langs, $user, $conf, $db;
-    
+
         /* not required. standard showLinkedObjectBlock already load correctly record for cabinetmed_cabinetmedcons
-        
+
         $newentry=array();
-        
+
         $consultation = new CabinetmedCons($db);
         $consultation->fetch()
         $newentry['consultation']
-        
+
         if (count($newentry))
         {
             $object->linkedObjects = array_merge($object->linkedObjects, $newentry);
         }*/
     }
-    
+
     /**
      * Complete object before generationg PDF
      *
      * @param	array	$parameters		Array of parameters
-     * @param   mixed	&$object      	Object
-     * @param   string	&$action      	'add', 'update', 'view'
-     * @param   string	&$hookmanager  	'add', 'update', 'view'
+     * @param   mixed	$object      	Object
+     * @param   string	$action      	'add', 'update', 'view'
+     * @param   string	$hookmanager  	'add', 'update', 'view'
      * @return	string					HTML content to add by hook
      */
     function beforePDFCreation($parameters, &$object, &$action, &$hookmanager)
     {
         global $langs, $user, $conf, $db;
-    
+
         //if (! in_array($object->element, array('fichinter','facture','invoice','order','commande','propal'))) return;
 
-    
+
         //$object->note_public=dol_concatdesc($text,$object->note_public);
     }
-    
+
 }
 
