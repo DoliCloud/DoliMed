@@ -182,21 +182,21 @@ $sql.= $db->order($sortfield,$sortorder);
 $nbtotalofrecords = '';
 if (empty($conf->global->MAIN_DISABLE_FULL_SCANLIST))
 {
-    $result = $db->query($sql);
-    $nbtotalofrecords = $db->num_rows($result);
+    $resql = $db->query($sql);
+    $nbtotalofrecords = $db->num_rows($resql);
 }
 
 $sql.= $db->plimit($limit+1, $offset);
 
 dol_syslog($script_file, LOG_DEBUG);
-$result=$db->query($sql);
-if (! $result)
+$resql=$db->query($sql);
+if (! $resql)
 {
     dol_print_error($db);
     exit;
 }
 
-$num = $db->num_rows($result);
+$num = $db->num_rows($resql);
 
 // Direct jump if only one record found
 if ($num == 1 && ! empty($conf->global->MAIN_SEARCH_DIRECT_OPEN_IF_ONLY_ONE) && $search_all)
