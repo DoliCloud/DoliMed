@@ -524,6 +524,8 @@ class ActionsCabinetmed
         {
             $object->linkedObjects = array_merge($object->linkedObjects, $newentry);
         }*/
+
+        return 0;
     }
 
     /**
