@@ -5,7 +5,7 @@ ExtraFieldsContacts=Complementary attributes (contacts)
 UseSearchToSelectCompany= Use a field with autcompletion to select a patient (instead of a combo list).
 ActivityStateToSelectCompany= Add a filtering option to hide/show patients that are or not followed
 ViewFullDateActions= View full date of actions into patient card
-ModuleFamilyCrm= Contact management
+ModuleFamilyCrm=Customer or Patient Relation Management (CRM)
 GenericMaskCodes2=<b>{cccc}</b> the client/patient code on n characters<br><b>{cccc000}</b> the client/patient code on n characters is followed by a counter dedicated for customer. This counter dedicated to customer is reset at same time than global counter.<br><b>{tttt}</b> The code of third party type on n characters (see dictionary-thirdparty types).<br>
 
 # Modules= undefined
