@@ -59,7 +59,7 @@ class modCabinetMed extends DolibarrModules
         // Module label (no space allowed), used if translation string 'ModuleXXXName' not found (where XXX is value of numeric property 'numero' of module)
         $this->name = preg_replace('/^mod/i','',get_class($this));
         // Module description, used if translation string 'ModuleXXXDesc' not found (where XXX is value of numeric property 'numero' of module)
-        $this->description = "Module DoliMed - Manage your patients and consutlations";
+        $this->description = "Module DoliMed - Manage your patients and consultations";
 
         $this->editor_name = 'NLTechno';
         $this->editor_url = 'https://www.dolimed.com';
