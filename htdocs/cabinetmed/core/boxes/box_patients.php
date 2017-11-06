@@ -34,7 +34,7 @@ class box_patients extends ModeleBoxes
 	var $boxcode="lastpatients";
 	var $boximg="object_company";
 	var $boxlabel="BoxLastPatients";
-	var $depends = array("cabinetmed");
+	var $depends = array("cabinetmed@cabinetmed");
 
 	var $db;
 	var $enabled = 1;
@@ -92,7 +92,11 @@ class box_patients extends ModeleBoxes
 			{
 				$num = $db->num_rows($result);
                 if (empty($conf->global->SOCIETE_DISABLE_CUSTOMERS)) $url= DOL_URL_ROOT."/comm/card.php?socid=";
-                else $url= DOL_URL_ROOT."/societe/soc.php?socid=";
+                else
+                {
+                	if ((float) DOL_VERSION < 6.0) $url= DOL_URL_ROOT."/societe/soc.php?socid=";
+                	else $url= DOL_URL_ROOT."/societe/card.php?socid=";
+                }
 
 				$i = 0;
 				while ($i < $num)
