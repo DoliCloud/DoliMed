@@ -217,30 +217,32 @@ class ActionsCabinetmed
 
         $out = '';
 
-        $out.='<a href="'.dol_buildpath('/cabinetmed/listconsult.php',1).'" class="boxstatsindicator thumbstat nobold nounderline">';
+        $out.='<a href="'.dol_buildpath('/cabinetmed/patients.php',1).'" class="boxstatsindicator thumbstat nobold nounderline">';
         $out.='<div class="boxstats">';
         $out.='<span class="boxstatstext">';
-        $out.=img_object("",'generic').' '.$langs->trans("ConsultationsShort");
+        $out.=$langs->trans("Patients");
         $out.='</span>';
         $out.='<br>';
         //$out.='</a>';
         //$out.='<a href="'.$links[$key].'">';
         $out.='<span class="boxstatsindicator">';
-        $out.=$board->nb['Cabinetmedcons'];
+		$out.=img_object("",'company').' ';
+		$out.=$board->nb['Patients'];
         $out.='</span>';
         $out.='</div>';
         $out.='</a>';
 
-        $out.='<a href="'.dol_buildpath('/cabinetmed/patients.php',1).'" class="boxstatsindicator thumbstat nobold nounderline">';
+        $out.='<a href="'.dol_buildpath('/cabinetmed/listconsult.php',1).'" class="boxstatsindicator thumbstat nobold nounderline">';
         $out.='<div class="boxstats">';
         $out.='<span class="boxstatstext">';
-        $out.=img_object("",'generic').' '.$langs->trans("Patients");
+        $out.=$langs->trans("ConsultationsShort");
         $out.='</span>';
         $out.='<br>';
         //$out.='</a>';
         //$out.='<a href="'.$links[$key].'">';
         $out.='<span class="boxstatsindicator">';
-        $out.=$board->nb['Patients'];
+        $out.=img_object("",'generic').' ';
+        $out.=$board->nb['Cabinetmedcons'];
         $out.='</span>';
         $out.='</div>';
         $out.='</a>';
