@@ -131,7 +131,10 @@ function listdiagles($nboflines,$newwidth=0,$htmlname='diagles',$selected='')
         }
     }
     $out.= '</select>'."\n";
-    $out.=ajax_combobox('list'.$htmlname);
+    if ($conf->use_javascript_ajax)
+    {
+    	$out.=ajax_combobox('list'.$htmlname);
+    }
     return $out;
 }
 
