@@ -17,13 +17,6 @@
 - Fields Profession, birthdate, weight, heigth are not extrafields. 
 - Added nb of notes into badge of tabs.
 
-***** 3.7
-- Work with 3.7
-- Add filter on sale representative
-- Can send email to patient from patient card.
-- Fields Profession, birthdate, weight, heigth are not extrafields. 
-- Added nb of notes into badge of tabs.
-
 ***** 3.6.0
 - Add position into databse for combo list.
 - CABINETMED_DELAY_TO_LOCK_RECORD option is not visible into setup.
