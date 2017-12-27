@@ -16,6 +16,14 @@
  * or see http://www.gnu.org/
  */
 
+// Protection to avoid direct call of template
+if (empty($conf) || ! is_object($conf))
+{
+	print "Error, template page can't be called as URL";
+	exit;
+}
+
+
 $object=$GLOBALS['object'];
 
 global $db,$conf,$mysoc,$langs,$user,$hookmanager,$extrafields;

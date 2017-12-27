@@ -15,8 +15,15 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
- *
  */
+
+// Protection to avoid direct call of template
+if (empty($conf) || ! is_object($conf))
+{
+	print "Error, template page can't be called as URL";
+	exit;
+}
+
 ?>
 
 <!-- BEGIN PHP TEMPLATE -->
@@ -77,7 +84,7 @@ if (count($linkedObjectBlock) > 1)
     	<td align="right"></td>
     	<td align="right"></td>
     </tr>
-    <?php  
+    <?php
 }
 ?>
 
