@@ -10,6 +10,7 @@ LastMonth=Last month
 LastYear=Last year
 LastConsult=Latest consultation
 LastConsultShort=Latest consultation
+LastModifiedPatients=Latest %s modified patients
 NbConsult=Nb of consultation
 MenuCabinet=Informations medical center
 MenuNewPatient=New patient
