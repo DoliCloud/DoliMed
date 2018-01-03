@@ -176,3 +176,4 @@ PatientName=Patient name
 PatientCode=Patient code
 NewPatient=New patient
 PatientVATIntra=Social Security Number
+AddPatient=Create patient
