@@ -854,6 +854,8 @@ if ($socid > 0)
         if (! empty($conf->global->CABINETMED_FRENCH_PRISEENCHARGE))
         {
             print $langs->trans("Priseencharge").': &nbsp;';
+            print '<input type="radio" class="flat" name="typepriseencharge" value=""'.(empty($consult->typepriseencharge)?' checked="checked"':'').'> '.$langs->trans("None");
+            print ' &nbsp; ';
             print '<input type="radio" class="flat" name="typepriseencharge" value="ALD"'.($consult->typepriseencharge=='ALD'?' checked="checked"':'').'> ALD';
             print ' &nbsp; ';
             print '<input type="radio" class="flat" name="typepriseencharge" value="INV"'.($consult->typepriseencharge=='INV'?' checked="checked"':'').'> INV';
