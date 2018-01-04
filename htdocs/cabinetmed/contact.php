@@ -175,6 +175,7 @@ if ($id > 0 || ! empty($ref))
     $linkback = '<a href="'.dol_buildpath('/cabinetmed/patients.php', 1).'">'.$langs->trans("BackToList").'</a>';
     dol_banner_tab($object, 'socid', $linkback, ($user->societe_id?0:1), 'rowid', 'nom');
 
+    print '<div class="fichecenter">';
     print '<div class="underbanner clearboth"></div>';
     print '<table class="border" width="100%">';
 
@@ -197,6 +198,7 @@ if ($id > 0 || ! empty($ref))
     }
 
     print "</table>";
+	print '</div>';
 
     print '</form>';
 
