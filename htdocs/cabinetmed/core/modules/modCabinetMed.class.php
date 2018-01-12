@@ -520,12 +520,12 @@ class modCabinetMed extends DolibarrModules
 		}
 
         $sql = array(
-        "UPDATE llx_c_typent          set active=1 where module = 'cabinetmed'",
-        "UPDATE llx_c_forme_juridique set active=1 where module = 'cabinetmed'",
-        "UPDATE llx_c_type_contact    set active=1 where module = 'cabinetmed'",
-        "UPDATE llx_c_typent          set active=0 where (module != 'cabinetmed' OR module IS NULL) AND code != 'TE_UNKNOWN'",
-        "UPDATE llx_c_forme_juridique set active=0 where module != 'cabinetmed' OR module IS NULL",
-        "UPDATE llx_c_type_contact    set active=0 where element='societe' and source='external' and (module != 'cabinetmed' OR module IS NULL)"
+        "UPDATE ".MAIN_DB_PREFIX."c_typent          set active=1 where module = 'cabinetmed'",
+        "UPDATE ".MAIN_DB_PREFIX."c_forme_juridique set active=1 where module = 'cabinetmed'",
+        "UPDATE ".MAIN_DB_PREFIX."c_type_contact    set active=1 where module = 'cabinetmed'",
+        "UPDATE ".MAIN_DB_PREFIX."c_typent          set active=0 where (module != 'cabinetmed' OR module IS NULL) AND code != 'TE_UNKNOWN'",
+        "UPDATE ".MAIN_DB_PREFIX."c_forme_juridique set active=0 where module != 'cabinetmed' OR module IS NULL",
+        "UPDATE ".MAIN_DB_PREFIX."c_type_contact    set active=0 where element='societe' and source='external' and (module != 'cabinetmed' OR module IS NULL)"
         );
 
         return $this->_init($sql,$options);
@@ -542,13 +542,13 @@ class modCabinetMed extends DolibarrModules
     function remove($options='')
     {
         $sql = array(
-        "UPDATE llx_c_actioncomm      set active=0 where module = 'cabinetmed'",
-        "UPDATE llx_c_typent          set active=0 where module = 'cabinetmed'",
-        "UPDATE llx_c_forme_juridique set active=0 where module = 'cabinetmed'",
-        "UPDATE llx_c_type_contact    set active=0 where module = 'cabinetmed'",
-        "UPDATE llx_c_typent          set active=1 where module != 'cabinetmed' OR module IS NULL",
-        "UPDATE llx_c_forme_juridique set active=1 where module != 'cabinetmed' OR module IS NULL",
-        "UPDATE llx_c_type_contact    set active=1 where element='societe' and source='external' and (module != 'cabinetmed' OR module IS NULL)"
+        "UPDATE ".MAIN_DB_PREFIX."c_actioncomm      set active=0 where module = 'cabinetmed'",
+        "UPDATE ".MAIN_DB_PREFIX."c_typent          set active=0 where module = 'cabinetmed'",
+        "UPDATE ".MAIN_DB_PREFIX."c_forme_juridique set active=0 where module = 'cabinetmed'",
+        "UPDATE ".MAIN_DB_PREFIX."c_type_contact    set active=0 where module = 'cabinetmed'",
+        "UPDATE ".MAIN_DB_PREFIX."c_typent          set active=1 where module != 'cabinetmed' OR module IS NULL",
+        "UPDATE ".MAIN_DB_PREFIX."c_forme_juridique set active=1 where module != 'cabinetmed' OR module IS NULL",
+        "UPDATE ".MAIN_DB_PREFIX."c_type_contact    set active=1 where element='societe' and source='external' and (module != 'cabinetmed' OR module IS NULL)"
         );
 
     	// Create extrafields
