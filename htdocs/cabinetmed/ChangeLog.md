@@ -1,5 +1,13 @@
 # ChangeLog
 
+
+## 5.0.1
+
+- Better Look and feel v6
+- Fix compatibility with MAIN_DB_PREFIX (avoid error on llx_c_type not found)
+- Fix translation
+- Security fixes
+
 ## 5.0
 - Can link elements to consultations.
 
