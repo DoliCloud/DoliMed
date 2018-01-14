@@ -110,8 +110,8 @@ class ActionsCabinetmed
         // Hook called when asking to add a new record
         if ($action == 'add')
         {
-            $nametocheck=GETPOST('nom');
-            $date=GETPOST('idprof3');
+            $nametocheck=GETPOST('name');
+            $date=GETPOST('options_birthdate');
             //$confirmduplicate=$_POST['confirmduplicate'];
 
             // Check on date
@@ -120,7 +120,7 @@ class ActionsCabinetmed
             $month=((int) $birthdatearray['tm_month'] + 1);
             $year=((int) $birthdatearray['tm_year'] + 1900);
             $birthdate=dol_mktime(0,0,0,$month,$day,$year,true,true);
-            if (GETPOST('idprof3') && (empty($birthdatearray['tm_year']) || (empty($birthdate) && $birthdate != '0') || ($day > 31) || ($month > 12) || ($year >( $arraytmp['year']+1))))
+            if (GETPOST('options_birthdate') && (empty($birthdatearray['tm_year']) || (empty($birthdate) && $birthdate != '0') || ($day > 31) || ($month > 12) || ($year >( $arraytmp['year']+1))))
             {
                 $langs->load("errors");
                 $this->errors[]=$langs->trans("ErrorBadDateFormat",$date);
@@ -171,8 +171,8 @@ class ActionsCabinetmed
         // Hook called when asking to update a record
         if ($action == 'update')
         {
-            $nametocheck=GETPOST('nom');
-            $date=GETPOST('idprof3');
+            $nametocheck=GETPOST('name');
+            $date=GETPOST('options_birthdate');
             //$confirmduplicate=$_POST['confirmduplicate'];
 
             // Check on date
@@ -183,7 +183,7 @@ class ActionsCabinetmed
             //var_dump($birthdatearray);
             //var_dump($date."-".$birthdate."-".$day."-".$month."-".$year);exit;
             $birthdate=dol_mktime(0,0,0,$month,$day,$year,true,true);
-            if (GETPOST('idprof3') && (empty($birthdatearray['tm_year']) || empty($birthdate) || ($day > 31) || ($month > 12) || ($year > ($arraytmp['year']+1))))
+            if (GETPOST('options_birthdate') && (empty($birthdatearray['tm_year']) || empty($birthdate) || ($day > 31) || ($month > 12) || ($year > ($arraytmp['year']+1))))
             {
                 $langs->load("errors");
                 $this->errors[]=$langs->trans("ErrorBadDateFormat",$date);
