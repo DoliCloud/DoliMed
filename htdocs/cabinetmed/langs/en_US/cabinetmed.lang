@@ -177,5 +177,6 @@ PatientsArea=Patient area
 PatientName=Patient name
 PatientCode=Patient code
 NewPatient=New patient
+ErrorPatientNameAlreadyExists=Patient %s already exists. Please choose another name
 PatientVATIntra=Social Security Number
 AddPatient=Create patient
