@@ -1,6 +1,10 @@
 # ChangeLog
 
 
+## 7.0.0
+
+- Compatibility with Dolibarr v7
+
 ## 5.0.1
 
 - Better Look and feel v6
