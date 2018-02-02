@@ -22,8 +22,8 @@
  */
 
 /**
- *  \file       htdocs/societe/soc.php
- *  \ingroup    societe
+ *  \file       htdocs/cabinetmed/card.php
+ *  \ingroup    cabinetmed
  *  \brief      Third party card page
  */
 
