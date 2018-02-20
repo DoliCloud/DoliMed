@@ -537,6 +537,8 @@ class Patient extends Societe
                 $this->alert_traitspec = $obj->alert_traitspec;
                 $this->alert_note = $obj->alert_note;
 
+                // Retreive all extrafield
+                // fetch optionals attributes and labels
                 $this->fetch_optionals();
 
                 $result = 1;
