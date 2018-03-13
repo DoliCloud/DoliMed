@@ -279,9 +279,20 @@ if (empty($conf->global->SOCIETE_DISABLE_BANKACCOUNT))
     print $langs->trans('RIB');
     print '<td><td align="right">';
     if ($user->rights->societe->creer)
-    print '<a href="'.DOL_URL_ROOT.'/societe/rib.php?socid='.$object->id.'">'.img_edit().'</a>';
+    {
+    	if ((float) DOL_VERSION < 8.0)
+    	{
+    		print '<a href="'.DOL_URL_ROOT.'/societe/rib.php?socid='.$object->id.'">'.img_edit().'</a>';
+    	}
+    	else
+    	{
+    		print '<a href="'.DOL_URL_ROOT.'/societe/paymentmodes.php?socid='.$object->id.'">'.img_edit().'</a>';
+    	}
+    }
     else
-    print '&nbsp;';
+    {
+    	print '&nbsp;';
+    }
     print '</td></tr></table>';
     print '</td>';
     print '<td colspan="3">';
