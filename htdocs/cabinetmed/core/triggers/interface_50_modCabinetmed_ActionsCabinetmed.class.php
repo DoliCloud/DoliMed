@@ -198,7 +198,7 @@ class InterfaceActionsCabinetmed
 			$actioncomm->fk_element  = $object->id;
 			$actioncomm->elementtype = $object->element;
 
-			$ret=$actioncomm->add($user);       // User qui saisit l'action
+			$ret=$actioncomm->create($user);       // User qui saisit l'action
 			if ($ret > 0)
 			{
 				return 1;
