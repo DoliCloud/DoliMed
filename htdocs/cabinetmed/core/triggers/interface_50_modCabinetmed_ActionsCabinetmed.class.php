@@ -91,7 +91,7 @@ class InterfaceActionsCabinetmed
 
     /**
      *      Function called when a Dolibarrr business event is done.
-     *      All functions "run_trigger" are triggered if file is inside directory htdocs/core/triggers
+     *      All functions "runTrigger" are triggered if file is inside directory htdocs/core/triggers
      *      Following properties must be filled:
      *      $object->actiontypecode (translation action code: AC_OTH, ...)
      *      $object->actionmsg (note, long text)
@@ -109,7 +109,7 @@ class InterfaceActionsCabinetmed
      *      @param  Conf	$conf       Object conf
      *      @return int         		<0 if KO, 0 if no action are done, >0 if OK
      */
-    function run_trigger($action,$object,$user,$langs,$conf)
+    function runTrigger($action,$object,$user,$langs,$conf)
     {
 		$ok=0;
 
