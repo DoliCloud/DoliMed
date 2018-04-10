@@ -441,7 +441,7 @@ class CabinetmedCons extends CommonObject
 		        }
 		    }
 
-			if (! $notrigger)
+			if (! $error && ! $notrigger)
 			{
 				// Uncomment this and change MYOBJECT to your own tag if you
 				// want this action call a trigger.
