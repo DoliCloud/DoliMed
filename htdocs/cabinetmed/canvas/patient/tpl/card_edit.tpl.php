@@ -138,7 +138,7 @@ if ($_POST["name"])
 <?php
 print_fiche_titre($langs->trans("EditPatient"));
 
-dol_htmloutput_errors($GLOBALS['error'],$GLOBALS['errors']);
+//dol_htmloutput_errors($GLOBALS['error'],$GLOBALS['errors']); // Avoid error message "1" when $error was set
 
 print '<form action="'.$_SERVER["PHP_SELF"].'?socid='.$object->id.'" method="post" name="formsoc" enctype="multipart/form-data">';
 print '<input type="hidden" name="action" value="update">';
