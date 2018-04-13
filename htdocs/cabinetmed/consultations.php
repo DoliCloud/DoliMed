@@ -998,7 +998,7 @@ if ($socid > 0)
         $parameters=array();
         $reshook=$hookmanager->executeHooks('formObjectOptions',$parameters,$consult,$action);    // Note that $action and $object may have been modified by hook
         print $hookmanager->resPrint;
-        if (empty($reshook)
+        if (empty($reshook))
         {
             $params=array('colspan'=>1);
             print $consult->showOptionals($extrafields,'edit',$params);
