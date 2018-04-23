@@ -73,7 +73,7 @@ $pageprev = $page - 1;
 $pagenext = $page + 1;
 if (! $sortfield) $sortfield='nb';
 if (! $sortorder) $sortorder='DESC';
-$limit = GETPOST('limit')?GETPOST('limit','int'):$conf->liste_limit;
+$limit = GETPOST('limit','int')?GETPOST('limit','int'):$conf->liste_limit;
 
 if (empty($conf->cabinetmed->enabled)) accessforbidden();
 

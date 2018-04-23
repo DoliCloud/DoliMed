@@ -72,7 +72,7 @@ $pageprev = $page - 1;
 $pagenext = $page + 1;
 if (! $sortfield) $sortfield='t.datecons';
 if (! $sortorder) $sortorder='DESC';
-$limit = GETPOST('limit')?GETPOST('limit','int'):$conf->liste_limit;
+$limit = GETPOST('limit','int')?GETPOST('limit','int'):$conf->liste_limit;
 
 $object = new Patient($db);
 $consult = new CabinetmedCons($db);
