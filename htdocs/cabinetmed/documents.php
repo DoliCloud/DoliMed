@@ -209,7 +209,7 @@ if ($_POST['action'] == 'send' && ! $_POST['addfile'] && ! $_POST['removedfile']
 
     $langs->load('mails');
 
-    $result=$object->fetch($_POST["socid"]);
+    $result=$object->fetch($socid);
     if ($result > 0)
     {
         $objectref = dol_sanitizeFileName($object->ref);
