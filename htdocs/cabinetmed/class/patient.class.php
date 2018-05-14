@@ -357,7 +357,7 @@ class Patient extends Societe
      *    @param      int		$idprof6		Prof id 6 of third party (Warning, this can return several records)
      *    @return     $int						>0 if OK, <0 if KO or if two records found for same ref or idprof.
      */
-    function fetch($rowid, $ref='', $ref_ext='', $idprof1='',$idprof2='',$idprof3='',$idprof4='', $idprof5 = '', $idprof6 = '')
+    function fetch($rowid, $ref='', $ref_ext='', $ref_int='', $idprof1='',$idprof2='',$idprof3='',$idprof4='', $idprof5 = '', $idprof6 = '')
     {
         global $langs;
         global $conf;

@@ -208,7 +208,8 @@ if ($socid > 0)
     if ($conf->notification->enabled) $langs->load("mails");
 
     $head = societe_prepare_head($societe);
-    dol_fiche_head($head, 'tabexamautre', $langs->trans("Patient"),0,'patient@cabinetmed');
+    if ((float) DOL_VERSION < 7) dol_fiche_head($head, 'tabexamautre', $langs->trans("Patient"), 0, 'patient@cabinetmed');
+    else dol_fiche_head($head, 'tabexamautre', $langs->trans("Patient"), -1, 'patient@cabinetmed');
 
     print "<form method=\"post\" action=\"".$_SERVER["PHP_SELF"]."\">";
     print '<input type="hidden" name="token" value="'.$_SESSION['newtoken'].'">';
@@ -219,7 +220,7 @@ if ($socid > 0)
     print '<div class="fichecenter">';
 
     print '<div class="underbanner clearboth"></div>';
-    print '<table class="border" width="100%">';
+    print '<table class="border tableforfield" width="100%">';
 
     //if ($societe->client)
     //{

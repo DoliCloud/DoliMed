@@ -209,7 +209,7 @@ if ($_POST['action'] == 'send' && ! $_POST['addfile'] && ! $_POST['removedfile']
 
     $langs->load('mails');
 
-    $result=$object->fetch($_POST["socid"]);
+    $result=$object->fetch($socid);
     if ($result > 0)
     {
         $objectref = dol_sanitizeFileName($object->ref);
@@ -379,7 +379,8 @@ if ($object->id)
     print '<input type="hidden" name="token" value="'.$_SESSION['newtoken'].'">';
 
 
-    dol_fiche_head($head, 'tabdocument', $langs->trans("Patient"),0,'patient@cabinetmed');
+    if ((float) DOL_VERSION < 7) dol_fiche_head($head, 'tabdocument', $langs->trans("Patient"), -1, 'patient@cabinetmed');
+    else dol_fiche_head($head, 'tabdocument', $langs->trans("Patient"), -1, 'patient@cabinetmed');
 
     // Construit liste des fichiers
     $filearray=dol_dir_list($upload_dir,"files",0,'','(\.meta|_preview\.png)$',$sortfield,(strtolower($sortorder)=='desc'?SORT_DESC:SORT_ASC),1);
@@ -395,7 +396,7 @@ if ($object->id)
     print '<div class="fichecenter">';
 
     print '<div class="underbanner clearboth"></div>';
-    print '<table class="border" width="100%">';
+    print '<table class="border tableforfield" width="100%">';
 
     // Prefix
 	if (! empty($conf->global->SOCIETE_USEPREFIX))  // Old not used prefix field

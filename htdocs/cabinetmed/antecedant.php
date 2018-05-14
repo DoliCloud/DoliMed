@@ -178,7 +178,8 @@ if ($socid > 0)
 
     $head = societe_prepare_head($object);
 
-    dol_fiche_head($head, 'tabantecedents', $langs->trans("Patient"),0,'patient@cabinetmed');
+    if ((float) DOL_VERSION < 7) dol_fiche_head($head, 'tabantecedents', $langs->trans("Patient"), 0, 'patient@cabinetmed');
+    else dol_fiche_head($head, 'tabantecedents', $langs->trans("Patient"), -1, 'patient@cabinetmed');
 
 
     print '<script type="text/javascript">
@@ -206,7 +207,7 @@ if ($socid > 0)
     dol_banner_tab($object, 'socid', $linkback, ($user->societe_id?0:1), 'rowid', 'nom');
 
     print '<div class="underbanner clearboth"></div>';
-    print '<table class="border" width="100%">';
+    print '<table class="border tableforfield" width="100%">';
 
     //if ($object->client)
     //{

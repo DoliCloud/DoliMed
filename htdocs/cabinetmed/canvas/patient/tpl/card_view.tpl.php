@@ -53,7 +53,8 @@ $now=dol_now();
 }*/
 
 //dol_fiche_head($head, 'tabpatientcard', $langs->trans("Patient"),0,'company');
-dol_fiche_head($head, 'card', $langs->trans("Patient"), 0, 'patient@cabinetmed');
+if ((float) DOL_VERSION < 7) dol_fiche_head($head, 'card', $langs->trans("Patient"), 0, 'patient@cabinetmed');
+else dol_fiche_head($head, 'card', $langs->trans("Patient"), -1, 'patient@cabinetmed');
 
 dol_htmloutput_errors($error,$errors);
 
@@ -74,7 +75,7 @@ dol_banner_tab($object, 'socid', $linkback, ($user->societe_id?0:1), 'rowid', 'n
 print '<div class="fichecenter">';
 
 print '<div class="underbanner clearboth"></div>';
-print '<table class="border" width="100%">';
+print '<table class="border tableforfield" width="100%">';
 if (! empty($conf->global->SOCIETE_USEPREFIX))  // Old not used prefix field
 {
     print '<tr><td>'.$langs->trans('Prefix').'</td><td colspan="3">'.$object->prefix_comm.'</td></tr>';
