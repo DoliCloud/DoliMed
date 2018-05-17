@@ -378,51 +378,62 @@ dol_fiche_end();
 /*
  *  Actions
  */
-        print '<div class="tabsAction">'."\n";
 
-		$parameters=array();
-		$reshook=$hookmanager->executeHooks('addMoreActionsButtons',$parameters,$object,$action);    // Note that $action and $object may have been modified by hook
-		if (empty($reshook))
-		{
-	        if (! empty($object->email))
-	        {
-	        	$langs->load("mails");
-	        	print '<div class="inline-block divButAction"><a class="butAction" href="'.$_SERVER['PHP_SELF'].'?socid='.$object->id.'&amp;action=presend&amp;mode=init">'.$langs->trans('SendMail').'</a></div>';
-	        }
-	        else
-			{
-	        	$langs->load("mails");
-	       		print '<div class="inline-block divButAction"><a class="butActionRefused" href="#" title="'.dol_escape_htmltag($langs->trans("NoEMail")).'">'.$langs->trans('SendMail').'</a></div>';
-	        }
+print '<div class="tabsAction">'."\n";
 
-	        if ($user->rights->societe->creer)
-	        {
-	            print '<div class="inline-block divButAction"><a class="butAction" href="'.$_SERVER["PHP_SELF"].'?socid='.$object->id.'&amp;action=edit">'.$langs->trans("Modify").'</a></div>'."\n";
-	        }
-
-	        if ($user->rights->societe->supprimer)
-	        {
-	            if ($conf->use_javascript_ajax && empty($conf->dol_use_jmobile))	// We can't use preloaded confirm form with jmobile
-	            {
-	                print '<div class="inline-block divButAction"><span id="action-delete" class="butActionDelete">'.$langs->trans('Delete').'</span></div>'."\n";
-	            }
-	            else
-				{
-	                print '<div class="inline-block divButAction"><a class="butActionDelete" href="'.$_SERVER["PHP_SELF"].'?socid='.$object->id.'&amp;action=delete">'.$langs->trans('Delete').'</a></div>'."\n";
-	            }
-	        }
-		}
-
-        print '</div>'."\n";
-
-
-
-if ($action == 'presend')
+$parameters=array();
+$reshook=$hookmanager->executeHooks('addMoreActionsButtons',$parameters,$object,$action);    // Note that $action and $object may have been modified by hook
+if (empty($reshook))
 {
-	/*
-	 * Affiche formulaire mail
-	*/
+	if (! empty($object->email))
+	{
+		$langs->load("mails");
+		print '<div class="inline-block divButAction"><a class="butAction" href="'.$_SERVER['PHP_SELF'].'?socid='.$object->id.'&amp;action=presend&amp;mode=init">'.$langs->trans('SendMail').'</a></div>';
+	}
+	else
+	{
+		$langs->load("mails");
+		print '<div class="inline-block divButAction"><a class="butActionRefused" href="#" title="'.dol_escape_htmltag($langs->trans("NoEMail")).'">'.$langs->trans('SendMail').'</a></div>';
+	}
 
+	if ($user->rights->societe->creer)
+	{
+		print '<div class="inline-block divButAction"><a class="butAction" href="'.$_SERVER["PHP_SELF"].'?socid='.$object->id.'&amp;action=edit">'.$langs->trans("Modify").'</a></div>'."\n";
+	}
+
+	if ($user->rights->societe->supprimer)
+	{
+		if ($conf->use_javascript_ajax && empty($conf->dol_use_jmobile))	// We can't use preloaded confirm form with jmobile
+		{
+			print '<div class="inline-block divButAction"><span id="action-delete" class="butActionDelete">'.$langs->trans('Delete').'</span></div>'."\n";
+		}
+		else
+		{
+			print '<div class="inline-block divButAction"><a class="butActionDelete" href="'.$_SERVER["PHP_SELF"].'?socid='.$object->id.'&amp;action=delete">'.$langs->trans('Delete').'</a></div>'."\n";
+		}
+	}
+}
+
+print '</div>'."\n";
+
+
+//Select mail models is same action as presend
+if (GETPOST('modelselected')) {
+	$action = 'presend';
+}
+
+if ((float) DOL_VERSION >= 7.0)
+{
+	// Presend form
+	$modelmail='thirdparty';
+	$defaulttopic='Information';
+	$diroutput = $conf->societe->dir_output;
+	$trackid = 'thi'.$object->id;
+
+	include DOL_DOCUMENT_ROOT.'/core/tpl/card_presend.tpl.php';
+}
+else
+{
 	// By default if $action=='presend'
 	$titreform='SendMail';
 	$topicmail='';
@@ -448,11 +459,11 @@ if ($action == 'presend')
 	$formmail->fromid   = $user->id;
 	$formmail->fromname = $user->getFullName($langs);
 	$formmail->frommail = $user->email;
-    $formmail->trackid='pat'.$object->id;
+	$formmail->trackid='pat'.$object->id;
 	if (! empty($conf->global->MAIN_EMAIL_ADD_TRACK_ID) && ($conf->global->MAIN_EMAIL_ADD_TRACK_ID & 2))	// If bit 2 is set
 	{
-	    include DOL_DOCUMENT_ROOT.'/core/lib/functions2.lib.php';
-	    $formmail->frommail=dolAddEmailTrackId($formmail->frommail, 'inv'.$object->id);
+		include DOL_DOCUMENT_ROOT.'/core/lib/functions2.lib.php';
+		$formmail->frommail=dolAddEmailTrackId($formmail->frommail, 'inv'.$object->id);
 	}
 	$formmail->withfrom=1;
 	$formmail->withtopic=1;
@@ -489,7 +500,9 @@ if ($action == 'presend')
 
 	print '<br>';
 }
-else
+
+
+if ($action != 'presend')
 {
 	print '<br>';
 
