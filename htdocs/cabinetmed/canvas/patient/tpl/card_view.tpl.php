@@ -432,7 +432,7 @@ if ((float) DOL_VERSION >= 7.0)
 
 	include DOL_DOCUMENT_ROOT.'/core/tpl/card_presend.tpl.php';
 }
-else
+elseif ($action == 'presend')
 {
 	// By default if $action=='presend'
 	$titreform='SendMail';
