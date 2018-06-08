@@ -72,10 +72,10 @@ $search_ville=GETPOST("search_ville");
 $search_code=GETPOST("search_code");
 
 // Load sale and categ filters
-$search_sale = GETPOST("search_sale");
-$search_categ = GETPOST("search_categ");
-
-$search_diagles=GETPOST("search_diagles");
+$search_sale = GETPOST("search_sale","int");
+$search_categ = GETPOST("search_categ","int");
+$search_diagles=GETPOST("search_diagles","int");
+$search_contactid = GETPOST("search_contactid","int");
 
 // List of fields to search into when doing a "search in all"
 $fieldstosearchall = array(
@@ -104,6 +104,7 @@ if (GETPOST("button_removefilter_x") || GETPOST("button_removefilter.x") || GETP
     $search_idprof2='';
     $search_idprof3='';
     $search_idprof4='';
+    $search_contactid='';
     $datebirth='';
 }
 
@@ -147,7 +148,7 @@ if ($search_diagles)
     $sql.= natural_search("c.diaglesprinc", $label);
 }
 if (!$user->rights->societe->client->voir && ! $socid) $sql.= " AND s.rowid = sc.fk_soc AND sc.fk_user = " .$user->id;
-if ($socid) $sql.= " AND s.rowid = ".$socid;
+if ($socid && empty($conf->global->MAIN_DISABLE_RESTRICTION_ON_THIRDPARTY_FOR_EXTERNAL)) $sql.= " AND s.rowid = ".$socid;
 if ($search_sale) $sql.= " AND s.rowid = sc.fk_soc";		// Join for the needed table to filter by sale
 if ($search_categ) $sql.= " AND s.rowid = cs.fk_soc";	// Join for the needed table to filter by categ
 if ($search_nom)   $sql.= natural_search("s.nom", $search_nom);
@@ -170,6 +171,10 @@ if ($socname)
     $sortfield = "s.nom";
 	$sortorder = "ASC";
 }
+if ($search_contactid)
+{
+	$sql .= " AND s.rowid IN (SELECT ec.element_id FROM ".MAIN_DB_PREFIX."element_contact as ec, ".MAIN_DB_PREFIX."c_type_contact as tc WHERE ec.fk_socpeople = ".$search_contactid." AND ec.fk_c_type_contact = tc.rowid AND tc.element='societe')";
+}
 $sql.= " GROUP BY s.rowid, s.nom, s.client, s.town, st.libelle, s.prefix_comm, s.code_client, s.datec, s.canvas, se.birthdate, se.prof";
 if ($search_sale) $sql .= ", sc.fk_soc, sc.fk_user";
 if ($search_categ) $sql .= ", cs.fk_categorie, cs.fk_soc";
@@ -180,21 +185,32 @@ $sql.= $db->order($sortfield,$sortorder);
 $nbtotalofrecords = '';
 if (empty($conf->global->MAIN_DISABLE_FULL_SCANLIST))
 {
-    $resql = $db->query($sql);
-    $nbtotalofrecords = $db->num_rows($resql);
+	$resql = $db->query($sql);
+	$nbtotalofrecords = $db->num_rows($resql);
+	if (($page * $limit) > $nbtotalofrecords)	// if total resultset is smaller then paging size (filtering), goto and load page 0
+	{
+		$page = 0;
+		$offset = 0;
+	}
 }
-
-$sql.= $db->plimit($limit+1, $offset);
-
-dol_syslog($script_file, LOG_DEBUG);
-$resql=$db->query($sql);
-if (! $resql)
+// if total resultset is smaller than limit, no need to do paging adn restart select with limits.
+if (is_numeric($nbtotalofrecords) && $limit > $nbtotalofrecords)
 {
-    dol_print_error($db);
-    exit;
+	$num = $nbtotalofrecords;
 }
+else
+{
+	$sql.= $db->plimit($limit+1, $offset);
 
-$num = $db->num_rows($resql);
+	$resql=$db->query($sql);
+	if (! $resql)
+	{
+		dol_print_error($db);
+		exit;
+	}
+
+	$num = $db->num_rows($resql);
+}
 
 // Direct jump if only one record found
 if ($num == 1 && ! empty($conf->global->MAIN_SEARCH_DIRECT_OPEN_IF_ONLY_ONE) && $search_all)
@@ -214,17 +230,18 @@ llxHeader('', $title);
 
 $param = '';
 
-if (! empty($contextpage) && $contextpage != $_SERVER["PHP_SELF"]) $param.='&contextpage='.$contextpage;
-if ($limit > 0 && $limit != $conf->liste_limit) $param.='&limit='.$limit;
-if ($search_categ != '')   $param.='&amp;search_categ='.$search_categ;
-if ($search_sale != '')	   $param.='&amp;search_sale='.$search_sale;
-if ($search_diagles != '') $param.='&amp;search_diagles='.$search_diagles;
-if ($search_nom != '')     $param.='&amp;search_nom='.$search_nom;
-if ($search_code != '')    $param.='&amp;search_code='.$search_code;
-if ($search_ville != '')   $param.='&amp;search_ville='.$search_ville;
-if ($search_birthday != '')   $param.='&amp;search_birthday='.$search_birthday;
-if ($search_birthmonth != '') $param.='&amp;search_birthmonth='.$search_birthmonth;
-if ($search_birttyear != '')  $param.='&amp;search_birthyear='.$search_birthyear;
+if (! empty($contextpage) && $contextpage != $_SERVER["PHP_SELF"]) $param.='&contextpage='.urlencode($contextpage);
+if ($limit > 0 && $limit != $conf->liste_limit) $param.='&limit='.urlencode($limit);
+if ($search_categ != '')   $param.='&amp;search_categ='.urlencode($search_categ);
+if ($search_sale != '')	   $param.='&amp;search_sale='.urlencode($search_sale);
+if ($search_diagles != '') $param.='&amp;search_diagles='.urlencode($search_diagles);
+if ($search_nom != '')     $param.='&amp;search_nom='.urlencode($search_nom);
+if ($search_code != '')    $param.='&amp;search_code='.urlencode($search_code);
+if ($search_ville != '')   $param.='&amp;search_ville='.urlencode($search_ville);
+if ($search_birthday != '')   $param.='&amp;search_birthday='.urlencode($search_birthday);
+if ($search_birthmonth != '') $param.='&amp;search_birthmonth='.urlencode($search_birthmonth);
+if ($search_birttyear != '')  $param.='&amp;search_birthyear='.urlencode($search_birthyear);
+if ($search_contactid != '')  $param.='&amp;search_contactid='.urlencode($search_contactid);
 
 print_barre_liste($title, $page, $_SERVER["PHP_SELF"],$param,$sortfield,$sortorder,'',$num,$nbtotalofrecords, 'title_companies', 0, '', '', $limit);
 
@@ -255,6 +272,12 @@ if ($user->rights->societe->client->voir || $socid)
 	$moreforfilter.=$htmlother->select_salesrepresentatives($search_sale,'search_sale',$user, 0, 1, 'maxwidth300');
  	$moreforfilter.='</div>';
 }
+// To add filter on contact
+$width="200";
+$moreforfilter.='<div class="divsearchfield">';
+$moreforfilter.=$langs->trans('Correspondants'). ': ';
+$moreforfilter.=$form->selectcontacts(0, $search_contactid, 'search_contactid', 1, '', '', 1);
+$moreforfilter.='</div>';
 // To add filter on diagnostic
 $width="200";
 $moreforfilter.='<div class="divsearchfield">';
@@ -318,15 +341,11 @@ print_liste_field_titre($langs->trans("DateCreation"),$_SERVER["PHP_SELF"],"date
 print_liste_field_titre("");
 print "</tr>\n";
 
-$var=True;
-
 while ($i < min($num,$limit))
 {
 	$obj = $db->fetch_object($resql);
 
-	$var=!$var;
-
-	print "<tr ".$bc[$var].">";
+	print '<tr class="oddeven">';
 	print '<td>';
 	$thirdpartystatic->id=$obj->rowid;
     $thirdpartystatic->name=$obj->name;

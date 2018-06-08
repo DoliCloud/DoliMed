@@ -79,7 +79,7 @@ print '<tr class="liste_titre">';
 print '<th colspan="3">'.$langs->trans("Search").'</th></tr>';
 print '<tr class="pair nohover"><td>';
 print $langs->trans("Name").':</td><td><input class="flat" type="text" size="14" name="search_nom_only"></td>';
-print '<td rowspan="'.$rowspan.'" class="pair nohover"><input type="submit" class="button" value="'.$langs->trans("Search").'"></td></tr>';
+print '<td rowspan="'.$rowspan.'" class="pair nohover nobottom"><input type="submit" class="button" value="'.$langs->trans("Search").'"></td></tr>';
 print '<tr class="pair nohover"><td>';
 print $langs->trans("Other").':</td><td><input class="flat" type="text" size="14" name="search_all"></td>';
 //print '<td><input type="submit" class="button" value="'.$langs->trans("Search").'"></td>';
@@ -101,7 +101,7 @@ if (! $user->rights->societe->client->voir && ! $socid) $sql.= ", ".MAIN_DB_PREF
 $sql.= ' WHERE s.entity IN ('.getEntity('societe', 1).')';
 $sql.= " AND s.canvas='patient@cabinetmed'";
 if (! $user->rights->societe->client->voir && ! $socid) $sql.= " AND s.rowid = sc.fk_soc AND sc.fk_user = " .$user->id;
-if ($socid)	$sql.= " AND s.rowid = ".$socid;
+if ($socid && empty($conf->global->MAIN_DISABLE_RESTRICTION_ON_THIRDPARTY_FOR_EXTERNAL))	$sql.= " AND s.rowid = ".$socid;
 //if (! $user->rights->fournisseur->lire) $sql.=" AND (s.fournisseur <> 1 OR s.client <> 0)";    // client=0, fournisseur=0 must be visible
 //print $sql;
 $result = $db->query($sql);

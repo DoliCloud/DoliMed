@@ -86,7 +86,6 @@ if (versioncompare(versiondolibarrarray(),array(3,7,-3)) >= 0)
 
 if ($mode)
 {
-
     // Define sql
     if ($mode == 'cabinetmedbycountry')
     {
@@ -108,10 +107,12 @@ if ($mode)
 
         $data = array();
         $sql.="SELECT COUNT(d.rowid) as nb, MAX(d.datevalid) as lastdate, p.code, p.label, c.nom as label2";
-        $sql.=" FROM ".MAIN_DB_PREFIX."adherent as d LEFT JOIN ".MAIN_DB_PREFIX."c_departements as c on d.fk_departement = c.rowid";
+        $sql.=" FROM ".MAIN_DB_PREFIX."cabinetmed_cons as d LEFT JOIN ".MAIN_DB_PREFIX."c_departements as c on d.fk_departement = c.rowid";
         $sql.=" LEFT JOIN ".MAIN_DB_PREFIX."c_regions as r on c.fk_region = r.code_region";
         $sql.=" LEFT JOIN ".MAIN_DB_PREFIX.$countrytable." as p on d.country = p.rowid";
         $sql.=" WHERE d.statut = 1";
+        //if (!$user->rights->societe->client->voir && ! $socid) $sql.= " AND s.rowid = sc.fk_soc AND sc.fk_user = " .$user->id;
+        if ($socid && empty($conf->global->MAIN_DISABLE_RESTRICTION_ON_THIRDPARTY_FOR_EXTERNAL)) $sql.= " AND s.rowid = ".$socid;
         $sql.=" GROUP BY p.label, p.code, c.nom";
         //print $sql;
     }
@@ -127,6 +128,8 @@ if ($mode)
         $sql.=" LEFT JOIN ".MAIN_DB_PREFIX.$countrytable." as p on s.fk_pays = p.rowid";
         $sql.=" WHERE d.fk_soc = s.rowid";
         $sql.=' AND s.entity IN ('.getEntity('societe', 1).')';
+        //if (!$user->rights->societe->client->voir && ! $socid) $sql.= " AND s.rowid = sc.fk_soc AND sc.fk_user = " .$user->id;
+        if ($socid && empty($conf->global->MAIN_DISABLE_RESTRICTION_ON_THIRPARTY_FOR_EXTERNAL)) $sql.= " AND s.rowid = ".$socid;
         $sql.=" GROUP BY p.label, p.code, s.town";
         //print $sql;
     }
@@ -187,7 +190,7 @@ if ($mode)
 
 $head = patient_stats_prepare_head(null);
 
-dol_fiche_head($head, $tab, $langs->trans("Consultations"), 0, 'generic');
+dol_fiche_head($head, $tab, $langs->trans("Consultations"), ((float) DOL_VERSION < 7.0 ? 0 : -1), 'generic');
 
 
 // Print title

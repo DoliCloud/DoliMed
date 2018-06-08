@@ -56,11 +56,13 @@ $result = restrictedArea($user,'societe',$socid,'');
 
 if (!$user->rights->cabinetmed->read) accessforbidden();
 
-$sortfield = GETPOST("sortfield");
-$sortorder = GETPOST("sortorder");
-$page=GETPOST("page");
-if ($page == -1) { $page = 0 ; }
-$offset = $conf->liste_limit * $page;
+// Load variable for pagination
+$limit = GETPOST('limit','int')?GETPOST('limit','int'):$conf->liste_limit;
+$sortfield = GETPOST('sortfield','alpha');
+$sortorder = GETPOST('sortorder','alpha');
+$page = GETPOST('page','int');
+if ($page == -1) { $page = 0; }
+$offset = $limit * $page;
 $pageprev = $page - 1;
 $pagenext = $page + 1;
 if (! $sortorder) $sortorder="DESC";
@@ -72,11 +74,11 @@ $search_code=GETPOST("search_code");
 $search_ref=GETPOST("search_ref");
 
 // Load sale and categ filters
-$search_sale = GETPOST("search_sale");
-$search_categ = GETPOST("search_categ");
-$search_motifprinc = GETPOST("search_motifprinc");
-$search_diaglesprinc = GETPOST("search_diaglesprinc");
-$search_contactid = GETPOST("search_contactid");
+$search_sale = GETPOST("search_sale","int");
+$search_categ = GETPOST("search_categ","int");
+$search_motifprinc = GETPOST("search_motifprinc","int");
+$search_diaglesprinc = GETPOST("search_diaglesprinc","int");
+$search_contactid = GETPOST("search_contactid","int");
 
 
 /*
@@ -135,12 +137,8 @@ if ($search_diaglesprinc)
 	$label= dol_getIdFromCode($db,$search_diaglesprinc,'cabinetmed_diaglec','code','label');
 	$sql.= " AND c.diaglesprinc LIKE '%".$db->escape($label)."%'";
 }
-if ($search_contactid)
-{
-
-}
 if (!$user->rights->societe->client->voir && ! $socid) $sql.= " AND s.rowid = sc.fk_soc AND sc.fk_user = " .$user->id;
-if ($socid) $sql.= " AND s.rowid = ".$socid;
+if ($socid && empty($conf->global->MAIN_DISABLE_RESTRICTION_ON_THIRDPARTY_FOR_EXTERNAL)) $sql.= " AND s.rowid = ".$socid;
 if ($search_ref)   $sql.= " AND c.rowid = ".$db->escape($search_ref);
 if ($search_categ) $sql.= " AND s.rowid = cs.fk_soc";	// Join for the needed table to filter by categ
 if ($search_nom)   $sql.= " AND s.nom like '%".$db->escape(strtolower($search_nom))."%'";
@@ -149,16 +147,16 @@ if ($search_code)  $sql.= " AND s.code_client like '%".$db->escape(strtolower($s
 // Insert sale filter
 if ($search_sale)
 {
-	$sql .= " AND c.fk_user = ".$search_sale;
+	$sql .= " AND c.fk_user = ".$db->escape($search_sale);
 }
 // Insert categ filter
 if ($search_categ)
 {
-	$sql .= " AND cs.fk_categorie = ".$search_categ;
+	$sql .= " AND cs.fk_categorie = ".$db->escape($search_categ);
 }
 if ($socname)
 {
-	$sql.= " AND s.nom like '%".$db->escape(strtolower($socname))."%'";
+	$sql.= natural_search("s.nom", $socname);
 	$sortfield = "s.nom";
 	$sortorder = "ASC";
 }
@@ -168,6 +166,7 @@ if ($search_contactid)
 {
 	$sql .= " AND s.rowid IN (SELECT ec.element_id FROM ".MAIN_DB_PREFIX."element_contact as ec, ".MAIN_DB_PREFIX."c_type_contact as tc WHERE ec.fk_socpeople = ".$search_contactid." AND ec.fk_c_type_contact = tc.rowid AND tc.element='societe')";
 }
+
 // Count total nb of records
 $nbtotalofrecords = '';
 if (empty($conf->global->MAIN_DISABLE_FULL_SCANLIST))
@@ -177,22 +176,52 @@ if (empty($conf->global->MAIN_DISABLE_FULL_SCANLIST))
 }
 
 $sql.= $db->order($sortfield,$sortorder);
-$sql.= $db->plimit($conf->liste_limit +1, $offset);
+
+// Count total nb of records
+$nbtotalofrecords = '';
+if (empty($conf->global->MAIN_DISABLE_FULL_SCANLIST))
+{
+	$resql = $db->query($sql);
+	$nbtotalofrecords = $db->num_rows($resql);
+	if (($page * $limit) > $nbtotalofrecords)	// if total resultset is smaller then paging size (filtering), goto and load page 0
+	{
+		$page = 0;
+		$offset = 0;
+	}
+}
+// if total resultset is smaller than limit, no need to do paging adn restart select with limits.
+if (is_numeric($nbtotalofrecords) && $limit > $nbtotalofrecords)
+{
+	$num = $nbtotalofrecords;
+}
+else
+{
+	$sql.= $db->plimit($limit+1, $offset);
+
+	$resql=$db->query($sql);
+	if (! $resql)
+	{
+		dol_print_error($db);
+		exit;
+	}
+
+	$num = $db->num_rows($resql);
+}
 //print $sql;
 
-$result = $db->query($sql);
-if ($result)
+if ($resql)
 {
-	$num = $db->num_rows($result);
+	if (! empty($contextpage) && $contextpage != $_SERVER["PHP_SELF"]) $param.='&contextpage='.urlencode($contextpage);
+	if ($limit > 0 && $limit != $conf->liste_limit) $param.='&limit='.urlencode($limit);
 
-	if ($search_nom != '') $param = "&amp;search_nom=".$search_nom;
-	if ($search_code != '') $param.= "&amp;search_code=".$search_code;
-	if ($search_ville != '') $param.= "&amp;search_ville=".$search_ville;
- 	if ($search_categ != '') $param.='&amp;search_categ='.$search_categ;
- 	if ($search_sale != '')	$param.='&amp;search_sale='.$search_sale;
+	if ($search_nom != '') $param = "&amp;search_nom=".urlencode($search_nom);
+	if ($search_code != '') $param.= "&amp;search_code=".urlencode($search_code);
+	if ($search_ville != '') $param.= "&amp;search_ville=".urlencode($search_ville);
+	if ($search_categ != '') $param.='&amp;search_categ='.urlencode($search_categ);
+	if ($search_sale != '')	$param.='&amp;search_sale='.urlencode($search_sale);
  	if ($search_motifprinc != '')	$param.='&amp;search_motifprinc='.urlencode($search_motifprinc);
  	if ($search_diaglesprinc != '')	$param.='&amp;search_diaglesprinc='.urlencode($search_diaglesprinc);
- 	if ($search_contactid != '')	$param.='&amp;search_contactid='.$search_contactid;
+ 	if ($search_contactid != '')	$param.='&amp;search_contactid='.urlencode($search_contactid);
 
 	print '<form method="get" action="'.$_SERVER["PHP_SELF"].'">'."\n";
 	print '<input type="hidden" name="sortfield" value="'.$sortfield.'">';
@@ -214,6 +243,7 @@ if ($result)
 		$moreforfilter.=$htmlother->select_categories(2,$search_categ,'search_categ');
 	 	$moreforfilter.='</div>';
 	}
+
  	// If the user can view prospects other than his'
  	if ($user->rights->societe->client->voir || $socid)
  	{
@@ -296,9 +326,9 @@ if ($result)
 	print_liste_field_titre($langs->trans('ConsultActe'),$_SERVER['PHP_SELF'],'c.typevisit','',$param,'align="right"',$sortfield,$sortorder);
 	print "</tr>\n";
 
-	while ($i < min($num,$conf->liste_limit))
+	while ($i < min($num, $limit))
 	{
-		$obj = $db->fetch_object($result);
+		$obj = $db->fetch_object($resql);
 
 		print '<tr class="oddeven">';
         print '<td>';

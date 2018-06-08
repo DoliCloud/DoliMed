@@ -68,7 +68,7 @@ class CabinetMedStats extends Stats
 		$this->field='total';
 
 		$this->where=' 1=1';
-		if ($this->socid)
+		if ($this->socid && empty($conf->global->MAIN_DISABLE_RESTRICTION_ON_THIRDPARTY_FOR_EXTERNAL))
 		{
 			$this->where.=" AND fk_soc = ".$this->socid;
 		}

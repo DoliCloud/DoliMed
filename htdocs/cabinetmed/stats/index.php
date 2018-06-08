@@ -159,11 +159,10 @@ if (! $mesg)
 
 $head = patient_stats_prepare_head(null);
 
-dol_fiche_head($head, 'statsconsultations', $langs->trans("Consultations"), 0, 'generic');
+dol_fiche_head($head, 'statsconsultations', $langs->trans("Consultations"), ((float) DOL_VERSION < 7.0 ? 0 : -1), 'generic');
 
 
 print '<div class="fichecenter"><div class="fichethirdleft">';
-
 
 // Show filter box
 print '<form name="stats" method="POST" action="'.$_SERVER["PHP_SELF"].'">';
@@ -176,7 +175,7 @@ print $form->select_company($socid,'socid',$filter,1,0,0,array(),0,'','style="wi
 print '</td></tr>';
 */
 print '<tr><td>'.$langs->trans("User").'</td><td>';
-print $form->select_dolusers($userid, 'userid', 1, '', 0, '', '', 0, 0, 0, '', 0, '', 'maxwidth300');
+print $form->select_dolusers($userid ? $userid : -1, 'userid', 1, '', 0, '', '', 0, 0, 0, '', 0, '', 'maxwidth300');
 print '</td></tr>';
 print '<tr><td>'.$langs->trans("CodageCCAM").'</td><td>';
 print '<input type="text" id="codageccam" name="codageccam" value="'.$codageccam.'" size="30"><span class="hideonsmartphone"> (* = joker)</span>';

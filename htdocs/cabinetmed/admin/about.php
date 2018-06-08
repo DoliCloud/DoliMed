@@ -76,7 +76,7 @@ $head[$h][2] = 'tababout';
 $h++;
 
 
-dol_fiche_head($head, 'tababout', '');
+dol_fiche_head($head, 'tababout', '', ((float) DOL_VERSION < 7.0 ? 0 : -1));
 
 print $langs->trans("AboutInfo").'<br>';
 print '<br>';

@@ -101,7 +101,7 @@ $head[$h][2] = 'tababout';
 $h++;
 
 
-dol_fiche_head($head, 'tabconsextrafields', '');
+dol_fiche_head($head, 'tabconsextrafields', '', ((float) DOL_VERSION < 7.0 ? 0 : -1));
 
 require DOL_DOCUMENT_ROOT.'/core/tpl/admin_extrafields_view.tpl.php';
 

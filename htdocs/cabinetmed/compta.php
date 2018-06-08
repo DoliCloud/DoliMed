@@ -109,7 +109,7 @@ $sql  = "SELECT f.datecons, f.fk_user, SUM(f.montant_cheque) as montant_cheque, 
 $sql.= " FROM ".MAIN_DB_PREFIX."cabinetmed_cons as f";
 $sql.= " WHERE 1 = 1";
 if ($search_sale) $sql.= " AND f.fk_user = ".$search_sale;
-if ($socid) $sql.= " AND f.fk_soc = ".$socid;
+if ($socid && empty($conf->global->MAIN_DISABLE_RESTRICTION_ON_THIRDPARTY_FOR_EXTERNAL)) $sql.= " AND f.fk_soc = ".$socid;
 $sql.= " GROUP BY f.datecons, f.fk_user";
 $sql.= " ORDER BY f.datecons";
 //print $sql;
