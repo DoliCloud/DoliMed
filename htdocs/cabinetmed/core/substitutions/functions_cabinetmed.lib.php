@@ -255,8 +255,8 @@ function cabinetmed_completesubstitutionarray(&$substitutionarray,$langs,$object
 	    $substitutionarray['outcome_history']='';
 	    $substitutionarray['outcome_exam_clinic']='';
 
-	    $substitutionarray['treatment_title']='';	// old string
-		$substitutionarray['outcome_treatment_title']='';	// old string
+	    //$substitutionarray['treatment_title']='';	// old string
+		//$substitutionarray['outcome_treatment_title']='';	// old string
 		$substitutionarray['outcome_treatment']='';
 
 	    $substitutionarray['outcome_exam_sugested']='';
@@ -289,7 +289,14 @@ function cabinetmed_completesubstitutionarray(&$substitutionarray,$langs,$object
 
     	$substitutionarray['patient_size']=$object->array_options['options_size'];
     	$substitutionarray['patient_weight']=$object->array_options['options_weight'];
-        $substitutionarray['patient_birthdate']=dol_print_date(dol_stringtotime($object->array_options['options_birthdate'].' 00:00:00'),'day','',$langs);
+    	if (is_numeric($object->array_options['options_birthdate']))
+    	{
+        	$substitutionarray['patient_birthdate']=dol_print_date($object->array_options['options_birthdate'],'day','',$langs);
+    	}
+    	else
+    	{
+    		$substitutionarray['patient_birthdate']=dol_print_date(dol_stringtotime($object->array_options['options_birthdate'].' 00:00:00'),'day','',$langs);
+    	}
         $substitutionarray['patient_profession']=$object->array_options['options_prof'];
 
         $substitutionarray['patient_gender']=$object->typent_code;
