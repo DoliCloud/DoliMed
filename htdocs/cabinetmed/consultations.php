@@ -521,13 +521,13 @@ $width="242";
 
 llxHeader('',$langs->trans("Consultation"));
 
-if ($action == 'create')
+if (! ($socid > 0))
 {
 	print '<br><br>';
 	print $langs->trans("ToCreateAConsultationGoOnPatientRecord");
 	print '<br><br>';
 }
-elseif ($socid > 0)
+else
 {
     $result=$object->fetch($socid);
 	if ($result < 0) { dol_print_error('',$object->error); }
