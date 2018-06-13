@@ -6,6 +6,7 @@
 - Compatibility with Dolibarr v7
 - Can filter on contact on list of patients
 - External users (care giveers contacts) can have an external account to see patient and consultations by adding option MAIN_DISABLE_RESTRICTION_ON_THIRDPARTY_FOR_EXTERNAL to 1
+- Better menu organization
 
 ## 5.0.1
 
