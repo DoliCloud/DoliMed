@@ -177,3 +177,5 @@ BoxTitleNbOfPatients=Nombre de patients
 BoxTitleLastPatients=Les %s derniers patients enregistrés
 BoxTitleLastModifiedPatients=Les %s derniers patients modifiés
 NoRecordedPatients=Pas de patient enregistré
+Revenues=Revenus
+PatientsAndConsultations=Patients | Consultations

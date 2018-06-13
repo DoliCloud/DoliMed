@@ -91,7 +91,7 @@ $head[$h][2] = 'tabsetup';
 $h++;
 
 $head[$h][0] = $_SERVER["PHP_SELF"];
-$head[$h][1] = $langs->trans("ExtraFields").' ('.$langs->trans("Patient").')';
+$head[$h][1] = $langs->trans("ExtraFields").' ('.$langs->trans("Consultation").')';
 $head[$h][2] = 'tabconsextrafields';
 $h++;
 

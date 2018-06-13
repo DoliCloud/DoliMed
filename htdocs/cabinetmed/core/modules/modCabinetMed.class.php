@@ -230,7 +230,7 @@ class modCabinetMed extends DolibarrModules
         // Add here entries to declare new menus
       	$this->menu[$r]=array(  'fk_menu'=>0,           // Put 0 if this is a top menu
                                     'type'=>'top',          // This is a Top menu entry
-                                    'titre'=>'Patients',
+                                    'titre'=>'PatientsAndConsultations',
                                     'mainmenu'=>'patients',
                                     'url'=>'/cabinetmed/index.php',
                                     'langs'=>'cabinetmed@cabinetmed',    // Lang file to use (without .lang) by module. File must be in langs/code_CODE/ directory.
@@ -250,7 +250,7 @@ class modCabinetMed extends DolibarrModules
                                     'perms'=>'1',           // Use 'perms'=>'$user->rights->voyage->level1->level2' if you want your menu with a permission rules
                                     'user'=>2);             // 0=Menu for internal users, 1=external users, 2=both
         $r++;
-        $this->menu[$r]=array(  'fk_menu'=>0,           // Put 0 if this is a top menu
+/*        $this->menu[$r]=array(  'fk_menu'=>0,           // Put 0 if this is a top menu
 							        'type'=>'top',          // This is a Top menu entry
 							        'titre'=>'MenuFinancialMed',
 							        'mainmenu'=>'accountancy2',
@@ -261,7 +261,7 @@ class modCabinetMed extends DolibarrModules
 							        'perms'=>'1',           // Use 'perms'=>'$user->rights->voyage->level1->level2' if you want your menu with a permission rules
 							        'user'=>2);             // 0=Menu for internal users, 1=external users, 2=both
         $r++;
-
+*/
         // Left Menu entry:
         $this->menu[$r]=array(   'fk_menu'=>'fk_mainmenu=patients',
                                   'type'=>'left',         // This is a Left menu entry
@@ -300,29 +300,67 @@ class modCabinetMed extends DolibarrModules
 						        'perms'=>'1',           // Use 'perms'=>'$user->rights->voyage->level1->level2' if you want your menu with a permission rules
 						        'user'=>2);             // 0=Menu for internal users, 1=external users, 2=both
         $r++;
-        $this->menu[$r]=array(   'fk_menu'=>'fk_mainmenu=patients,fk_leftmenu=patients',
+		$this->menu[$r]=array(   'fk_menu'=>'fk_mainmenu=patients',
+							'type'=>'left',         // This is a Left menu entry
+							'titre'=>'Consultations',
+							'mainmenu'=>'patients',
+							'leftmenu'=>'consultations',
+							'url'=>'/cabinetmed/index.php?leftmenu=thirdparties',
+							'langs'=>'cabinetmed@cabinetmed',  // Lang file to use (without .lang) by module. File must be in langs/code_CODE/ directory.
+							'position'=>120,
+							'enabled'=>'$conf->cabinetmed->enabled',         // Define condition to show or hide menu entry. Use '$conf->voyage->enabled' if entry must be visible if module is enabled.
+							'perms'=>'1',           // Use 'perms'=>'$user->rights->voyage->level1->level2' if you want your menu with a permission rules
+							'target'=>'',
+							'user'=>2);             // 0=Menu for internal users, 1=external users, 2=both
+		$r++;
+		$this->menu[$r]=array(   'fk_menu'=>'fk_mainmenu=patients,fk_leftmenu=consultations',
+							'type'=>'left',         // This is a Left menu entry
+							'titre'=>'NewConsultation',
+							'mainmenu'=>'patients',
+							'leftmenu'=>'consultations_new',
+							'url'=>'/cabinetmed/consultations.php?action=create&canvas=patient@cabinetmed',
+							'langs'=>'cabinetmed@cabinetmed',  // Lang file to use (without .lang) by module. File must be in langs/code_CODE/ directory.
+							'position'=>121,
+							'enabled'=>'$conf->cabinetmed->enabled',         // Define condition to show or hide menu entry. Use '$conf->voyage->enabled' if entry must be visible if module is enabled.
+							'perms'=>'$user->rights->societe->creer',           // Use 'perms'=>'$user->rights->voyage->level1->level2' if you want your menu with a permission rules
+							'user'=>2);             // 0=Menu for internal users, 1=external users, 2=both
+        $r++;
+        $this->menu[$r]=array(   'fk_menu'=>'fk_mainmenu=patients,fk_leftmenu=consultations',
 						        'type'=>'left',         // This is a Left menu entry
 						        'titre'=>'ListConsult',
 						        'mainmenu'=>'patients',
-						        'leftmenu'=>'patients_consult',
+						        'leftmenu'=>'consultations_list',
 						        'url'=>'/cabinetmed/listconsult.php?leftmenu=customers&search_sale=__USERID__',
 						        'langs'=>'cabinetmed@cabinetmed',  // Lang file to use (without .lang) by module. File must be in langs/code_CODE/ directory.
-						        'position'=>110,
+						        'position'=>122,
 						        'enabled'=>'$conf->cabinetmed->enabled',         // Define condition to show or hide menu entry. Use '$conf->voyage->enabled' if entry must be visible if module is enabled.
 						        'perms'=>'1',           // Use 'perms'=>'$user->rights->voyage->level1->level2' if you want your menu with a permission rules
 						        'user'=>2);             // 0=Menu for internal users, 1=external users, 2=both
         $r++;
-        $this->menu[$r]=array(   'fk_menu'=>'fk_mainmenu=patients,fk_leftmenu=patients',
+        $this->menu[$r]=array(   'fk_menu'=>'fk_mainmenu=patients,fk_leftmenu=consultations',
+					        'type'=>'left',         // This is a Left menu entry
+					        'titre'=>'Statistics',
+					        'mainmenu'=>'patients',
+					        'leftmenu'=>'consultations_stats',
+					        'url'=>'/cabinetmed/stats/index.php?leftmenu=customers&userid=__USERID__',
+					        'langs'=>'cabinetmed@cabinetmed',  // Lang file to use (without .lang) by module. File must be in langs/code_CODE/ directory.
+					        'position'=>123,
+					        'enabled'=>'$conf->cabinetmed->enabled',         // Define condition to show or hide menu entry. Use '$conf->voyage->enabled' if entry must be visible if module is enabled.
+					        'perms'=>'1',           // Use 'perms'=>'$user->rights->voyage->level1->level2' if you want your menu with a permission rules
+					        'user'=>2);             // 0=Menu for internal users, 1=external users, 2=both
+        $r++;
+        $this->menu[$r]=array(   'fk_menu'=>'fk_mainmenu=patients,fk_leftmenu=consultations',
 						        'type'=>'left',         // This is a Left menu entry
-						        'titre'=>'Statistics',
+						        'titre'=>'Revenues',
 						        'mainmenu'=>'patients',
-						        'leftmenu'=>'patients_stats',
-						        'url'=>'/cabinetmed/stats/index.php?leftmenu=customers&userid=__USERID__',
+						        'leftmenu'=>'consultations_compta',
+						        'url'=>'/cabinetmed/compta.php?mainmenu=patients&amp;leftmenu=&search_sale=__USERID__',
 						        'langs'=>'cabinetmed@cabinetmed',  // Lang file to use (without .lang) by module. File must be in langs/code_CODE/ directory.
-						        'position'=>110,
+						        'position'=>124,
 						        'enabled'=>'$conf->cabinetmed->enabled',         // Define condition to show or hide menu entry. Use '$conf->voyage->enabled' if entry must be visible if module is enabled.
 						        'perms'=>'1',           // Use 'perms'=>'$user->rights->voyage->level1->level2' if you want your menu with a permission rules
 						        'user'=>2);             // 0=Menu for internal users, 1=external users, 2=both
+
         $r++;
         // Categories
         $this->menu[$r]=array(   'fk_menu'=>'fk_mainmenu=patients',
@@ -332,7 +370,7 @@ class modCabinetMed extends DolibarrModules
 						        'leftmenu'=>'categorypatients',
 						        'url'=>'/categories/index.php?leftmenu=categorypatients&type=2',
 						        'langs'=>'categories',  // Lang file to use (without .lang) by module. File must be in langs/code_CODE/ directory.
-						        'position'=>111,
+						        'position'=>151,
 						        'enabled'=>'$conf->categorie->enabled',         // Define condition to show or hide menu entry. Use '$conf->voyage->enabled' if entry must be visible if module is enabled.
 						        'perms'=>'$user->rights->categorie->lire',           // Use 'perms'=>'$user->rights->voyage->level1->level2' if you want your menu with a permission rules
 						        'target'=>'',
@@ -345,7 +383,7 @@ class modCabinetMed extends DolibarrModules
 						        'leftmenu'=>'categorypatients_new',
 						        'url'=>'/categories/card.php?action=create&type=2',
 						        'langs'=>'categories',  // Lang file to use (without .lang) by module. File must be in langs/code_CODE/ directory.
-						        'position'=>112,
+						        'position'=>152,
 						        'enabled'=>'$conf->categorie->enabled',         // Define condition to show or hide menu entry. Use '$conf->voyage->enabled' if entry must be visible if module is enabled.
 						        'perms'=>'$user->rights->categorie->lire',           // Use 'perms'=>'$user->rights->voyage->level1->level2' if you want your menu with a permission rules
 						        'target'=>'',
