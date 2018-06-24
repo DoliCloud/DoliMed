@@ -349,15 +349,16 @@ class Patient extends Societe
      *    @param      int		$rowid			Id of third party to load
      *    @param      string	$ref			Reference of third party, name (Warning, this can return several records)
      *    @param      string	$ref_ext       	External reference of third party (Warning, this information is a free field not provided by Dolibarr)
-     *    @param      int		$idprof1		Prof id 1 of third party (Warning, this can return several records)
-     *    @param      int		$idprof2		Prof id 2 of third party (Warning, this can return several records)
-     *    @param      int		$idprof3		Prof id 3 of third party (Warning, this can return several records)
-     *    @param      int		$idprof4		Prof id 4 of third party (Warning, this can return several records)
-     *    @param      int		$idprof5		Prof id 5 of third party (Warning, this can return several records)
-     *    @param      int		$idprof6		Prof id 6 of third party (Warning, this can return several records)
+     *    @param      string	$idprof1		Prof id 1 of third party (Warning, this can return several records)
+     *    @param      string	$idprof2		Prof id 2 of third party (Warning, this can return several records)
+     *    @param      string	$idprof3		Prof id 3 of third party (Warning, this can return several records)
+     *    @param      string	$idprof4		Prof id 4 of third party (Warning, this can return several records)
+     *    @param      string	$idprof5		Prof id 5 of third party (Warning, this can return several records)
+     *    @param      string	$idprof6		Prof id 6 of third party (Warning, this can return several records)
+     *    @param      string	$email			Email
      *    @return     $int						>0 if OK, <0 if KO or if two records found for same ref or idprof.
      */
-    function fetch($rowid, $ref='', $ref_ext='', $ref_int='', $idprof1='',$idprof2='',$idprof3='',$idprof4='', $idprof5 = '', $idprof6 = '')
+    function fetch($rowid, $ref='', $ref_ext='', $ref_int='', $idprof1='',$idprof2='',$idprof3='',$idprof4='', $idprof5 = '', $idprof6 = '', $email='')
     {
         global $langs;
         global $conf;
