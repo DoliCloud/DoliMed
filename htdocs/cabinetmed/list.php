@@ -301,7 +301,7 @@ if ($resql)
 	if ($search_all)
 	{
 	    foreach($fieldstosearchall as $key => $val) $fieldstosearchall[$key]=$langs->trans($val);
-	    print $langs->trans("FilterOnInto", $search_all) . join(', ',$fieldstosearchall);
+	    print '<div class="divsearchfieldfilter">'.$langs->trans("FilterOnInto", $search_all) . join(', ',$fieldstosearchall).'</div>';
 	}
 
 	print '<form method="post" action="'.$_SERVER["PHP_SELF"].'" name="formfilter">';
