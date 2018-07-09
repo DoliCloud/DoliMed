@@ -8,6 +8,7 @@ DROP TABLE llx_cabinetmed_c_banques;
 DROP TABLE llx_cabinetmed_c_ccam;
 DROP TABLE llx_cabinetmed_c_examconclusion;
 DROP TABLE llx_cabinetmed_cons;
+DROP TABLE llx_cabinetmed_cons_extrafields;
 DROP TABLE llx_cabinetmed_diaglec;
 DROP TABLE llx_cabinetmed_examaut;
 DROP TABLE llx_cabinetmed_exambio;
