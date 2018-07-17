@@ -1,6 +1,12 @@
 # ChangeLog
 
 
+## 7.0.1 Not released
+
+- NEW Compatibilty with Dolibarr v8.
+- Fix disable of old contact tab on patient only.
+- Fix group by error in stats page of contacts.
+ 
 ## 7.0.0
 
 - NEW Compatibility with Dolibarr v7

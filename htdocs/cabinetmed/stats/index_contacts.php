@@ -172,7 +172,7 @@ if (! $mesg)
 
 $head = contact_patient_stats_prepare_head(null);
 
-dol_fiche_head($head, 'statscontacts', $langs->trans("Contacts"), 0, 'contact');
+dol_fiche_head($head, 'statscontacts', $langs->trans("Contacts"), (((float) DOL_VERSION < 6) ? 0 : -1), 'contact');
 
 print '<table class="notopnoleftnopadd" width="100%"><tr>';
 print '<td class="tdtop">';
@@ -208,7 +208,7 @@ $sql.= " AND ec.fk_c_type_contact = tc.rowid";
 $sql.= " AND tc.element = 'societe'";
 $sql.= ' AND s.entity IN ('.getEntity('societe', 1).')';
 $sql.= " GROUP BY c.rowid, c.lastname, c.firstname";
-$sql.= " ORDER BY ".$sortfield." ".$sortorder.", s.rowid DESC";
+$sql.= " ORDER BY ".$sortfield." ".$sortorder;
 
 //print $sql;
 $resql=$db->query($sql);
@@ -218,7 +218,7 @@ if ($resql)
 
     $contactstatic=new Contact($db);
 
-    $i=0; $var=false;
+    $i=0;
     while ($i < $num)
     {
         $obj=$db->fetch_object($resql);
@@ -229,7 +229,6 @@ if ($resql)
             $contactstatic->lastname=$obj->lastname;
             $contactstatic->firstname=$obj->firstname;
 
-            $var=!$var;
             print '<tr class="oddeven">';
         	print '<td>'.$contactstatic->getNomUrl(1).'</td>';
         	print '<td align="right">'.round($obj->nb).'</td>';
