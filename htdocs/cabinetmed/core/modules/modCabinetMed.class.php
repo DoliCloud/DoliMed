@@ -130,10 +130,10 @@ class modCabinetMed extends DolibarrModules
                         'thirdparty:+tabexambio:SUBSTITUTION_ResultExamBio:cabinetmed@cabinetmed:$user->rights->cabinetmed->read && ($object->canvas=="patient@cabinetmed" || $soc->canvas=="patient@cabinetmed"):/cabinetmed/exambio.php?socid=__ID__',
                         'thirdparty:+tabexamautre:SUBSTITUTION_ResultExamAutre:cabinetmed@cabinetmed:$user->rights->cabinetmed->read && ($object->canvas=="patient@cabinetmed" || $soc->canvas=="patient@cabinetmed"):/cabinetmed/examautre.php?socid=__ID__',
                         'thirdparty:+tabdocument:SUBSTITUTION_DocumentsPatient:cabinetmed@cabinetmed:$user->rights->cabinetmed->read && ($object->canvas=="patient@cabinetmed" || $soc->canvas=="patient@cabinetmed"):/cabinetmed/documents.php?socid=__ID__',
-                        'thirdparty:-contact:($object->canvas=="patient@cabinetmed" || $soc->canvas=="patient@cabinetmed")',	// TODO Condition to disable is not supported by core
-                        'thirdparty:-document:($object->canvas=="patient@cabinetmed" || $soc->canvas=="patient@cabinetmed")',
-                        //'thirdparty:-notify:($object->canvas=="patient@cabinetmed" || $soc->canvas=="patient@cabinetmed")',
-                        'thirdparty:-note:($object->canvas=="patient@cabinetmed" || $soc->canvas=="patient@cabinetmed")',
+                        'thirdparty:-contact:NU:($object->canvas=="patient@cabinetmed" || $soc->canvas=="patient@cabinetmed" || $obj->canvas=="patient@cabinetmed")',
+                        'thirdparty:-document:NU:($object->canvas=="patient@cabinetmed" || $soc->canvas=="patient@cabinetmed" || $obj->canvas=="patient@cabinetmed")',
+        				//'thirdparty:-notify:NU:($object->canvas=="patient@cabinetmed" || $soc->canvas=="patient@cabinetmed" || $obj->canvas=="patient@cabinetmed")',
+        				'thirdparty:-note:NU:($object->canvas=="patient@cabinetmed" || $soc->canvas=="patient@cabinetmed" || $obj->canvas=="patient@cabinetmed")',
        					'contact:+tabpatient:Patients:cabinetmed@cabinetmed:$user->rights->cabinetmed->read:/cabinetmed/patients_of_contact.php?id=__ID__'
                     );
         // where entity can be
