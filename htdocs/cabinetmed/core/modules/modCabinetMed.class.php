@@ -563,7 +563,8 @@ class modCabinetMed extends DolibarrModules
         "UPDATE ".MAIN_DB_PREFIX."c_type_contact    set active=1 where module = 'cabinetmed'",
         "UPDATE ".MAIN_DB_PREFIX."c_typent          set active=0 where (module != 'cabinetmed' OR module IS NULL) AND code != 'TE_UNKNOWN'",
         "UPDATE ".MAIN_DB_PREFIX."c_forme_juridique set active=0 where module != 'cabinetmed' OR module IS NULL",
-        "UPDATE ".MAIN_DB_PREFIX."c_type_contact    set active=0 where element='societe' and source='external' and (module != 'cabinetmed' OR module IS NULL)"
+        "UPDATE ".MAIN_DB_PREFIX."c_type_contact    set active=0 where element='societe' and source='external' and (module != 'cabinetmed' OR module IS NULL)",
+        "INSERT INTO ".MAIN_DB_PREFIX."document_model set nom='generic_odt', type='company', libelle='ODT templates', description='COMPANY_ADDON_PDF_ODT_PATH'"
         );
 
         return $this->_init($sql,$options);

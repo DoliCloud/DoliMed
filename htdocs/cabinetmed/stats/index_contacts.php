@@ -18,9 +18,9 @@
  */
 
 /**
- *  \file       htdocs/cabinetmed/stats/index.php
+ *  \file       htdocs/cabinetmed/stats/index_contacts.php
  *  \ingroup    cabinetmed
- *  \brief      Page of patient outcomes statistics
+ *  \brief      Page of patient consultations statistics
  */
 
 
@@ -60,7 +60,7 @@ $year = strftime("%Y", time());
 $startyear=$year-2;
 $endyear=$year;
 
-$mode=GETPOST("mode")?GETPOST("mode"):'customer';
+$mode=GETPOST("mode",'alpha')?GETPOST("mode",'alpha'):'customer';
 
 $sortfield = GETPOST("sortfield",'alpha');
 $sortorder = GETPOST("sortorder",'alpha');
@@ -172,7 +172,7 @@ if (! $mesg)
 
 $head = contact_patient_stats_prepare_head(null);
 
-dol_fiche_head($head, 'statscontacts', $langs->trans("Contacts"), (((float) DOL_VERSION < 6) ? 0 : -1), 'contact');
+dol_fiche_head($head, 'statscontacts', $langs->trans("Contacts"), (((float) DOL_VERSION < 7) ? 0 : -1), 'contact');
 
 print '<table class="notopnoleftnopadd" width="100%"><tr>';
 print '<td class="tdtop">';

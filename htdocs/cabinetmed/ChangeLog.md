@@ -6,6 +6,7 @@
 - NEW Compatibilty with Dolibarr v8.
 - Fix disable of old contact tab on patient only.
 - Fix group by error in stats page of contacts.
+- Enable document template when enabling module
  
 ## 7.0.0
 

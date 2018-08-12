@@ -124,55 +124,47 @@ $object->fetch($id, $user);
 
 $head = contact_prepare_head($object);
 
-dol_fiche_head($head, 'tabpatient', $langs->trans("ContactsAddresses"), 0, 'contact');
+dol_fiche_head($head, 'tabpatient', $langs->trans("ContactsAddresses"), ((float) DOL_VERSION < 7 ? 0 : -1), 'contact');
 
 
 if ($id > 0)
 {
-    /*
-     * Fiche en mode visu
-    */
-    print '<table class="border" width="100%">';
+	$linkback = '<a href="'.DOL_URL_ROOT.'/contact/list.php?restore_lastsearch_values=1">'.$langs->trans("BackToList").'</a>';
 
-    // Ref
-    print '<tr><td width="20%">'.$langs->trans("Ref").'</td><td colspan="3">';
-    print $form->showrefnav($object,'id');
-    print '</td></tr>';
+	$morehtmlref='<div class="refidno">';
+	if (empty($conf->global->SOCIETE_DISABLE_CONTACTS))
+	{
+		$objsoc=new Societe($db);
+		$objsoc->fetch($object->socid);
+		// Thirdparty
+		$morehtmlref.=$langs->trans('ThirdParty') . ' : ';
+		if ($objsoc->id > 0) $morehtmlref.=$objsoc->getNomUrl(1);
+		else $morehtmlref.=$langs->trans("ContactNotLinkedToCompany");
+	}
+	$morehtmlref.='</div>';
 
-    // Name
-    print '<tr><td width="20%">'.$langs->trans("Lastname").' / '.$langs->trans("Label").'</td><td width="30%">'.$object->lastname.'</td>';
-    print '<td width="20%">'.$langs->trans("Firstname").'</td><td width="30%">'.$object->firstname.'</td></tr>';
+	dol_banner_tab($object, 'id', $linkback, 1, 'rowid', 'ref', $morehtmlref);
 
-    // Company
-    /*
-    if (empty($conf->global->SOCIETE_DISABLE_CONTACTS))
-    {
-        if ($object->socid > 0)
-        {
-            $objsoc = new Societe($db);
-            $objsoc->fetch($object->socid);
+	$cssclass='titlefield';
+	//if ($action == 'editnote_public') $cssclass='titlefieldcreate';
+	//if ($action == 'editnote_private') $cssclass='titlefieldcreate';
 
-            print '<tr><td>'.$langs->trans("Company").'</td><td colspan="3">'.$objsoc->getNomUrl(1).'</td></tr>';
-        }
+	print '<div class="fichecenter">';
+	print '<div class="underbanner clearboth"></div>';
 
-        else
-        {
-            print '<tr><td>'.$langs->trans("Company").'</td><td colspan="3">';
-            print $langs->trans("ContactNotLinkedToCompany");
-            print '</td></tr>';
-        }
-    }
-	*/
+	print '<table class="border centpercent">';
 
-    // Civility
-    print '<tr><td>'.$langs->trans("UserTitle").'</td><td colspan="3">';
-    print $object->getCivilityLabel();
-    print '</td></tr>';
+	// Civility
+	print '<tr><td class="'.$cssclass.'">'.$langs->trans("UserTitle").'</td><td>';
+	print $object->getCivilityLabel();
+	print '</td></tr>';
 
-    // Role
-    print '<tr><td>'.$langs->trans("PostOrFunction").'</td><td colspan="3">'.$object->poste.'</td></tr>';
+	// Role
+	print '<tr><td>'.$langs->trans("PostOrFunction").'</td><td colspan="3">'.$object->poste.'</td></tr>';
 
-    print "</table>";
+	print "</table>";
+
+	print '</div>';
 }
 
 dol_fiche_end();
