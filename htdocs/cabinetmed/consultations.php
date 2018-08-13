@@ -909,7 +909,7 @@ else
         print '</td></tr>';
         print '<tr><td class="fieldrequired">'.$langs->trans("MotifPrincipal").':';
         print '</td><td>';
-        print '<input type="text" class="flat minwidth200" name="motifconsprinc" value="'.$consult->motifconsprinc.'" id="motifconsprinc"><br>';
+        print '<input type="text" class="flat minwidth400" name="motifconsprinc" value="'.$consult->motifconsprinc.'" id="motifconsprinc"><br>';
         print '</td></tr>';
         print '<tr><td class="tdtop">'.$langs->trans("MotifSecondaires").':';
         print '</td><td>';
@@ -945,7 +945,7 @@ else
         print '</td></tr>';
         print '<tr><td class="fieldrequired">'.$langs->trans("DiagLesPrincipal").':';
         print '</td><td>';
-        print '<input type="text" class="flat minwidth200" name="diaglesprinc" value="'.$consult->diaglesprinc.'" id="diaglesprinc"><br>';
+        print '<input type="text" class="flat minwidth400" name="diaglesprinc" value="'.$consult->diaglesprinc.'" id="diaglesprinc"><br>';
         print '</td></tr>';
         print '<tr><td class="tdtop">'.$langs->trans("DiagLesSecondaires").':';
         print '</td><td>';
