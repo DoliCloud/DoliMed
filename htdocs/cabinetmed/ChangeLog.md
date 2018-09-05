@@ -7,6 +7,8 @@
 - Fix disable of old contact tab on patient only.
 - Fix group by error in stats page of contacts.
 - Enable document template when enabling module
+- Fix attachment not sent when sending email from documents tab.
+- Dolivarr v6+ required.
  
 ## 7.0.0
 
