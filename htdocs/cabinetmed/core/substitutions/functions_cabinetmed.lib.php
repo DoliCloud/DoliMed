@@ -311,7 +311,8 @@ function cabinetmed_completesubstitutionarray(&$substitutionarray,$langs,$object
     $substitutionarray['contact_town']='';
     $substitutionarray['contact_address']='';
     $substitutionarray['contact_email']='';
-    if (is_object($object))
+
+    if (is_object($object) && method_exists($object, 'liste_contact'))
     {
         $tab = $object->liste_contact(-1,'external');
         foreach($tab as $key => $tmparray)

@@ -170,7 +170,14 @@ if ($_POST['addfile'])
     $upload_dir_tmp = $vardir.'/temp';
 
     //$mesg=dol_add_file_process($upload_dir_tmp,0,0);
-    dol_add_file_process($upload_dir_tmp, 0, 0, 'addedfile', '', null, 'thi'.$object->id, 0);
+    if ((float) DOL_VERSION < 6.0)
+    {
+    	dol_add_file_process($upload_dir_tmp, 0, 0, 'addedfile', '', null, 'thi'.$object->id);
+    }
+    else
+    {
+    	dol_add_file_process($upload_dir_tmp, 0, 0, 'addedfile', '', null, 'thi'.$object->id, 0);
+    }
 
     $action='presend';
     $_POST["action"]='presend';

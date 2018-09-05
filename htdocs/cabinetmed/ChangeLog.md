@@ -24,9 +24,11 @@
 - Fix compatibility with MAIN_DB_PREFIX (avoid error on llx_c_type not found)
 - Fix translation
 - Security fixes
+- Fix attachment of document when sending email
 
 ## 5.0
 - Can link elements to consultations.
+- Minimum version of Dolibarr is 4.0
 
 ## 4.1
 - Add extrafields on consultations.
@@ -42,6 +44,7 @@
 - Fields Profession, birthdate, weight, heigth are not extrafields. 
 - Added nb of notes into badge of tabs.
 
+<<<<<<< HEAD
 ## 3.7
 - Work with 3.7
 - Add filter on sale representative
@@ -50,6 +53,9 @@
 - Added nb of notes into badge of tabs.
 
 ## 3.6.0
+=======
+***** 3.6.0
+>>>>>>> branch '5.0' of git@framagit.org:eldy/dolimed.git
 - Add position into databse for combo list.
 - CABINETMED_DELAY_TO_LOCK_RECORD option is not visible into setup.
 

@@ -158,11 +158,11 @@ class Patient extends Societe
      *  @param      int		$call_trigger    			0=non, 1=oui
      *	@param		int		$allowmodcodeclient			Inclut modif code client et code compta
      *	@param		int		$allowmodcodefournisseur	Inclut modif code fournisseur et code compta fournisseur
-     *	@param	    string	$action						'add' or 'update'
-     *	@param	    int		$nosyncmember				Do not synchronize info of linked member
-     *  @return     int      			       			<0 si ko, >=0 si ok
+     *	@param		string	$action						'add' or 'update'
+     *	@param		int		$nosyncmember				Do not synchronize info of linked member
+     *  @return     int      			       			<0 if KO, >=0 if OK
      */
-    function update($id, $user='', $call_trigger=1, $allowmodcodeclient=0, $allowmodcodefournisseur=0, $action = 'update', $nosyncmember = 1)
+    function update($id, $user='', $call_trigger=1, $allowmodcodeclient=0, $allowmodcodefournisseur=0, $action='update', $nosyncmember=1)
     {
         require_once(DOL_DOCUMENT_ROOT."/core/lib/functions2.lib.php");
 
