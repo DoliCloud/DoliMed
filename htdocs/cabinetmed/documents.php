@@ -109,7 +109,6 @@ $res=@include_once DOL_DOCUMENT_ROOT . '/core/actions_linkedfiles.inc.php';
 if (! $res) include_once DOL_DOCUMENT_ROOT . '/core/tpl/document_actions_pre_headers.tpl.php';
 
 
-
 // Actions to build doc
 /* avec 3.9
 $id = $socid;
@@ -170,8 +169,15 @@ if ($_POST['addfile'])
     $vardir=$conf->user->dir_output."/".$user->id;
     $upload_dir_tmp = $vardir.'/temp';
 
-    $mesg=dol_add_file_process($upload_dir_tmp,0,0);
-
+    //$mesg=dol_add_file_process($upload_dir_tmp,0,0);
+    if ((float) DOL_VERSION < 6.0)
+    {
+    	dol_add_file_process($upload_dir_tmp, 0, 0, 'addedfile', '', null, 'thi'.$object->id);
+    }
+    else
+    {
+    	dol_add_file_process($upload_dir_tmp, 0, 0, 'addedfile', '', null, 'thi'.$object->id, 0);
+    }
     $action='presend';
     $_POST["action"]='presend';
 }
@@ -188,7 +194,8 @@ if (! empty($_POST['removedfile']))
     $upload_dir_tmp = $vardir.'/temp';
 
 	// TODO Delete only files that was uploaded from email form
-    $mesg=dol_remove_file_process(GETPOST('removedfile','alpha'),0);
+    //$mesg=dol_remove_file_process(GETPOST('removedfile','alpha'),0);
+    dol_remove_file_process(GETPOST('removedfile','alpha'), 0, 1, 'thi'.$object->id);   // We do not delete because if file is the official PDF of doc, we don't want to remove it physically
 
     $action='presend';
     $_POST["action"]='presend';
@@ -197,6 +204,12 @@ if (! empty($_POST['removedfile']))
 /*
  * Send mail
  */
+
+$trigger_name='COMPANY_SENTBYMAIL';
+$paramname='socid';
+$mode='emailfromthirdparty';
+$trackid='thi'.$object->id;
+
 if ($_POST['action'] == 'send' && ! $_POST['addfile'] && ! $_POST['removedfile'] && ! $_POST['cancel'])
 {
     $error=0;
@@ -248,6 +261,7 @@ if ($_POST['action'] == 'send' && ! $_POST['addfile'] && ! $_POST['removedfile']
             // Create form object
             include_once(DOL_DOCUMENT_ROOT.'/core/class/html.formmail.class.php');
             $formmail = new FormMail($db);
+            $formmail->trackid = 'thi'.$object->id;      // $trackid must be defined
 
             $attachedfiles=$formmail->get_attached_files();
             $filepath = $attachedfiles['paths'];
@@ -544,7 +558,7 @@ if ($object->id)
         $formmail->fromid   = $user->id;
         $formmail->fromname = $user->getFullName($langs);
         $formmail->frommail = $user->email;
-        $formmail->trackid='pat'.$object->id;
+        $formmail->trackid = 'thi'.$object->id;
         if (! empty($conf->global->MAIN_EMAIL_ADD_TRACK_ID) && ($conf->global->MAIN_EMAIL_ADD_TRACK_ID & 2))	// If bit 2 is set
         {
             include DOL_DOCUMENT_ROOT.'/core/lib/functions2.lib.php';

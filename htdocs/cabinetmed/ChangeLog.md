@@ -1,7 +1,11 @@
 # ChangeLog
 
+***** 5.0.1
+- Fix attachment of document when sending email
+
 ***** 5.0
 - Can link elements to consultations.
+- Minimum version of Dolibarr is 4.0
 
 ***** 4.1
 - Add extrafields on consultations.
