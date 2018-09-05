@@ -459,7 +459,7 @@ elseif ($action == 'presend')
 	$formmail->fromid   = $user->id;
 	$formmail->fromname = $user->getFullName($langs);
 	$formmail->frommail = $user->email;
-	$formmail->trackid='pat'.$object->id;
+	$formmail->trackid='thi'.$object->id;
 	if (! empty($conf->global->MAIN_EMAIL_ADD_TRACK_ID) && ($conf->global->MAIN_EMAIL_ADD_TRACK_ID & 2))	// If bit 2 is set
 	{
 		include DOL_DOCUMENT_ROOT.'/core/lib/functions2.lib.php';
