@@ -120,8 +120,6 @@ $datebirth=dol_mktime(0,0,0,GETPOST('birthmonth'),GETPOST('birthday'),GETPOST('b
 
 $title = $langs->trans("ListOfPatients");
 
-llxHeader('', $title);
-
 $sql = "SELECT s.rowid, s.nom as name, s.client, s.town, st.libelle as stcomm, s.prefix_comm, s.code_client,";
 $sql.= " s.datec, s.canvas,";
 $sql.= " se.birthdate, se.prof, MAX(c.datecons) as lastcons, COUNT(c.rowid) as nb";
@@ -202,9 +200,15 @@ if ($num == 1 && ! empty($conf->global->MAIN_SEARCH_DIRECT_OPEN_IF_ONLY_ONE) && 
 {
     $obj = $db->fetch_object($resql);
     $id = $obj->rowid;
-    header("Location: ".DOL_URL_ROOT.'/societe/soc.php?socid='.$id);
+
+    $url = DOL_URL_ROOT.'/societe/card.php?socid='.$id;
+    if ((float) DOL_VERSION < 6.0) DOL_URL_ROOT.'/societe/soc.php?socid='.$id;	// For backward compatibility
+
+    header("Location: ".$url);
     exit;
 }
+
+llxHeader('', $title);
 
 $param = '';
 
