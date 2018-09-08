@@ -9,6 +9,7 @@
 - Enable document template when enabling module
 - Fix attachment not sent when sending email from documents tab.
 - Dolivarr v6+ required.
+- Support extrafields on list of patients.
  
 ## 7.0.0
 
