@@ -27,26 +27,18 @@
 - Security fixes
 - Fix attachment of document when sending email
 
-## 5.0
+## 5.0.0
 - Can link elements to consultations.
 - Minimum version of Dolibarr is 4.0
 
-## 4.1
+## 4.1.0
 - Add extrafields on consultations.
 
-## 4.0
+## 4.0.0
 - Can keep or not feature of thirdparties (invoice, proposal) on patients.
 - Use the new Dolibarr 4.0 look.
 
-## 3.7
-- Work with 3.7
-- Add filter on sale representative
-- Can send email to patient from patient card.
-- Fields Profession, birthdate, weight, heigth are not extrafields. 
-- Added nb of notes into badge of tabs.
-
-<<<<<<< HEAD
-## 3.7
+## 3.7.0
 - Work with 3.7
 - Add filter on sale representative
 - Can send email to patient from patient card.
@@ -54,9 +46,6 @@
 - Added nb of notes into badge of tabs.
 
 ## 3.6.0
-=======
-***** 3.6.0
->>>>>>> branch '5.0' of git@framagit.org:eldy/dolimed.git
 - Add position into databse for combo list.
 - CABINETMED_DELAY_TO_LOCK_RECORD option is not visible into setup.
 
