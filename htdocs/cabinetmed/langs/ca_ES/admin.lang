@@ -5,7 +5,7 @@ ExtraFieldsContacts=Atributs complementaris (contactes)
 UseSearchToSelectCompany= Utilitzar un formulari de cerca per buscar pacients (en comptes de llista desplegable)<br><br>Tingueu en compte que si té un gran nombre de productes o serveis (> 100 000), pot millorar el rendiment mitjançant la constant SOCIETE_DONOTSEARCH_ANYWHERE a 1 a Configuració-> Varis. La recerca es limitarà llavors a l'inici de la cadena.
 ActivityStateToSelectCompany= Afegir un filtre en la recerca per mostrar/ocultar els pacients en actiu o que hagin deixat d'exercir
 ViewFullDateActions= Mostra la data completa de les accions en la fitxa del pacient
-ModuleFamilyCrm= Gestió de contactes
+ModuleFamilyCrm=Gestió de relacions amb clients o pacients (CRM)
 GenericMaskCodes2=<b>{cccc}</b> el codi de client/pacient en n caracters<br><b>{cccc000}</b> El codi de client/pacient en n caracters seguit per un contador independent per a cada client. Aquest contador dedicat al client és resetejat al mateix temps que el contador global.<br><b>{tttt}</b> El codi del tipus de tercer en n caracteres (veure diccionari tipus de tercer).<br>
 
 # Modules= undefined
@@ -15,7 +15,7 @@ Permission121= Consulta a pacient
 Permission122= Crea/modifica pacient (+consultes i exàmens)
 Permission125= Elimina pacients (+consultes i exàmens)
 Permission126= Exporta pacients
-Permission262= Extén l'accés a tots els pacients (no només a aquells que estan enllaçats a un usuari).
+Permission262= Extend access to all patients (Not only those linked to user).<br>Not effective for external users (always limited to themselves for proposals, orders, invoices, contracts, etc).<br>Not effective for projects (only rules on project permissions, visibility and assignement matters).
 Permission281= Consulta tots els contactes
 Permission282= Crea/modifica contactes
 Permission283= Elimina contactes

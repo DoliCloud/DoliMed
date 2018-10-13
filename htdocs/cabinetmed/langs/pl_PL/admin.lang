@@ -5,7 +5,7 @@ ExtraFieldsContacts=Atrybuty uzupełniające (kontakty)
 UseSearchToSelectCompany= Użyj pola z auto-uzupełnieniem by wybrać pacjenta (zamiast listy rozwijanej).
 ActivityStateToSelectCompany= Dodaj opcje filtra by ukryć/pokazać pacjentów, którzy nie są obserwowani
 ViewFullDateActions= Pokaż pełny zakres czasowy akcji dla karty pacjenta
-ModuleFamilyCrm= Zarządzanie kontaktami
+ModuleFamilyCrm=Customer or Patient Relation Management (CRM)
 GenericMaskCodes2=<b>{cccc}</b> the client/patient code on n characters<br><b>{cccc000}</b> the client/patient code on n characters is followed by a counter dedicated for customer. This counter dedicated to customer is reset at same time than global counter.<br><b>{tttt}</b> The code of third party type on n characters (see dictionary-thirdparty types).<br>
 
 # Modules= undefined
@@ -15,7 +15,7 @@ Permission121= Skonsultuj pacjenta
 Permission122= Tworzenie / modyfikowanie pacjenta (+ konsultacje i testy)
 Permission125= Usuń pacjentów (+konsultacje i testy)
 Permission126= Eksport pacjentów
-Permission262= Rozszerzyć dostęp do wszystkich pacjentów (nie tylko te związane z użytkownikiem).
+Permission262= Extend access to all patients (Not only those linked to user).<br>Not effective for external users (always limited to themselves for proposals, orders, invoices, contracts, etc).<br>Not effective for projects (only rules on project permissions, visibility and assignement matters).
 Permission281= Skonsultuj wszystkie kontakty
 Permission282= Tworzenie / modyfikacja kontaktów
 Permission283= Usuwanie kontaktów

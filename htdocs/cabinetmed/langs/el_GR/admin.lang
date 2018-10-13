@@ -5,7 +5,7 @@ ExtraFieldsContacts=Complementary attributes (contacts)
 UseSearchToSelectCompany= Χρησιμοποιείστε ένα πεδίο με αυτόματη συμπλήρωση για την επιλογή ενός ασθενούς (σε αντίθεση με πλαίσιο λίστας)
 ActivityStateToSelectCompany= Προσθήκη επιλογής φίλτρου για εμφάνιση/απόκρυψη ασθενών που πληρούν τα κριτήρια ή όχι
 ViewFullDateActions= Εμφάνιση πλήρους ημερομηνίας 
-ModuleFamilyCrm= Διαχείριση επαφών
+ModuleFamilyCrm=Customer or Patient Relation Management (CRM)
 GenericMaskCodes2=<b>{cccc}</b> the client/patient code on n characters<br><b>{cccc000}</b> the client/patient code on n characters is followed by a counter dedicated for customer. This counter dedicated to customer is reset at same time than global counter.<br><b>{tttt}</b> The code of third party type on n characters (see dictionary-thirdparty types).<br>
 
 # Modules= undefined
@@ -15,7 +15,7 @@ Permission121= Γνωμάτευση ασθενούς
 Permission122= Δημιουργία/μεταβολή ασθενούς (+γνωματεύσεις και εξετάσεις)
 Permission125= Διαγραφή ασθενών (+γνωματεύσεις και εξετάσεις)
 Permission126= Εξαγωγή ασθενών
-Permission262= Εκτεταμένη πρόσβαση σε όλους τους ασθενείς (όχι μόνο σε αυτούς που σχετίζονται με τον χρήστη)
+Permission262= Extend access to all patients (Not only those linked to user).<br>Not effective for external users (always limited to themselves for proposals, orders, invoices, contracts, etc).<br>Not effective for projects (only rules on project permissions, visibility and assignement matters).
 Permission281= Consult all contacts
 Permission282= Δημιουργία/μεταβολή επαφών
 Permission283= Διαγραφή επαφών

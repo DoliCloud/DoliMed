@@ -5,7 +5,7 @@ ExtraFieldsContacts=Attributs supplémentaires (correspondants)
 UseSearchToSelectCompany= Utiliser un champ avec autocomplétion pour choisir un patient (plutôt qu'une liste déroulante).<br><br>Notez que si vous avez un nombre important de produits ou services (> 100 000), vous pouvez améliorer les performances en définissant la constante SOCIETE_DONOTSEARCH_ANYWHERE à 1 dans Configuration->Divers. La recherche sera alors limitée au début de la chaine.
 ActivityStateToSelectCompany= Ajouter une option de filtrage lors des recherches pour afficher/masquer les patients en exercice ou ayant cessés d'exercer
 ViewFullDateActions= Visualiser les dates des actions en entier dans la fiche patient
-ModuleFamilyCrm= Gestion contacts
+ModuleFamilyCrm=Gestion de la relation client ou patient (CRM)
 GenericMaskCodes2=<b> {cccc} </b> le code client / patient sur n caractères <br> <b> {cccc000} </b> le code client / patient sur n caractères est suivi d'un compteur dédié au client. Ce compteur dédié au client est réinitialisé au même moment que le compteur global.<br> <b> {tttt} </b> Le code de type tiers sur n caractères (voir les types de dictionnaire-tier).<br>
 
 # Modules= undefined
@@ -15,7 +15,7 @@ Permission121= Consulter les patients liés à l'utilisateur
 Permission122= Créer/modifier les patients (+consultations et examens) liés à l'utilisateur
 Permission125= Supprimer les patients (+consultations et examens) liés à l'utilisateur
 Permission126= Exporter les patients
-Permission262= Étendre l'accès à tous les patients (Pas seulement ceux liés à l'utilisateur).<br>Non effectif pour les utilisateurs externes (toujours limités à eux-mêmes sur les propositions commerciales, commandes, factures, contrats, etc).<br>Non effectif sur les projets (seules s'appliquent les permissions propres au module projets, et les règles de visibilité et d'assignation des tâches)
+Permission262= Étendre l'accès à tous les patients (Pas seulement ceux liés à l'utilisateur). <br>Non effectif pour utilisateurs externes (toujours limité à leurs patients).<br>Non effectif sur les projets (seules les règles de permissions de projet, visibilité et affectation de ressource compte sur les projets)
 Permission281= Consulter les correspondants
 Permission282= Créer/modifier les correspondants
 Permission283= Supprimer les correspondants

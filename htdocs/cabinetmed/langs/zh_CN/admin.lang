@@ -5,7 +5,7 @@ ExtraFieldsContacts=属性互补(联系人)
 UseSearchToSelectCompany= Use a field with autcompletion to select a patient (instead of a combo list).
 ActivityStateToSelectCompany= Add a filtering option to hide/show patients that are or not followed
 ViewFullDateActions= View full date of actions into patient card
-ModuleFamilyCrm= 联系人管理
+ModuleFamilyCrm=Customer or Patient Relation Management (CRM)
 GenericMaskCodes2=<b>{cccc}</b> the client/patient code on n characters<br><b>{cccc000}</b> the client/patient code on n characters is followed by a counter dedicated for customer. This counter dedicated to customer is reset at same time than global counter.<br><b>{tttt}</b> The code of third party type on n characters (see dictionary-thirdparty types).<br>
 
 # Modules= undefined
@@ -15,7 +15,7 @@ Permission121= Consult patient
 Permission122= Create/modify patient (+consultations and exams)
 Permission125= Delete patients (+consultations and exams)
 Permission126= Export patients
-Permission262= Extend access to all patients (Not only those linked to user).
+Permission262= Extend access to all patients (Not only those linked to user).<br>Not effective for external users (always limited to themselves for proposals, orders, invoices, contracts, etc).<br>Not effective for projects (only rules on project permissions, visibility and assignement matters).
 Permission281= Consult all contacts
 Permission282= 创建/编辑联系人
 Permission283= 删除联系人
