@@ -70,6 +70,7 @@ $search_all=GETPOST('search_all', 'alpha');
 $search_nom=GETPOST("search_nom");
 $search_ville=GETPOST("search_ville");
 $search_code=GETPOST("search_code");
+$datebirth=dol_mktime(0,0,0,GETPOST('birthmonth'),GETPOST('birthday'),GETPOST('birthyear'));
 
 // Load sale and categ filters
 $search_sale = GETPOST("search_sale");
@@ -104,6 +105,10 @@ if (GETPOST("button_removefilter_x") || GETPOST("button_removefilter.x") || GETP
     $search_idprof3='';
     $search_idprof4='';
     $datebirth='';
+    $search_birthday='';
+    $search_birthmonth='';
+    $search_birthyear='';
+    $datebirth='';
 }
 
 
@@ -115,8 +120,6 @@ if (GETPOST("button_removefilter_x") || GETPOST("button_removefilter.x") || GETP
 $form=new Form($db);
 $htmlother=new FormOther($db);
 $thirdpartystatic=new Societe($db);
-
-$datebirth=dol_mktime(0,0,0,GETPOST('birthmonth'),GETPOST('birthday'),GETPOST('birthyear'));
 
 $title = $langs->trans("ListOfPatients");
 
