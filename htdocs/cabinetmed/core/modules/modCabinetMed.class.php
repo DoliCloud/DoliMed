@@ -363,7 +363,7 @@ class modCabinetMed extends DolibarrModules
 
         $r++;
         // Categories
-        $this->menu[$r]=array(   'fk_menu'=>'fk_mainmenu=patients',
+        $this->menu[$r]=array(   'fk_menu'=>'fk_mainmenu=patients,fk_leftmenu=patients',
 						        'type'=>'left',         // This is a Left menu entry
 						        'titre'=>'PatientsCategoriesShort',
 						        'mainmenu'=>'patients',
@@ -371,19 +371,6 @@ class modCabinetMed extends DolibarrModules
 						        'url'=>'/categories/index.php?leftmenu=categorypatients&type=2',
 						        'langs'=>'categories',  // Lang file to use (without .lang) by module. File must be in langs/code_CODE/ directory.
 						        'position'=>151,
-						        'enabled'=>'$conf->categorie->enabled',         // Define condition to show or hide menu entry. Use '$conf->voyage->enabled' if entry must be visible if module is enabled.
-						        'perms'=>'$user->rights->categorie->lire',           // Use 'perms'=>'$user->rights->voyage->level1->level2' if you want your menu with a permission rules
-						        'target'=>'',
-						        'user'=>2);             // 0=Menu for internal users, 1=external users, 2=both
-        $r++;
-        $this->menu[$r]=array(   'fk_menu'=>'fk_mainmenu=patients,fk_leftmenu=categorypatients',
-						        'type'=>'left',         // This is a Left menu entry
-						        'titre'=>'NewCategory',
-						        'mainmenu'=>'patients',
-						        'leftmenu'=>'categorypatients_new',
-						        'url'=>'/categories/card.php?action=create&type=2',
-						        'langs'=>'categories',  // Lang file to use (without .lang) by module. File must be in langs/code_CODE/ directory.
-						        'position'=>152,
 						        'enabled'=>'$conf->categorie->enabled',         // Define condition to show or hide menu entry. Use '$conf->voyage->enabled' if entry must be visible if module is enabled.
 						        'perms'=>'$user->rights->categorie->lire',           // Use 'perms'=>'$user->rights->voyage->level1->level2' if you want your menu with a permission rules
 						        'target'=>'',
