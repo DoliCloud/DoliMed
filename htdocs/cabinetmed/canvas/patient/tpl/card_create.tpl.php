@@ -162,7 +162,7 @@ dol_fiche_head('');
 
 <tr>
 	<td class="titlefield"><span class="fieldrequired"><?php echo $langs->trans('PatientName'); ?></span></td>
-	<td><input type="text" size="40" maxlength="60" name="name" value="<?php echo $object->name; ?>"></td>
+	<td><input type="text" size="40" maxlength="60" name="name" value="<?php echo $object->name; ?>" autofocus="autofocus"></td>
     <td width="25%"><?php echo $langs->trans('PatientCode'); ?></td>
     <td width="25%">
 <?php
