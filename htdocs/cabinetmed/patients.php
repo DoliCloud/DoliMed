@@ -1,6 +1,6 @@
 <?php
 /* Copyright (C) 2001-2006 Rodolphe Quiedeville <rodolphe@quiedeville.org>
- * Copyright (C) 2004-2016 Laurent Destailleur  <eldy@users.sourceforge.net>
+ * Copyright (C) 2004-2018 Laurent Destailleur  <eldy@users.sourceforge.net>
  * Copyright (C) 2005-2009 Regis Houssin        <regis@dolibarr.fr>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -410,6 +410,12 @@ if ($search_import_key != '') $param.='&search_import_key='.urlencode($search_im
 if ($type != '') $param.='&type='.urlencode($type);
 // Add $param from extra fields
 include DOL_DOCUMENT_ROOT.'/core/tpl/extrafields_list_search_param.tpl.php';
+
+if ($search_diagles != '')    $param.='&amp;search_diagles='.urlencode($search_diagles);
+if ($search_birthday != '')   $param.='&amp;search_birthday='.urlencode($search_birthday);
+if ($search_birthmonth != '') $param.='&amp;search_birthmonth='.urlencode($search_birthmonth);
+if ($search_birttyear != '')  $param.='&amp;search_birthyear='.urlencode($search_birthyear);
+
 
 // List of mass actions available
 $arrayofmassactions =  array(
