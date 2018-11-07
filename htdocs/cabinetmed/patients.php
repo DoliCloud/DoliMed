@@ -95,7 +95,8 @@ $extrafields = new ExtraFields($db);
 
 // fetch optionals attributes and labels
 $extralabels = $extrafields->fetch_name_optionals_label('societe');
-$search_array_options=$extrafields->getOptionalsFromPost($extralabels,'','search_');
+if ((float) DOL_VERSION >= 9.0) $search_array_options=$extrafields->getOptionalsFromPost($object->table_element,'','search_');
+else $search_array_options=$extrafields->getOptionalsFromPost($extralabels,'','search_');
 
 // List of fields to search into when doing a "search in all"
 $fieldstosearchall = array(
@@ -148,6 +149,7 @@ $arrayfields=array(
 's.import_key'=>array('label'=>"ImportId", 'checked'=>0, 'position'=>1100),
 );
 // Extra fields
+//if (is_array($extrafields->attributes[$object->table_element]['label']) && count($extrafields->attributes[$object->table_element]['label']) > 0) // v9+
 if (is_array($extrafields->attribute_label) && count($extrafields->attribute_label))
 {
 	foreach($extrafields->attribute_label as $key => $val)
@@ -156,7 +158,6 @@ if (is_array($extrafields->attribute_label) && count($extrafields->attribute_lab
 	}
 }
 
-$object = new Societe($db);
 
 
 /*
@@ -191,8 +192,10 @@ if (empty($reshook))
 		$search_idprof3='';
 		$search_idprof4='';
 		$search_contactid='';
-		$datebirth='';
 		$search_status=-1;
+		$search_birthday='';
+		$search_birthmonth='';
+		$search_birthyear='';
 		$toselect='';
 		$search_array_options=array();
 	}
@@ -242,8 +245,6 @@ $prospectstatic=new Client($db);
 $prospectstatic->client=2;
 $prospectstatic->loadCacheOfProspStatus();
 
-$datebirth=dol_mktime(0,0,0,GETPOST('birthmonth'),GETPOST('birthday'),GETPOST('birthyear'));
-
 $title = $langs->trans("ListOfPatients");
 
 $sql = "SELECT s.rowid, s.nom as name, s.client, s.town, st.libelle as stcomm, s.prefix_comm, s.code_client,";
@@ -272,7 +273,6 @@ $sql.= ' WHERE s.entity IN ('.getEntity('societe', 1).')';
 $sql.= " AND s.canvas='patient@cabinetmed'";
 $sql.= " AND s.fk_stcomm = st.id";
 $sql.= " AND s.client IN (1, 3)";
-if ($datebirth != '') $sql.=" AND (ef.birthdate LIKE '%".dol_print_date($datebirth,'day')."%' OR ef.birthdate LIKE '%".dol_print_date($datebirth,'dayxcard')."%' OR ef.birthdate LIKE '%".dol_print_date($datebirth,'dayrfc')."%')";	// Date of birth are not saved into date format but with use string format
 if ($search_diagles)
 {
     $label= dol_getIdFromCode($db,$search_diagles,'cabinetmed_diaglec','code','label');
@@ -412,9 +412,6 @@ if ($type != '') $param.='&type='.urlencode($type);
 include DOL_DOCUMENT_ROOT.'/core/tpl/extrafields_list_search_param.tpl.php';
 
 if ($search_diagles != '')    $param.='&amp;search_diagles='.urlencode($search_diagles);
-if ($search_birthday != '')   $param.='&amp;search_birthday='.urlencode($search_birthday);
-if ($search_birthmonth != '') $param.='&amp;search_birthmonth='.urlencode($search_birthmonth);
-if ($search_birttyear != '')  $param.='&amp;search_birthyear='.urlencode($search_birthyear);
 
 
 // List of mass actions available
