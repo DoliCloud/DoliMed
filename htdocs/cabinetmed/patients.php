@@ -1,6 +1,6 @@
 <?php
 /* Copyright (C) 2001-2006 Rodolphe Quiedeville <rodolphe@quiedeville.org>
- * Copyright (C) 2004-2016 Laurent Destailleur  <eldy@users.sourceforge.net>
+ * Copyright (C) 2004-2018 Laurent Destailleur  <eldy@users.sourceforge.net>
  * Copyright (C) 2005-2009 Regis Houssin        <regis@dolibarr.fr>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -212,17 +212,18 @@ llxHeader('', $title);
 
 $param = '';
 
-if (! empty($contextpage) && $contextpage != $_SERVER["PHP_SELF"]) $param.='&contextpage='.$contextpage;
+if (! empty($contextpage) && $contextpage != $_SERVER["PHP_SELF"]) $param.='&contextpage='.urlencode($contextpage);
 if ($limit > 0 && $limit != $conf->liste_limit) $param.='&limit='.$limit;
-if ($search_categ != '')   $param.='&amp;search_categ='.$search_categ;
-if ($search_sale != '')	   $param.='&amp;search_sale='.$search_sale;
-if ($search_diagles != '') $param.='&amp;search_diagles='.$search_diagles;
-if ($search_nom != '')     $param.='&amp;search_nom='.$search_nom;
-if ($search_code != '')    $param.='&amp;search_code='.$search_code;
-if ($search_ville != '')   $param.='&amp;search_ville='.$search_ville;
-if ($search_birthday != '')   $param.='&amp;search_birthday='.$search_birthday;
-if ($search_birthmonth != '') $param.='&amp;search_birthmonth='.$search_birthmonth;
-if ($search_birttyear != '')  $param.='&amp;search_birthyear='.$search_birthyear;
+if ($search_all != '')        $param.='&amp;search_all='.urlencode($search_all);
+if ($search_categ != '')      $param.='&amp;search_categ='.urlencode($search_categ);
+if ($search_sale != '')	      $param.='&amp;search_sale='.urlencode($search_sale);
+if ($search_diagles != '')    $param.='&amp;search_diagles='.urlencode($search_diagles);
+if ($search_nom != '')        $param.='&amp;search_nom='.urlencode($search_nom);
+if ($search_code != '')       $param.='&amp;search_code='.urlencode($search_code);
+if ($search_ville != '')      $param.='&amp;search_ville='.urlencode($search_ville);
+if ($search_birthday != '')   $param.='&amp;search_birthday='.urlencode($search_birthday);
+if ($search_birthmonth != '') $param.='&amp;search_birthmonth='.urlencode($search_birthmonth);
+if ($search_birttyear != '')  $param.='&amp;search_birthyear='.urlencode($search_birthyear);
 
 print_barre_liste($title, $page, $_SERVER["PHP_SELF"],$param,$sortfield,$sortorder,'',$num,$nbtotalofrecords, 'title_companies', 0, '', '', $limit);
 
