@@ -356,9 +356,10 @@ class Patient extends Societe
      *    @param      string	$idprof5		Prof id 5 of third party (Warning, this can return several records)
      *    @param      string	$idprof6		Prof id 6 of third party (Warning, this can return several records)
      *    @param      string	$email			Email
+     *    @param      string    $ref_alias      Alternative name
      *    @return     $int						>0 if OK, <0 if KO or if two records found for same ref or idprof.
      */
-    function fetch($rowid, $ref='', $ref_ext='', $ref_int='', $idprof1='',$idprof2='',$idprof3='',$idprof4='', $idprof5 = '', $idprof6 = '', $email='')
+    function fetch($rowid, $ref='', $ref_ext='', $ref_int='', $idprof1='',$idprof2='',$idprof3='',$idprof4='', $idprof5 = '', $idprof6 = '', $email='', $ref_alias = '')
     {
         global $langs;
         global $conf;
@@ -398,15 +399,20 @@ class Patient extends Societe
         $sql .= ' LEFT JOIN '.MAIN_DB_PREFIX.'c_forme_juridique as fj ON s.fk_forme_juridique = fj.code';
         $sql .= ' LEFT JOIN '.MAIN_DB_PREFIX.'c_departements as d ON s.fk_departement = d.rowid';
         $sql .= ' LEFT JOIN '.MAIN_DB_PREFIX.'c_typent as te ON s.fk_typent = te.id';
-        if ($rowid) $sql .= ' WHERE s.rowid = '.$rowid;
-        if ($ref)   $sql .= " WHERE s.nom = '".$this->db->escape($ref)."' AND s.entity = ".$conf->entity;
-        if ($ref_ext) $sql .= " WHERE s.ref_ext = '".$this->db->escape($ref_ext)."' AND s.entity = ".$conf->entity;
-        if ($idprof1) $sql .= " WHERE s.siren = '".$this->db->escape($siren)."' AND s.entity = ".$conf->entity;
-        if ($idprof2) $sql .= " WHERE s.siret = '".$this->db->escape($siret)."' AND s.entity = ".$conf->entity;
-        if ($idprof3) $sql .= " WHERE s.ape = '".$this->db->escape($ape)."' AND s.entity = ".$conf->entity;
-        if ($idprof4) $sql .= " WHERE s.idprof4 = '".$this->db->escape($idprof4)."' AND s.entity = ".$conf->entity;
-        if ($idprof5) $sql .= " WHERE s.idprof5 = '".$this->db->escape($idprof5)."' AND s.entity = ".$conf->entity;
-        if ($idprof6) $sql .= " WHERE s.idprof6 = '".$this->db->escape($idprof6)."' AND s.entity = ".$conf->entity;
+
+        $sql .= ' WHERE s.entity IN ('.getEntity($this->element).')';
+        if ($rowid)     $sql .= ' AND s.rowid = '.$rowid;
+        if ($ref)       $sql .= " AND s.nom = '".$this->db->escape($ref)."'";
+        if ($ref_alias) $sql .= " AND s.nom_alias = '".$this->db->escape($ref_alias)."'";
+        if ($ref_ext)   $sql .= " AND s.ref_ext = '".$this->db->escape($ref_ext)."'";
+        if ($ref_int)   $sql .= " AND s.ref_int = '".$this->db->escape($ref_int)."'";
+        if ($idprof1)   $sql .= " AND s.siren = '".$this->db->escape($idprof1)."'";
+        if ($idprof2)   $sql .= " AND s.siret = '".$this->db->escape($idprof2)."'";
+        if ($idprof3)   $sql .= " AND s.ape = '".$this->db->escape($idprof3)."'";
+        if ($idprof4)   $sql .= " AND s.idprof4 = '".$this->db->escape($idprof4)."'";
+        if ($idprof5)   $sql .= " AND s.idprof5 = '".$this->db->escape($idprof5)."'";
+        if ($idprof6)   $sql .= " AND s.idprof6 = '".$this->db->escape($idprof6)."'";
+        if ($email)     $sql .= " AND s.email = '".$this->db->escape($email)."'";
         //print $sql;
 
         $resql=$this->db->query($sql);
