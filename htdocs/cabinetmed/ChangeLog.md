@@ -1,7 +1,7 @@
 # ChangeLog
 
 
-## 7.0.1 Not released
+## 7.0.1
 
 - NEW Compatibilty with Dolibarr v8.
 - Fix disable of old contact tab on patient only.
