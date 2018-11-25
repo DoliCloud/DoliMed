@@ -8,6 +8,7 @@
 - Fix group by error in stats page of contacts.
 - Enable document template when enabling module
 - Fix attachment not sent when sending email from documents tab.
+- Fix edit of sale representative (following doctor) on patient.
 - Dolivarr v6+ required.
 - Support extrafields on list of patients.
  
