@@ -205,6 +205,9 @@ print '</tr>';
 print '<tr><td>'.$langs->trans('ActivityBranch').'</td><td colspan="3">'.$object->forme_juridique.'</td>';
 print '</tr>';
 
+// Sales representative
+include DOL_DOCUMENT_ROOT.'/societe/tpl/linesalesrepresentative.tpl.php';
+
 // Default language
 if ($conf->global->MAIN_MULTILANGS)
 {
@@ -331,6 +334,7 @@ if (empty($conf->global->SOCIETE_DISABLE_PARENTCOMPANY))
 */
 
 // Commercial
+/*
 print '<tr><td>';
 print '<table width="100%" class="nobordernopadding"><tr><td>';
 print $langs->trans('SalesRepresentatives');
@@ -367,6 +371,8 @@ else if ($nbofsalesrepresentative > 0)
 }
 else print $langs->trans("NoSalesRepresentativeAffected");
 print '</td></tr>';
+*/
+
 
 print '</table>';
 
