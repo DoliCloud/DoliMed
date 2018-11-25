@@ -351,10 +351,21 @@ if ($user->admin) print info_admin($langs->trans("YouCanChangeValuesForThisListF
 print '</td>';
 print '</tr>';
 
+// Juridical status
 print '<tr><td>'.$langs->trans('ActivityBranch').'</td><td colspna="3">';
 print $formcompany->select_juridicalstatus($object->forme_juridique_code, $object->country_code, "AND (f.module = 'cabinetmed' OR f.code > '100000')");
 print '</td>';
 print '</tr>';
+
+// Assign a Name
+print '<tr>';
+print '<td>'.fieldLabel('AllocateCommercial','commercial_id').'</td>';
+print '<td colspan="3" class="maxwidthonsmartphone">';
+$userlist = $form->select_dolusers('', '', 0, null, 0, '', '', 0, 0, 0, '', 0, '', '', 0, 1);
+$arrayselected = GETPOST('commercial', 'array');
+if (empty($arrayselected)) $arrayselected = $object->getSalesRepresentatives($user, 1);
+print $form->multiselectarray('commercial', $userlist, $arrayselected, null, null, null, null, "90%");
+print '</td></tr>';
 
 // Default language
 if (! empty($conf->global->MAIN_MULTILANGS))
