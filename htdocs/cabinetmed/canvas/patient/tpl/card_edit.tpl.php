@@ -357,16 +357,6 @@ print $formcompany->select_juridicalstatus($object->forme_juridique_code, $objec
 print '</td>';
 print '</tr>';
 
-// Assign a Name
-print '<tr>';
-print '<td>'.fieldLabel('AllocateCommercial','commercial_id').'</td>';
-print '<td colspan="3" class="maxwidthonsmartphone">';
-$userlist = $form->select_dolusers('', '', 0, null, 0, '', '', 0, 0, 0, '', 0, '', '', 0, 1);
-$arrayselected = GETPOST('commercial', 'array');
-if (empty($arrayselected)) $arrayselected = $object->getSalesRepresentatives($user, 1);
-print $form->multiselectarray('commercial', $userlist, $arrayselected, null, null, null, null, "90%");
-print '</td></tr>';
-
 // Default language
 if (! empty($conf->global->MAIN_MULTILANGS))
 {
@@ -443,6 +433,16 @@ if ($caneditfield)
 }
 print '</td>';
 print '</tr>';
+
+// Assign sale representative
+print '<tr>';
+print '<td>'.$form->editfieldkey('AllocateCommercial', 'commercial_id', '', $object, 0).'</td>';
+print '<td colspan="3" class="maxwidthonsmartphone">';
+$userlist = $form->select_dolusers('', '', 0, null, 0, '', '', 0, 0, 0, '', 0, '', '', 0, 1);
+$arrayselected = GETPOST('commercial', 'array');
+if (empty($arrayselected)) $arrayselected = $object->getSalesRepresentatives($user, 1);
+print $form->multiselectarray('commercial', $userlist, $arrayselected, null, null, null, null, "90%");
+print '</td></tr>';
 
 print '</table>';
 

@@ -32,6 +32,7 @@ global $db,$conf,$mysoc,$langs,$user,$hookmanager,$extrafields;
 require_once(DOL_DOCUMENT_ROOT ."/core/class/html.formcompany.class.php");
 require_once(DOL_DOCUMENT_ROOT ."/core/class/html.formfile.class.php");
 require_once(DOL_DOCUMENT_ROOT ."/core/lib/date.lib.php");
+if (! empty($conf->adherent->enabled)) require_once DOL_DOCUMENT_ROOT.'/adherents/class/adherent.class.php';
 dol_include_once("/cabinetmed/lib/cabinetmed.lib.php");
 
 $form=new Form($GLOBALS['db']);
@@ -205,9 +206,6 @@ print '</tr>';
 print '<tr><td>'.$langs->trans('ActivityBranch').'</td><td colspan="3">'.$object->forme_juridique.'</td>';
 print '</tr>';
 
-// Sales representative
-include DOL_DOCUMENT_ROOT.'/societe/tpl/linesalesrepresentative.tpl.php';
-
 // Default language
 if ($conf->global->MAIN_MULTILANGS)
 {
@@ -333,46 +331,35 @@ if (empty($conf->global->SOCIETE_DISABLE_PARENTCOMPANY))
 }
 */
 
-// Commercial
-/*
-print '<tr><td>';
-print '<table width="100%" class="nobordernopadding"><tr><td>';
-print $langs->trans('SalesRepresentatives');
-print '<td><td align="right">';
-if ($user->rights->societe->creer)
-print '<a href="'.DOL_URL_ROOT.'/societe/commerciaux.php?socid='.$object->id.'">'.img_edit().'</a>';
-else
-print '&nbsp;';
-print '</td></tr></table>';
-print '</td>';
-print '<td colspan="3">';
+    // Sales representative
+    include DOL_DOCUMENT_ROOT.'/societe/tpl/linesalesrepresentative.tpl.php';
 
-$listsalesrepresentatives=$object->getSalesRepresentatives($user);
-$nbofsalesrepresentative=count($listsalesrepresentatives);
-if ($nbofsalesrepresentative > 3)   // We print only number
-{
-    print '<a href="'.DOL_URL_ROOT.'/societe/commerciaux.php?socid='.$object->id.'">';
-    print $nbofsalesrepresentative;
-    print '</a>';
-}
-else if ($nbofsalesrepresentative > 0)
-{
-    $userstatic=new User($db);
-    $i=0;
-    foreach($listsalesrepresentatives as $val)
+    // Module Adherent
+    if (! empty($conf->adherent->enabled))
     {
-        $userstatic->id=$val['id'];
-        $userstatic->lastname=$val['lastname'];
-        $userstatic->firstname=$val['firstname'];
-        print $userstatic->getNomUrl(1);
-        $i++;
-        if ($i < $nbofsalesrepresentative) print ', ';
+        $langs->load("members");
+        print '<tr><td>'.$langs->trans("LinkedToDolibarrMember").'</td>';
+        print '<td colspan="3">';
+        $adh=new Adherent($db);
+        $result=$adh->fetch('','',$object->id);
+        if ($result > 0)
+        {
+            $adh->ref=$adh->getFullName($langs);
+            print $adh->getNomUrl(1);
+        }
+        else
+        {
+            print '<span class="opacitymedium">'.$langs->trans("ThirdpartyNotLinkedToMember").'</span>';
+        }
+        print '</td>';
+        print "</tr>\n";
     }
-}
-else print $langs->trans("NoSalesRepresentativeAffected");
-print '</td></tr>';
-*/
 
+    // Webservices url/key
+    if (!empty($conf->syncsupplierwebservices->enabled)) {
+        print '<tr><td>'.$langs->trans("WebServiceURL").'</td><td>'.dol_print_url($object->webservices_url).'</td>';
+        print '<td class="nowrap">'.$langs->trans('WebServiceKey').'</td><td>'.$object->webservices_key.'</td></tr>';
+    }
 
 print '</table>';
 
