@@ -30,8 +30,8 @@ ExamenConclusion=Exam Conclusion
 BankNameList=List of banks
 
 CompanySetup= Setup of Patient module
-CompanyCodeChecker= Model to generate and check patient code
-CashDeskThirdPartyForSell= Generic patient for sells
-CashDeskBankAccountForSell= Bank account to use for cash
-CashDeskBankAccountForCheque= Compte à utiliser pour l'encaissement en cheque
-CashDeskBankAccountForCB= Bank account to use for credit card
+CompanyCodeChecker=Model to generate and check patient code
+CashDeskThirdPartyForSell=Generic patient for sells
+CashDeskBankAccountForSell=Bank account to use for cash
+CashDeskBankAccountForCheque=Bank account to use for check deposits
+CashDeskBankAccountForCB=Bank account to use for credit card
