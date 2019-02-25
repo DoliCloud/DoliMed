@@ -55,11 +55,7 @@ require_once DOL_DOCUMENT_ROOT.'/categories/class/categorie.class.php';
 if (! empty($conf->adherent->enabled)) require_once DOL_DOCUMENT_ROOT.'/adherents/class/adherent.class.php';
 
 $langs->load("cabinetmed@cabinetmed");
-$langs->load("companies");
-$langs->load("commercial");
-$langs->load("bills");
-$langs->load("banks");
-$langs->load("users");
+$langs->loadLangs(array("companies","commercial","bills","banks","users"));
 $langs->load("other");
 if (! empty($conf->categorie->enabled)) $langs->load("categories");
 if (! empty($conf->incoterm->enabled)) $langs->load("incoterm");
@@ -68,9 +64,11 @@ if (! empty($conf->notification->enabled)) $langs->load("mails");
 $mesg=''; $error=0; $errors=array();
 
 $action		= (GETPOST('action','aZ09') ? GETPOST('action','aZ09') : 'view');
+$cancel		= GETPOST('cancel','alpha');
 $backtopage = GETPOST('backtopage','alpha');
-$confirm	= GETPOST('confirm');
-$socid		= GETPOST('socid','int');
+$confirm	= GETPOST('confirm','alpha');
+
+$socid		= GETPOST('socid','int')?GETPOST('socid','int'):GETPOST('id','int');
 if ($user->societe_id) $socid=$user->societe_id;
 if (empty($socid) && $action == 'view') $action='create';
 
@@ -80,9 +78,10 @@ $extrafields = new ExtraFields($db);
 // fetch optionals attributes and labels
 $extralabels=$extrafields->fetch_name_optionals_label($object->table_element);
 
-// Initialize technical object to manage hooks of page. Note that conf->hooks_modules contains array array
+// Initialize technical object to manage hooks of page. Note that conf->hooks_modules contains array of hook context
 $hookmanager->initHooks(array('thirdpartycard','globalcard'));
 
+if ($socid > 0) $object->fetch($socid);
 
 // Get object canvas (By default, this is not defined, so standard usage of dolibarr)
 $object->getCanvas($socid);
@@ -110,6 +109,202 @@ if ($reshook < 0) setEventMessages($hookmanager->error, $hookmanager->errors, 'e
 
 if (empty($reshook))
 {
+    if ($cancel)
+    {
+        $action='';
+        if (! empty($backtopage))
+        {
+            header("Location: ".$backtopage);
+            exit;
+        }
+    }
+    
+    if ($action == 'confirm_merge' && $confirm == 'yes' && $user->rights->societe->creer)
+    {
+        $error = 0;
+        $soc_origin_id = GETPOST('soc_origin', 'int');
+        $soc_origin = new Societe($db);
+        
+        if ($soc_origin_id <= 0)
+        {
+            $langs->load('errors');
+            $langs->load('companies');
+            setEventMessages($langs->trans('ErrorThirdPartyIdIsMandatory', $langs->trans('MergeOriginThirdparty')), null, 'errors');
+        }
+        else
+        {
+            if (!$error && $soc_origin->fetch($soc_origin_id) < 1)
+            {
+                setEventMessages($langs->trans('ErrorRecordNotFound'), null, 'errors');
+                $error++;
+            }
+            
+            if (!$error)
+            {
+                // TODO Move the merge function into class of object.
+                
+                $db->begin();
+                
+                // Recopy some data
+                $object->client = $object->client | $soc_origin->client;
+                $object->fournisseur = $object->fournisseur | $soc_origin->fournisseur;
+                $listofproperties=array(
+                    'address', 'zip', 'town', 'state_id', 'country_id', 'phone', 'phone_pro', 'fax', 'email', 'skype', 'url', 'barcode',
+                    'idprof1', 'idprof2', 'idprof3', 'idprof4', 'idprof5', 'idprof6',
+                    'tva_intra', 'effectif_id', 'forme_juridique', 'remise_percent', 'remise_supplier_percent', 'mode_reglement_supplier_id', 'cond_reglement_supplier_id', 'name_bis',
+                    'stcomm_id', 'outstanding_limit', 'price_level', 'parent', 'default_lang', 'ref', 'ref_ext', 'import_key', 'fk_incoterms', 'fk_multicurrency',
+                    'code_client', 'code_fournisseur', 'code_compta', 'code_compta_fournisseur',
+                    'model_pdf', 'fk_projet'
+                );
+                foreach ($listofproperties as $property)
+                {
+                    if (empty($object->$property)) $object->$property = $soc_origin->$property;
+                }
+                
+                // Concat some data
+                $listofproperties=array(
+                    'note_public', 'note_private'
+                );
+                foreach ($listofproperties as $property)
+                {
+                    $object->$property = dol_concatdesc($object->$property, $soc_origin->$property);
+                }
+                
+                // Merge extrafields
+                if (is_array($soc_origin->array_options))
+                {
+                    foreach ($soc_origin->array_options as $key => $val)
+                    {
+                        if (empty($object->array_options[$key])) $object->array_options[$key] = $val;
+                    }
+                }
+                
+                // Merge categories
+                $static_cat = new Categorie($db);
+                
+                $custcats_ori = $static_cat->containing($soc_origin->id, 'customer', 'id');
+                $custcats = $static_cat->containing($object->id, 'customer', 'id');
+                $custcats = array_merge($custcats,$custcats_ori);
+                $object->setCategories($custcats, 'customer');
+                
+                $suppcats_ori = $static_cat->containing($soc_origin->id, 'supplier', 'id');
+                $suppcats = $static_cat->containing($object->id, 'supplier', 'id');
+                $suppcats = array_merge($suppcats,$suppcats_ori);
+                $object->setCategories($suppcats, 'supplier');
+                
+                // If thirdparty has a new code that is same than origin, we clean origin code to avoid duplicate key from database unique keys.
+                if ($soc_origin->code_client == $object->code_client
+                    || $soc_origin->code_fournisseur == $object->code_fournisseur
+                    || $soc_origin->barcode == $object->barcode)
+                {
+                    dol_syslog("We clean customer and supplier code so we will be able to make the update of target");
+                    $soc_origin->code_client = '';
+                    $soc_origin->code_fournisseur = '';
+                    $soc_origin->barcode = '';
+                    $soc_origin->update($soc_origin->id, $user, 0, 1, 1, 'merge');
+                }
+                
+                // Update
+                $object->update($object->id, $user, 0, 1, 1, 'merge');
+                if ($result < 0)
+                {
+                    $error++;
+                }
+                
+                // Move links
+                if (! $error)
+                {
+                    $objects = array(
+                        'Adherent' => '/adherents/class/adherent.class.php',
+                        'Societe' => '/societe/class/societe.class.php',
+                        //'Categorie' => '/categories/class/categorie.class.php',
+                        'ActionComm' => '/comm/action/class/actioncomm.class.php',
+                        'Propal' => '/comm/propal/class/propal.class.php',
+                        'Commande' => '/commande/class/commande.class.php',
+                        'Facture' => '/compta/facture/class/facture.class.php',
+                        'FactureRec' => '/compta/facture/class/facture-rec.class.php',
+                        'LignePrelevement' => '/compta/prelevement/class/ligneprelevement.class.php',
+                        'Contact' => '/contact/class/contact.class.php',
+                        'Contrat' => '/contrat/class/contrat.class.php',
+                        'Expedition' => '/expedition/class/expedition.class.php',
+                        'Fichinter' => '/fichinter/class/fichinter.class.php',
+                        'CommandeFournisseur' => '/fourn/class/fournisseur.commande.class.php',
+                        'FactureFournisseur' => '/fourn/class/fournisseur.facture.class.php',
+                        'SupplierProposal' => '/supplier_proposal/class/supplier_proposal.class.php',
+                        'ProductFournisseur' => '/fourn/class/fournisseur.product.class.php',
+                        'Livraison' => '/livraison/class/livraison.class.php',
+                        'Product' => '/product/class/product.class.php',
+                        'Project' => '/projet/class/project.class.php',
+                        'User' => '/user/class/user.class.php',
+                    );
+                    
+                    //First, all core objects must update their tables
+                    foreach ($objects as $object_name => $object_file)
+                    {
+                        require_once DOL_DOCUMENT_ROOT.$object_file;
+                        
+                        if (!$error && !$object_name::replaceThirdparty($db, $soc_origin->id, $object->id))
+                        {
+                            $error++;
+                            setEventMessages($db->lasterror(), null, 'errors');
+                        }
+                    }
+                }
+                
+                // External modules should update their ones too
+                if (! $error)
+                {
+                    $reshook = $hookmanager->executeHooks('replaceThirdparty', array(
+                        'soc_origin' => $soc_origin->id,
+                        'soc_dest' => $object->id
+                    ), $soc_dest, $action);
+                    
+                    if ($reshook < 0)
+                    {
+                        setEventMessages($hookmanager->error, $hookmanager->errors, 'errors');
+                        $error++;
+                    }
+                }
+                
+                
+                if (! $error)
+                {
+                    $object->context=array('merge'=>1, 'mergefromid'=>$soc_origin->id);
+                    
+                    // Call trigger
+                    $result=$object->call_trigger('COMPANY_MODIFY',$user);
+                    if ($result < 0)
+                    {
+                        setEventMessages($object->error, $object->errors, 'errors');
+                        $error++;
+                    }
+                    // End call triggers
+                }
+                
+                if (!$error)
+                {
+                    //We finally remove the old thirdparty
+                    if ($soc_origin->delete($soc_origin->id, $user) < 1)
+                    {
+                        $error++;
+                    }
+                }
+                
+                if (!$error)
+                {
+                    setEventMessages($langs->trans('ThirdpartiesMergeSuccess'), null, 'mesgs');
+                    $db->commit();
+                }
+                else
+                {
+                    $langs->load("errors");
+                    setEventMessages($langs->trans('ErrorsThirdpartyMerge'), null, 'errors');
+                    $db->rollback();
+                }
+            }
+        }
+    }
+    
     if (GETPOST('getcustomercode'))
     {
         // We defined value code_client
@@ -127,16 +322,39 @@ if (empty($reshook))
     	//obtidre selected del combobox
     	$value=GETPOST('lt1');
     	$object->fetch($socid);
-    	$res=$object->setValueFrom('localtax1_value', $value);
+    	$res=$object->setValueFrom('localtax1_value', $value, '', null, 'text', '', $user, 'COMPANY_MODIFY');
     }
     if($action=='set_localtax2')
     {
     	//obtidre selected del combobox
     	$value=GETPOST('lt2');
     	$object->fetch($socid);
-    	$res=$object->setValueFrom('localtax2_value', $value);
+    	$res=$object->setValueFrom('localtax2_value', $value, '', null, 'text', '', $user, 'COMPANY_MODIFY');
     }
 
+    if ($action == 'update_extras') {
+        $object->fetch($socid);
+        
+        $object->oldcopy = dol_clone($object);
+        
+        // Fill array 'array_options' with data from update form
+        $extralabels = $extrafields->fetch_name_optionals_label($object->table_element);
+        $ret = $extrafields->setOptionalsFromPost($extralabels, $object, GETPOST('attribute','none'));
+        if ($ret < 0) $error++;
+        
+        if (! $error)
+        {
+            $result = $object->insertExtraFields('COMPANY_MODIFY');
+            if ($result < 0)
+            {
+                setEventMessages($object->error, $object->errors, 'errors');
+                $error++;
+            }
+        }
+        
+        if ($error) $action = 'edit_extras';
+    }
+    
     // Add new or update third party
     if ((! GETPOST('getcustomercode') && ! GETPOST('getsuppliercode'))
     && ($action == 'add' || $action == 'update') && $user->rights->societe->creer)
@@ -146,7 +364,7 @@ if (empty($reshook))
         if ($action == 'update')
         {
         	$ret=$object->fetch($socid);
-        	$object->oldcopy=dol_clone($object);
+        	$object->oldcopy=clone $object;
         }
 		else $object->canvas=$canvas;
 
@@ -166,59 +384,77 @@ if (empty($reshook))
             $object->name              = GETPOST('name')?GETPOST('name','alpha'):GETPOST('nom','alpha');
 	        $object->name_alias   = GETPOST('name_alias');
 		}
-        $object->address               = GETPOST('address');
-        $object->zip                   = GETPOST('zipcode');
-        $object->town                  = GETPOST('town');
-        $object->country_id            = GETPOST('country_id');
-        $object->state_id              = GETPOST('state_id');
-        $object->skype                 = GETPOST('skype');
-        $object->phone                 = GETPOST('phone');
-        $object->fax                   = GETPOST('fax');
-        $object->email                 = GETPOST('email');
-        $object->url                   = GETPOST('url');
-        $object->idprof1               = GETPOST('idprof1');
-        $object->idprof2               = GETPOST('idprof2');
-        $object->idprof3               = GETPOST('idprof3');
-        $object->idprof4               = GETPOST('idprof4');
-        $object->idprof5               = GETPOST('idprof5');
-        $object->idprof6               = GETPOST('idprof6');
-        $object->prefix_comm           = GETPOST('prefix_comm');
-        $object->code_client           = GETPOST('code_client');
-        $object->code_fournisseur      = GETPOST('code_fournisseur');
-        $object->capital               = GETPOST('capital');
-        $object->barcode               = GETPOST('barcode');
-
-        $object->tva_intra             = GETPOST('tva_intra');
-        $object->tva_assuj             = GETPOST('assujtva_value');
-        $object->status                = GETPOST('status');
+		$object->entity					= (GETPOSTISSET('entity')?GETPOST('entity', 'int'):$conf->entity);
+		$object->name_alias				= GETPOST('name_alias');
+		$object->address				= GETPOST('address');
+		$object->zip					= GETPOST('zipcode', 'alpha');
+		$object->town					= GETPOST('town', 'alpha');
+		$object->country_id				= GETPOST('country_id', 'int');
+		$object->state_id				= GETPOST('state_id', 'int');
+		$object->skype					= GETPOST('skype', 'alpha');
+		$object->phone					= GETPOST('phone', 'alpha');
+		$object->fax					= GETPOST('fax','alpha');
+		$object->email					= trim(GETPOST('email', 'custom', 0, FILTER_SANITIZE_EMAIL));
+		$object->url					= trim(GETPOST('url', 'custom', 0, FILTER_SANITIZE_URL));
+		$object->idprof1				= trim(GETPOST('idprof1', 'alpha'));
+		$object->idprof2				= trim(GETPOST('idprof2', 'alpha'));
+		$object->idprof3				= trim(GETPOST('idprof3', 'alpha'));
+		$object->idprof4				= trim(GETPOST('idprof4', 'alpha'));
+		$object->idprof5				= trim(GETPOST('idprof5', 'alpha'));
+		$object->idprof6				= trim(GETPOST('idprof6', 'alpha'));
+		$object->prefix_comm			= GETPOST('prefix_comm', 'alpha');
+		$object->code_client			= GETPOST('code_client', 'alpha');
+		$object->code_fournisseur		= GETPOST('code_fournisseur', 'alpha');
+		$object->capital				= GETPOST('capital', 'alpha');
+		$object->barcode				= GETPOST('barcode', 'alpha');
+		
+		$object->tva_intra				= GETPOST('tva_intra', 'alpha');
+		$object->tva_assuj				= GETPOST('assujtva_value', 'alpha');
+		$object->status					= GETPOST('status', 'alpha');
+		
 
         // Local Taxes
-        $object->localtax1_assuj       = GETPOST('localtax1assuj_value');
-        $object->localtax2_assuj       = GETPOST('localtax2assuj_value');
+		$object->localtax1_assuj		= GETPOST('localtax1assuj_value', 'alpha');
+		$object->localtax2_assuj		= GETPOST('localtax2assuj_value', 'alpha');
+		
+        $object->localtax1_value		= GETPOST('lt1', 'alpha');
+        $object->localtax2_value		= GETPOST('lt2', 'alpha');
+        
+        $object->forme_juridique_code  = GETPOST('forme_juridique_code', 'int');
+        $object->effectif_id           = GETPOST('effectif_id', 'int');
+        $object->typent_id				= GETPOST('typent_id','int');
+        
+        $object->typent_code			= dol_getIdFromCode($db, $object->typent_id, 'c_typent', 'id', 'code');	// Force typent_code too so check in verify() will be done on new type
+        
+        $object->client					= GETPOST('client', 'int');
+        $object->fournisseur			= GETPOST('fournisseur', 'int');
+        
+        $object->commercial_id         = GETPOST('commercial_id', 'int');
 
-        $object->forme_juridique_code  = GETPOST('forme_juridique_code');
-        $object->effectif_id           = GETPOST('effectif_id');
-        if (GETPOST("private") == 1)
-        {
-            $object->typent_id         = dol_getIdFromCode($db,'TE_PRIVATE','c_typent');
-        }
-        else
-        {
-            $object->typent_id         = GETPOST('typent_id');
-        }
-
-        $object->client                = GETPOST('client');
-        $object->fournisseur           = GETPOST('fournisseur');
-
-        $object->commercial_id         = GETPOST('commercial_id');
         $object->default_lang          = GETPOST('default_lang');
 
+        // Webservices url/key
+        $object->webservices_url		= GETPOST('webservices_url', 'custom', 0, FILTER_SANITIZE_URL);
+        $object->webservices_key		= GETPOST('webservices_key', 'san_alpha');
+        
+        // Incoterms
+        if (!empty($conf->incoterm->enabled))
+        {
+            $object->fk_incoterms		= GETPOST('incoterm_id', 'int');
+            $object->location_incoterms	= GETPOST('location_incoterms', 'alpha');
+        }
+        
+        // Multicurrency
+        if (!empty($conf->multicurrency->enabled))
+        {
+            $object->multicurrency_code = GETPOST('multicurrency_code', 'alpha');
+        }
+        
         // Fill array 'array_options' with data from add form
         $ret = $extrafields->setOptionalsFromPost($extralabels,$object);
     	if ($ret < 0)
 		{
 			 $error++;
-			 $action = ($action=='add'?'create':'edit');
 		}
 
         if (GETPOST('deletephoto')) $object->logo = '';
@@ -230,20 +466,24 @@ if (empty($reshook))
             if (! empty($object->email) && ! isValidEMail($object->email))
             {
                 $langs->load("errors");
-                $error++; $errors[] = $langs->trans("ErrorBadEMail",$object->email);
-                $action = ($action=='add'?'create':'edit');
+                $error++;
+                setEventMessages('', $langs->trans("ErrorBadEMail",$object->email), 'errors');
             }
             if (! empty($object->url) && ! isValidUrl($object->url))
             {
                 $langs->load("errors");
-                $error++; $errors[] = $langs->trans("ErrorBadUrl",$object->url);
-                $action = ($action=='add'?'create':'edit');
+                setEventMessages('', $langs->trans("ErrorBadUrl",$object->url), 'errors');
             }
-            if ($object->fournisseur && ! $conf->fournisseur->enabled)
-            {
-                $langs->load("errors");
-                $error++; $errors[] = $langs->trans("ErrorSupplierModuleNotEnabled");
-                $action = ($action=='add'?'create':'edit');
+            if (! empty($object->webservices_url)) {
+                //Check if has transport, without any the soap client will give error
+                if (strpos($object->webservices_url, "http") === false)
+                {
+                    $object->webservices_url = "http://".$object->webservices_url;
+                }
+                if (! isValidUrl($object->webservices_url)) {
+                    $langs->load("errors");
+                    $error++; $errors[] = $langs->trans("ErrorBadUrl",$object->webservices_url);
+                }
             }
 
             // We set country_id, country_code and country for the selected country
@@ -254,42 +494,14 @@ if (empty($reshook))
             	$object->country_code=$tmparray['code'];
             	$object->country=$tmparray['label'];
             }
-
-            // Check for duplicate or mandatory prof id
-            // Only for companies
-	        if (!($object->particulier || $private))
-        	{
-       	    for ($i = 1; $i < 5; $i++)
-        	{
-        	    $slabel="idprof".$i;
-    			$_POST[$slabel]=trim($_POST[$slabel]);
-        	    $vallabel=$_POST[$slabel];
-        		if ($vallabel && $object->id_prof_verifiable($i))
-				{
-					if($object->id_prof_exists($i,$vallabel,$object->id))
-					{
-						$langs->load("errors");
-                		$error++; $errors[] = $langs->transcountry('ProfId'.$i, $object->country_code)." ".$langs->trans("ErrorProdIdAlreadyExist", $vallabel);
-                		$action = (($action=='add'||$action=='create')?'create':'edit');
-					}
-				}
-
-				$idprof_mandatory ='SOCIETE_IDPROF'.($i).'_MANDATORY';
-				if (! $vallabel && ! empty($conf->global->$idprof_mandatory))
-				{
-					$langs->load("errors");
-					$error++;
-					$errors[] = $langs->trans("ErrorProdIdIsMandatory", $langs->transcountry('ProfId'.$i, $object->country_code));
-					$action = (($action=='add'||$action=='create')?'create':'edit');
-				}
-			}
-        	}
         }
 
         if (! $error)
         {
             if ($action == 'add')
             {
+                $error = 0;
+                
                 $db->begin();
 
                 if (empty($object->client))      $object->code_client='';
@@ -300,22 +512,42 @@ if (empty($reshook))
                 {
                     if ($object->particulier)
                     {
-                        dol_syslog("This thirdparty is a personal people",LOG_DEBUG);
+                        dol_syslog("We ask to create a contact/address too", LOG_DEBUG);
                         $result=$object->create_individual($user);
-                        if (! $result >= 0)
+                        if ($result < 0)
                         {
-                            $error=$object->error; $errors=$object->errors;
+                            setEventMessages($object->error, $object->errors, 'errors');
+                            $error++;
                         }
                     }
 
-					// Customer categories association
-					$custcats = GETPOST('custcats', 'array');
-					$object->setCategories($custcats, 'customer');
-
-					// Supplier categories association
-					$suppcats = GETPOST('suppcats', 'array');
-					$object->setCategories($suppcats, 'supplier');
-
+                    // Links with users
+                    $salesreps = GETPOST('commercial', 'array');
+                    $result = $object->setSalesRep($salesreps);
+                    if ($result < 0)
+                    {
+                        $error++;
+                        setEventMessages($object->error, $object->errors, 'errors');
+                    }
+                    
+                    // Customer categories association
+                    $custcats = GETPOST('custcats', 'array');
+                    $result = $object->setCategories($custcats, 'customer');
+                    if ($result < 0)
+                    {
+                        $error++;
+                        setEventMessages($object->error, $object->errors, 'errors');
+                    }
+                    
+                    // Supplier categories association
+                    $suppcats = GETPOST('suppcats', 'array');
+                    $result = $object->setCategories($suppcats, 'supplier');
+                    if ($result < 0)
+                    {
+                        $error++;
+                        setEventMessages($object->error, $object->errors, 'errors');
+                    }
+                    
                     // Logo/Photo save
                     $dir     = $conf->societe->multidir_output[$conf->entity]."/".$object->id."/logos/";
                     $file_OK = is_uploaded_file($_FILES['photo']['tmp_name']);
@@ -336,13 +568,8 @@ if (empty($reshook))
                                 }
                                 else
                                 {
-                                    // Create small thumbs for company (Ratio is near 16/9)
-                                    // Used on logon for example
-                                    $imgThumbSmall = vignette($newfile, $maxwidthsmall, $maxheightsmall, '_small', $quality);
-
-                                    // Create mini thumbs for company (Ratio is near 16/9)
-                                    // Used on menu or for setup page for example
-                                    $imgThumbMini = vignette($newfile, $maxwidthmini, $maxheightmini, '_mini', $quality);
+                                    // Create thumbs
+                                    $object->addThumbs($newfile);
                                 }
                             }
                         }
@@ -364,16 +591,25 @@ if (empty($reshook))
                 }
                 else
 				{
-                    $error=$object->error; $errors=$object->errors;
-                }
+				    if ($db->lasterrno() == 'DB_ERROR_RECORD_ALREADY_EXISTS') // TODO Sometime errors on duplicate on profid and not on code, so we must manage this case
+				    {
+				        $duplicate_code_error = true;
+				        $object->code_fournisseur = null;
+				        $object->code_client = null;
+				    }
+				    
+				    setEventMessages($object->error, $object->errors, 'errors');
+				    $error++;
+				}
 
-                if ($result >= 0)
+				if ($result >= 0 && ! $error)
                 {
                     $db->commit();
 
                 	if (! empty($backtopage))
                 	{
-               		    header("Location: ".$backtopage);
+                	    if (preg_match('/\?/', $backtopage)) $backtopage.='&socid='.$object->id;
+                	    header("Location: ".$backtopage);
                     	exit;
                 	}
                 	else
@@ -395,6 +631,8 @@ if (empty($reshook))
 
             if ($action == 'update')
             {
+                $error = 0;
+                
                 if (GETPOST('cancel','alpha'))
                 {
                 	if (! empty($backtopage))
@@ -417,30 +655,53 @@ if (empty($reshook))
                 $result = $object->update($socid, $user, 1, $object->oldcopy->codeclient_modifiable(), $object->oldcopy->codefournisseur_modifiable(), 'update', 0);
                 if ($result <=  0)
                 {
-                    $error = $object->error; $errors = $object->errors;
+                    setEventMessages($object->error, $object->errors, 'errors');
+                    $error++;
                 }
 
-				// Customer categories association
-				$categories = GETPOST('custcats', 'array');
-				$object->setCategories($categories, 'customer');
-
-				// Supplier categories association
-				$categories = GETPOST('suppcats', 'array');
-				$object->setCategories($categories, 'supplier');
-
+                // Links with users
+                $salesreps = GETPOST('commercial', 'array');
+                $result = $object->setSalesRep($salesreps);
+                if ($result < 0)
+                {
+                    $error++;
+                    setEventMessages($object->error, $object->errors, 'errors');
+                }
+                
+                // Prevent thirdparty's emptying if a user hasn't rights $user->rights->categorie->lire (in such a case, post of 'custcats' is not defined)
+                if (! $error && !empty($user->rights->categorie->lire))
+                {
+                    // Customer categories association
+                    $categories = GETPOST( 'custcats', 'array' );
+                    $result = $object->setCategories($categories, 'customer');
+                    if ($result < 0)
+                    {
+                        $error++;
+                        setEventMessages($object->error, $object->errors, 'errors');
+                    }
+                    
+                    // Supplier categories association
+                    $categories = GETPOST('suppcats', 'array');
+                    $result = $object->setCategories($categories, 'supplier');
+                    if ($result < 0)
+                    {
+                        $error++;
+                        setEventMessages($object->error, $object->errors, 'errors');
+                    }
+                }
+                
                 // Logo/Photo save
                 $dir     = $conf->societe->multidir_output[$object->entity]."/".$object->id."/logos";
                 $file_OK = is_uploaded_file($_FILES['photo']['tmp_name']);
+                if (GETPOST('deletephoto') && $object->logo)
+                {
+                    $fileimg=$dir.'/'.$object->logo;
+                    $dirthumbs=$dir.'/thumbs';
+                    dol_delete_file($fileimg);
+                    dol_delete_dir_recursive($dirthumbs);
+                }
                 if ($file_OK)
                 {
-                    if (GETPOST('deletephoto'))
-                    {
-                        $fileimg=$dir.'/'.$object->logo;
-                        $dirthumbs=$dir.'/thumbs';
-                        dol_delete_file($fileimg);
-                        dol_delete_dir_recursive($dirthumbs);
-                    }
-
                     if (image_format_supported($_FILES['photo']['name']) > 0)
                     {
                         dol_mkdir($dir);
@@ -456,13 +717,18 @@ if (empty($reshook))
                             }
                             else
                             {
-                                // Create small thumbs for company (Ratio is near 16/9)
-                                // Used on logon for example
-                                $imgThumbSmall = vignette($newfile, $maxwidthsmall, $maxheightsmall, '_small', $quality);
-
-                                // Create mini thumbs for company (Ratio is near 16/9)
-                                // Used on menu or for setup page for example
-                                $imgThumbMini = vignette($newfile, $maxwidthmini, $maxheightmini, '_mini', $quality);
+                                // Create thumbs
+                                $object->addThumbs($newfile);
+                                
+                                // Index file in database
+                                if (! empty($conf->global->THIRDPARTY_LOGO_ALLOW_EXTERNAL_DOWNLOAD))
+                                {
+                                    require_once DOL_DOCUMENT_ROOT .'/core/lib/files.lib.php';
+                                    // the dir dirname($newfile) is directory of logo, so we should have only one file at once into index, so we delete indexes for the dir
+                                    deleteFilesIntoDatabaseIndex(dirname($newfile), '', '', 'uploaded', 1);
+                                    // now we index the uploaded logo file
+                                    addFileIntoDatabaseIndex(dirname($newfile), basename($newfile), '', 'uploaded', 1);
+                                }
                             }
                         }
                     }
@@ -497,6 +763,7 @@ if (empty($reshook))
                 	{
                 		$error++;
                 		$object->error .= $object->db->lasterror();
+                		setEventMessages($object->error, $object->errors, 'errors');
                 	}
                 }
 
@@ -520,6 +787,10 @@ if (empty($reshook))
                 }
             }
         }
+        else
+        {
+            $action = ($action=='add'?'create':'edit');
+        }
     }
 
     // Delete third party
@@ -537,7 +808,8 @@ if (empty($reshook))
         else
         {
             $langs->load("errors");
-            $error=$langs->trans($object->error); $errors = $object->errors;
+            setEventMessages($object->error, $object->errors, 'errors');
+            $error++;
             $action='';
         }
     }
@@ -556,64 +828,22 @@ if (empty($reshook))
     	$result = $object->setIncoterms(GETPOST('incoterm_id', 'int'), GETPOST('location_incoterms', 'alpha'));
     }
 
-    // Actions to send emails
     $id=$socid;
-    $actiontypecode='AC_OTH_AUTO';
+    $object->fetch($socid);
+    
+    // Actions to send emails
     $trigger_name='COMPANY_SENTBYMAIL';
     $paramname='socid';
     $mode='emailfromthirdparty';
+    $trackid='thi'.$object->id;
     include DOL_DOCUMENT_ROOT.'/core/actions_sendmails.inc.php';
 
 
-    /*
-     * Generate document
-     */
-    if ($action == 'builddoc')  // En get ou en post
-    {
-        if (is_numeric(GETPOST('model')))
-        {
-            $error=$langs->trans("ErrorFieldRequired",$langs->transnoentities("Model"));
-        }
-        else
-        {
-            require_once DOL_DOCUMENT_ROOT.'/core/modules/societe/modules_societe.class.php';
-
-            $object->fetch($socid);
-
-            // Define output language
-            $outputlangs = $langs;
-            $newlang='';
-            if ($conf->global->MAIN_MULTILANGS && empty($newlang) && GETPOST('lang_id','aZ09')) $newlang=GETPOST('lang_id','aZ09');
-            if ($conf->global->MAIN_MULTILANGS && empty($newlang)) $newlang=$fac->client->default_lang;
-            if (! empty($newlang))
-            {
-                $outputlangs = new Translate("",$conf);
-                $outputlangs->setDefaultLang($newlang);
-            }
-            $result=thirdparty_doc_create($db, $object, '', GETPOST('model','alpha'), $outputlangs);
-            if ($result <= 0)
-            {
-                dol_print_error($db,$result);
-                exit;
-            }
-        }
-    }
-
-    // Remove file in doc form
-    else if ($action == 'remove_file')
-    {
-    	if ($object->fetch($socid))
-    	{
-    		require_once DOL_DOCUMENT_ROOT.'/core/lib/files.lib.php';
-
-    		$langs->load("other");
-    		$upload_dir = $conf->societe->dir_output;
-    		$file = $upload_dir . '/' . GETPOST('file');
-    		$ret=dol_delete_file($file,0,0,0,$object);
-    		if ($ret) setEventMessage($langs->trans("FileWasRemoved", GETPOST('urlfile')));
-    		else setEventMessage($langs->trans("ErrorFailToDeleteFile", GETPOST('urlfile')), 'errors');
-    	}
-    }
+    // Actions to build doc
+    $id = $socid;
+    $upload_dir = $conf->societe->dir_output;
+    $permissioncreate=$user->rights->societe->creer;
+    include DOL_DOCUMENT_ROOT.'/core/actions_builddoc.inc.php';
 }
 
 
