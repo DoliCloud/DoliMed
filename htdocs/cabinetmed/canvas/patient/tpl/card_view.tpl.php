@@ -434,7 +434,7 @@ elseif ($action == 'presend')
 	$modelmail='thirdparty';
 
 	print '<br>';
-	print_titre($langs->trans($titreform));
+	print '<div class="titre">'.$langs->trans($titreform).'</div>';
 
 	// Define output language
 	$outputlangs = $langs;
