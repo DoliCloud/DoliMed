@@ -15,15 +15,16 @@
 [Setup]
 ; ----- Change this -----
 AppName=DoliMed
-; DoliMed-x.x.x or DoliMed-x.x.x-dev or DoliMed-x.x.x-beta
-AppVerName=DoliMed-7.0.0
-; DoliMed-x.x x or DoliMed-x.x.x-dev or DoliMed-x.x.x-beta
-OutputBaseFilename=DoliMed-7.0.0
-; Define full path from wich all relative path are defined
-; You must modify this to put here your dolibarr root directory
-SourceDir=..\..\..
+; Replace key with DoliWamp-x.x.x or DoliWamp-x.x.x-alpha or DoliWamp-x.x.x-beta or DoliWamp-x.x.x-rc or DoliWamp-x.x.x
+AppVerName=__FILENAMEEXEDOLIWAMP__
+; Replace key with DoliWamp-x.x x or DoliWamp-x.x.x-alpha or DoliWamp-x.x.x-beta or DoliWamp-x.x.x-rc or DoliWamp-x.x.x
+OutputBaseFilename=__FILENAMEEXEDOLIWAMP__
 ; ----- End of change
 ;OutputManifestFile=build\dolimedbuild.log
+; Define full path from which all relative path are defined
+; You must modify this to put here your dolibarr root directory
+;SourceDir=Z:\home\ldestailleur\git\dolibarrxxx
+SourceDir=..\..\..
 AppId=dolimed
 AppPublisher=NLTechno
 AppPublisherURL=https://www.nltechno.com
@@ -40,6 +41,7 @@ SolidCompression=yes
 WizardImageFile=build\exe\dolimed\dolimed.bmp
 WizardSmallImageFile=build\exe\dolimed\dolimedsmall.bmp
 SetupIconFile=htdocs\cabinetmed\img\dolimed.ico
+;To say the installer must be ran as admin
 PrivilegesRequired=admin
 DisableProgramGroupPage=yes
 ChangesEnvironment=no
@@ -49,7 +51,6 @@ CreateUninstallRegKey=yes
 OutputDir=build
 ShowLanguageDialog=auto
 ShowUndisplayableLanguages=no
-;LanguageDetectionMethod=none
 LanguageDetectionMethod=uilanguage
 ;SignedUninstaller=yes
 
@@ -79,7 +80,7 @@ Name: "desktopicon"; Description: {cm:CreateDesktopIcon}; GroupDescription: {cm:
 Name: "{app}\logs"
 Name: "{app}\tmp"
 Name: "{app}\dolibarr_documents"
-Name: "{app}\bin\apache\apache2.2.11\logs"
+Name: "{app}\bin\apache\apache2.4.9\logs"
 
 [Files]
 ; Stop/start
@@ -98,27 +99,28 @@ Source: "build\exe\doliwamp\builddemosslfiles.bat.install"; DestDir: "{app}\"; F
 Source: "build\exe\doliwamp\UsedPort.exe"; DestDir: "{app}\"; Flags: ignoreversion;
 ; PhpMyAdmin, Apache, Php, Mysql
 ; Put here path of Wampserver applications
-; Value OK: apache 2.2.6, php 5.2.5 (5.2.11, 5.3.0 and 5.3.1 fails if php_exif, php_pgsql, php_zip is on), mysql 5.0.45 or 5.1.36
-; Value OK: apache 2.2.11, php 5.3.0 (if no php_exif, php_pgsql, php_zip), mysql 5.0.45 or 5.1.36
-Source: "C:\Program Files\Wamp\apps\phpmyadmin3.2.0.1\*.*"; DestDir: "{app}\apps\phpmyadmin3.2.0.1"; Flags: ignoreversion recursesubdirs; Excludes: "config.inc.php,wampserver.conf,*.log,*_log,darkblue_orange"
-Source: "C:\Program Files\Wamp\bin\apache\apache2.2.11\*.*"; DestDir: "{app}\bin\apache\apache2.2.11"; Flags: ignoreversion recursesubdirs; Excludes: "php.ini,httpd.conf,wampserver.conf,*.log,*_log"
-Source: "C:\Program Files\Wamp\bin\php\php5.3.0\*.*"; DestDir: "{app}\bin\php\php5.3.0"; Flags: ignoreversion recursesubdirs; Excludes: "php.ini,phpForApache.ini,wampserver.conf,*.log,*_log"
+; Value OK: apache 2.2.6, php 5.2.5 (5.2.11, 5.3.0 and 5.3.1 fails if php_exif, php_pgsql, php_zip is on), mysql 5.0.45
+; Value OK: apache 2.2.11, php 5.3.0 (if no php_exif, php_pgsql, php_zip), mysql 5.0.45
+; Value OK: apache 2.4.19, php 5.5.12, mysql 5.0.45 instead of 5.6.17 (wampserver2.5-Apache-2.4.9-Mysql-5.6.17-php5.5.12-32b.exe)
+Source: "C:\Program Files\Wamp\apps\phpmyadmin4.1.14\*.*"; DestDir: "{app}\apps\phpmyadmin4.1.14"; Flags: ignoreversion recursesubdirs; Excludes: "config.inc.php,wampserver.conf,*.log,*_log,darkblue_orange"
+Source: "C:\Program Files\Wamp\bin\apache\apache2.4.9\*.*"; DestDir: "{app}\bin\apache\apache2.4.9"; Flags: ignoreversion recursesubdirs; Excludes: "php.ini,httpd.conf,wampserver.conf,*.log,*_log"
+Source: "C:\Program Files\Wamp\bin\php\php5.5.12\*.*"; DestDir: "{app}\bin\php\php5.5.12"; Flags: ignoreversion recursesubdirs; Excludes: "php.ini,phpForApache.ini,wampserver.conf,*.log,*_log"
 Source: "C:\Program Files\Wamp\bin\mysql\mysql5.0.45\*.*"; DestDir: "{app}\bin\mysql\mysql5.0.45"; Flags: ignoreversion recursesubdirs; Excludes: "my.ini,data\*,wampserver.conf,*.log,*_log,MySQLInstanceConfig.exe"
 ; Mysql data files (does not overwrite if exists)
-Source: "build\exe\doliwamp\mysql\*.*"; DestDir: "{app}\bin\mysql\data\mysql"; Flags: onlyifdoesntexist ignoreversion recursesubdirs; Excludes: ".cvsignore,.project,CVS\*,Thumbs.db"
+Source: "build\exe\doliwamp\mysql\*.*"; DestDir: "{app}\bin\mysql\data\mysql"; Flags: onlyifdoesntexist ignoreversion recursesubdirs; Excludes: ".gitignore,.project,CVS\*,Thumbs.db"
 ; Dolibarr
-Source: "htdocs\*.*"; DestDir: "{app}\www\dolibarr\htdocs"; Flags: ignoreversion recursesubdirs; Excludes: ".cvsignore,.project,CVS\*,Thumbs.db,custom\*,custom2\*,documents\*,includes\savant\*,includes\phpmailer\*,jquery\plugins\template\*,PHPExcel\Shared\PDF\*,PHPExcel\Shared\PCLZip\*,tcpdf\fonts\dejavu-fonts-ttf-2.33\*,tcpdf\fonts\freefont-20100919\*,tcpdf\fonts\utils\*,*\conf.php,*\conf.php.mysql,*\conf.php.old,*\conf.php.postgres,*\conf.php.sav,*\install.forced.php"
-Source: "dev\*.*"; DestDir: "{app}\www\dolibarr\dev"; Flags: ignoreversion recursesubdirs; Excludes: ".cvsignore,.project,CVS\*,Thumbs.db,dbmodel\*,fpdf\*,initdata\*,iso-normes\*,licence\*,phpcheckstyle\*,phpunit\*,samples\*,test\*,uml\*,xdebug\*"
-Source: "doc\*.*"; DestDir: "{app}\www\dolibarr\doc"; Flags: ignoreversion recursesubdirs; Excludes: ".cvsignore,.project,CVS\*,Thumbs.db,wiki\*,plaquette\*,dev\*,images\dolibarr_screenshot2.png,images\dolibarr_screenshot3.png,images\dolibarr_screenshot4.png,images\dolibarr_screenshot5.png,images\dolibarr_screenshot6.png,images\dolibarr_screenshot7.png,images\dolibarr_screenshot8.png,images\dolibarr_screenshot9.png,images\dolibarr_screenshot10.png,images\dolibarr_screenshot11.png,images\dolibarr_screenshot12.png"
-Source: "scripts\*.*"; DestDir: "{app}\www\dolibarr\scripts"; Flags: ignoreversion recursesubdirs; Excludes: ".cvsignore,.project,CVS\*,Thumbs.db,product\materiel.net.php,product\import-product.php"
-Source: "*.*"; DestDir: "{app}\www\dolibarr"; Flags: ignoreversion; Excludes: ".cvsignore,.project,CVS\*,Thumbs.db,default.properties,install.lock"
+Source: "htdocs\*.*"; DestDir: "{app}\www\dolibarr\htdocs"; Flags: ignoreversion recursesubdirs; Excludes: ".gitignore,.project,CVS\*,Thumbs.db,custom\*,custom2\*,documents\*,includes\ckeditor\_source\*,includes\savant\*,includes\phpmailer\*,jquery\plugins\template\*,nltechno*\*,PHPExcel\Shared\PDF\*,PHPExcel\Shared\PCLZip\*,tcpdf\fonts\dejavu-fonts-ttf-2.33\*,tcpdf\fonts\freefont-20100919\*,tcpdf\fonts\utils\*,*\conf.php,*\conf.php.mysql,*\conf.php.old,*\conf.php.postgres,*\conf.php.sav,*\install.forced.php"
+Source: "dev\*.*"; DestDir: "{app}\www\dolibarr\dev"; Flags: ignoreversion recursesubdirs; Excludes: ".gitignore,.project,CVS\*,Thumbs.db,dbmodel\*,fpdf\*,initdata\*,initdemo\*,iso-normes\*,licence\*,phpcheckstyle\*,phpunit\*,samples\*,test\*,uml\*,vagrant\*,xdebug\*"
+Source: "doc\*.*"; DestDir: "{app}\www\dolibarr\doc"; Flags: ignoreversion recursesubdirs; Excludes: ".gitignore,.project,CVS\*,Thumbs.db,wiki\*,plaquette\*,dev\*,images\dolibarr_screenshot2.png,images\dolibarr_screenshot3.png,images\dolibarr_screenshot4.png,images\dolibarr_screenshot5.png,images\dolibarr_screenshot6.png,images\dolibarr_screenshot7.png,images\dolibarr_screenshot8.png,images\dolibarr_screenshot9.png,images\dolibarr_screenshot10.png,images\dolibarr_screenshot11.png,images\dolibarr_screenshot12.png"
+Source: "scripts\*.*"; DestDir: "{app}\www\dolibarr\scripts"; Flags: ignoreversion recursesubdirs; Excludes: ".gitignore,.project,CVS\*,Thumbs.db,product\materiel.net.php,product\import-product.php"
+Source: "*.*"; DestDir: "{app}\www\dolibarr"; Flags: ignoreversion; Excludes: ".gitignore,.project,CVS\*,Thumbs.db,default.properties,install.lock"
 ; Config files
 Source: "build\exe\doliwamp\phpmyadmin.conf.install"; DestDir: "{app}\alias"; Flags: ignoreversion;
 Source: "build\exe\doliwamp\dolibarr.conf.install"; DestDir: "{app}\alias"; Flags: ignoreversion;
-Source: "build\exe\doliwamp\config.inc.php.install"; DestDir: "{app}\apps\phpmyadmin3.2.0.1"; Flags: ignoreversion;
-Source: "build\exe\doliwamp\httpd.conf.install"; DestDir: "{app}\bin\apache\apache2.2.11\conf"; Flags: ignoreversion;
+Source: "build\exe\doliwamp\config.inc.php.install"; DestDir: "{app}\apps\phpmyadmin4.1.14"; Flags: ignoreversion;
+Source: "build\exe\doliwamp\httpd.conf.install"; DestDir: "{app}\bin\apache\apache2.4.9\conf"; Flags: ignoreversion;
 Source: "build\exe\doliwamp\my.ini.install"; DestDir: "{app}\bin\mysql\mysql5.0.45"; Flags: ignoreversion;
-Source: "build\exe\doliwamp\php.ini.install"; DestDir: "{app}\bin\php\php5.3.0"; Flags: ignoreversion;
+Source: "build\exe\doliwamp\php.ini.install"; DestDir: "{app}\bin\php\php5.5.12"; Flags: ignoreversion;
 Source: "build\exe\doliwamp\index.php.install"; DestDir: "{app}\www"; Flags: ignoreversion;
 Source: "build\exe\dolimed\install.forced.php.install"; DestDir: "{app}\www\dolibarr\htdocs\install"; Flags: ignoreversion;
 Source: "build\exe\doliwamp\openssl.conf"; DestDir: "{app}"; Flags: ignoreversion;
@@ -141,6 +143,16 @@ Name: "{userdesktop}\DoliMed"; Filename: "{app}\rundoliwamp.bat"; WorkingDir: "{
 Name: "{userdesktop}\DoliMed Help center"; Filename: "{app}\rundolihelp.bat"; WorkingDir: "{app}"; Tasks: desktopicon; IconFilename: {app}\www\dolibarr\doc\images\dolihelp.ico
 ;Start of servers fromstartup menu disabled as services are auto
 ;Name: "{userstartup}\DoliMed server"; Filename: "{app}\startdoliwamp.bat"; WorkingDir: "{app}"; Flags: runminimized; IconFilename: {app}\www\dolibarr\doc\images\dolimed.ico
+
+
+[Registry]
+; Add "run as admin" flag. Same than command line: reg add "HKCU\Software\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\Layers" /v "<Path to your exe>" /t REG_SZ /d RUNASADMIN
+Root: "HKLM"; Subkey: "SOFTWARE\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\Layers"; ValueType: string; ValueName: "{app}\startdoliwamp.bat"; ValueData: "RUNASADMIN";
+Root: "HKLM"; Subkey: "SOFTWARE\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\Layers"; ValueType: string; ValueName: "{app}\stopdoliwamp.bat"; ValueData: "RUNASADMIN";
+Root: "HKLM32"; Subkey: "SOFTWARE\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\Layers"; ValueType: string; ValueName: "{app}\startdoliwamp.bat"; ValueData: "RUNASADMIN";
+Root: "HKLM32"; Subkey: "SOFTWARE\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\Layers"; ValueType: string; ValueName: "{app}\stopdoliwamp.bat"; ValueData: "RUNASADMIN";
+Root: "HKLM64"; Subkey: "SOFTWARE\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\Layers"; ValueType: string; ValueName: "{app}\startdoliwamp.bat"; ValueData: "RUNASADMIN"; Check: IsWin64
+Root: "HKLM64"; Subkey: "SOFTWARE\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\Layers"; ValueType: string; ValueName: "{app}\stopdoliwamp.bat"; ValueData: "RUNASADMIN"; Check: IsWin64
 
 
 [Code]
@@ -188,15 +200,33 @@ var value: String;
 function InitializeSetup(): Boolean;
 begin
   Result := MsgBox(CustomMessage('YouWillInstallDoliWamp')+#13#13+CustomMessage('ThisAssistantInstallOrUpgrade')+#13#13+CustomMessage('IfYouHaveTechnicalKnowledge')+#13#13+CustomMessage('ButIfYouLook')+#13#13+CustomMessage('DoYouWantToStart'), mbConfirmation, MB_YESNO) = IDYES;
+
+  if Result then
+  begin
+  
+	//----------------------------------------------
+	// Test if msvcr110 DLL has been installed
+	//----------------------------------------------
+	
+	if not FileExists ('c:/windows/system32/msvcr110.dll') and not FileExists ('c:/windows/sysWOW64/msvcr110.dll') and not FileExists ('c:/winnt/system32/msvcr110.dll') and not FileExists ('c:/winnt/sysWOW64/msvcr110.dll') then
+	begin
+	    // TODO - offer to install the component by opening the URL in the default browser, abort installation if user doesn't accept 
+	    Result := MsgBox(CustomMessage('DLLMissing')+#13#13+CustomMessage('ContinueAnyway'), mbConfirmation, MB_YESNO) = IDYES;
+	    
+	end;
+	// Pb seems similar with msvcp110.dll
+	//vcredist_x64.exe
+	  
+  end;
 end;
 
 procedure InitializeWizard();
 begin
   //version des applis, a modifier pour chaque version de WampServer 2
-  apacheVersion := '2.2.11';
-  phpVersion := '5.3.0' ;
+  apacheVersion := '2.4.9';
+  phpVersion := '5.5.12' ;
   mysqlVersion := '5.0.45';
-  phpmyadminVersion := '3.2.0.1';
+  phpmyadminVersion := '4.1.14';
 
   smtpServer := 'localhost';
   apachePort := '80';
@@ -230,9 +260,9 @@ begin
         if RegQueryStringValue(HKEY_LOCAL_MACHINE, 'SOFTWARE\Microsoft\MSCRM','SMTPServer', value) then
         begin
           if value <> '' then smtpServer:=value;
-        end
-      end
-    end
+        end;
+      end;
+    end;
   end;
 
   if RegQueryStringValue(HKEY_LOCAL_MACHINE, 'SOFTWARE\NLTechno\DoliMed','apachePort', value) then
@@ -253,14 +283,13 @@ begin
 
   // Prepare an object calle "Page" of type wpInstalling.
   // Object will be show later in NextButtonClick function.
-  Page := CreateInputQueryPage(wpInstalling,
-  CustomMessage('TechnicalParameters'), '',
-  CustomMessage('IfFirstInstall'));
+  Page := CreateInputQueryPage(wpInstalling, CustomMessage('TechnicalParameters'), '', CustomMessage('IfFirstInstall'));
 
   // TODO Add control differently if first install or update
   if firstinstall
   then
   begin
+    // False means it's not a password edit
     Page.Add(CustomMessage('SMTPServer'), False);
     Page.Add(CustomMessage('ApachePort'), False);
     Page.Add(CustomMessage('MySqlPort'), False);
@@ -268,6 +297,7 @@ begin
   end
   else
   begin
+    // False means it's not a password edit
     Page.Add(CustomMessage('SMTPServer'), False);
     Page.Add(CustomMessage('ApachePort'), False);
     Page.Add(CustomMessage('MySqlPort'), False);
@@ -307,8 +337,7 @@ function NextButtonClick(CurPageID: Integer): Boolean;
 var myResult: Integer;
 var res: Boolean;
 var paramok: Boolean;
-var datadirold: String;
-var datadirnew: String;
+var datadir: String;
 var exedirold: String;
 var exedirnew: String;
 var themessage: String;
@@ -327,8 +356,7 @@ begin
     winPath := ExpandConstant('{win}');
     pathWithSlashes := path;
     StringChange (pathWithSlashes, '\','/');
-    datadirold := pathWithSlashes+'/bin/mysql/mysql5.0.45/data';
-    datadirnew := pathWithSlashes+'/bin/mysql/data';
+    datadir := pathWithSlashes+'/bin/mysql/data';
     exedirold := pathWithSlashes+'/bin/mysql/mysql5.0.45';
     exedirnew := pathWithSlashes+'/bin/mysql/mysql5.0.45';
 
@@ -399,7 +427,7 @@ begin
     begin
       themessage := FmtMessage(CustomMessage('FailedToDeleteLock'),[pathWithSlashes]);
  		  MsgBox(themessage,mbInformation,MB_OK);
-    end
+    end;
 
 
 		// Check if parameters already defined in conf.php file
@@ -520,11 +548,26 @@ begin
 	    begin
 	      //navigateur
 	      browser := 'iexplore.exe';
-	      if FileExists (pfPath+'/Mozilla Firefox/firefox.exe')  then
+	      
+	      if browser = 'iexplore.exe' then
 	      begin
-	        if MsgBox(CustomMessage('FirefoxDetected'),mbConfirmation,MB_YESNO) = IDYES then
+	        if FileExists (pfPath+'/Google/Chrome/Application/chrome.exe')  then
 	        begin
-	          browser := pfPath+'/Mozilla Firefox/firefox.exe';
+	          if MsgBox(CustomMessage('ChromeDetected'),mbConfirmation,MB_YESNO) = IDYES then
+	          begin
+	            browser := pfPath+'/Google/Chrome/Application/chrome.exe';
+	          end;
+	        end;
+	      end;
+
+	      if browser = 'iexplore.exe' then
+	      begin
+	        if FileExists (pfPath+'/Mozilla Firefox/firefox.exe')  then
+  		    begin
+	          if MsgBox(CustomMessage('FirefoxDetected'),mbConfirmation,MB_YESNO) = IDYES then
+ 	          begin
+	            browser := pfPath+'/Mozilla Firefox/firefox.exe';
+	          end;
 	        end;
 	      end;
 	      if browser = 'iexplore.exe' then
@@ -556,7 +599,7 @@ begin
 	      StringChangeEx (srcContents, 'WAMPAPACHEPORT', myporta, True);
 	      StringChangeEx (srcContents, 'WAMPAPACHEPSSL', myportas, True);
 	      SaveStringToFile(destFileA,srcContents, False);
-	    end
+	    end;
 
 
       if MsgBox(CustomMessage('DoliWampWillStartApacheMysql'),mbConfirmation,MB_YESNO) = IDYES then
@@ -579,7 +622,7 @@ begin
 		      StringChangeEx (srcContents, 'WAMPPHPMYADMINVERSION', phpmyadminVersion, True);
 		
 		      SaveStringToFile(destFile,srcContents, False);
-		    end
+		    end;
 		    DeleteFile(srcFile);
 		
 		
@@ -591,15 +634,30 @@ begin
 		    destFile := pathWithSlashes+'/alias/dolibarr.conf';
 		    srcFile := pathWithSlashes+'/alias/dolibarr.conf.install';
 		
-		    if not FileExists (destFile) and FileExists(srcFile) then
+		    if FileExists(srcFile) then
 		    begin
-		      LoadStringFromFile (srcFile, srcContents);
+		      if not FileExists (destFile) then
+		      begin
+  		        LoadStringFromFile (srcFile, srcContents);
 		
-		      StringChangeEx (srcContents, 'WAMPROOT', pathWithSlashes, True);
-		      StringChangeEx (srcContents, 'WAMPMYSQLNEWPASSWORD', mypass, True);
+		        StringChangeEx (srcContents, 'WAMPROOT', pathWithSlashes, True);
+		        StringChangeEx (srcContents, 'WAMPMYSQLNEWPASSWORD', mypass, True);
 		
-		      SaveStringToFile(destFile, srcContents, False);
-		    end
+		        SaveStringToFile(destFile, srcContents, False);
+		      end
+		      else
+		      begin
+		        // We must replace to use format 2.4 of apache
+	            DeleteFile(destFile);
+  		        LoadStringFromFile (srcFile, srcContents);
+		
+		        StringChangeEx (srcContents, 'WAMPROOT', pathWithSlashes, True);
+		        StringChangeEx (srcContents, 'WAMPMYSQLNEWPASSWORD', mypass, True);
+		
+		        SaveStringToFile(destFile, srcContents, False);
+		      end;
+		    end;
+		    DeleteFile(srcFile);
 		    DeleteFile(srcFile);
 		
 		
@@ -612,15 +670,25 @@ begin
 		    destFile := pathWithSlashes+'/apps/phpmyadmin'+phpmyadminVersion+'/config.inc.php';
 		    srcFile := pathWithSlashes+'/apps/phpmyadmin'+phpmyadminVersion+'/config.inc.php.install';
 		
-		    if not FileExists (destFile) and FileExists (srcFile) then
+		    if FileExists(srcFile) then
 		    begin
-	        // sinon on prends le fichier par defaut
-	        LoadStringFromFile (srcFile, srcContents);
-	        StringChangeEx (srcContents, 'WAMPMYSQLNEWPASSWORD', mypass, True);
-	        StringChangeEx (srcContents, 'WAMPMYSQLPORT', myport, True);
-	        SaveStringToFile(destFile,srcContents, False);
-		    end
-		
+	  	      if not FileExists (destFile) then
+		      begin
+  	            LoadStringFromFile (srcFile, srcContents);
+  	            StringChangeEx (srcContents, 'WAMPMYSQLNEWPASSWORD', mypass, True);
+	            StringChangeEx (srcContents, 'WAMPMYSQLPORT', myport, True);
+	            SaveStringToFile(destFile,srcContents, False);
+		      end
+		      else
+		      begin
+		        // We must replace to use format 2.4 of apache
+	            DeleteFile(destFile);
+	            LoadStringFromFile (srcFile, srcContents);
+	            StringChangeEx (srcContents, 'WAMPMYSQLNEWPASSWORD', mypass, True);
+	            StringChangeEx (srcContents, 'WAMPMYSQLPORT', myport, True);
+	            SaveStringToFile(destFile,srcContents, False);
+		      end;
+		    end;		      
 		
 		
 		    //----------------------------------------------
@@ -642,7 +710,7 @@ begin
 		      StringChangeEx (srcContents, 'WAMPAPACHEPSSL', myportas, True);
 		
 		      SaveStringToFile(destFile,srcContents, False);
-		    end
+		    end;
 		
 		
 		
@@ -661,9 +729,10 @@ begin
 		      //installDir et version de php
 		      StringChangeEx (srcContents, 'WAMPROOT', pathWithSlashes, True);
 		      StringChangeEx (srcContents, 'WAMPMYSQLPORT', myport, True);
+		      StringChangeEx (srcContents, 'WAMPMYSQLVERSION', mysqlVersion, True);
 		
 		      SaveStringToFile(destFile,srcContents, False);
-		    end
+		    end;
 		
 		
 		
@@ -695,7 +764,7 @@ begin
 		      StringChangeEx (srcContents, 'WAMPAPACHEPORT', myporta, True);
 		      StringChangeEx (srcContents, 'WAMPAPACHEPSSL', myportas, True);
 		      SaveStringToFile(destFile, srcContents, False);
-		    end
+		    end;
 		
 		
 		
@@ -718,7 +787,7 @@ begin
 		      StringChangeEx (srcContents, 'WAMPMYSQLNEWPASSWORD', mypass, True);
 		
 		      SaveStringToFile(destFile,srcContents, False);
-		    end
+		    end;
 		
 		
 		
@@ -734,32 +803,12 @@ begin
 		      LoadStringFromFile (srcFile, srcContents);
 		
 		      //version de apache et mysql
+		      StringChangeEx (srcContents, 'WAMPROOT', pathWithSlashes, True);
 		      StringChangeEx (srcContents, 'WAMPMYSQLVERSION', mysqlVersion, True);
 		      StringChangeEx (srcContents, 'WAMPAPACHEVERSION', apacheVersion, True);
 		
 		      SaveStringToFile(destFile,srcContents, False);
-		    end
-		
-		
-		
-		    //----------------------------------------------
-		    // Create file install_services_auto.bat (always)
-		    //----------------------------------------------
-		
-		    destFile := pathWithSlashes+'/install_services_auto.bat';
-		    srcFile := pathWithSlashes+'/install_services_auto.bat.install';
-		
-		    if FileExists (srcFile) then
-		    begin
-		      LoadStringFromFile (srcFile, srcContents);
-		
-		      //version de apache et mysql
-		      StringChangeEx (srcContents, 'WAMPMYSQLVERSION', mysqlVersion, True);
-		      StringChangeEx (srcContents, 'WAMPAPACHEVERSION', apacheVersion, True);
-		
-		      SaveStringToFile(destFile,srcContents, False);
-		    end
-		
+		    end;
 		
 		
 		
@@ -775,11 +824,12 @@ begin
 		      LoadStringFromFile (srcFile, srcContents);
 		
 		      //version de apache et mysql
+		      StringChangeEx (srcContents, 'WAMPROOT', pathWithSlashes, True);
 		      StringChangeEx (srcContents, 'WAMPMYSQLVERSION', mysqlVersion, True);
 		      StringChangeEx (srcContents, 'WAMPAPACHEVERSION', apacheVersion, True);
 		
 		      SaveStringToFile(destFile,srcContents, False);
-		    end
+		    end;
 		
 		
 		
@@ -800,7 +850,7 @@ begin
 		      StringChangeEx (srcContents, 'WAMPMYSQLNEWPASSWORD', mypass, True);
 		
 		      SaveStringToFile(destFile,srcContents, False);
-		    end
+		    end;
 		
 		
 		    //----------------------------------------------
@@ -821,7 +871,7 @@ begin
 		      StringChangeEx (srcContents, 'WAMPMYSQLPORT', myport, True);
 		
 		      SaveStringToFile(destFile,srcContents, False);
-		    end
+		    end;
 		
 		
 		    //----------------------------------------------
@@ -842,7 +892,7 @@ begin
 		      StringChangeEx (srcContents, 'WAMPMYSQLPORT', myport, True);
 		
 		      SaveStringToFile(destFile,srcContents, False);
-		    end
+		    end;
 		    
 		
 		    //----------------------------------------------
@@ -861,7 +911,7 @@ begin
 		      StringChangeEx (srcContents, 'WAMPAPACHEVERSION', apacheVersion, True);
 		
 		      SaveStringToFile(destFile,srcContents, False);
-		    end
+		    end;
 
 		
 		    //----------------------------------------------
@@ -878,7 +928,7 @@ begin
 		      StringChangeEx (srcContents, 'WAMPSMTP', mysmtp, True);
               StringChangeEx (srcContents, 'WAMPPHPVERSION', phpVersion, True);
 		      SaveStringToFile(destFile,srcContents, False);
-		    end
+		    end;
 		
 		    //----------------------------------------------
 		    // Create file php.ini in apache (if not exists)
@@ -894,7 +944,7 @@ begin
 		      StringChangeEx (srcContents, 'WAMPSMTP', mysmtp, True);
               StringChangeEx (srcContents, 'WAMPPHPVERSION', phpVersion, True);
 		      SaveStringToFile(destFile,srcContents, False);
-		    end
+		    end;
 		
 		
 		
@@ -936,7 +986,7 @@ begin
 
       	res := False;
 		  	
-		  end
+		  end;
       
     end
     else
@@ -946,9 +996,9 @@ begin
 		  	
 		  	res := False;
 
-    end
+    end;
     
-  end
+  end;
 
 
   Result := res;
@@ -963,7 +1013,6 @@ end;
 procedure DeinitializeSetup();
 begin
 //  DeleteFile(path+'\install_services.bat');
-//  DeleteFile(path+'\install_services_auto.bat');
 end;
 
 
