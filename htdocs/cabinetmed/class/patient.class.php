@@ -377,7 +377,7 @@ class Patient extends Societe
         $sql .= ', s.fk_effectif as effectif_id';
         $sql .= ', s.fk_forme_juridique as forme_juridique_code';
         $sql .= ', s.code_client, s.code_fournisseur, s.code_compta, s.code_compta_fournisseur, s.parent, s.barcode';
-        $sql .= ', s.fk_departement, s.fk_pays, s.fk_stcomm, s.remise_client, s.mode_reglement, s.cond_reglement, s.tva_assuj';
+        $sql .= ', s.fk_departement as state_id, s.fk_pays, s.fk_stcomm, s.remise_client, s.mode_reglement, s.cond_reglement, s.tva_assuj';
         $sql .= ', s.mode_reglement_supplier, s.cond_reglement_supplier, s.localtax1_assuj, s.localtax1_value, s.localtax2_assuj, s.localtax2_value, s.fk_prospectlevel, s.default_lang, s.logo';
         $sql .= ', s.outstanding_limit, s.import_key, s.canvas';
         $sql .= ', fj.libelle as forme_juridique';
@@ -450,9 +450,9 @@ class Patient extends Societe
                 $this->country_code = $obj->fk_pays?$obj->country_code:'';
                 $this->country 		= $obj->fk_pays?($langs->trans('Country'.$obj->country_code)!='Country'.$obj->country_code?$langs->trans('Country'.$obj->country_code):$obj->country):'';
 
-                $this->state_id     = $obj->fk_departement;
-                $this->state_code   = $obj->fk_departement?$obj->state_code:'';
-                $this->state        = $obj->fk_departement?$obj->state:'';
+                $this->state_id     = $obj->state_id;
+                $this->state_code   = $obj->state_id?$obj->state_code:'';
+                $this->state        = $obj->state_id?$obj->state:'';
 
                 $transcode=$langs->trans('StatusProspect'.$obj->fk_stcomm);
                 $libelle=($transcode!='StatusProspect'.$obj->fk_stcomm?$transcode:$obj->stcomm);
