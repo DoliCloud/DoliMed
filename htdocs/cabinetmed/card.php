@@ -118,13 +118,13 @@ if (empty($reshook))
             exit;
         }
     }
-    
+
     if ($action == 'confirm_merge' && $confirm == 'yes' && $user->rights->societe->creer)
     {
         $error = 0;
         $soc_origin_id = GETPOST('soc_origin', 'int');
         $soc_origin = new Societe($db);
-        
+
         if ($soc_origin_id <= 0)
         {
             $langs->load('errors');
@@ -138,13 +138,13 @@ if (empty($reshook))
                 setEventMessages($langs->trans('ErrorRecordNotFound'), null, 'errors');
                 $error++;
             }
-            
+
             if (!$error)
             {
                 // TODO Move the merge function into class of object.
-                
+
                 $db->begin();
-                
+
                 // Recopy some data
                 $object->client = $object->client | $soc_origin->client;
                 $object->fournisseur = $object->fournisseur | $soc_origin->fournisseur;
@@ -160,7 +160,7 @@ if (empty($reshook))
                 {
                     if (empty($object->$property)) $object->$property = $soc_origin->$property;
                 }
-                
+
                 // Concat some data
                 $listofproperties=array(
                     'note_public', 'note_private'
@@ -169,7 +169,7 @@ if (empty($reshook))
                 {
                     $object->$property = dol_concatdesc($object->$property, $soc_origin->$property);
                 }
-                
+
                 // Merge extrafields
                 if (is_array($soc_origin->array_options))
                 {
@@ -178,20 +178,20 @@ if (empty($reshook))
                         if (empty($object->array_options[$key])) $object->array_options[$key] = $val;
                     }
                 }
-                
+
                 // Merge categories
                 $static_cat = new Categorie($db);
-                
+
                 $custcats_ori = $static_cat->containing($soc_origin->id, 'customer', 'id');
                 $custcats = $static_cat->containing($object->id, 'customer', 'id');
                 $custcats = array_merge($custcats,$custcats_ori);
                 $object->setCategories($custcats, 'customer');
-                
+
                 $suppcats_ori = $static_cat->containing($soc_origin->id, 'supplier', 'id');
                 $suppcats = $static_cat->containing($object->id, 'supplier', 'id');
                 $suppcats = array_merge($suppcats,$suppcats_ori);
                 $object->setCategories($suppcats, 'supplier');
-                
+
                 // If thirdparty has a new code that is same than origin, we clean origin code to avoid duplicate key from database unique keys.
                 if ($soc_origin->code_client == $object->code_client
                     || $soc_origin->code_fournisseur == $object->code_fournisseur
@@ -203,14 +203,14 @@ if (empty($reshook))
                     $soc_origin->barcode = '';
                     $soc_origin->update($soc_origin->id, $user, 0, 1, 1, 'merge');
                 }
-                
+
                 // Update
                 $object->update($object->id, $user, 0, 1, 1, 'merge');
                 if ($result < 0)
                 {
                     $error++;
                 }
-                
+
                 // Move links
                 if (! $error)
                 {
@@ -237,12 +237,12 @@ if (empty($reshook))
                         'Project' => '/projet/class/project.class.php',
                         'User' => '/user/class/user.class.php',
                     );
-                    
+
                     //First, all core objects must update their tables
                     foreach ($objects as $object_name => $object_file)
                     {
                         require_once DOL_DOCUMENT_ROOT.$object_file;
-                        
+
                         if (!$error && !$object_name::replaceThirdparty($db, $soc_origin->id, $object->id))
                         {
                             $error++;
@@ -250,7 +250,7 @@ if (empty($reshook))
                         }
                     }
                 }
-                
+
                 // External modules should update their ones too
                 if (! $error)
                 {
@@ -258,19 +258,19 @@ if (empty($reshook))
                         'soc_origin' => $soc_origin->id,
                         'soc_dest' => $object->id
                     ), $soc_dest, $action);
-                    
+
                     if ($reshook < 0)
                     {
                         setEventMessages($hookmanager->error, $hookmanager->errors, 'errors');
                         $error++;
                     }
                 }
-                
-                
+
+
                 if (! $error)
                 {
                     $object->context=array('merge'=>1, 'mergefromid'=>$soc_origin->id);
-                    
+
                     // Call trigger
                     $result=$object->call_trigger('COMPANY_MODIFY',$user);
                     if ($result < 0)
@@ -280,7 +280,7 @@ if (empty($reshook))
                     }
                     // End call triggers
                 }
-                
+
                 if (!$error)
                 {
                     //We finally remove the old thirdparty
@@ -289,7 +289,7 @@ if (empty($reshook))
                         $error++;
                     }
                 }
-                
+
                 if (!$error)
                 {
                     setEventMessages($langs->trans('ThirdpartiesMergeSuccess'), null, 'mesgs');
@@ -304,7 +304,7 @@ if (empty($reshook))
             }
         }
     }
-    
+
     if (GETPOST('getcustomercode'))
     {
         // We defined value code_client
@@ -334,14 +334,14 @@ if (empty($reshook))
 
     if ($action == 'update_extras') {
         $object->fetch($socid);
-        
+
         $object->oldcopy = dol_clone($object);
-        
+
         // Fill array 'array_options' with data from update form
         $extralabels = $extrafields->fetch_name_optionals_label($object->table_element);
         $ret = $extrafields->setOptionalsFromPost($extralabels, $object, GETPOST('attribute','none'));
         if ($ret < 0) $error++;
-        
+
         if (! $error)
         {
             $result = $object->insertExtraFields('COMPANY_MODIFY');
@@ -351,10 +351,10 @@ if (empty($reshook))
                 $error++;
             }
         }
-        
+
         if ($error) $action = 'edit_extras';
     }
-    
+
     // Add new or update third party
     if ((! GETPOST('getcustomercode') && ! GETPOST('getsuppliercode'))
     && ($action == 'add' || $action == 'update') && $user->rights->societe->creer)
@@ -407,28 +407,28 @@ if (empty($reshook))
 		$object->code_fournisseur		= GETPOST('code_fournisseur', 'alpha');
 		$object->capital				= GETPOST('capital', 'alpha');
 		$object->barcode				= GETPOST('barcode', 'alpha');
-		
+
 		$object->tva_intra				= GETPOST('tva_intra', 'alpha');
 		$object->tva_assuj				= GETPOST('assujtva_value', 'alpha');
 		$object->status					= GETPOST('status', 'alpha');
-		
+
 
         // Local Taxes
 		$object->localtax1_assuj		= GETPOST('localtax1assuj_value', 'alpha');
 		$object->localtax2_assuj		= GETPOST('localtax2assuj_value', 'alpha');
-		
+
         $object->localtax1_value		= GETPOST('lt1', 'alpha');
         $object->localtax2_value		= GETPOST('lt2', 'alpha');
-        
+
         $object->forme_juridique_code  = GETPOST('forme_juridique_code', 'int');
         $object->effectif_id           = GETPOST('effectif_id', 'int');
         $object->typent_id				= GETPOST('typent_id','int');
-        
+
         $object->typent_code			= dol_getIdFromCode($db, $object->typent_id, 'c_typent', 'id', 'code');	// Force typent_code too so check in verify() will be done on new type
-        
+
         $object->client					= GETPOST('client', 'int');
         $object->fournisseur			= GETPOST('fournisseur', 'int');
-        
+
         $object->commercial_id         = GETPOST('commercial_id', 'int');
 
         $object->default_lang          = GETPOST('default_lang');
@@ -436,20 +436,20 @@ if (empty($reshook))
         // Webservices url/key
         $object->webservices_url		= GETPOST('webservices_url', 'custom', 0, FILTER_SANITIZE_URL);
         $object->webservices_key		= GETPOST('webservices_key', 'san_alpha');
-        
+
         // Incoterms
         if (!empty($conf->incoterm->enabled))
         {
             $object->fk_incoterms		= GETPOST('incoterm_id', 'int');
             $object->location_incoterms	= GETPOST('location_incoterms', 'alpha');
         }
-        
+
         // Multicurrency
         if (!empty($conf->multicurrency->enabled))
         {
             $object->multicurrency_code = GETPOST('multicurrency_code', 'alpha');
         }
-        
+
         // Fill array 'array_options' with data from add form
         $ret = $extrafields->setOptionalsFromPost($extralabels,$object);
     	if ($ret < 0)
@@ -501,7 +501,7 @@ if (empty($reshook))
             if ($action == 'add')
             {
                 $error = 0;
-                
+
                 $db->begin();
 
                 if (empty($object->client))      $object->code_client='';
@@ -522,14 +522,18 @@ if (empty($reshook))
                     }
 
                     // Links with users
-                    $salesreps = GETPOST('commercial', 'array');
-                    $result = $object->setSalesRep($salesreps);
-                    if ($result < 0)
+                    //var_dump(DOL_VERSION);exit;
+                    if ((float) DOL_VERSION >= 8)
                     {
-                        $error++;
-                        setEventMessages($object->error, $object->errors, 'errors');
+                        $salesreps = GETPOST('commercial', 'array');
+                        $result = $object->setSalesRep($salesreps);
+                        if ($result < 0)
+                        {
+                            $error++;
+                            setEventMessages($object->error, $object->errors, 'errors');
+                        }
                     }
-                    
+
                     // Customer categories association
                     $custcats = GETPOST('custcats', 'array');
                     $result = $object->setCategories($custcats, 'customer');
@@ -538,7 +542,7 @@ if (empty($reshook))
                         $error++;
                         setEventMessages($object->error, $object->errors, 'errors');
                     }
-                    
+
                     // Supplier categories association
                     $suppcats = GETPOST('suppcats', 'array');
                     $result = $object->setCategories($suppcats, 'supplier');
@@ -547,7 +551,7 @@ if (empty($reshook))
                         $error++;
                         setEventMessages($object->error, $object->errors, 'errors');
                     }
-                    
+
                     // Logo/Photo save
                     $dir     = $conf->societe->multidir_output[$conf->entity]."/".$object->id."/logos/";
                     $file_OK = is_uploaded_file($_FILES['photo']['tmp_name']);
@@ -575,7 +579,7 @@ if (empty($reshook))
                         }
                     }
                     else
-	              {
+                    {
 						switch($_FILES['photo']['error'])
 						{
 						    case 1: //uploaded file exceeds the upload_max_filesize directive in php.ini
@@ -597,7 +601,7 @@ if (empty($reshook))
 				        $object->code_fournisseur = null;
 				        $object->code_client = null;
 				    }
-				    
+
 				    setEventMessages($object->error, $object->errors, 'errors');
 				    $error++;
 				}
@@ -632,7 +636,7 @@ if (empty($reshook))
             if ($action == 'update')
             {
                 $error = 0;
-                
+
                 if (GETPOST('cancel','alpha'))
                 {
                 	if (! empty($backtopage))
@@ -667,7 +671,7 @@ if (empty($reshook))
                     $error++;
                     setEventMessages($object->error, $object->errors, 'errors');
                 }
-                
+
                 // Prevent thirdparty's emptying if a user hasn't rights $user->rights->categorie->lire (in such a case, post of 'custcats' is not defined)
                 if (! $error && !empty($user->rights->categorie->lire))
                 {
@@ -679,7 +683,7 @@ if (empty($reshook))
                         $error++;
                         setEventMessages($object->error, $object->errors, 'errors');
                     }
-                    
+
                     // Supplier categories association
                     $categories = GETPOST('suppcats', 'array');
                     $result = $object->setCategories($categories, 'supplier');
@@ -689,7 +693,7 @@ if (empty($reshook))
                         setEventMessages($object->error, $object->errors, 'errors');
                     }
                 }
-                
+
                 // Logo/Photo save
                 $dir     = $conf->societe->multidir_output[$object->entity]."/".$object->id."/logos";
                 $file_OK = is_uploaded_file($_FILES['photo']['tmp_name']);
@@ -719,7 +723,7 @@ if (empty($reshook))
                             {
                                 // Create thumbs
                                 $object->addThumbs($newfile);
-                                
+
                                 // Index file in database
                                 if (! empty($conf->global->THIRDPARTY_LOGO_ALLOW_EXTERNAL_DOWNLOAD))
                                 {
@@ -830,7 +834,7 @@ if (empty($reshook))
 
     $id=$socid;
     $object->fetch($socid);
-    
+
     // Actions to send emails
     $trigger_name='COMPANY_SENTBYMAIL';
     $paramname='socid';

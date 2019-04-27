@@ -35,6 +35,7 @@ $tmp=empty($_SERVER['SCRIPT_FILENAME'])?'':$_SERVER['SCRIPT_FILENAME'];$tmp2=rea
 while($i > 0 && $j > 0 && isset($tmp[$i]) && isset($tmp2[$j]) && $tmp[$i]==$tmp2[$j]) { $i--; $j--; }
 if (! $res && $i > 0 && file_exists(substr($tmp, 0, ($i+1))."/main.inc.php")) $res=@include(substr($tmp, 0, ($i+1))."/main.inc.php");
 if (! $res && $i > 0 && file_exists(dirname(substr($tmp, 0, ($i+1)))."/main.inc.php")) $res=@include(dirname(substr($tmp, 0, ($i+1)))."/main.inc.php");
+
 // Try main.inc.php using relative path
 if (! $res && file_exists("../main.inc.php")) $res=@include("../main.inc.php");
 if (! $res && file_exists("../../main.inc.php")) $res=@include("../../main.inc.php");
@@ -118,13 +119,11 @@ $head[$h][1] = $langs->trans("About");
 $head[$h][2] = 'tababout';
 $h++;
 
-
 print '<form name="cabinetmed" action="'.$_SERVER["PHP_SELF"].'" method="POST">';
 print '<input type="hidden" name="action" value="update">';
 
 dol_fiche_head($head, 'tabsetup', '', ((float) DOL_VERSION < 7.0 ? 0 : -1));
 
-$var=true;
 
 print '<table class="noborder" width="100%">';
 print '<tr class="liste_titre">';
@@ -132,30 +131,25 @@ print '<td>'.$langs->trans("Parameter").'</td>';
 print '<td>'.$langs->trans("Value").'</td>';
 print "</tr>\n";
 
-$var=!$var;
 print '<tr class="oddeven"><td>'.$langs->trans("HideProspectFeatures").'</td>';
 print '<td>'.$form->selectyesno('SOCIETE_DISABLE_PROSPECTS',$conf->global->SOCIETE_DISABLE_PROSPECTS,1).'</td>';
 print '</tr>';
 
-$var=!$var;
 print '<tr class="oddeven"><td>'.$langs->trans("HideCustomerFeatures").'</td>';
 print '<td>'.$form->selectyesno('SOCIETE_DISABLE_CUSTOMERS',$conf->global->SOCIETE_DISABLE_CUSTOMERS,1).'</td>';
 print '</tr>';
 
 if (empty($conf->global->SOCIETE_DISABLE_CUSTOMERS))
 {
-    $var=!$var;
     print '<tr class="oddeven"><td>'.$langs->trans("CABINETMED_AUTOGENERATE_INVOICE").'</td>';
     print '<td>'.$form->selectyesno('CABINETMED_AUTOGENERATE_INVOICE',$conf->global->CABINETMED_AUTOGENERATE_INVOICE,1).'</td>';
     print '</tr>';
 }
 
-$var=!$var;
 print '<tr class="oddeven"><td>'.$langs->trans("CABINETMED_BANK_PATIENT_REQUIRED").'</td>';
 print '<td>'.$form->selectyesno('CABINETMED_BANK_PATIENT_REQUIRED',$conf->global->CABINETMED_BANK_PATIENT_REQUIRED,1).'</td>';
 print '</tr>';
 
-$var=!$var;
 print '<tr class="oddeven"><td>'.$langs->trans("EnableSpecificFeaturesToRheumatology").'</td>';
 print '<td>'.$form->selectyesno('CABINETMED_RHEUMATOLOGY_ON',$conf->global->CABINETMED_RHEUMATOLOGY_ON,1).'</td>';
 print '</tr>';

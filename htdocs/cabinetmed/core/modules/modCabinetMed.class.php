@@ -618,6 +618,5 @@ class modCabinetMed extends DolibarrModules
 
         return $this->_load_tables('/cabinetmed/sql/');
     }
-
 }
 

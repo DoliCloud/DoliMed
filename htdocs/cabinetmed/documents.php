@@ -158,206 +158,13 @@ if ($action == 'builddoc')  // En get ou en post
     }
 }
 
-/*
- * Add file in email form
- */
-if ($_POST['addfile'])
-{
-    require_once(DOL_DOCUMENT_ROOT."/core/lib/files.lib.php");
 
-    // Set tmp user directory TODO Use a dedicated directory for temp mails files
-    $vardir=$conf->user->dir_output."/".$user->id;
-    $upload_dir_tmp = $vardir.'/temp';
-
-    //$mesg=dol_add_file_process($upload_dir_tmp,0,0);
-    if ((float) DOL_VERSION < 6.0)
-    {
-    	dol_add_file_process($upload_dir_tmp, 0, 0, 'addedfile', '', null, 'thi'.$object->id);
-    }
-    else
-    {
-    	dol_add_file_process($upload_dir_tmp, 0, 0, 'addedfile', '', null, 'thi'.$object->id, 0);
-    }
-
-    $action='presend';
-    $_POST["action"]='presend';
-}
-
-/*
- * Remove file in email form
- */
-if (! empty($_POST['removedfile']))
-{
-    require_once(DOL_DOCUMENT_ROOT."/core/lib/files.lib.php");
-
-    // Set tmp user directory
-    $vardir=$conf->user->dir_output."/".$user->id;
-    $upload_dir_tmp = $vardir.'/temp';
-
-	// TODO Delete only files that was uploaded from email form
-    //$mesg=dol_remove_file_process(GETPOST('removedfile','alpha'),0);
-    dol_remove_file_process(GETPOST('removedfile','alpha'), 0, 1, 'thi'.$object->id);   // We do not delete because if file is the official PDF of doc, we don't want to remove it physically
-
-    $action='presend';
-    $_POST["action"]='presend';
-}
-
-/*
- * Send mail
- */
-
+// Actions to send emails
 $trigger_name='COMPANY_SENTBYMAIL';
 $paramname='socid';
 $mode='emailfromthirdparty';
 $trackid='thi'.$object->id;
-
-if ($_POST['action'] == 'send' && ! $_POST['addfile'] && ! $_POST['removedfile'] && ! $_POST['cancel'])
-{
-    $error=0;
-
-    if (! GETPOST('subject'))
-    {
-        $langs->load("other");
-        $mesg='<div class="error">'.$langs->trans('ErrorFieldRequired',$langs->transnoentitiesnoconv("Subject")).'</div>';
-    }
-
-    $langs->load('mails');
-
-    $result=$object->fetch($socid);
-    if ($result > 0)
-    {
-        $objectref = dol_sanitizeFileName($object->ref);
-
-        if ($_POST['sendto'])
-        {
-            // Le destinataire a ete fourni via le champ libre
-            $sendto = $_POST['sendto'];
-            $sendtoid = 0;
-        }
-        elseif ($_POST['receiver'] != '-1')
-        {
-            // Recipient was provided from combo list
-            if ($_POST['receiver'] == 'thirdparty') // Id of third party
-            {
-                $sendto = $object->email;
-                $sendtoid = 0;
-            }
-            else    // Id du contact
-            {
-                $sendto = $object->contact_get_property($_POST['receiver'],'email');
-                $sendtoid = $_POST['receiver'];
-            }
-        }
-
-        if (dol_strlen($sendto))
-        {
-            $langs->load("commercial");
-
-            $from = $_POST['fromname'] . ' <' . $_POST['frommail'] .'>';
-            $replyto = $_POST['replytoname']. ' <' . $_POST['replytomail'].'>';
-            $message = $_POST['message'];
-            $sendtocc = $_POST['sendtocc'];
-            $deliveryreceipt = $_POST['deliveryreceipt'];
-
-            // Create form object
-            include_once(DOL_DOCUMENT_ROOT.'/core/class/html.formmail.class.php');
-            $formmail = new FormMail($db);
-            $formmail->trackid = 'thi'.$object->id;      // $trackid must be defined
-
-            $attachedfiles=$formmail->get_attached_files();
-            $filepath = $attachedfiles['paths'];
-            $filename = $attachedfiles['names'];
-            $mimetype = $attachedfiles['mimes'];
-
-            if ($_POST['action'] == 'send')
-            {
-                $subject = GETPOST('subject');
-                $actiontypecode='AC_CABMED';
-                $actionmsg = $langs->transnoentities('MailSentBy').' '.$from.' '.$langs->transnoentities('To').' '.$sendto;
-                if ($message)
-                {
-					if ($sendtocc) $actionmsg = dol_concatdesc($actionmsg, $langs->transnoentities('Bcc') . ": " . $sendtocc);
-					$actionmsg = dol_concatdesc($actionmsg, $langs->transnoentities('MailTopic') . ": " . $subject);
-					$actionmsg = dol_concatdesc($actionmsg, $langs->transnoentities('TextUsedInTheMessageBody') . ":");
-					$actionmsg = dol_concatdesc($actionmsg, $message);
-                }
-                $actionmsg2=$langs->transnoentities('Action'.$actiontypecode,join(',',$attachedfiles['names']));
-            }
-
-            // Envoi de la propal
-            require_once(DOL_DOCUMENT_ROOT.'/core/class/CMailFile.class.php');
-            $mailfile = new CMailFile($subject,$sendto,$from,$message,$filepath,$mimetype,$filename,$sendtocc,'',$deliveryreceipt);
-            if ($mailfile->error)
-            {
-                $mesg='<div class="error">'.$mailfile->error.'</div>';
-            }
-            else
-            {
-                $result=$mailfile->sendfile();
-                if ($result)
-                {
-                    $mesg=$langs->trans('MailSuccessfulySent',$mailfile->getValidAddress($from,2),$mailfile->getValidAddress($sendto,2));   // Must not contain "
-
-                    $error=0;
-
-                    // Initialisation donnees
-                    $object->sendtoid       = $sendtoid;
-                    $object->socid          = $object->id;
-                    $object->actiontypecode = $actiontypecode;
-                    $object->actionmsg      = $actionmsg;
-                    $object->actionmsg2     = $actionmsg2;
-
-                    // Appel des triggers
-                    include_once(DOL_DOCUMENT_ROOT . "/core/class/interfaces.class.php");
-                    $interface=new Interfaces($db);
-                    $result=$interface->run_triggers('CABINETMED_SENTBYMAIL',$object,$user,$langs,$conf);
-                    if ($result < 0) { $error++; }
-                    // Fin appel triggers
-
-                    if ($error)
-                    {
-                        dol_print_error($db);
-                    }
-                    else
-                    {
-                        // Redirect here
-                        // This avoid sending mail twice if going out and then back to page
-                        Header('Location: '.$_SERVER["PHP_SELF"].'?socid='.$object->id.'&mesg='.urlencode($mesg));
-                        exit;
-                    }
-                }
-                else
-                {
-                    $langs->load("other");
-                    $mesg='<div class="error">';
-                    if ($mailfile->error)
-                    {
-                        $mesg.=$langs->trans('ErrorFailedToSendMail',$from,$sendto);
-                        $mesg.='<br>'.$mailfile->error;
-                    }
-                    else
-                    {
-                        $mesg.='No mail sent. Feature is disabled by option MAIN_DISABLE_ALL_MAILS';
-                    }
-                    $mesg.='</div>';
-                }
-            }
-        }
-        else
-        {
-            $action='presend';
-            $langs->load("other");
-            $mesg='<div class="error">'.$langs->trans('ErrorMailRecipientIsEmpty').' !</div>';
-            dol_syslog('Recipient email is empty');
-        }
-    }
-    else
-    {
-        $langs->load("other");
-        $mesg='<div class="error">'.$langs->trans('ErrorFailedToReadEntity',$langs->transnoentitiesnoconv("Proposal")).'</div>';
-        dol_syslog('Impossible de lire les donnees de la facture. Le fichier propal n\'a peut-etre pas ete genere.');
-    }
-}
+include DOL_DOCUMENT_ROOT.'/core/actions_sendmails.inc.php';
 
 
 /*
@@ -497,8 +304,6 @@ if ($object->id)
     $genallowed=$user->rights->societe->creer;
     $delallowed=$user->rights->societe->supprimer;
 
-    $var=true;
-
     $title=img_picto('','filenew').' '.$langs->trans("GenerateADocument");
 
     print $formfile->showdocuments('company','','',$urlsource,$genallowed,$delallowed,'',0,0,0,64,0,'',$title,'',$object->default_lang,$hookmanager);
@@ -525,8 +330,6 @@ if ($object->id)
     {
         $fullpathfile=$upload_dir . '/' . GETPOST('urlfile');
 
-        $withtolist=array();
-
         $lesTypes = $object->liste_type_contact('external', 'libelle', 1);
 
         // List of contacts
@@ -548,62 +351,20 @@ if ($object->id)
                 //print 'xx'.$withtolist[$email];
                 $i++;
             }
-
         }
 
 		print '<div id="sendform" name="formmailbeforetitle"></div>';
         print '<br>';
-        print_fiche_titre($langs->trans('SendOutcomeByEmail'));
 
-        dol_fiche_head('');
+        // Presend form
+        $modelmail='thirdparty';
+        $defaulttopic='SendConsultationRef';
+        $diroutput = $conf->societe->dir_output;
+        $trackid = 'thi'.$object->id;
 
-        // Create form object
-        include_once(DOL_DOCUMENT_ROOT.'/core/class/html.formmail.class.php');
-        $formmail = new FormMail($db);
-        $formmail->fromtype = 'user';
-        $formmail->fromid   = $user->id;
-        $formmail->fromname = $user->getFullName($langs);
-        $formmail->frommail = $user->email;
-        $formmail->trackid = 'thi'.$object->id;
-        if (! empty($conf->global->MAIN_EMAIL_ADD_TRACK_ID) && ($conf->global->MAIN_EMAIL_ADD_TRACK_ID & 2))	// If bit 2 is set
-        {
-            include DOL_DOCUMENT_ROOT.'/core/lib/functions2.lib.php';
-            $formmail->frommail=dolAddEmailTrackId($formmail->frommail, 'inv'.$object->id);
-        }
-        $formmail->withfrom=1;
+        $file = $fullpathfile;
 
-        $formmail->withto=$withtolist;
-        $formmail->withtosocid=0;
-        $formmail->withtocc=0;
-        $formmail->withtoccsocid=0;
-        $formmail->withtoccc=$conf->global->MAIN_EMAIL_USECCC;
-        $formmail->withtocccsocid=0;
-        $formmail->withtopic=$langs->trans('SendOutcome',$object->name);
-        $formmail->withfile=2;
-        $formmail->withbody=$langs->trans("ThisIsADocumentForYou");
-        $formmail->withdeliveryreceipt=0;
-        $formmail->withcancel=1;
-
-        // Tableau des substitutions
-        $formmail->substit['__NAME__']=$object->getFullAddress();
-        $formmail->substit['__SIGNATURE__']=$user->signature;
-        $formmail->substit['__PERSONALIZED__']='';	// deprecated
-        // Tableau des parametres complementaires
-        $formmail->param['action']='send';
-        $formmail->param['models']='outcome_send';
-        $formmail->param['socid']=$object->id;
-        $formmail->param['returnurl']=$_SERVER["PHP_SELF"].'?socid='.$object->id;
-
-        // Init list of files
-        if (GETPOST("mode")=='init')
-        {
-            $formmail->clear_attached_files();
-            $formmail->add_attached_files($fullpathfile,basename($fullpathfile),dol_mimetype($fullpathfile));
-        }
-
-        $formmail->show_form();
-
-        print '<br>';
+        include DOL_DOCUMENT_ROOT.'/core/tpl/card_presend.tpl.php';
     }
 }
 
