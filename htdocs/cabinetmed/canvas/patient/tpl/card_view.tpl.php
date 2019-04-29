@@ -253,7 +253,14 @@ if (empty($reshook))
   	{
   	    $now = dol_now();
       	//var_dump($object->array_options['options_birthdate']);
-  	    $birthdate=dol_stringtotime($object->array_options['options_birthdate'].' 00:00:00', 1);
+  	    if (is_numeric($object->array_options['options_birthdate']))
+  	    {
+  	        $birthdate=$object->array_options['options_birthdate'];
+  	    }
+  	    else
+  	    {
+            $birthdate=dol_stringtotime($object->array_options['options_birthdate'].' 00:00:00', 1);
+  	    }
   	    if ($birthdate)
       	{
           	$newtmp=' &nbsp; ';
