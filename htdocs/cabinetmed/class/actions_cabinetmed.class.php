@@ -59,7 +59,14 @@ class ActionsCabinetmed
         $langs->load("cabinetmed@cabinetmed");
         $search_boxvalue = $parameters['search_boxvalue'];
 
-        $this->results['searchintoapatient']=array('position'=>5, 'img'=>'object_patient@cabinetmed', 'label'=>$langs->trans("SearchIntoPatients", $search_boxvalue), 'text'=>img_picto('','object_patient@cabinetmed').' '.$langs->trans("Patients", $search_boxvalue), 'url'=>dol_buildpath('/cabinetmed/patients.php',1).'?search_all='.urlencode($search_boxvalue));
+        if ((float) DOL_VERSION < 8)
+        {
+            $this->results['searchintoapatient']=array('position'=>5, 'img'=>'object_patient@cabinetmed', 'label'=>$langs->trans("SearchIntoPatients", $search_boxvalue), 'text'=>img_picto('','object_patient@cabinetmed').' '.$langs->trans("Patients", $search_boxvalue), 'url'=>dol_buildpath('/cabinetmed/patients.php',1).'?search_all='.urlencode($search_boxvalue));
+        }
+        else
+        {
+            $this->results['searchintoapatient']=array('position'=>5, 'img'=>'object_patient@cabinetmed', 'label'=>$langs->trans("SearchIntoPatients", $search_boxvalue), 'text'=>img_picto('','object_patient@cabinetmed').' '.$langs->trans("Patients", $search_boxvalue), 'url'=>dol_buildpath('/cabinetmed/patients.php',1));
+        }
 
         return 0;
     }
