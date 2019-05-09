@@ -260,7 +260,7 @@ for ($mois = 1+$nb_mois_decalage ; $mois <= 12+$nb_mois_decalage ; $mois++)
             $totentrees_tie[$annee]+=$encaiss_tie[$case];
         }
         print "</td>";
-        print '<td align="right" class="liste_total"><strong>';
+        print '<td class="liste_total right nowraponall"><strong>';
         //print '<a href="clientfourn.php?year='.$annee_decalage.'&month='.$mois_modulo.'">';
         print price($encaiss_chq[$case]+$encaiss_esp[$case]+$encaiss_car[$case]+$encaiss_tie[$case]);
         //print '</a>';
@@ -328,7 +328,7 @@ for ($mois = 1+$nb_mois_decalage ; $mois <= 12+$nb_mois_decalage ; $mois++)
                 //$totentrees_tie[$annee]+=$encaiss_tie[$case];
             }
             print "</td>";
-            print '<td align="right" class="liste_total"><strong>';
+            print '<td class="liste_total right nowraponall"><strong>';
             //print '<a href="clientfourn.php?year='.$annee_decalage.'&month='.$mois_modulo.'">';
             print price($encaiss_chq[$case2]+$encaiss_esp[$case2]+$encaiss_car[$case2]+$encaiss_tie[$case2]);
             //print '</a>';
