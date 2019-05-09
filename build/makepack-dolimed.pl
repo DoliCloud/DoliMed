@@ -95,7 +95,7 @@ $SOURCEMOD="$DIR/..";
 $SOURCEMOD1="$DIR/../htdocs/cabinetmed";
 $SOURCEMOD2="$DIR/../build/exe/dolimed";
 # Change SOURCEDOL to use another dolibarr source directory
-$SOURCEDOL="$DIR/../../dolibarr_7.0/.";	
+$SOURCEDOL="$DIR/../../dolibarr_8.0/.";	
 
 if (! -d $ENV{"DESTIDOLIMEDBETARC"} || ! -d $ENV{"DESTIDOLIMEDSTABLE"})
 {
@@ -894,10 +894,10 @@ if ($nboftargetok) {
  			$SOURCEBACK=$SOURCEMOD;
  			$SOURCEBACK =~ s/\//\\/g;
  			
-    		print "Prepare file \"$SOURCEBACK\\build\\exe\\doliwamp\\doliwamp.tmp.iss from \"$SOURCEBACK\\build\\exe\\doliwamp\\doliwamp.iss\"\n";
-    		$ret=`cat "$SOURCEMOD/build/exe/dolimed/dolimed.iss" | sed -e 's/__FILENAMEEXEDOLIWAMP__/$FILENAMEEXEDOLIWAMP/g' > "$SOURCEMOD/build/exe/dolimed/dolimed.tmp.iss"`;
+    		print "Prepare file \"$BUILDROOT/$PROJECT\\build\\exe\\dolimed\\dolimed.tmp.iss from \"$SOURCEMOD\\build\\exe\\dolimed\\dolimed.iss\"\n";
+    		$ret=`cat "$SOURCEMOD/build/exe/dolimed/dolimed.iss" | sed -e 's/__FILENAMEEXEDOLIWAMP__/$FILENAMEEXEDOLIWAMP/g' > "$BUILDROOT/$PROJECT/build/exe/dolimed/dolimed.tmp.iss"`;
 
-    		print "Compil exe $FILENAMEEXEDOLIWAMP.exe file from iss file \"Z:\\tmp\\buildroot\\build\\exe\\dolimed\\dolimed.tmp.iss\"\n";
+    		print "Compil exe $FILENAMEEXEDOLIWAMP.exe file from iss file \"Z:\\tmp\\buildroot\\$PROJECT\\build\\exe\\dolimed\\dolimed.tmp.iss\"\n";
     		$cmd= "wine ISCC.exe \"Z:\\tmp\\buildroot\\$PROJECT\\build\\exe\\dolimed\\dolimed.tmp.iss\"";
 			print "$cmd\n";
 			$ret= `$cmd`;
@@ -910,7 +910,7 @@ if ($nboftargetok) {
             $ret=`mv "$BUILDROOT/$PROJECT/build/$FILENAMEEXEDOLIWAMP.exe" "$NEWDESTI/$FILENAMEEXEDOLIWAMP.exe"`;
 
             print "Remove tmp file $SOURCE/build/exe/dolimed/dolimed.tmp.iss\n";
-            $ret=`rm "$SOURCEMOD/build/exe/dolimed/dolimed.tmp.iss"`;
+            #$ret=`rm "$SOURCEMOD/build/exe/dolimed/dolimed.tmp.iss"`;
 
     		next;
     	}
