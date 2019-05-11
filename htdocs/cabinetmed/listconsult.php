@@ -41,6 +41,7 @@ if (! $res && file_exists("../../../main.inc.php")) $res=@include("../../../main
 if (! $res) die("Include of main fails");
 
 require_once(DOL_DOCUMENT_ROOT."/core/class/html.formother.class.php");
+require_once(DOL_DOCUMENT_ROOT."/core/lib/date.lib.php");
 require_once("./class/cabinetmedcons.class.php");
 require_once("./lib/cabinetmed.lib.php");
 
@@ -91,7 +92,7 @@ $thirdpartystatic=new Societe($db);
 $consultstatic = new CabinetmedCons($db);
 $userstatic = new User($db);
 
-$datecons=dol_mktime(0,0,0,GETPOST('consmonth'),GETPOST('consday'),GETPOST('consyear'));
+$datecons=dol_mktime(0, 0, 0, GETPOST('consmonth', 'int'), GETPOST('consday', 'int'), GETPOST('consyear', 'int'));
 
 llxHeader();
 
@@ -127,6 +128,8 @@ $sql.= " WHERE s.fk_stcomm = st.id AND c.fk_soc = s.rowid";
 $sql.= " AND s.client IN (1, 3)";
 $sql.= ' AND s.entity IN ('.getEntity('societe', 1).')';
 if ($datecons > 0) $sql.=" AND c.datecons = '".$db->idate($datecons)."'";
+//if ($datecons > 0) $sql.= dolSqlDateFilter("c.datecons", GETPOST('consday', 'int'), GETPOST('consmonth', 'int'), GETPOST('consyear', 'int'));
+
 if ($search_motifprinc)
 {
 	$label= dol_getIdFromCode($db,$search_motifprinc,'cabinetmed_motifcons','code','label');
