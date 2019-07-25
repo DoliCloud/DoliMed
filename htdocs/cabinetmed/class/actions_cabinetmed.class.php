@@ -481,8 +481,8 @@ class ActionsCabinetmed
 
         $out.='<tr><td colspan="4" valign="top" class="formdoc">';
         $out.=$langs->trans("Comment").': ';
-        $out.= '<textarea name="outcome_comment" style="width: 95%" rows="8">'.(GETPOST('outcome_comment')?GETPOST('outcome_comment'):'').'</textarea>';
-        //$out.='<input type="text" name="outcome_comment" size="90" value="'.(GETPOST('outcome_comment')?GETPOST('outcome_comment'):'').'">';
+        $out.= '<textarea name="doc_comment" style="width: 95%" rows="8">'.(GETPOST('doc_comment')?GETPOST('doc_comment'):'').'</textarea>';
+        //$out.='<input type="text" name="doc_comment" size="90" value="'.(GETPOST('doc_comment')?GETPOST('doc_comment'):'').'">';
         $out.='</td></tr>';
 
         $this->resprints = $out;

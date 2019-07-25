@@ -239,6 +239,7 @@ function cabinetmed_completesubstitutionarray(&$substitutionarray,$langs,$object
 	        $substitutionarray['outcome_treatment']='';
 	    }
 	    $substitutionarray['outcome_exam_sugested']=$outcome->examenprescrit;
+	    $substitutionarray['outcome_comment']=$outcome->comment;
 	    // Payments
 	    $substitutionarray['outcome_total_inctax_card']=$outcome->montant_carte;
     	$substitutionarray['outcome_total_inctax_cheque']=$outcome->montant_cheque;
@@ -258,6 +259,7 @@ function cabinetmed_completesubstitutionarray(&$substitutionarray,$langs,$object
 	    //$substitutionarray['treatment_title']='';	// old string
 		//$substitutionarray['outcome_treatment_title']='';	// old string
 		$substitutionarray['outcome_treatment']='';
+		$substitutionarray['outcome_comment']='';
 
 	    $substitutionarray['outcome_exam_sugested']='';
 		$substitutionarray['outcome_total_inctax_card']='';
@@ -267,7 +269,7 @@ function cabinetmed_completesubstitutionarray(&$substitutionarray,$langs,$object
     	$substitutionarray['outcome_total_ttc']='';
 	}
 
-    $substitutionarray['outcome_comment']=GETPOST('outcome_comment');
+    $substitutionarray['doc_comment']=GETPOST('doc_comment');
 
     include_once DOL_DOCUMENT_ROOT.'/core/lib/date.lib.php';
 

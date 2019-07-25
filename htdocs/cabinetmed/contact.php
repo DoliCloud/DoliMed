@@ -206,7 +206,7 @@ if ($id > 0 || ! empty($ref))
     dol_fiche_end();
 
 	/*
-	* Lignes de contacts
+	* Lines of contacts
 	*/
     print '<form action="contact.php?socid='.$socid.'" method="post">';
     print '<input type="hidden" name="token" value="'.$_SESSION['newtoken'].'">';
