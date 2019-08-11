@@ -319,9 +319,10 @@ if ($resql)
     print '</td>';
     print '<td class="liste_titre">';
     print '</td>';
-    print '<td class="liste_titre" align="right"><input class="liste_titre" type="image" src="'.DOL_URL_ROOT.'/theme/'.$conf->theme.'/img/search.png" value="'.dol_escape_htmltag($langs->trans("Search")).'" title="'.dol_escape_htmltag($langs->trans("Search")).'">';
-    print '&nbsp; ';
-    print '<input type="image" class="liste_titre" name="button_removefilter" src="'.DOL_URL_ROOT.'/theme/'.$conf->theme.'/img/searchclear.png" value="'.dol_escape_htmltag($langs->trans("RemoveFilter")).'" title="'.dol_escape_htmltag($langs->trans("RemoveFilter")).'">';
+    // Action column
+    print '<td class="liste_titre maxwidthsearch">';
+    $searchpicto=$form->showFilterButtons();
+    print $searchpicto;
     print '</td>';
     print "</tr>\n";
 

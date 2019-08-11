@@ -68,8 +68,8 @@ function listmotifcons($nboflines,$newwidth=0,$htmlname='motifcons',$selected=''
 
     if (empty($newwidth)) $newwidth=$width;
 
-    print '<select class="flat valignmiddle maxwidth300onsmartphone" id="list'.$htmlname.'" name="'.$htmlname.'" '.(empty($conf->dol_use_jmobile)?' style="width: '.$newwidth.'px" ':'').'size="'.$nboflines.'"'.($nboflines > 1?' multiple':'').'>';
-    print '<option value="0"></option>';
+    $out = '<select class="flat valignmiddle maxwidth300onsmartphone" id="list'.$htmlname.'" name="'.$htmlname.'" '.(empty($conf->dol_use_jmobile)?' style="width: '.$newwidth.'px" ':'').'size="'.$nboflines.'"'.($nboflines > 1?' multiple':'').'>';
+    $out.= '<option value="0"></option>';
     $sql = 'SELECT s.rowid, s.code, s.label';
     $sql.= ' FROM '.MAIN_DB_PREFIX.'cabinetmed_motifcons as s';
     $sql.= ' WHERE active = 1';
@@ -84,13 +84,19 @@ function listmotifcons($nboflines,$newwidth=0,$htmlname='motifcons',$selected=''
         while ($i < $num)
         {
             $obj=$db->fetch_object($resql);
-            print '<option value="'.$obj->code.'"';
-            if ($obj->code == $selected) print ' selected="selected"';
-            print '>'.$obj->label.'</option>';
+            $out .= '<option value="'.$obj->code.'"';
+            if ($obj->code == $selected) $out .= ' selected="selected"';
+            $out .= '>'.$obj->label.'</option>';
             $i++;
         }
     }
-    print '</select>'."\n";
+    $out .= '</select>'."\n";
+    if ($conf->use_javascript_ajax)
+    {
+        $out.=ajax_combobox('list'.$htmlname);
+    }
+
+    print $out;
 }
 
 /**
