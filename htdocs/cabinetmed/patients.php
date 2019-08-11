@@ -248,6 +248,7 @@ $prospectstatic->loadCacheOfProspStatus();
 $title = $langs->trans("ListOfPatients");
 
 $sql = "SELECT s.rowid, s.nom as name, s.client, s.zip, s.town, st.libelle as stcomm, s.prefix_comm, s.code_client,";
+$sql.= " s.phone, s.fax,";
 $sql.= " s.datec, s.canvas, s.status as status,";
 $sql.= " MAX(c.datecons) as lastcons, COUNT(c.rowid) as nb";
 // We'll need these fields in order to filter by sale (including the case where the user can only see his prospects)
