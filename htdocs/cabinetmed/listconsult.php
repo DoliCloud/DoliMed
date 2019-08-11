@@ -116,7 +116,12 @@ if (GETPOST("button_removefilter_x") || GETPOST("button_removefilter.x") || GETP
 
 $sql = "SELECT s.rowid, s.nom as name, s.client, s.town, st.libelle as stcomm, s.prefix_comm, s.code_client,";
 $sql.= " s.datec, s.canvas,";
-$sql.= " c.rowid as cid, c.datecons, c.typepriseencharge, c.typevisit, c.motifconsprinc, c.diaglesprinc, c.examenprescrit, c.traitementprescrit, c.fk_user, c.fk_user_creation";
+$sql.= " c.rowid as cid, c.datecons, c.typepriseencharge, c.typevisit, c.motifconsprinc, c.diaglesprinc, c.examenprescrit, c.traitementprescrit, c.fk_user, c.fk_user_creation,";
+$sql.= " c.montant_cheque,";
+$sql.= " c.montant_espece,";
+$sql.= " c.montant_carte,";
+$sql.= " c.montant_tiers,";
+$sql.= " c.banque";
 // We'll need these fields in order to filter by categ
 if ($search_categ) $sql .= ", cs.fk_categorie, cs.fk_soc";
 $sql.= " FROM ".MAIN_DB_PREFIX."societe as s";
@@ -308,6 +313,12 @@ if ($resql)
         print '&nbsp;';
         print '</td>';
     }
+    print '<td class="liste_titre">';
+    print '</td>';
+    print '<td class="liste_titre">';
+    print '</td>';
+    print '<td class="liste_titre">';
+    print '</td>';
     print '<td class="liste_titre" align="right"><input class="liste_titre" type="image" src="'.DOL_URL_ROOT.'/theme/'.$conf->theme.'/img/search.png" value="'.dol_escape_htmltag($langs->trans("Search")).'" title="'.dol_escape_htmltag($langs->trans("Search")).'">';
     print '&nbsp; ';
     print '<input type="image" class="liste_titre" name="button_removefilter" src="'.DOL_URL_ROOT.'/theme/'.$conf->theme.'/img/searchclear.png" value="'.dol_escape_htmltag($langs->trans("RemoveFilter")).'" title="'.dol_escape_htmltag($langs->trans("RemoveFilter")).'">';
@@ -326,7 +337,10 @@ if ($resql)
     {
 	    print_liste_field_titre($langs->trans('Prise en charge'),$_SERVER['PHP_SELF'],'c.typepriseencharge','',$param,'',$sortfield,$sortorder);
     }
-	print_liste_field_titre($langs->trans('ConsultActe'),$_SERVER['PHP_SELF'],'c.typevisit','',$param,'align="right"',$sortfield,$sortorder);
+	print_liste_field_titre($langs->trans('ConsultActe'),$_SERVER['PHP_SELF'],'c.typevisit','',$param,'',$sortfield,$sortorder);
+	print_liste_field_titre($langs->trans('MontantPaiement'),$_SERVER['PHP_SELF'],'','',$param,'align="right"',$sortfield,$sortorder);
+	print_liste_field_titre($langs->trans('TypePaiement'),$_SERVER['PHP_SELF'],'','',$param,'',$sortfield,$sortorder);
+	print_liste_field_titre('',$_SERVER['PHP_SELF'],'','',$param,'',$sortfield,$sortorder);
 	print "</tr>\n";
 
 	while ($i < min($num, $limit))
@@ -334,11 +348,13 @@ if ($resql)
 		$obj = $db->fetch_object($resql);
 
 		print '<tr class="oddeven">';
+
         print '<td>';
         $consultstatic->id=$obj->cid;
         $consultstatic->fk_soc=$obj->rowid;
         print $consultstatic->getNomUrl(1,'&amp;backtopage='.urlencode($_SERVER["PHP_SELF"]));
         print '</td>';
+
 		print '<td>';
 		$thirdpartystatic->id=$obj->rowid;
         $thirdpartystatic->name=$obj->name;
@@ -346,28 +362,112 @@ if ($resql)
         $thirdpartystatic->canvas=$obj->canvas;
         print $thirdpartystatic->getNomUrl(1);
 		print '</td>';
+
 		print '<td>'.$obj->code_client.'</td>';
+
 		print '<td align="center">'.dol_print_date($db->jdate($obj->datecons),'day').'</td>';
+
 		print '<td>';
 		$userstatic->fetch($obj->fk_user_creation);
         print $userstatic->getNomUrl(1);
 		print '</td>';
+
 		print '<td>'.$obj->motifconsprinc.'</td>';
+
         print '<td>';
         print dol_trunc($obj->diaglesprinc,20);
         /*$val=dol_trunc($obj->examenprescrit,20);
         if ($val) $val.='<br>';
         $val=dol_trunc($obj->traitementprescrit,20);*/
         print '</td>';
+
 	    if (! empty($conf->global->CABINETMED_FRENCH_PRISEENCHARGE))
         {
     		print '<td>';
             print $obj->typepriseencharge;
             print '</td>';
         }
-        print '<td align="right">';
+
+        print '<td>';
         print $langs->trans($obj->typevisit);
         print '</td>';
+
+        print '<td class="right">';
+        $foundamount=0;
+        if (price2num($obj->montant_cheque) > 0) {
+            if ($foundamount) print '+';
+            print price($obj->montant_cheque);
+            $foundamount++;
+        }
+        if (price2num($obj->montant_espece) > 0)  {
+            if ($foundamount) print '+';
+            print price($obj->montant_espece);
+            $foundamount++;
+        }
+        if (price2num($obj->montant_carte) > 0)  {
+            if ($foundamount) print '+';
+            print price($obj->montant_carte);
+            $foundamount++;
+        }
+        if (price2num($obj->montant_tiers) > 0)  {
+            if ($foundamount) print '+';
+            print price($obj->montant_tiers);
+            $foundamount++;
+        }
+        print '</td>';
+
+        $bankid = array();
+
+        print '<td>';
+        $foundamount=0;
+        if (price2num($obj->montant_cheque) > 0) {
+            if ($foundamount) print ' + ';
+            print $langs->trans("Cheque");
+            if ($conf->banque->enabled && $bankid['CHQ']['account_id'])
+            {
+                $bank=new Account($db);
+                $bank->fetch($bankid['CHQ']['account_id']);
+                print '&nbsp;('.$bank->getNomUrl(0,'transactions').')';
+            }
+            $foundamount++;
+        }
+        if (price2num($obj->montant_espece) > 0)  {
+            if ($foundamount) print ' + ';
+            print $langs->trans("Cash");
+            if ($conf->banque->enabled && $bankid['LIQ']['account_id'])
+            {
+                $bank=new Account($db);
+                $bank->fetch($bankid['LIQ']['account_id']);
+                print '&nbsp;('.$bank->getNomUrl(0,'transactions').')';
+            }
+            $foundamount++;
+        }
+        if (price2num($obj->montant_carte) > 0)  {
+            if ($foundamount) print ' + ';
+            print $langs->trans("CreditCard");
+            if ($conf->banque->enabled && $bankid['CB']['account_id'])
+            {
+                $bank=new Account($db);
+                $bank->fetch($bankid['CB']['account_id']);
+                print '&nbsp;('.$bank->getNomUrl(0,'transactions').')';
+            }
+            $foundamount++;
+        }
+        if (price2num($obj->montant_tiers) > 0)  {
+            if ($foundamount) print ' + ';
+            print $langs->trans("PaymentTypeThirdParty");
+            if ($conf->banque->enabled && $bankid['OTH']['account_id'])
+            {
+                $bank=new Account($db);
+                $bank->fetch($bankid['OTH']['account_id']);
+                print '&nbsp;('.$bank->getNomUrl(0,'transactions').')';
+            }
+            $foundamount++;
+        }
+        print '</td>';
+
+        print '<td></td>';
+
         print "</tr>\n";
 		$i++;
 	}

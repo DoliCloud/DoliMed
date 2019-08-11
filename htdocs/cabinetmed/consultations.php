@@ -1,5 +1,5 @@
 <?php
-/* Copyright (C) 2004-2017      Laurent Destailleur  <eldy@users.sourceforge.net>
+/* Copyright (C) 2004-2019      Laurent Destailleur  <eldy@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -541,7 +541,6 @@ else
         $result=$consult->fetch_bankid();
         if ($result < 0) dol_print_error($db,$consult->error);
     }
-
 
 	/*
 	 * Affichage onglets
@@ -1228,13 +1227,14 @@ if ($action == '' || $action == 'delete')
     print_liste_field_titre($langs->trans('Num'),$_SERVER['PHP_SELF'],'t.rowid','',$param,'',$sortfield,$sortorder);
     print_liste_field_titre($langs->trans('Date'),$_SERVER['PHP_SELF'],'t.datecons','',$param,'',$sortfield,$sortorder);
     print_liste_field_titre($langs->trans('CreatedBy'),$_SERVER['PHP_SELF'],'t.fk_user','',$param,'',$sortfield,$sortorder);
+    print_liste_field_titre($langs->trans("MotifPrincipal"),$_SERVER["PHP_SELF"],"t.motifconsprinc","",$param,'',$sortfield,$sortorder);
+    print_liste_field_titre($langs->trans('DiagLesPrincipal'),$_SERVER['PHP_SELF'],'t.diaglesprinc','',$param,'',$sortfield,$sortorder);
     if (! empty($conf->global->CABINETMED_FRENCH_PRISEENCHARGE))
     {
         print_liste_field_titre($langs->trans('Priseencharge'),$_SERVER['PHP_SELF'],'t.typepriseencharge','',$param,'',$sortfield,$sortorder);
     }
-    print_liste_field_titre($langs->trans('DiagLesPrincipal'),$_SERVER['PHP_SELF'],'t.diaglesprinc','',$param,'',$sortfield,$sortorder);
     print_liste_field_titre($langs->trans('ConsultActe'),$_SERVER['PHP_SELF'],'t.typevisit','',$param,'',$sortfield,$sortorder);
-    print_liste_field_titre($langs->trans('MontantPaiement'),$_SERVER['PHP_SELF'],'','',$param,'',$sortfield,$sortorder);
+    print_liste_field_titre($langs->trans('MontantPaiement'),$_SERVER['PHP_SELF'],'','',$param,'align="right"',$sortfield,$sortorder);
     print_liste_field_titre($langs->trans('TypePaiement'),$_SERVER['PHP_SELF'],'','',$param,'',$sortfield,$sortorder);
     print_liste_field_titre('');
     print '</tr>';
@@ -1277,7 +1277,9 @@ if ($action == '' || $action == 'delete')
     {
         $i = 0 ;
         $num = $db->num_rows($resql);
-        $var=true;
+
+        $usertmp=new User($db);
+
         while ($i < $num)
         {
             $obj = $db->fetch_object($resql);
@@ -1285,34 +1287,42 @@ if ($action == '' || $action == 'delete')
             $consult->id=$obj->rowid;
             $consult->fetch_bankid();
 
-            $var=!$var;
             print '<tr class="oddeven">';
+
             print '<td>';
             print '<a href="'.$_SERVER["PHP_SELF"].'?socid='.$obj->fk_soc.'&id='.$obj->rowid.'&action=edit">'.sprintf("%08d",$obj->rowid).'</a>';
             print '</td>';
+
             print '<td>';
             print dol_print_date($db->jdate($obj->datecons),'day');
             print '</td>';
+
             print '<td>';
-            $usertmp=new User($db);
-            $usertmp->fetch($obj->fk_user_creation);
-            print $usertmp->getNomUrl(1);
+            if ($obj->fk_user_creation > 0)
+            {
+                $usertmp->fetch($obj->fk_user_creation);
+                print $usertmp->getNomUrl(1);
+            }
             print '</td>';
+
+            print '<td>'.dol_trunc($obj->motifconsprinc, 32).'</td>';
+
+            print '<td>';
+            print dol_trunc($obj->diaglesprinc, 32);
+            print '</td>';
+
             if (! empty($conf->global->CABINETMED_FRENCH_PRISEENCHARGE))
             {
                 print '<td>';
                 print $obj->typepriseencharge;
                 print '</td>';
             }
+
             print '<td>';
-            print dol_trunc($obj->diaglesprinc,32);
-            print '</td>';
-            print '<td>';
-            //print dol_print_date($obj->diaglesprinc,'day');
-            //print '</td><td>';
             print $langs->trans($obj->typevisit);
             print '</td>';
-            print '<td>';
+
+            print '<td class="right">';
             $foundamount=0;
             if (price2num($obj->montant_cheque) > 0) {
                 if ($foundamount) print '+';
