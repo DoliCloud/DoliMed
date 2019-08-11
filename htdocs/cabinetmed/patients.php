@@ -69,9 +69,9 @@ $search_categ = GETPOST("search_categ","int");
 $search_diagles=GETPOST("search_diagles","int");
 $search_contactid = GETPOST("search_contactid","int");
 
-$type=GETPOST('type','alpha');
-$optioncss=GETPOST('optioncss','alpha');
-$mode=GETPOST("mode",'');
+$type=GETPOST('type', 'alpha');
+$optioncss=GETPOST('optioncss', 'alpha');
+$mode=GETPOST("mode", 'none');
 
 
 $diroutputmassaction=$conf->societe->dir_output . '/temp/massgeneration/'.$user->id;
@@ -247,7 +247,7 @@ $prospectstatic->loadCacheOfProspStatus();
 
 $title = $langs->trans("ListOfPatients");
 
-$sql = "SELECT s.rowid, s.nom as name, s.client, s.town, st.libelle as stcomm, s.prefix_comm, s.code_client,";
+$sql = "SELECT s.rowid, s.nom as name, s.client, s.zip, s.town, st.libelle as stcomm, s.prefix_comm, s.code_client,";
 $sql.= " s.datec, s.canvas, s.status as status,";
 $sql.= " MAX(c.datecons) as lastcons, COUNT(c.rowid) as nb";
 // We'll need these fields in order to filter by sale (including the case where the user can only see his prospects)
