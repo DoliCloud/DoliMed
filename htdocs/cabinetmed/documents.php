@@ -149,7 +149,8 @@ if ($action == 'builddoc')  // En get ou en post
             $outputlangs = new Translate("",$conf);
             $outputlangs->setDefaultLang($newlang);
         }
-        $result=thirdparty_doc_create($db, $object, '', GETPOST('model','alpha'), $outputlangs);
+
+        $object->generateDocument(GETPOST('model','alpha'), $outputlangs, 0, 0, 0);
         if ($result <= 0)
         {
             dol_print_error($db,$result);
