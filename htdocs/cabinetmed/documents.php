@@ -258,11 +258,13 @@ if ($object->id)
 
     print '</form>';
 
-    /*
-	$modulepart = 'societe';
+
+    $modulepart = 'societe';
 	$permission = $user->rights->societe->creer;
+    $permtoedit = $user->rights->societe->creer;
 	$param = '&id=' . $object->id;
-	include_once DOL_DOCUMENT_ROOT . '/core/tpl/document_actions_post_headers.tpl.php';
+	/*
+	 include_once DOL_DOCUMENT_ROOT . '/core/tpl/document_actions_post_headers.tpl.php';
 	*/
 
     if ($mesg) dol_htmloutput_mesg($mesg);
@@ -313,7 +315,25 @@ if ($object->id)
     $param='&socid='.$object->id;
 
     $formfilecabinetmed=new FormFileCabinetmed($db);
-    $formfilecabinetmed->list_of_documents($filearray,$object,'societe',$param);
+    $formfilecabinetmed->list_of_documents(
+        $filearray,
+        $object,
+        $modulepart,
+        $param,
+        0,
+        '',		// relative path with no file. For example "0/1"
+        $permission,
+        0,
+        '',
+        0,
+        '',
+        '',
+        0,
+        $permtoedit,
+        $upload_dir,
+        $sortfield,
+        $sortorder,
+        $disablemove);
 
 	print "<br>";
 
