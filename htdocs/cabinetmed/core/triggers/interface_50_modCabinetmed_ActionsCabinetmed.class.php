@@ -102,12 +102,12 @@ class InterfaceActionsCabinetmed
      *      $object->fk_element
      *      $object->elementtype
      *
-     *      @param	string	$action     Event code (COMPANY_CREATE, PROPAL_VALIDATE, ...)
-     *      @param  Object	$object     Object action is done on
-     *      @param  User	$user       Object user
-     *      @param  Langs	$langs      Object langs
-     *      @param  Conf	$conf       Object conf
-     *      @return int         		<0 if KO, 0 if no action are done, >0 if OK
+     *      @param	string		$action     Event code (COMPANY_CREATE, PROPAL_VALIDATE, ...)
+     *      @param  Object		$object     Object action is done on
+     *      @param  User		$user       Object user
+     *      @param  Translate	$langs      Object langs
+     *      @param  Conf		$conf       Object conf
+     *      @return int         			<0 if KO, 0 if no action are done, >0 if OK
      */
     function runTrigger($action,$object,$user,$langs,$conf)
     {
@@ -174,26 +174,22 @@ class InterfaceActionsCabinetmed
 
             require_once(DOL_DOCUMENT_ROOT.'/contact/class/contact.class.php');
             require_once(DOL_DOCUMENT_ROOT.'/societe/class/societe.class.php');
-            $contactforaction=new Contact($this->db);
-            $societeforaction=new Societe($this->db);
-			if ($object->sendtoid > 0) $contactforaction->fetch($object->sendtoid);
-            if ($object->socid > 0)    $societeforaction->fetch($object->socid);
 
 			// Insertion action
 			require_once(DOL_DOCUMENT_ROOT.'/comm/action/class/actioncomm.class.php');
 			$actioncomm = new ActionComm($this->db);
 			$actioncomm->type_code   = $object->actiontypecode;
 			$actioncomm->label       = $object->actionmsg2;
-			$actioncomm->note        = $object->actionmsg;
+			$actioncomm->note_private= $object->actionmsg;
 			$actioncomm->datep       = $now;
 			$actioncomm->datef       = $now;
 			$actioncomm->durationp   = 0;
 			$actioncomm->punctual    = 1;
 			$actioncomm->percentage  = -1;   // Not applicable
-			$actioncomm->contact     = $contactforaction;
-			$actioncomm->societe     = $societeforaction;
-			$actioncomm->author      = $user;   // User saving action
-			$actioncomm->userownerid = $user->id;
+			$actioncomm->socid       = ($object->socid > 0 ? $object->socid : 0);
+			$actioncomm->contactid   = ($object->sendtoid > 0 ? $object->sendtoid : 0);
+			$actioncomm->authorid    = $user->id;   // User saving action
+			$actioncomm->userownerid = $user->id;	// Owner of action
 
 			$actioncomm->fk_element  = $object->id;
 			$actioncomm->elementtype = $object->element;
