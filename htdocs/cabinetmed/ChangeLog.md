@@ -1,5 +1,11 @@
 # ChangeLog
 
+## 7.0.2 unreleased
+
+- NEW Compatibilitu with v10.
+- NEW Add preview on files
+- NEW Add outcome_commen on document.
+- FIX phone and zip
 
 ## 7.0.1
 
