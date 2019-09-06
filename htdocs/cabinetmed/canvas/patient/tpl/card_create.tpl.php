@@ -291,7 +291,7 @@ dol_fiche_head('');
 
         print '<input type="text" name="idprof3" size="18" maxlength="32" value="'.$object->idprof3.'"> ('.$conf->format_date_short_java.')';
         //$conf->global->MAIN_POPUP_CALENDAR='none';
-        //print $form->select_date(-1,'birthdate');
+        //print $form->selectDate(-1,'birthdate');
         print '</td>';
         print '</tr>';
 */

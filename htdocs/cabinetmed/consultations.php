@@ -852,7 +852,7 @@ else
         print '<tr><td class="titlefield fieldrequired">';
         print $langs->trans("Date").': ';
         print '</td><td align="left">';
-        $form->select_date(($consult->datecons?$consult->datecons:''),'cons', 0, 0, 0, '', 1, 1);
+        print $form->selectDate(($consult->datecons?$consult->datecons:''), 'cons', 0, 0, 0, '', 1, 1);
         print '</td></tr>';
         print '</table>';
 

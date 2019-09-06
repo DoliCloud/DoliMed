@@ -296,7 +296,7 @@ if ($resql)
 	print '</td>';
 	// Date
 	print '<td class="liste_titre" align="center">';
-	print $form->select_date($datecons, 'cons', 0, 0, 1, '',1,0,1);
+	print $form->selectDate($datecons, 'cons', 0, 0, 1, '', 1, 0);
 	print '</td>';
 	print '<td class="liste_titre"></td>';
     print '<td class="liste_titre">';

@@ -360,7 +360,7 @@ if ($socid > 0)
         print '<table class="notopnoleftnoright" width="100%">';
         print '<tr><td width="60%" class="fieldrequired">';
         print $langs->trans("Date").': ';
-        $form->select_date($examother->dateexam,'exam');
+        print $form->selectDate($examother->dateexam, 'exam');
         print '</td><td>';
         print '</td></tr>';
 
