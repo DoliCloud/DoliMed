@@ -1,5 +1,7 @@
 <?php
 /* Copyright (C) 2001-2006 Rodolphe Quiedeville <rodolphe@quiedeville.org>
+
+
  * Copyright (C) 2004-2013 Laurent Destailleur  <eldy@users.sourceforge.net>
  * Copyright (C) 2005-2009 Regis Houssin        <regis@dolibarr.fr>
  *
@@ -69,17 +71,88 @@ $pagenext = $page + 1;
 if (! $sortorder) $sortorder="DESC";
 if (! $sortfield) $sortfield="c.datecons,c.rowid";
 
-$search_nom=GETPOST("search_nom");
-$search_ville=GETPOST("search_ville");
-$search_code=GETPOST("search_code");
-$search_ref=GETPOST("search_ref");
+$search_nom  = GETPOST("search_nom", 'alpha');
+$search_ville= GETPOST("search_ville", 'alpha');
+$search_code = GETPOST("search_code", 'alpha');
+$search_ref  = GETPOST("search_ref", 'alpha');
 
 // Load sale and categ filters
-$search_sale = GETPOST("search_sale","int");
-$search_categ = GETPOST("search_categ","int");
-$search_motifprinc = GETPOST("search_motifprinc","int");
-$search_diaglesprinc = GETPOST("search_diaglesprinc","int");
-$search_contactid = GETPOST("search_contactid","int");
+$search_sale         = GETPOST("search_sale", "int");
+$search_categ        = GETPOST("search_categ", "int");
+$search_motifprinc   = GETPOST("search_motifprinc", "alpha");
+$search_diaglesprinc = GETPOST("search_diaglesprinc", "alpha");
+$search_contactid    = GETPOST("search_contactid", "int");
+
+$arrayfields=array(
+    'c.rowid'=>array('label'=>"IdConsultShort", 'checked'=>1, 'enabled'=>1),
+    's.nom'=>array('label'=>"Patient", 'checked'=>1, 'enabled'=>1),
+    's.code_client'=>array('label'=>"PatientCode", 'checked'=>1, 'enabled'=>1),
+    'c.datecons'=>array('label'=>"DateConsultationShort", 'checked'=>1, 'enabled'=>1),
+    'c.datec'=>array('label'=>"CreatedBy", 'checked'=>1, 'enabled'=>1),
+    'c.motifconsprinc'=>array('label'=>"MotifPrincipal", 'checked'=>1, 'enabled'=>1),
+    'c.diaglesprinc'=>array('label'=>"DiagLesPrincipal", 'checked'=>1, 'enabled'=>1),
+    'c.typepriseencharge'=>array('label'=>"Type prise en charge", 'checked'=>1, 'enabled'=>1),
+    'c.typevisit'=>array('label'=>"ConsultActe", 'checked'=>1, 'enabled'=>1),
+    'amountpayment'=>array('label'=>"MontantPaiement", 'checked'=>1, 'enabled'=>1),
+    'typepayment'=>array('label'=>"TypePaiement", 'checked'=>1, 'enabled'=>1),
+);
+// Extra fields
+//if (is_array($extrafields->attributes[$object->table_element]['label']) && count($extrafields->attributes[$object->table_element]['label']) > 0) // v9+
+if (is_array($extrafields->attributes[$object->table_element]['label']) && count($extrafields->attributes[$object->table_element]['label']) > 0)
+{
+    foreach($extrafields->attributes[$object->table_element]['label'] as $key => $val)
+    {
+        if (! empty($extrafields->attributes[$object->table_element]['list'][$key]))
+            $arrayfields["ef.".$key]=array('label'=>$extrafields->attributes[$object->table_element]['label'][$key], 'checked'=>(($extrafields->attributes[$object->table_element]['list'][$key]<0)?0:1), 'position'=>$extrafields->attributes[$object->table_element]['pos'][$key], 'enabled'=>(abs($extrafields->attributes[$object->table_element]['list'][$key])!=3 && $extrafields->attributes[$object->table_element]['perms'][$key]));
+    }
+}
+$object->fields = dol_sort_array($object->fields, 'position');
+$arrayfields = dol_sort_array($arrayfields, 'position');
+
+$datecons=dol_mktime(0, 0, 0, GETPOST('consmonth', 'int'), GETPOST('consday', 'int'), GETPOST('consyear', 'int'));
+
+
+/*
+ * Actions
+ */
+
+$parameters=array();
+$reshook=$hookmanager->executeHooks('doActions',$parameters, $object, $action);    // Note that $action and $object may have been modified by some hooks
+if ($reshook < 0) setEventMessages($hookmanager->error, $hookmanager->errors, 'errors');
+
+if (empty($reshook))
+{
+    // Selection of new fields
+	include DOL_DOCUMENT_ROOT.'/core/actions_changeselectedfields.inc.php';
+
+	// Do we click on purge search criteria ?
+	if (GETPOST('button_removefilter_x','alpha') || GETPOST('button_removefilter.x','alpha') || GETPOST('button_removefilter','alpha')) // All tests are required to be compatible with all browsers
+	{
+	    $search_categ='';
+	    $search_sale='';
+	    $socname="";
+	    $search_nom="";
+	    $search_ville="";
+	    $search_idprof1='';
+	    $search_idprof2='';
+	    $search_idprof3='';
+	    $search_idprof4='';
+	    $search_motifprinc='';
+	    $search_diaglesprinc='';
+	    $search_contactid='';
+	    $datecons='';
+	    $toselect='';
+	    $search_array_options=array();
+	}
+
+	// Mass actions
+	$objectclass='Consultations';
+	$objectlabel='Consultations';
+	$permtoread = $user->rights->societe->lire;
+	$permtodelete = $user->rights->societe->supprimer;
+	$uploaddir = $conf->societe->dir_output;
+	include DOL_DOCUMENT_ROOT.'/core/actions_massactions.inc.php';
+}
 
 
 /*
@@ -87,32 +160,17 @@ $search_contactid = GETPOST("search_contactid","int");
  */
 
 $form=new Form($db);
-$htmlother=new FormOther($db);
+$formother=new FormOther($db);
 $thirdpartystatic=new Societe($db);
 $consultstatic = new CabinetmedCons($db);
 $userstatic = new User($db);
 
-$datecons=dol_mktime(0, 0, 0, GETPOST('consmonth', 'int'), GETPOST('consday', 'int'), GETPOST('consyear', 'int'));
 
-llxHeader();
+$now=dol_now();
 
-// Do we click on purge search criteria ?
-if (GETPOST("button_removefilter_x") || GETPOST("button_removefilter.x") || GETPOST("button_removefilter"))
-{
-    $search_categ='';
-    $search_sale='';
-    $socname="";
-    $search_nom="";
-    $search_ville="";
-    $search_idprof1='';
-    $search_idprof2='';
-    $search_idprof3='';
-    $search_idprof4='';
-    $search_motifprinc='';
-    $search_diaglesprinc='';
-    $search_contactid='';
-    $datecons='';
-}
+//$help_url="EN:Module_MyObject|FR:Module_MyObject_FR|ES:Módulo_MyObject";
+$help_url='';
+$title = $langs->trans("ListOfConsultations");
 
 $sql = "SELECT s.rowid, s.nom as name, s.client, s.town, st.libelle as stcomm, s.prefix_comm, s.code_client,";
 $sql.= " s.datec, s.canvas,";
@@ -137,21 +195,21 @@ if ($datecons > 0) $sql.=" AND c.datecons = '".$db->idate($datecons)."'";
 
 if ($search_motifprinc)
 {
-	$label= dol_getIdFromCode($db,$search_motifprinc,'cabinetmed_motifcons','code','label');
+	$label= dol_getIdFromCode($db, $search_motifprinc, 'cabinetmed_motifcons','code','label');
 	$sql.= " AND c.motifconsprinc LIKE '%".$db->escape($label)."%'";
 }
 if ($search_diaglesprinc)
 {
-	$label= dol_getIdFromCode($db,$search_diaglesprinc,'cabinetmed_diaglec','code','label');
+	$label= dol_getIdFromCode($db, $search_diaglesprinc, 'cabinetmed_diaglec','code','label');
 	$sql.= " AND c.diaglesprinc LIKE '%".$db->escape($label)."%'";
 }
 if (!$user->rights->societe->client->voir && ! $socid) $sql.= " AND s.rowid = sc.fk_soc AND sc.fk_user = " .$user->id;
 if ($socid && empty($conf->global->MAIN_DISABLE_RESTRICTION_ON_THIRDPARTY_FOR_EXTERNAL)) $sql.= " AND s.rowid = ".$socid;
 if ($search_ref)   $sql.= " AND c.rowid = ".$db->escape($search_ref);
 if ($search_categ) $sql.= " AND s.rowid = cs.fk_soc";	// Join for the needed table to filter by categ
-if ($search_nom)   $sql.= " AND s.nom like '%".$db->escape(strtolower($search_nom))."%'";
-if ($search_ville) $sql.= " AND s.town like '%".$db->escape(strtolower($search_ville))."%'";
-if ($search_code)  $sql.= " AND s.code_client like '%".$db->escape(strtolower($search_code))."%'";
+if ($search_nom)   $sql.= natural_search("s.nom", $search_nom);
+if ($search_ville) $sql.= natural_search("s.town", $search_ville);
+if ($search_code)  $sql.= natural_search("s.code_client", $search_code);
 // Insert sale filter
 if ($search_sale)
 {
@@ -174,16 +232,14 @@ if ($search_contactid)
 {
 	$sql .= " AND s.rowid IN (SELECT ec.element_id FROM ".MAIN_DB_PREFIX."element_contact as ec, ".MAIN_DB_PREFIX."c_type_contact as tc WHERE ec.fk_socpeople = ".$search_contactid." AND ec.fk_c_type_contact = tc.rowid AND tc.element='societe')";
 }
+// Add where from extra fields
+include DOL_DOCUMENT_ROOT.'/core/tpl/extrafields_list_search_sql.tpl.php';
+// Add where from hooks
+$parameters=array();
+$reshook=$hookmanager->executeHooks('printFieldListWhere', $parameters);    // Note that $action and $object may have been modified by hook
+$sql.=$hookmanager->resPrint;
 
-// Count total nb of records
-$nbtotalofrecords = '';
-if (empty($conf->global->MAIN_DISABLE_FULL_SCANLIST))
-{
-	$result = $db->query($sql);
-	$nbtotalofrecords = $db->num_rows($result);
-}
-
-$sql.= $db->order($sortfield,$sortorder);
+$sql.= $db->order($sortfield, $sortorder);
 
 // Count total nb of records
 $nbtotalofrecords = '';
@@ -197,7 +253,7 @@ if (empty($conf->global->MAIN_DISABLE_FULL_SCANLIST))
 		$offset = 0;
 	}
 }
-// if total resultset is smaller than limit, no need to do paging adn restart select with limits.
+// if total resultset is smaller than limit, no need to do paging and restart select with limits.
 if (is_numeric($nbtotalofrecords) && $limit > $nbtotalofrecords)
 {
 	$num = $nbtotalofrecords;
@@ -215,40 +271,54 @@ else
 
 	$num = $db->num_rows($resql);
 }
-//print $sql;
+
+$arrayofselected=is_array($toselect)?$toselect:array();
+
+llxHeader('', $title, $help_url);
 
 if ($resql)
 {
-	if (! empty($contextpage) && $contextpage != $_SERVER["PHP_SELF"]) $param.='&contextpage='.urlencode($contextpage);
+    $param='';
+    if (! empty($contextpage) && $contextpage != $_SERVER["PHP_SELF"]) $param.='&contextpage='.urlencode($contextpage);
 	if ($limit > 0 && $limit != $conf->liste_limit) $param.='&limit='.urlencode($limit);
 
-	if ($search_nom != '') $param = "&amp;search_nom=".urlencode($search_nom);
-	if ($search_code != '') $param.= "&amp;search_code=".urlencode($search_code);
-	if ($search_ville != '') $param.= "&amp;search_ville=".urlencode($search_ville);
-	if ($search_categ != '') $param.='&amp;search_categ='.urlencode($search_categ);
-	if ($search_sale != '')	$param.='&amp;search_sale='.urlencode($search_sale);
- 	if ($search_motifprinc != '')	$param.='&amp;search_motifprinc='.urlencode($search_motifprinc);
- 	if ($search_diaglesprinc != '')	$param.='&amp;search_diaglesprinc='.urlencode($search_diaglesprinc);
- 	if ($search_contactid != '')	$param.='&amp;search_contactid='.urlencode($search_contactid);
+	if ($search_nom != '')          $param = "&search_nom=".urlencode($search_nom);
+	if ($search_code != '')         $param.= "&search_code=".urlencode($search_code);
+	if ($search_ville != '')        $param.= "&search_ville=".urlencode($search_ville);
+	if ($search_categ != '')        $param.= '&search_categ='.urlencode($search_categ);
+	if ($search_sale != '')	        $param.= '&search_sale='.urlencode($search_sale);
+ 	if ($search_motifprinc != '')	$param.= '&search_motifprinc='.urlencode($search_motifprinc);
+ 	if ($search_diaglesprinc != '')	$param.= '&search_diaglesprinc='.urlencode($search_diaglesprinc);
+ 	if ($search_contactid != '')	$param.= '&search_contactid='.urlencode($search_contactid);
 
-	print '<form method="get" action="'.$_SERVER["PHP_SELF"].'">'."\n";
+	print '<form method="POST" id="searchFormList" action="'.$_SERVER["PHP_SELF"].'" name="formfilter" autocomplete="off">'."\n";
+	if ($optioncss != '') print '<input type="hidden" name="optioncss" value="'.$optioncss.'">';
+	print '<input type="hidden" name="token" value="'.$_SESSION['newtoken'].'">';
+	print '<input type="hidden" name="formfilteraction" id="formfilteraction" value="list">';
+	print '<input type="hidden" name="action" value="list">';
 	print '<input type="hidden" name="sortfield" value="'.$sortfield.'">';
 	print '<input type="hidden" name="sortorder" value="'.$sortorder.'">';
 	print '<input type="hidden" name="page" value="'.$page.'">';
+	print '<input type="hidden" name="contextpage" value="'.$contextpage.'">';
 
- 	print_barre_liste($langs->trans("ListOfConsultations"), $page, $_SERVER["PHP_SELF"],$param,$sortfield,$sortorder,'',$num,$nbtotalofrecords);
+	print_barre_liste($title, $page, $_SERVER["PHP_SELF"], $param, $sortfield, $sortorder, $massactionbutton, $num, $nbtotalofrecords, 'title_companies', 0, $newcardbutton, '', $limit);
 
 	$i = 0;
 
-	//print '<div class="error">PAGE EN DEVELOPPEMENT ...</div><br>';
+	// Add code for pre mass action (confirmation or email presend form)
+	$topicmail="Information";
+	$modelmail="consultation";
+	$objecttmp=new Societe($db);
+	$trackid='cons'.$object->id;
+	include DOL_DOCUMENT_ROOT.'/core/tpl/massactions_pre.tpl.php';
 
 	// Filter on categories
  	$moreforfilter='';
-	if ($conf->categorie->enabled)
+	if (! empty($conf->categorie->enabled))
 	{
 	 	$moreforfilter.='<div class="divsearchfield">';
 	 	$moreforfilter.=$langs->trans('Categories'). ': ';
-		$moreforfilter.=$htmlother->select_categories(2,$search_categ,'search_categ');
+		$moreforfilter.=$formother->select_categories(2,$search_categ,'search_categ');
 	 	$moreforfilter.='</div>';
 	}
 
@@ -257,14 +327,9 @@ if ($resql)
  	{
 	 	$moreforfilter.='<div class="divsearchfield">';
 	 	$moreforfilter.=$langs->trans('ConsultCreatedBy'). ': ';
-		$moreforfilter.=$htmlother->select_salesrepresentatives($search_sale,'search_sale',$user, 0, 1, 'maxwidth300');
+		$moreforfilter.=$formother->select_salesrepresentatives($search_sale,'search_sale',$user, 0, 1, 'maxwidth300');
 	 	$moreforfilter.='</div>';
  	}
- 	// To add filter on diagnostic
- 	//$width="200";
- 	//$moreforfilter.=$langs->trans('DiagnostiqueLesionnel'). ': ';
- 	//$moreforfilter.=listdiagles(1,$width,'search_diagles',$search_diagles);
-	//$moreforfilter.=' &nbsp; &nbsp; &nbsp; ';
  	// To add filter on contact
 	$width="200";
 	$moreforfilter.='<div class="divsearchfield">';
@@ -272,77 +337,137 @@ if ($resql)
 	$moreforfilter.=$form->selectcontacts(0, $search_contactid, 'search_contactid', 1, '', '', 1);
 	$moreforfilter.='</div>';
 
-    if (! empty($moreforfilter))
+	$parameters=array();
+	$reshook=$hookmanager->executeHooks('printFieldPreListTitle', $parameters, $object);    // Note that $action and $object may have been modified by hook
+	if (empty($reshook)) $moreforfilter .= $hookmanager->resPrint;
+	else $moreforfilter = $hookmanager->resPrint;
+
+	if (! empty($moreforfilter))
     {
         print '<div class="liste_titre liste_titre_bydiv centpercent">';
         print $moreforfilter;
-        $parameters=array();
-        $reshook=$hookmanager->executeHooks('printFieldPreListTitle',$parameters);    // Note that $action and $object may have been modified by hook
-        print $hookmanager->resPrint;
         print '</div>';
     }
+
+    $varpage=empty($contextpage)?$_SERVER["PHP_SELF"]:$contextpage;
+    $selectedfields=$form->multiSelectArrayWithCheckbox('selectedfields', $arrayfields, $varpage);	// This also change content of $arrayfields
+    $selectedfields.=(count($arrayofmassactions) ? $form->showCheckAddButtons('checkforselect', 1) : '');
 
     print '<div class="div-table-responsive">';
     print '<table class="tagtable liste'.($moreforfilter?" listwithfilterbefore":"").'">';
 
 	print '<tr class="liste_titre_filter">';
-    print '<td class="liste_titre">';
-	print '<input type="text" class="flat" size="6" name="search_ref" value="'.$search_ref.'">';
-    print '</td>';
-	print '<td class="liste_titre">';
-	print '<input type="text" class="flat" size="8" name="search_nom" value="'.$search_nom.'">';
-	print '</td><td class="liste_titre">';
-	print '<input type="text" class="flat" size="8" name="search_code" value="'.$search_code.'">';
-	print '</td>';
+	if (! empty($arrayfields['c.rowid']['checked']))
+	{
+	    print '<td class="liste_titre">';
+		print '<input type="text" class="flat" name="search_ref" value="'.$search_ref.'">';
+    	print '</td>';
+	}
+	if (! empty($arrayfields['s.nom']['checked']))
+	{
+	    print '<td class="liste_titre">';
+		print '<input type="text" class="flat" name="search_nom" value="'.$search_nom.'">';
+		print '</td>';
+	}
+	if (! empty($arrayfields['s.code_client']['checked']))
+	{
+	    print '<td class="liste_titre">';
+		print '<input type="text" class="flat" name="search_code" value="'.$search_code.'">';
+		print '</td>';
+	}
 	// Date
-	print '<td class="liste_titre" align="center">';
-	print $form->selectDate($datecons, 'cons', 0, 0, 1, '', 1, 0);
-	print '</td>';
-	print '<td class="liste_titre"></td>';
-    print '<td class="liste_titre">';
-    $width='200';
-    print listmotifcons(1,$width,'search_motifprinc',$search_motifprinc);
-    print '</td>';
-    print '<td class="liste_titre">';
-    $width='200';
-    print listdiagles(1,$width,'search_diaglesprinc',$search_diaglesprinc);
-    print '</td>';
-    if (! empty($conf->global->CABINETMED_FRENCH_PRISEENCHARGE))
-    {
-    	print '<td class="liste_titre">';
-        print '&nbsp;';
-        print '</td>';
-    }
-    print '<td class="liste_titre">';
-    print '</td>';
-    print '<td class="liste_titre">';
-    print '</td>';
-    print '<td class="liste_titre">';
-    print '</td>';
+	if (! empty($arrayfields['c.datecons']['checked']))
+	{
+	    print '<td class="liste_titre" align="center">';
+		print $form->selectDate($datecons, 'cons', 0, 0, 1, '', 1, 0);
+		print '</td>';
+	}
+	if (! empty($arrayfields['c.datec']['checked']))
+	{
+	    print '<td class="liste_titre"></td>';
+	}
+	if (! empty($arrayfields['c.motifconsprinc']['checked']))
+	{
+	    print '<td class="liste_titre">';
+	    $width='200';
+	    print listmotifcons(1,$width,'search_motifprinc',$search_motifprinc);
+	    print '</td>';
+	}
+	if (! empty($arrayfields['c.diaglesprinc']['checked']))
+	{
+	    print '<td class="liste_titre">';
+	    $width='200';
+	    print listdiagles(1,$width,'search_diaglesprinc',$search_diaglesprinc);
+	    print '</td>';
+	}
+	if (! empty($arrayfields['c.typepriseencharge']['checked']))
+	{
+	    if (! empty($conf->global->CABINETMED_FRENCH_PRISEENCHARGE))
+	    {
+    		print '<td class="liste_titre">';
+        	print '&nbsp;';
+	        print '</td>';
+    	}
+	}
+	if (! empty($arrayfields['c.typevisit']['checked']))
+	{
+	    print '<td class="liste_titre">';
+	    print '</td>';
+	}
+	if (! empty($arrayfields['amountpayment']['checked']))
+	{
+	    print '<td class="liste_titre">';
+	    print '</td>';
+	}
+	if (! empty($arrayfields['typepayment']['checked']))
+	{
+	    print '<td class="liste_titre">';
+	    print '</td>';
+	}
+	// Extra fields
+	include DOL_DOCUMENT_ROOT.'/core/tpl/extrafields_list_search_input.tpl.php';
+
+	// Fields from hook
+	$parameters=array('arrayfields'=>$arrayfields);
+	$reshook=$hookmanager->executeHooks('printFieldListOption', $parameters, $object);    // Note that $action and $object may have been modified by hook
+	print $hookmanager->resPrint;
+
     // Action column
     print '<td class="liste_titre maxwidthsearch">';
     $searchpicto=$form->showFilterButtons();
     print $searchpicto;
     print '</td>';
-    print "</tr>\n";
+    print '</tr>'."\n";
 
+    // Fields title label
+    // --------------------------------------------------------------------
     print '<tr class="liste_titre">';
-    print_liste_field_titre($langs->trans("IdConsultShort"),$_SERVER["PHP_SELF"],"c.rowid","",$param,"",$sortfield,$sortorder);
-	print_liste_field_titre($langs->trans("Patient"),$_SERVER["PHP_SELF"],"s.nom","",$param,"",$sortfield,$sortorder);
-	print_liste_field_titre($langs->trans("CustomerCode"),$_SERVER["PHP_SELF"],"s.code_client","",$param,"",$sortfield,$sortorder);
-	print_liste_field_titre($langs->trans("DateConsultationShort"),$_SERVER["PHP_SELF"],"c.datecons,c.rowid","",$param,'align="center"',$sortfield,$sortorder);
-	print_liste_field_titre($langs->trans("CreatedBy"),$_SERVER["PHP_SELF"],"","",$param,'',$sortfield,$sortorder);
-	print_liste_field_titre($langs->trans("MotifPrincipal"),$_SERVER["PHP_SELF"],"c.motifconsprinc","",$param,'',$sortfield,$sortorder);
-	print_liste_field_titre($langs->trans("DiagLesPrincipal"),$_SERVER["PHP_SELF"],"c.diaglesprinc","",$param,'',$sortfield,$sortorder);
-    if (! empty($conf->global->CABINETMED_FRENCH_PRISEENCHARGE))
+    if (! empty($arrayfields['c.rowid']['checked']))                    print_liste_field_titre($arrayfields['c.rowid']['label'],$_SERVER["PHP_SELF"],"c.rowid","",$param,"",$sortfield,$sortorder);
+    if (! empty($arrayfields['s.nom']['checked']))                      print_liste_field_titre($langs->trans("Patient"),$_SERVER["PHP_SELF"],"s.nom","",$param,"",$sortfield,$sortorder);
+    if (! empty($arrayfields['s.code_client']['checked']))              print_liste_field_titre($langs->trans("CustomerCode"),$_SERVER["PHP_SELF"],"s.code_client","",$param,"",$sortfield,$sortorder);
+    if (! empty($arrayfields['c.datecons']['checked']))                 print_liste_field_titre($langs->trans("DateConsultationShort"),$_SERVER["PHP_SELF"],"c.datecons,c.rowid","",$param,'align="center"',$sortfield,$sortorder);
+    if (! empty($arrayfields['c.datec']['checked']))                   	print_liste_field_titre($langs->trans("CreatedBy"),$_SERVER["PHP_SELF"],"","",$param,'',$sortfield,$sortorder);
+    if (! empty($arrayfields['c.motifconsprinc']['checked']))           print_liste_field_titre($langs->trans("MotifPrincipal"),$_SERVER["PHP_SELF"],"c.motifconsprinc","",$param,'',$sortfield,$sortorder);
+    if (! empty($arrayfields['c.diaglesprinc']['checked']))             print_liste_field_titre($langs->trans("DiagLesPrincipal"),$_SERVER["PHP_SELF"],"c.diaglesprinc","",$param,'',$sortfield,$sortorder);
+    if (! empty($arrayfields['c.typepriseencharge']['checked']))
     {
-	    print_liste_field_titre($langs->trans('Prise en charge'),$_SERVER['PHP_SELF'],'c.typepriseencharge','',$param,'',$sortfield,$sortorder);
+        if (! empty($conf->global->CABINETMED_FRENCH_PRISEENCHARGE))
+	    {
+		    print_liste_field_titre($langs->trans('Prise en charge'),$_SERVER['PHP_SELF'],'c.typepriseencharge','',$param,'',$sortfield,$sortorder);
+	    }
     }
-	print_liste_field_titre($langs->trans('ConsultActe'),$_SERVER['PHP_SELF'],'c.typevisit','',$param,'',$sortfield,$sortorder);
-	print_liste_field_titre($langs->trans('MontantPaiement'),$_SERVER['PHP_SELF'],'','',$param,'align="right"',$sortfield,$sortorder);
-	print_liste_field_titre($langs->trans('TypePaiement'),$_SERVER['PHP_SELF'],'','',$param,'',$sortfield,$sortorder);
-	print_liste_field_titre('',$_SERVER['PHP_SELF'],'','',$param,'',$sortfield,$sortorder);
-	print "</tr>\n";
+    if (! empty($arrayfields['c.typevisit']['checked']))                print_liste_field_titre($langs->trans('ConsultActe'),$_SERVER['PHP_SELF'],'c.typevisit','',$param,'',$sortfield,$sortorder);
+    if (! empty($arrayfields['amountpayment']['checked']))              print_liste_field_titre($langs->trans('MontantPaiement'),$_SERVER['PHP_SELF'],'','',$param,'align="right"',$sortfield,$sortorder);
+    if (! empty($arrayfields['typepayment']['checked']))                print_liste_field_titre($langs->trans('TypePaiement'),$_SERVER['PHP_SELF'],'','',$param,'',$sortfield,$sortorder);
+    // Extra fields
+    include DOL_DOCUMENT_ROOT.'/core/tpl/extrafields_list_search_title.tpl.php';
+    // Hook fields
+    $parameters=array('arrayfields'=>$arrayfields,'param'=>$param,'sortfield'=>$sortfield,'sortorder'=>$sortorder);
+    $reshook=$hookmanager->executeHooks('printFieldListTitle', $parameters, $object);    // Note that $action and $object may have been modified by hook
+    print $hookmanager->resPrint;
+    // Action column
+    print_liste_field_titre($selectedfields, $_SERVER["PHP_SELF"],"",'',$param,'align="center"',$sortfield,$sortorder,'maxwidthsearch ');
+    print '</tr>'."\n";
 
 	while ($i < min($num, $limit))
 	{
@@ -350,124 +475,166 @@ if ($resql)
 
 		print '<tr class="oddeven">';
 
-        print '<td>';
-        $consultstatic->id=$obj->cid;
-        $consultstatic->fk_soc=$obj->rowid;
-        print $consultstatic->getNomUrl(1,'&amp;backtopage='.urlencode($_SERVER["PHP_SELF"]));
-        print '</td>';
-
-		print '<td>';
-		$thirdpartystatic->id=$obj->rowid;
-        $thirdpartystatic->name=$obj->name;
-        $thirdpartystatic->client=$obj->client;
-        $thirdpartystatic->canvas=$obj->canvas;
-        print $thirdpartystatic->getNomUrl(1);
-		print '</td>';
-
-		print '<td>'.$obj->code_client.'</td>';
-
-		print '<td align="center">'.dol_print_date($db->jdate($obj->datecons),'day').'</td>';
-
-		print '<td>';
-		$userstatic->fetch($obj->fk_user_creation);
-        print $userstatic->getNomUrl(1);
-		print '</td>';
-
-		print '<td>'.$obj->motifconsprinc.'</td>';
-
-        print '<td>';
-        print dol_trunc($obj->diaglesprinc,20);
-        /*$val=dol_trunc($obj->examenprescrit,20);
-        if ($val) $val.='<br>';
-        $val=dol_trunc($obj->traitementprescrit,20);*/
-        print '</td>';
-
-	    if (! empty($conf->global->CABINETMED_FRENCH_PRISEENCHARGE))
-        {
-    		print '<td>';
-            print $obj->typepriseencharge;
+		if (! empty($arrayfields['c.rowid']['checked']))
+		{
+		    print '<td>';
+            $consultstatic->id=$obj->cid;
+            $consultstatic->fk_soc=$obj->rowid;
+            print $consultstatic->getNomUrl(1,'&amp;backtopage='.urlencode($_SERVER["PHP_SELF"]));
             print '</td>';
-        }
+		}
 
-        print '<td>';
-        print $langs->trans($obj->typevisit);
-        print '</td>';
+		if (! empty($arrayfields['s.nom']['checked']))
+		{
+		    print '<td>';
+            $thirdpartystatic->id=$obj->rowid;
+            $thirdpartystatic->name=$obj->name;
+            $thirdpartystatic->client=$obj->client;
+            $thirdpartystatic->canvas=$obj->canvas;
+            print $thirdpartystatic->getNomUrl(1);
+		    print '</td>';
+		}
 
-        print '<td class="right">';
-        $foundamount=0;
-        if (price2num($obj->montant_cheque) > 0) {
-            if ($foundamount) print '+';
-            print price($obj->montant_cheque);
-            $foundamount++;
-        }
-        if (price2num($obj->montant_espece) > 0)  {
-            if ($foundamount) print '+';
-            print price($obj->montant_espece);
-            $foundamount++;
-        }
-        if (price2num($obj->montant_carte) > 0)  {
-            if ($foundamount) print '+';
-            print price($obj->montant_carte);
-            $foundamount++;
-        }
-        if (price2num($obj->montant_tiers) > 0)  {
-            if ($foundamount) print '+';
-            print price($obj->montant_tiers);
-            $foundamount++;
-        }
-        print '</td>';
+		if (! empty($arrayfields['s.code_client']['checked']))
+		{
+		    print '<td>'.$obj->code_client.'</td>';
+		}
+
+		if (! empty($arrayfields['c.datecons']['checked']))
+		{
+		    print '<td align="center">'.dol_print_date($db->jdate($obj->datecons),'day').'</td>';
+		}
+
+		if (! empty($arrayfields['c.datec']['checked']))
+		{
+		    print '<td class="nowraponall">';
+    		$userstatic->fetch($obj->fk_user_creation);
+            print $userstatic->getNomUrl(1);
+    		print '</td>';
+		}
+
+		if (! empty($arrayfields['c.motifconsprinc']['checked']))
+		{
+		    print '<td>'.$obj->motifconsprinc.'</td>';
+		}
+
+		if (! empty($arrayfields['c.diaglesprinc']['checked']))
+		{
+		    print '<td>';
+            print dol_trunc($obj->diaglesprinc,20);
+            /*$val=dol_trunc($obj->examenprescrit,20);
+            if ($val) $val.='<br>';
+            $val=dol_trunc($obj->traitementprescrit,20);*/
+            print '</td>';
+		}
+
+		if (! empty($arrayfields['c.typepriseencharge']['checked']))
+		{
+		    if (! empty($conf->global->CABINETMED_FRENCH_PRISEENCHARGE))
+            {
+        		print '<td>';
+                print $obj->typepriseencharge;
+                print '</td>';
+            }
+		}
+
+		if (! empty($arrayfields['c.typevisit']['checked']))
+		{
+		    print '<td>';
+            print $langs->trans($obj->typevisit);
+            print '</td>';
+		}
+
+		if (! empty($arrayfields['amountpayment']['checked']))
+		{
+		    print '<td class="right">';
+            $foundamount=0;
+            if (price2num($obj->montant_cheque) > 0) {
+                if ($foundamount) print '+';
+                print price($obj->montant_cheque);
+                $foundamount++;
+            }
+            if (price2num($obj->montant_espece) > 0)  {
+                if ($foundamount) print '+';
+                print price($obj->montant_espece);
+                $foundamount++;
+            }
+            if (price2num($obj->montant_carte) > 0)  {
+                if ($foundamount) print '+';
+                print price($obj->montant_carte);
+                $foundamount++;
+            }
+            if (price2num($obj->montant_tiers) > 0)  {
+                if ($foundamount) print '+';
+                print price($obj->montant_tiers);
+                $foundamount++;
+            }
+            print '</td>';
+		}
 
         $bankid = array();
 
-        print '<td>';
-        $foundamount=0;
-        if (price2num($obj->montant_cheque) > 0) {
-            if ($foundamount) print ' + ';
-            print $langs->trans("Cheque");
-            if ($conf->banque->enabled && $bankid['CHQ']['account_id'])
-            {
-                $bank=new Account($db);
-                $bank->fetch($bankid['CHQ']['account_id']);
-                print '&nbsp;('.$bank->getNomUrl(0,'transactions').')';
+        if (! empty($arrayfields['typepayment']['checked']))
+        {
+            print '<td>';
+            $foundamount=0;
+            if (price2num($obj->montant_cheque) > 0) {
+                if ($foundamount) print ' + ';
+                print $langs->trans("Cheque");
+                if ($conf->banque->enabled && $bankid['CHQ']['account_id'])
+                {
+                    $bank=new Account($db);
+                    $bank->fetch($bankid['CHQ']['account_id']);
+                    print '&nbsp;('.$bank->getNomUrl(0,'transactions').')';
+                }
+                $foundamount++;
             }
-            $foundamount++;
+            if (price2num($obj->montant_espece) > 0)  {
+                if ($foundamount) print ' + ';
+                print $langs->trans("Cash");
+                if ($conf->banque->enabled && $bankid['LIQ']['account_id'])
+                {
+                    $bank=new Account($db);
+                    $bank->fetch($bankid['LIQ']['account_id']);
+                    print '&nbsp;('.$bank->getNomUrl(0,'transactions').')';
+                }
+                $foundamount++;
+            }
+            if (price2num($obj->montant_carte) > 0)  {
+                if ($foundamount) print ' + ';
+                print $langs->trans("CreditCard");
+                if ($conf->banque->enabled && $bankid['CB']['account_id'])
+                {
+                    $bank=new Account($db);
+                    $bank->fetch($bankid['CB']['account_id']);
+                    print '&nbsp;('.$bank->getNomUrl(0,'transactions').')';
+                }
+                $foundamount++;
+            }
+            if (price2num($obj->montant_tiers) > 0)  {
+                if ($foundamount) print ' + ';
+                print $langs->trans("PaymentTypeThirdParty");
+                if ($conf->banque->enabled && $bankid['OTH']['account_id'])
+                {
+                    $bank=new Account($db);
+                    $bank->fetch($bankid['OTH']['account_id']);
+                    print '&nbsp;('.$bank->getNomUrl(0,'transactions').')';
+                }
+                $foundamount++;
+            }
+            print '</td>';
         }
-        if (price2num($obj->montant_espece) > 0)  {
-            if ($foundamount) print ' + ';
-            print $langs->trans("Cash");
-            if ($conf->banque->enabled && $bankid['LIQ']['account_id'])
-            {
-                $bank=new Account($db);
-                $bank->fetch($bankid['LIQ']['account_id']);
-                print '&nbsp;('.$bank->getNomUrl(0,'transactions').')';
-            }
-            $foundamount++;
-        }
-        if (price2num($obj->montant_carte) > 0)  {
-            if ($foundamount) print ' + ';
-            print $langs->trans("CreditCard");
-            if ($conf->banque->enabled && $bankid['CB']['account_id'])
-            {
-                $bank=new Account($db);
-                $bank->fetch($bankid['CB']['account_id']);
-                print '&nbsp;('.$bank->getNomUrl(0,'transactions').')';
-            }
-            $foundamount++;
-        }
-        if (price2num($obj->montant_tiers) > 0)  {
-            if ($foundamount) print ' + ';
-            print $langs->trans("PaymentTypeThirdParty");
-            if ($conf->banque->enabled && $bankid['OTH']['account_id'])
-            {
-                $bank=new Account($db);
-                $bank->fetch($bankid['OTH']['account_id']);
-                print '&nbsp;('.$bank->getNomUrl(0,'transactions').')';
-            }
-            $foundamount++;
+
+        // Action column
+        print '<td class="nowrap" align="center">';
+        if ($massactionbutton || $massaction)   // If we are in select mode (massactionbutton defined) or if we have already selected and sent an action ($massaction) defined
+        {
+            $selected=0;
+            if (in_array($obj->rowid, $arrayofselected)) $selected=1;
+            print '<input id="cb'.$obj->rowid.'" class="flat checkforselect" type="checkbox" name="toselect[]" value="'.$obj->rowid.'"'.($selected?' checked="checked"':'').'>';
         }
         print '</td>';
-
-        print '<td></td>';
+        if (! $i) $totalarray['nbfield']++;
 
         print "</tr>\n";
 		$i++;
@@ -477,6 +644,11 @@ if ($resql)
 	print '</div>';
 
 	print "</form>\n";
+
+	$parameters=array('arrayfields'=>$arrayfields, 'sql'=>$sql);
+	$reshook=$hookmanager->executeHooks('printFieldListFooter',$parameters);    // Note that $action and $object may have been modified by hook
+	print $hookmanager->resPrint;
+
 	$db->free($result);
 }
 else
@@ -485,6 +657,7 @@ else
 }
 
 
+// End of page
 llxFooter();
 
 $db->close();
