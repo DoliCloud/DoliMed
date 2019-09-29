@@ -82,12 +82,13 @@ class modCabinetMed extends DolibarrModules
         $this->config_page_url = array('admin.php@cabinetmed');
 
         // Defined all module parts (triggers, login, substitutions, menus, css, etc...)
-        $this->module_parts = array('triggers' => 1,
-        							'substitutions' => 1,
-        							'menus' => 1,
-        							'css' => array('/cabinetmed/css/styles.css.php'),
-        							'hooks' => array('index', 'searchform', 'thirdpartycard','commcard','categorycard','contactcard','actioncard','agendathirdparty','projectthirdparty','infothirdparty','thirdpartybancard','consumptionthirdparty','thirdpartynotification','thirdpartymargins','thirdpartycustomerprice','documentcabinetmed','searchform','demo'),
-        							'moduleforexternal' => 1
+        $this->module_parts = array(
+            'triggers' => 1,
+			'substitutions' => 1,
+			'menus' => 1,
+			'css' => array('/cabinetmed/css/styles.css.php'),
+            'hooks' => array('index', 'searchform', 'thirdpartycard', 'thirdpartycomm', 'commcard', 'categorycard', 'contactcard', 'actioncard', 'agendathirdparty', 'projectthirdparty', 'infothirdparty', 'thirdpartybancard', 'consumptionthirdparty', 'thirdpartynotification', 'thirdpartymargins', 'thirdpartycustomerprice', 'documentcabinetmed', 'searchform', 'demo'),
+			'moduleforexternal' => 1
         );
 
         // Dependencies
