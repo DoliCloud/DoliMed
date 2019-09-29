@@ -97,7 +97,7 @@ class ActionsCabinetmed
             && in_array($parameters['currentcontext'],array('agendathirdparty','categorycard','commcard','thirdpartycomm','projectthirdparty','infothirdparty','thirdpartybancard','consumptionthirdparty','thirdpartynotification','thirdpartymargins','thirdpartycustomerprice')) && empty($action))
         {
         	$thirdparty=new Societe($db);
-        	$thirdparty->fetch($parameters['id'] || $parameters['socid']);
+        	$thirdparty->fetch($parameters['id'] ? $parameters['id'] : $parameters['socid']);
         	if ($thirdparty->canvas == 'patient@cabinetmed') $cabinetmedcontext++;
         }
 
