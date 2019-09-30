@@ -55,8 +55,7 @@ require_once DOL_DOCUMENT_ROOT.'/categories/class/categorie.class.php';
 if (! empty($conf->adherent->enabled)) require_once DOL_DOCUMENT_ROOT.'/adherents/class/adherent.class.php';
 
 $langs->load("cabinetmed@cabinetmed");
-$langs->loadLangs(array("companies","commercial","bills","banks","users"));
-$langs->load("other");
+$langs->loadLangs(array("companies","commercial","bills","banks","users","other"));
 if (! empty($conf->categorie->enabled)) $langs->load("categories");
 if (! empty($conf->incoterm->enabled)) $langs->load("incoterm");
 if (! empty($conf->notification->enabled)) $langs->load("mails");
@@ -82,6 +81,13 @@ $extralabels=$extrafields->fetch_name_optionals_label($object->table_element);
 $hookmanager->initHooks(array('thirdpartycard','globalcard'));
 
 if ($socid > 0) $object->fetch($socid);
+
+if (! ($object->id > 0) && $action == 'view')
+{
+    $langs->load("errors");
+    print($langs->trans('ErrorRecordNotFound'));
+    exit;
+}
 
 // Get object canvas (By default, this is not defined, so standard usage of dolibarr)
 $object->getCanvas($socid);
@@ -129,7 +135,7 @@ if (empty($reshook))
         {
             $langs->load('errors');
             $langs->load('companies');
-            setEventMessages($langs->trans('ErrorThirdPartyIdIsMandatory', $langs->trans('MergeOriginThirdparty')), null, 'errors');
+            setEventMessages($langs->trans('ErrorThirdPartyIdIsMandatory', $langs->transnoentitiesnoconv('MergeOriginThirdparty')), null, 'errors');
         }
         else
         {
@@ -205,9 +211,10 @@ if (empty($reshook))
                 }
 
                 // Update
-                $object->update($object->id, $user, 0, 1, 1, 'merge');
+                $result = $object->update($object->id, $user, 0, 1, 1, 'merge');
                 if ($result < 0)
                 {
+                    setEventMessages($object->error, $object->errors, 'errors');
                     $error++;
                 }
 
@@ -257,7 +264,7 @@ if (empty($reshook))
                     $reshook = $hookmanager->executeHooks('replaceThirdparty', array(
                         'soc_origin' => $soc_origin->id,
                         'soc_dest' => $object->id
-                    ), $soc_dest, $action);
+                    ), $object, $action);
 
                     if ($reshook < 0)
                     {
@@ -308,13 +315,13 @@ if (empty($reshook))
     if (GETPOST('getcustomercode'))
     {
         // We defined value code_client
-        $_POST["code_client"]="Acompleter";
+        $_POST["customer_code"]="Acompleter";
     }
 
     if (GETPOST('getsuppliercode'))
     {
         // We defined value code_fournisseur
-        $_POST["code_fournisseur"]="Acompleter";
+        $_POST["supplier_code"]="Acompleter";
     }
 
     if($action=='set_localtax1')
@@ -361,18 +368,26 @@ if (empty($reshook))
     {
         require_once DOL_DOCUMENT_ROOT.'/core/lib/functions2.lib.php';
 
-        if ($action == 'update')
+        if (! GETPOST('name'))
+        {
+            setEventMessages($langs->trans("ErrorFieldRequired", $langs->transnoentitiesnoconv("ThirdPartyName")), null, 'errors');
+            $error++;
+        }
+
+        if (! $error)
+        {
+            if ($action == 'update')
         {
         	$ret=$object->fetch($socid);
         	$object->oldcopy=clone $object;
         }
 		else $object->canvas=$canvas;
 
-        if (GETPOST("private") == 1)
+		if (GETPOST("private", 'int') == 1)	// Ask to create a contact
         {
             $object->particulier       = GETPOST("private");
 
-            $object->name              = dolGetFirstLastname(GETPOST('firstname','alpha'),GETPOST('nom')?GETPOST('nom','alpha'):GETPOST('name','alpha'));
+            $object->name              = dolGetFirstLastname(GETPOST('firstname', 'alpha'), GETPOST('name', 'alpha'));
             $object->civilite_id       = GETPOST('civilite_id')?GETPOST('civilite_id'):GETPOST('civility_id');
             $object->civility_id       = GETPOST('civility_id');	// Note: civility id is a code, not an int
             // Add non official properties
@@ -382,7 +397,7 @@ if (empty($reshook))
         else
 		{
             $object->name              = GETPOST('name')?GETPOST('name','alpha'):GETPOST('nom','alpha');
-	        $object->name_alias   = GETPOST('name_alias');
+	        $object->name_alias        = GETPOST('name_alias');
 		}
 		$object->entity					= (GETPOSTISSET('entity')?GETPOST('entity', 'int'):$conf->entity);
 		$object->name_alias				= GETPOST('name_alias');
@@ -403,8 +418,8 @@ if (empty($reshook))
 		$object->idprof5				= trim(GETPOST('idprof5', 'alpha'));
 		$object->idprof6				= trim(GETPOST('idprof6', 'alpha'));
 		$object->prefix_comm			= GETPOST('prefix_comm', 'alpha');
-		$object->code_client			= GETPOST('code_client', 'alpha');
-		$object->code_fournisseur		= GETPOST('code_fournisseur', 'alpha');
+		$object->code_client			= GETPOSTISSET('customer_code')?GETPOST('customer_code', 'alpha'):GETPOST('code_client', 'alpha');
+		$object->code_fournisseur		= GETPOSTISSET('supplier_code')?GETPOST('supplier_code', 'alpha'):GETPOST('code_fournisseur', 'alpha');
 		$object->capital				= GETPOST('capital', 'alpha');
 		$object->barcode				= GETPOST('barcode', 'alpha');
 
@@ -495,6 +510,7 @@ if (empty($reshook))
             	$object->country=$tmparray['label'];
             }
         }
+        }
 
         if (! $error)
         {
@@ -526,6 +542,7 @@ if (empty($reshook))
                     if ((float) DOL_VERSION >= 8)
                     {
                         $salesreps = GETPOST('commercial', 'array');
+
                         $result = $object->setSalesRep($salesreps);
                         if ($result < 0)
                         {

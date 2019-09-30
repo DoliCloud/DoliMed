@@ -21,7 +21,7 @@
 /**
  *	\file       htdocs/cabinetmed/patients.php
  *	\ingroup    cabinetmed
- *	\brief      Page to show list of  patients
+ *	\brief      Page to show list of patients
  */
 
 // Load Dolibarr environment
@@ -271,13 +271,13 @@ foreach ($extrafields->attribute_label as $key => $val) $sql.=($extrafields->att
 $parameters=array();
 $reshook=$hookmanager->executeHooks('printFieldListSelect',$parameters);    // Note that $action and $object may have been modified by hook
 $sql.=$hookmanager->resPrint;
-$sql.= " FROM (".MAIN_DB_PREFIX."c_stcomm as st";
+$sql.= " FROM ".MAIN_DB_PREFIX."c_stcomm as st";
 // We'll need this table joined to the select in order to filter by sale
-if ($search_sale || !$user->rights->societe->client->voir) $sql.= ", ".MAIN_DB_PREFIX."societe_commerciaux as sc";
+if ($search_sale || (!$user->rights->societe->client->voir && !$socid)) $sql.= ", ".MAIN_DB_PREFIX."societe_commerciaux as sc";
 // We'll need this table joined to the select in order to filter by categ
 if ($search_categ) $sql.= ", ".MAIN_DB_PREFIX."categorie_societe as cs";
 $sql.= ", ".MAIN_DB_PREFIX."societe as s";
-$sql.= ") LEFT JOIN ".MAIN_DB_PREFIX."cabinetmed_cons as c ON c.fk_soc = s.rowid";
+$sql.= " LEFT JOIN ".MAIN_DB_PREFIX."cabinetmed_cons as c ON c.fk_soc = s.rowid";
 $sql.= " LEFT JOIN ".MAIN_DB_PREFIX."societe_extrafields as ef ON ef.fk_object = s.rowid";
 $sql.= ' WHERE s.entity IN ('.getEntity('societe', 1).')';
 $sql.= " AND s.canvas='patient@cabinetmed'";
@@ -288,9 +288,9 @@ if ($search_diagles)
     $label= dol_getIdFromCode($db,$search_diagles,'cabinetmed_diaglec','code','label');
     $sql.= natural_search("c.diaglesprinc", $label);
 }
-if (!$user->rights->societe->client->voir && ! $socid) $sql.= " AND s.rowid = sc.fk_soc AND sc.fk_user = " .$user->id;
+if (! $user->rights->societe->client->voir && ! $socid)	$sql.= " AND s.rowid = sc.fk_soc AND sc.fk_user = " .$user->id;
 if ($socid && empty($conf->global->MAIN_DISABLE_RESTRICTION_ON_THIRDPARTY_FOR_EXTERNAL)) $sql.= " AND s.rowid = ".$socid;
-if ($search_sale) $sql.= " AND s.rowid = sc.fk_soc";		// Join for the needed table to filter by sale
+if ($search_sale)  $sql.= " AND s.rowid = sc.fk_soc";		// Join for the needed table to filter by sale
 if ($search_categ) $sql.= " AND s.rowid = cs.fk_soc";	// Join for the needed table to filter by categ
 if ($search_nom)   $sql.= natural_search("s.nom", $search_nom);
 if ($search_ville) $sql.= natural_search("s.town", $search_ville);
@@ -336,6 +336,8 @@ $reshook=$hookmanager->executeHooks('printFieldListSelect',$parameters);    // N
 $sql.=$hookmanager->resPrint;
 
 $sql.= $db->order($sortfield,$sortorder);
+
+//print $sql;
 
 // Count total nb of records
 $nbtotalofrecords = '';
@@ -896,7 +898,7 @@ while ($i < min($num, $limit))
 {
 	$obj = $db->fetch_object($resql);
 	if (empty($obj)) break;		// Should not happen
-	
+
 	// Store properties
 	$companystatic->id=$obj->rowid;
 	$companystatic->name=$obj->name;

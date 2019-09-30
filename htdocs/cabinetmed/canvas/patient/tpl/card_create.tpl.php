@@ -362,6 +362,17 @@ dol_fiche_head('');
             print $object->showOptionals($extrafields,'edit');
         }
 
+        // Assign a sale representative
+        print '<tr>';
+        print '<td>'.$form->editfieldkey('AllocateCommercial', 'commercial_id', '', $object, 0).'</td>';
+        print '<td colspan="3" class="maxwidthonsmartphone">';
+        $userlist = $form->select_dolusers('', '', 0, null, 0, '', '', 0, 0, 0, '', 0, '', '', 0, 1);
+        // Note: If user has no right to "see all thirdparties", we force selection of sale representative to him, so after creation he can see the record.
+        $selected = (count(GETPOST('commercial', 'array')) > 0 ? GETPOST('commercial', 'array') : (GETPOST('commercial', 'int') > 0 ? array(GETPOST('commercial', 'int')) : (empty($user->rights->societe->client->voir)?array($user->id):array())));
+        if (empty($selected)) $selected=array($user->id);
+        print $form->multiselectarray('commercial', $userlist, $selected, null, null, null, null, "90%");
+        print '</td></tr>';
+
         // Ajout du logo
         print '<tr class="hideonsmartphone">';
         print '<td>'.fieldLabel('Logo','photoinput').'</td>';
@@ -369,16 +380,6 @@ dol_fiche_head('');
         print '<input class="flat" type="file" name="photo" id="photoinput" />';
         print '</td>';
         print '</tr>';
-
-        // Assign a sale representative
-        print '<tr>';
-        print '<td>'.$form->editfieldkey('AllocateCommercial', 'commercial_id', '', $object, 0).'</td>';
-        print '<td colspan="3" class="maxwidthonsmartphone">';
-        $userlist = $form->select_dolusers('', '', 0, null, 0, '', '', 0, 0, 0, '', 0, '', '', 0, 1);
-        // Note: If user has no right to "see all thirdparties", we for selection of sale representative to him, so after creation he can see the record.
-        $selected = (count(GETPOST('commercial', 'array')) > 0 ? GETPOST('commercial', 'array') : (GETPOST('commercial', 'int') > 0 ? array(GETPOST('commercial', 'int')) : (empty($user->rights->societe->client->voir)?array($user->id):array())));
-        print $form->multiselectarray('commercial', $userlist, $selected, null, null, null, null, "90%");
-        print '</td></tr>';
 ?>
 </table>
 
