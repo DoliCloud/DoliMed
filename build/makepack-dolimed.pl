@@ -95,7 +95,7 @@ $SOURCEMOD="$DIR/..";
 $SOURCEMOD1="$DIR/../htdocs/cabinetmed";
 $SOURCEMOD2="$DIR/../build/exe/dolimed";
 # Change SOURCEDOL to use another dolibarr source directory
-$SOURCEDOL="$DIR/../../dolibarr_8.0/.";	
+$SOURCEDOL="$DIR/../../dolibarr_9.0/.";	
 
 if (! -d $ENV{"DESTIDOLIMEDBETARC"} || ! -d $ENV{"DESTIDOLIMEDSTABLE"})
 {
