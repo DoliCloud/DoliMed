@@ -86,6 +86,13 @@ div.mainmenu.accountancy2 {
 	width: 80%;
 }
 
+/* Force values for small screen 570 */
+@media only screen and (max-width: 570px)
+{
+    .centpercent {
+    	width: auto !important;
+    }
+}
 
 <?php if (! empty($dol_use_jmobile)) { ?>
 .cabpaymentcheque { border-top: 1px solid #AAA; margin-top: 4px; }

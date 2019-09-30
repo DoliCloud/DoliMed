@@ -57,18 +57,18 @@ function addAlert($db, $type, $id, $value)
  * List reason for consultation
  *
  * @param 	int		$nboflines		Nb of lines
- * @param 	int		$newwidth		Force width
+ * @param 	string	$newwidth		Force width
  * @param	string	$htmlname		Name of HTML select field
  * @param	string	$selected		Preselected value
  * @return	void
 */
-function listmotifcons($nboflines,$newwidth=0,$htmlname='motifcons',$selected='')
+function listmotifcons($nboflines, $newwidth='', $htmlname='motifcons', $selected='')
 {
     global $conf,$db,$width;
 
     if (empty($newwidth)) $newwidth=$width;
 
-    $out = '<select class="flat valignmiddle maxwidth300onsmartphone" id="list'.$htmlname.'" name="'.$htmlname.'" '.(empty($conf->dol_use_jmobile)?' style="width: '.$newwidth.'px" ':'').'size="'.$nboflines.'"'.($nboflines > 1?' multiple':'').'>';
+    $out = '<select class="flat valignmiddle maxwidth200onsmartphone" id="list'.$htmlname.'" name="'.$htmlname.'" '.(empty($conf->dol_use_jmobile)?' style="width: '.$newwidth.'px" ':'').'size="'.$nboflines.'"'.($nboflines > 1?' multiple':'').'>';
     $out.= '<option value="0"></option>';
     $sql = 'SELECT s.rowid, s.code, s.label';
     $sql.= ' FROM '.MAIN_DB_PREFIX.'cabinetmed_motifcons as s';
@@ -114,7 +114,7 @@ function listdiagles($nboflines,$newwidth=0,$htmlname='diagles',$selected='')
 
     if (empty($newwidth)) $newwidth=$width;
 
-    $out= '<select class="flat valignmiddle maxwidth300onsmartphone" id="list'.$htmlname.'" name="'.$htmlname.'" '.(empty($conf->dol_use_jmobile)?' style="width: '.$newwidth.'px" ':'').'size="'.$nboflines.'"'.($nboflines > 1?' multiple':'').'>';
+    $out= '<select class="flat valignmiddle maxwidth200onsmartphone" id="list'.$htmlname.'" name="'.$htmlname.'" '.(empty($conf->dol_use_jmobile)?' style="width: '.$newwidth.'px" ':'').'size="'.$nboflines.'"'.($nboflines > 1?' multiple':'').'>';
     $out.= '<option value="0">&nbsp;</option>';
     $sql = 'SELECT s.rowid, s.code, s.label';
     $sql.= ' FROM '.MAIN_DB_PREFIX.'cabinetmed_diaglec as s';
@@ -160,7 +160,7 @@ function listexamen($nboflines,$newwidth=0,$type='',$showtype=0,$htmlname='exame
 
     if (empty($newwidth)) $newwidth=$width;
 
-    print '<select class="flat valignmiddle maxwidth300onsmartphone" id="list'.$htmlname.'" name="list'.$htmlname.'" '.(empty($conf->dol_use_jmobile)?' style="width: '.$newwidth.'px" ':'').'size="'.$nboflines.'"'.($nboflines > 1?' multiple':'').'>';
+    print '<select class="flat valignmiddle maxwidth200onsmartphone" id="list'.$htmlname.'" name="list'.$htmlname.'" '.(empty($conf->dol_use_jmobile)?' style="width: '.$newwidth.'px" ':'').'size="'.$nboflines.'"'.($nboflines > 1?' multiple':'').'>';
     print '<option value="0"></option>';
     $sql = 'SELECT s.rowid, s.code, s.label, s.biorad as type';
     $sql.= ' FROM '.MAIN_DB_PREFIX.'cabinetmed_examenprescrit as s';
@@ -199,7 +199,7 @@ function listexamconclusion($nboflines,$newwidth=0,$htmlname='examconc')
 
     if (empty($newwidth)) $newwidth=$width;
 
-    print '<select class="flat valignmiddle maxwidth300onsmartphone" id="list'.$htmlname.'" name="list'.$htmlname.'" '.(empty($conf->dol_use_jmobile)?' style="width: '.$newwidth.'px" ':'').'size="'.$nboflines.'"'.($nboflines > 1?' multiple':'').'>';
+    print '<select class="flat valignmiddle maxwidth200onsmartphone" id="list'.$htmlname.'" name="list'.$htmlname.'" '.(empty($conf->dol_use_jmobile)?' style="width: '.$newwidth.'px" ':'').'size="'.$nboflines.'"'.($nboflines > 1?' multiple':'').'>';
     print '<option value="0"></option>';
     $sql = 'SELECT s.rowid, s.code, s.label';
     $sql.= ' FROM '.MAIN_DB_PREFIX.'cabinetmed_c_examconclusion as s';
@@ -279,7 +279,7 @@ function listcontacts($nboflines,$newwidth=0,$htmlname='diagles',$selected='')
 
 	if (empty($newwidth)) $newwidth=$width;
 
-	$out= '<select class="flat valignmiddle maxwidth300onsmartphone" id="list'.$htmlname.'" name="'.$htmlname.'" '.(empty($conf->dol_use_jmobile)?' style="width: '.$newwidth.'px" ':'').'size="'.$nboflines.'"'.($nboflines > 1?' multiple':'').'>';
+	$out= '<select class="flat valignmiddle maxwidth200onsmartphone" id="list'.$htmlname.'" name="'.$htmlname.'" '.(empty($conf->dol_use_jmobile)?' style="width: '.$newwidth.'px" ':'').'size="'.$nboflines.'"'.($nboflines > 1?' multiple':'').'>';
 	$out.= '<option value="0"></option>';
 	$sql = 'SELECT s.rowid, s.code, s.label';
 	$sql.= ' FROM '.MAIN_DB_PREFIX.'cabinetmed_diaglec as s';

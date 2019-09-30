@@ -37,13 +37,14 @@ if (! $res && file_exists("../../main.inc.php")) $res=@include("../../main.inc.p
 if (! $res && file_exists("../../../main.inc.php")) $res=@include("../../../main.inc.php");
 if (! $res) die("Include of main fails");
 
-include_once(DOL_DOCUMENT_ROOT."/core/lib/company.lib.php");
-include_once(DOL_DOCUMENT_ROOT."/compta/bank/class/account.class.php");
-include_once(DOL_DOCUMENT_ROOT."/comm/action/class/actioncomm.class.php");
-include_once DOL_DOCUMENT_ROOT.'/core/lib/ajax.lib.php';
-include_once("./lib/cabinetmed.lib.php");
-include_once("./class/patient.class.php");
-include_once("./class/cabinetmedcons.class.php");
+require_once(DOL_DOCUMENT_ROOT."/core/class/html.formother.class.php");
+require_once(DOL_DOCUMENT_ROOT."/core/lib/company.lib.php");
+require_once(DOL_DOCUMENT_ROOT."/compta/bank/class/account.class.php");
+require_once(DOL_DOCUMENT_ROOT."/comm/action/class/actioncomm.class.php");
+require_once DOL_DOCUMENT_ROOT.'/core/lib/ajax.lib.php';
+require_once("./class/patient.class.php");
+require_once("./class/cabinetmedcons.class.php");
+require_once("./lib/cabinetmed.lib.php");
 
 $action=GETPOST("action");
 $id=GETPOST('id','int');  // Id consultation
@@ -54,10 +55,12 @@ $langs->load("bills");
 $langs->load("banks");
 $langs->load("cabinetmed@cabinetmed");
 
+$contextpage= GETPOST('contextpage', 'aZ')?GETPOST('contextpage', 'aZ'):'consultationthirdpartylist';   // To manage different context of search
+
 // Security check
 $socid = GETPOST('socid','int');
 if ($user->societe_id) $socid=$user->societe_id;
-$result = restrictedArea($user, 'societe', $socid);
+$result = restrictedArea($user, 'societe', $socid, '');
 
 if (!$user->rights->cabinetmed->read) accessforbidden();
 
@@ -72,22 +75,45 @@ if (empty($page) || $page == -1 || GETPOST('button_search','alpha') || GETPOST('
 $offset = $limit * $page;
 $pageprev = $page - 1;
 $pagenext = $page + 1;
-if (! $sortfield) $sortfield='t.datecons';
 if (! $sortorder) $sortorder='DESC';
+if (! $sortfield) $sortfield='t.datecons,t.rowid';
 
-$object = new Patient($db);
-$consult = new CabinetmedCons($db);
+$soc = new Patient($db);
+$object = new CabinetmedCons($db);
 $extrafields = new ExtraFields($db);
 
 // fetch optionals attributes and labels
-$extralabels=$extrafields->fetch_name_optionals_label($consult->table_element);
+$extralabels=$extrafields->fetch_name_optionals_label($object->table_element);
 
 // Initialize technical object to manage hooks of page. Note that conf->hooks_modules contains array array
 $hookmanager->initHooks(array('thirdpartycard','consultationcard','globalcard'));
 
-
 $now=dol_now();
 
+$arrayfields=array(
+    't.rowid'=>array('label'=>"IdConsultShort", 'checked'=>1, 'enabled'=>1),
+    //'s.nom'=>array('label'=>"Patient", 'checked'=>1, 'enabled'=>1),
+    //'s.code_client'=>array('label'=>"PatientCode", 'checked'=>1, 'enabled'=>1),
+    't.datecons'=>array('label'=>"DateConsultationShort", 'checked'=>1, 'enabled'=>1),
+    't.fk_user'=>array('label'=>"CreatedBy", 'checked'=>1, 'enabled'=>1),
+    't.motifconsprinc'=>array('label'=>"MotifPrincipal", 'checked'=>1, 'enabled'=>1),
+    't.diaglesprinc'=>array('label'=>"DiagLesPrincipal", 'checked'=>1, 'enabled'=>1),
+    't.typepriseencharge'=>array('label'=>"Type prise en charge", 'checked'=>1, 'enabled'=>(empty($conf->global->CABINETMED_FRENCH_PRISEENCHARGE)?0:1)),
+    't.typevisit'=>array('label'=>"ConsultActe", 'checked'=>1, 'enabled'=>1),
+    'amountpayment'=>array('label'=>"MontantPaiement", 'checked'=>1, 'enabled'=>1),
+    'typepayment'=>array('label'=>"TypePaiement", 'checked'=>1, 'enabled'=>1),
+);
+// Extra fields
+if (is_array($extrafields->attributes[$object->table_element]['label']) && count($extrafields->attributes[$object->table_element]['label']) > 0)
+{
+    foreach($extrafields->attributes[$object->table_element]['label'] as $key => $val)
+    {
+        if (! empty($extrafields->attributes[$object->table_element]['list'][$key]))
+            $arrayfields["ef.".$key]=array('label'=>$extrafields->attributes[$object->table_element]['label'][$key], 'checked'=>(($extrafields->attributes[$object->table_element]['list'][$key]<0)?0:1), 'position'=>$extrafields->attributes[$object->table_element]['pos'][$key], 'enabled'=>(abs($extrafields->attributes[$object->table_element]['list'][$key])!=3 && $extrafields->attributes[$object->table_element]['perms'][$key]));
+    }
+}
+$object->fields = dol_sort_array($object->fields, 'position');
+$arrayfields = dol_sort_array($arrayfields, 'position');
 
 
 /*
@@ -95,305 +121,407 @@ $now=dol_now();
  */
 
 $parameters=array('id'=>$socid, 'objcanvas'=>$objcanvas);
-$reshook=$hookmanager->executeHooks('doActions',$parameters,$consult,$action);    // Note that $action and $consult may have been modified by some hooks
+$reshook=$hookmanager->executeHooks('doActions', $parameters, $object, $action);    // Note that $action and $object may have been modified by some hooks
 if ($reshook < 0) setEventMessages($hookmanager->error, $hookmanager->errors, 'errors');
 
-// Delete consultation
-if (GETPOST("action") == 'confirm_delete' && GETPOST("confirm") == 'yes' && $user->rights->societe->supprimer)
+if (empty($reshook))
 {
-    $consult->fetch($id);
-    $result = $consult->delete($user);
-    if ($result >= 0)
+    // Selection of new fields
+    include DOL_DOCUMENT_ROOT.'/core/actions_changeselectedfields.inc.php';
+
+    // Do we click on purge search criteria ?
+    if (GETPOST('button_removefilter_x','alpha') || GETPOST('button_removefilter.x','alpha') || GETPOST('button_removefilter','alpha')) // All tests are required to be compatible with all browsers
     {
-        header("Location: ".$_SERVER["PHP_SELF"].'?socid='.$socid);
-        exit;
+        $search_categ='';
+        $search_sale='';
+        $socname="";
+        $search_nom="";
+        $search_ville="";
+        $search_idprof1='';
+        $search_idprof2='';
+        $search_idprof3='';
+        $search_idprof4='';
+        $search_motifprinc='';
+        $search_diaglesprinc='';
+        $search_contactid='';
+        $datecons='';
+        $toselect='';
+        $search_array_options=array();
     }
-    else
+
+    // Delete consultation
+    if (GETPOST("action") == 'confirm_delete' && GETPOST("confirm") == 'yes' && $user->rights->societe->supprimer)
     {
-        $langs->load("errors");
-        $mesg=$langs->trans($consult->error);
-        $action='';
-    }
-}
-
-// Add consultation
-if ($action == 'add' || $action == 'update')
-{
-    if (! GETPOST('cancel','alpha'))
-    {
-        $error=0;
-
-        $datecons=dol_mktime(0,0,0,$_POST["consmonth"],$_POST["consday"],$_POST["consyear"]);
-
-        if ($action == 'update')
+        $object->fetch($id);
+        $result = $object->delete($user);
+        if ($result >= 0)
         {
-            $result=$consult->fetch($id);
-            if ($result <= 0)
-            {
-                dol_print_error($db,$consult);
-                exit;
-            }
-
-            $result=$consult->fetch_bankid();
-
-            $oldconsult=dol_clone($consult);
-
-            $consult->datecons=$datecons;
+            header("Location: ".$_SERVER["PHP_SELF"].'?socid='.$socid);
+            exit;
         }
         else
         {
-            $consult->datecons=$datecons;
-            $consult->fk_soc=$_POST["socid"];
+            $langs->load("errors");
+            $mesg=$langs->trans($object->error);
+            $action='';
         }
+    }
 
-        $amount=array();
-        if (! empty($_POST["montant_cheque"])) $amount['CHQ']=price2num($_POST["montant_cheque"]);
-        if (! empty($_POST["montant_carte"]))  $amount['CB']=price2num($_POST["montant_carte"]);
-        if (! empty($_POST["montant_espece"])) $amount['LIQ']=price2num($_POST["montant_espece"]);
-        if (! empty($_POST["montant_tiers"]))  $amount['VIR']=price2num($_POST["montant_tiers"]);
-        $banque=array();
-        if (! empty($_POST["bankchequeto"]))   $banque['CHQ']=$_POST["bankchequeto"];
-        if (! empty($_POST["bankcarteto"]))    $banque['CB']=$_POST["bankcarteto"];
-        if (! empty($_POST["bankespeceto"]))   $banque['LIQ']=$_POST["bankespeceto"];
-        if (! empty($_POST["banktiersto"]))    $banque['VIR']=$_POST["banktiersto"];  // Should be always empty
+    // Add consultation
+    if ($action == 'add' || $action == 'update')
+    {
+        if (! GETPOST('cancel','alpha'))
+        {
+            $error=0;
 
-        unset($consult->montant_carte);
-        unset($consult->montant_cheque);
-        unset($consult->montant_espece);
-        unset($consult->montant_tiers);
-        if (GETPOST("montant_cheque") != '') $consult->montant_cheque=price2num($_POST["montant_cheque"]);
-        if (GETPOST("montant_espece") != '') $consult->montant_espece=price2num($_POST["montant_espece"]);
-        if (GETPOST("montant_carte") != '')  $consult->montant_carte=price2num($_POST["montant_carte"]);
-        if (GETPOST("montant_tiers") != '')  $consult->montant_tiers=price2num($_POST["montant_tiers"]);
+            $datecons=dol_mktime(0,0,0,$_POST["consmonth"],$_POST["consday"],$_POST["consyear"]);
 
-        $consult->banque=trim(GETPOST("banque"));
-        $consult->num_cheque=trim(GETPOST("num_cheque"));
-        $consult->typepriseencharge=GETPOST("typepriseencharge");
-        $consult->motifconsprinc=GETPOST("motifconsprinc");
-        $consult->diaglesprinc=GETPOST("diaglesprinc");
-        $consult->motifconssec=GETPOST("motifconssec");
-        $consult->diaglessec=GETPOST("diaglessec");
-        $consult->hdm=trim(GETPOST("hdm"));
-        $consult->examenclinique=trim(GETPOST("examenclinique"));
-        $consult->examenprescrit=trim(GETPOST("examenprescrit"));
-        $consult->traitementprescrit=trim(GETPOST("traitementprescrit"));
-        $consult->comment=trim(GETPOST("comment"));
-        $consult->typevisit=GETPOST("typevisit");
-        $consult->infiltration=trim(GETPOST("infiltration"));
-        $consult->codageccam=trim(GETPOST("codageccam"));
-		$consult->fk_agenda=GETPOST("fk_agenda");
-
-        //print "X".$_POST["montant_cheque"].'-'.$_POST["montant_espece"].'-'.$_POST["montant_carte"].'-'.$_POST["montant_tiers"]."Z";
-        $nbnotempty=0;
-        if (trim($_POST["montant_cheque"])!='') $nbnotempty++;
-        if (trim($_POST["montant_espece"])!='') $nbnotempty++;
-        if (trim($_POST["montant_carte"])!='')  $nbnotempty++;
-        if (trim($_POST["montant_tiers"])!='')  $nbnotempty++;
-        if ($nbnotempty==0)
-        {
-            $error++;
-            $mesgarray[]=$langs->trans("ErrorFieldRequired",$langs->transnoentities("Amount"));
-        }
-        if ((trim($_POST["montant_cheque"])!='' && price2num($_POST["montant_cheque"]) == 0)
-        || (trim($_POST["montant_espece"])!='' && price2num($_POST["montant_espece"]) == 0)
-        || (trim($_POST["montant_carte"])!='' && price2num($_POST["montant_carte"]) == 0))
-        {
-            $error++;
-            $mesgarray[]=$langs->trans("ErrorFieldRequired",$langs->transnoentities("Amount"));
-        }
-		// If bank module enabled, bank account is required.
-		if ($conf->banque->enabled)
-		{
-			if (! empty($_POST["montant_cheque"]) && (! GETPOST('bankchequeto') || GETPOST('bankchequeto') < 0)) { $error++; $mesgarray[]=$langs->trans("ErrorFieldRequired",$langs->transnoentities("RecBank")); }
-			if (! empty($_POST["montant_carte"])  && (! GETPOST('bankcarteto')  || GETPOST('bankcarteto') < 0))  { $error++; $mesgarray[]=$langs->trans("ErrorFieldRequired",$langs->transnoentities("RecBank")); }
-			if (! empty($_POST["montant_espece"]) && (! GETPOST('bankespeceto') || GETPOST('bankespeceto') < 0)) { $error++; $mesgarray[]=$langs->trans("ErrorFieldRequired",$langs->transnoentities("RecBank")); }
-		}
-        // Other
-        if (trim($_POST["montant_cheque"])!='' && ! empty($conf->global->CABINETMED_BANK_PATIENT_REQUIRED) && ! trim($_POST["banque"]))
-        {
-            $error++;
-            $mesgarray[]=$langs->trans("ErrorFieldRequired",$langs->transnoentities("ChequeBank"));
-        }
-        if (empty($consult->typevisit))
-        {
-            $error++;
-            $mesgarray[]=$langs->trans("ErrorFieldRequired",$langs->transnoentities("TypeVisite"));
-        }
-        if (empty($datecons))
-        {
-            $error++;
-            $mesgarray[]=$langs->trans("ErrorFieldRequired",$langs->transnoentities("Date"));
-        }
-        if (empty($consult->motifconsprinc))
-        {
-            $error++;
-            $mesgarray[]=$langs->trans("ErrorFieldRequired",$langs->transnoentities("MotifConsultation"));
-        }
-        if (empty($consult->diaglesprinc))
-        {
-            $error++;
-            $mesgarray[]=$langs->trans("ErrorFieldRequired",$langs->transnoentities("DiagnostiqueLesionnel"));
-        }
-
-        // Fill array 'array_options' with data from add form
-        if (! $error)
-        {
-            $ret = $extrafields->setOptionalsFromPost($extralabels, $consult);
-            if ($ret < 0) $error++;
-        }
-
-
-        $db->begin();
-
-        if (! $error)
-        {
-            if ($action == 'add')
+            if ($action == 'update')
             {
-                $result=$consult->create($user);
-                if ($result < 0)
+                $result=$object->fetch($id);
+                if ($result <= 0)
                 {
-                    $mesg=$consult->error;
-                    $error++;
+                    dol_print_error($db,$object);
+                    exit;
                 }
 
-                if (! $error)
+                $result=$object->fetch_bankid();
+
+                $oldconsult=dol_clone($object);
+
+                $object->datecons=$datecons;
+            }
+            else
+            {
+                $object->datecons=$datecons;
+                $object->fk_soc=$_POST["socid"];
+            }
+
+            $amount=array();
+            if (! empty($_POST["montant_cheque"])) $amount['CHQ']=price2num($_POST["montant_cheque"]);
+            if (! empty($_POST["montant_carte"]))  $amount['CB']=price2num($_POST["montant_carte"]);
+            if (! empty($_POST["montant_espece"])) $amount['LIQ']=price2num($_POST["montant_espece"]);
+            if (! empty($_POST["montant_tiers"]))  $amount['VIR']=price2num($_POST["montant_tiers"]);
+            $banque=array();
+            if (! empty($_POST["bankchequeto"]))   $banque['CHQ']=$_POST["bankchequeto"];
+            if (! empty($_POST["bankcarteto"]))    $banque['CB']=$_POST["bankcarteto"];
+            if (! empty($_POST["bankespeceto"]))   $banque['LIQ']=$_POST["bankespeceto"];
+            if (! empty($_POST["banktiersto"]))    $banque['VIR']=$_POST["banktiersto"];  // Should be always empty
+
+            unset($object->montant_carte);
+            unset($object->montant_cheque);
+            unset($object->montant_espece);
+            unset($object->montant_tiers);
+            if (GETPOST("montant_cheque") != '') $object->montant_cheque=price2num($_POST["montant_cheque"]);
+            if (GETPOST("montant_espece") != '') $object->montant_espece=price2num($_POST["montant_espece"]);
+            if (GETPOST("montant_carte") != '')  $object->montant_carte=price2num($_POST["montant_carte"]);
+            if (GETPOST("montant_tiers") != '')  $object->montant_tiers=price2num($_POST["montant_tiers"]);
+
+            $object->banque=trim(GETPOST("banque"));
+            $object->num_cheque=trim(GETPOST("num_cheque"));
+            $object->typepriseencharge=GETPOST("typepriseencharge");
+            $object->motifconsprinc=GETPOST("motifconsprinc");
+            $object->diaglesprinc=GETPOST("diaglesprinc");
+            $object->motifconssec=GETPOST("motifconssec");
+            $object->diaglessec=GETPOST("diaglessec");
+            $object->hdm=trim(GETPOST("hdm"));
+            $object->examenclinique=trim(GETPOST("examenclinique"));
+            $object->examenprescrit=trim(GETPOST("examenprescrit"));
+            $object->traitementprescrit=trim(GETPOST("traitementprescrit"));
+            $object->comment=trim(GETPOST("comment"));
+            $object->typevisit=GETPOST("typevisit");
+            $object->infiltration=trim(GETPOST("infiltration"));
+            $object->codageccam=trim(GETPOST("codageccam"));
+    		$object->fk_agenda=GETPOST("fk_agenda");
+
+            //print "X".$_POST["montant_cheque"].'-'.$_POST["montant_espece"].'-'.$_POST["montant_carte"].'-'.$_POST["montant_tiers"]."Z";
+            $nbnotempty=0;
+            if (trim($_POST["montant_cheque"])!='') $nbnotempty++;
+            if (trim($_POST["montant_espece"])!='') $nbnotempty++;
+            if (trim($_POST["montant_carte"])!='')  $nbnotempty++;
+            if (trim($_POST["montant_tiers"])!='')  $nbnotempty++;
+            if ($nbnotempty==0)
+            {
+                $error++;
+                $mesgarray[]=$langs->trans("ErrorFieldRequired",$langs->transnoentities("Amount"));
+            }
+            if ((trim($_POST["montant_cheque"])!='' && price2num($_POST["montant_cheque"]) == 0)
+            || (trim($_POST["montant_espece"])!='' && price2num($_POST["montant_espece"]) == 0)
+            || (trim($_POST["montant_carte"])!='' && price2num($_POST["montant_carte"]) == 0))
+            {
+                $error++;
+                $mesgarray[]=$langs->trans("ErrorFieldRequired",$langs->transnoentities("Amount"));
+            }
+    		// If bank module enabled, bank account is required.
+    		if ($conf->banque->enabled)
+    		{
+    			if (! empty($_POST["montant_cheque"]) && (! GETPOST('bankchequeto') || GETPOST('bankchequeto') < 0)) { $error++; $mesgarray[]=$langs->trans("ErrorFieldRequired",$langs->transnoentities("RecBank")); }
+    			if (! empty($_POST["montant_carte"])  && (! GETPOST('bankcarteto')  || GETPOST('bankcarteto') < 0))  { $error++; $mesgarray[]=$langs->trans("ErrorFieldRequired",$langs->transnoentities("RecBank")); }
+    			if (! empty($_POST["montant_espece"]) && (! GETPOST('bankespeceto') || GETPOST('bankespeceto') < 0)) { $error++; $mesgarray[]=$langs->trans("ErrorFieldRequired",$langs->transnoentities("RecBank")); }
+    		}
+            // Other
+            if (trim($_POST["montant_cheque"])!='' && ! empty($conf->global->CABINETMED_BANK_PATIENT_REQUIRED) && ! trim($_POST["banque"]))
+            {
+                $error++;
+                $mesgarray[]=$langs->trans("ErrorFieldRequired",$langs->transnoentities("ChequeBank"));
+            }
+            if (empty($object->typevisit))
+            {
+                $error++;
+                $mesgarray[]=$langs->trans("ErrorFieldRequired",$langs->transnoentities("TypeVisite"));
+            }
+            if (empty($datecons))
+            {
+                $error++;
+                $mesgarray[]=$langs->trans("ErrorFieldRequired",$langs->transnoentities("Date"));
+            }
+            if (empty($object->motifconsprinc))
+            {
+                $error++;
+                $mesgarray[]=$langs->trans("ErrorFieldRequired",$langs->transnoentities("MotifConsultation"));
+            }
+            if (empty($object->diaglesprinc))
+            {
+                $error++;
+                $mesgarray[]=$langs->trans("ErrorFieldRequired",$langs->transnoentities("DiagnostiqueLesionnel"));
+            }
+
+            // Fill array 'array_options' with data from add form
+            if (! $error)
+            {
+                $ret = $extrafields->setOptionalsFromPost($extralabels, $object);
+                if ($ret < 0) $error++;
+            }
+
+
+            $db->begin();
+
+            if (! $error)
+            {
+                if ($action == 'add')
                 {
-                    $object->fetch($consult->fk_soc);
-
-                    if (GETPOST('generateinvoice'))
+                    $result=$object->create($user);
+                    if ($result < 0)
                     {
-                        include_once DOL_DOCUMENT_ROOT.'/compta/facture/class/facture.class.php';
-                        include_once DOL_DOCUMENT_ROOT.'/compta/paiement/class/paiement.class.php';
+                        $mesg=$object->error;
+                        $error++;
+                    }
 
-                        $invoice = new Facture($db);
-                        $invoice->socid = $object->id;
-                        $invoice->fk_soc = $object->id;
-                        $invoice->date = $datecons;
+                    if (! $error)
+                    {
+                        $object->fetch($object->fk_soc);
 
-                        $vattouse = GETPOST('vat');
-
-                        $product = new Product($db);
-                        $product->type = Product::TYPE_SERVICE;
-
-                        if (GETPOST('prodid') > 0)      // TODO
+                        if (GETPOST('generateinvoice'))
                         {
-                            $product->fetch(GETPOST('prodid'));
-                            if (GETPOST('vat') == '')
+                            include_once DOL_DOCUMENT_ROOT.'/compta/facture/class/facture.class.php';
+                            include_once DOL_DOCUMENT_ROOT.'/compta/paiement/class/paiement.class.php';
+
+                            $invoice = new Facture($db);
+                            $invoice->socid = $soc->id;
+                            $invoice->fk_soc = $soc->id;
+                            $invoice->date = $datecons;
+
+                            $vattouse = GETPOST('vat');
+
+                            $product = new Product($db);
+                            $product->type = Product::TYPE_SERVICE;
+
+                            if (GETPOST('prodid') > 0)      // TODO
                             {
-                                $vattouse = get_default_tva(societe_vendeuse,societe_acheteuse,$product);
+                                $product->fetch(GETPOST('prodid'));
+                                if (GETPOST('vat') == '')
+                                {
+                                    $vattouse = get_default_tva(societe_vendeuse,societe_acheteuse,$product);
+                                }
                             }
-                        }
 
-                        $consultamount = $consult->montant_cheque + $consult->montant_carte + $consult->montant_espece + $consult->montant_tiers;
+                            $objectamount = $object->montant_cheque + $object->montant_carte + $object->montant_espece + $object->montant_tiers;
 
-                        $invoice->linked_objects['cabinetmed_cabinetmedcons']=$consult->id;
+                            $invoice->linked_objects['cabinetmed_cabinetmedcons']=$object->id;
 
-                        $result = $invoice->create($user);
-                        if ($result > 0)
-                        {
-                            $result = $invoice->addline(
-                                $langs->trans('Consultation'),
-                                $consultamount,		 	// subprice
-                                1, 						// quantity
-                                $vattouse,     // vat rate
-                                0,                      // localtax1_tx
-                                0, 						// localtax2_tx
-                                $product->id, 	// fk_product
-                                0, 						// remise_percent
-                                0, 						// date_start
-                                0, 						// date_end
-                                0,
-                                0, // info_bits
-                                0,
-                                'HT',
-                                0,
-                                $product->type, 						// product_type
-                                1,
-                                $lines[$i]->special_code,
-                                $consult->origin,
-                                $consult->id,
-                                0,
-                                0,
-                                0,
-                                ''
-                                );
-
-                            $result = $invoice->validate($user);
+                            $result = $invoice->create($user);
                             if ($result > 0)
                             {
-                                // Enter payment
-                                foreach(array('CHQ','CB','LIQ','VIR') as $key)
+                                $result = $invoice->addline(
+                                    $langs->trans('Consultation'),
+                                    $objectamount,		 	// subprice
+                                    1, 						// quantity
+                                    $vattouse,     // vat rate
+                                    0,                      // localtax1_tx
+                                    0, 						// localtax2_tx
+                                    $product->id, 	// fk_product
+                                    0, 						// remise_percent
+                                    0, 						// date_start
+                                    0, 						// date_end
+                                    0,
+                                    0, // info_bits
+                                    0,
+                                    'HT',
+                                    0,
+                                    $product->type, 						// product_type
+                                    1,
+                                    $lines[$i]->special_code,
+                                    $object->origin,
+                                    $object->id,
+                                    0,
+                                    0,
+                                    0,
+                                    ''
+                                    );
+
+                                $result = $invoice->validate($user);
+                                if ($result > 0)
                                 {
-                                    $tmpamount=0;
-                                    if ($key == 'CHQ') $tmpamount = $consult->montant_cheque;
-                                    if ($key == 'CB')  $tmpamount = $consult->montant_carte;
-                                    if ($key == 'LIQ') $tmpamount = $consult->montant_espece;
-                                    if ($key == 'VIR') $tmpamount = $consult->montant_tiers;
-                                    if (! ($tmpamount > 0)) continue;
-
-                                    // Creation of payment line
-                                    $paiement = new Paiement($db);
-                                    $paiement->datepaye     = $datecons;
-                                    $paiement->amounts      = array($invoice->id => $tmpamount);    // Array with all payments dispatching
-                                    $paiement->paiementid   = dol_getIdFromCode($db, $key, 'c_paiement');
-                                    $paiement->num_paiement = $consult->num_cheque;
-                                    $paiement->note         = '';
-
-                                    if (! $error)
+                                    // Enter payment
+                                    foreach(array('CHQ','CB','LIQ','VIR') as $key)
                                     {
-                                        $paiement_id = $paiement->create($user, 1);
-                                        if ($paiement_id < 0)
-                                        {
-                                            setEventMessages($paiement->error, $paiement->errors, 'errors');
-                                            $error++;
-                                        }
-                                    }
+                                        $tmpamount=0;
+                                        if ($key == 'CHQ') $tmpamount = $object->montant_cheque;
+                                        if ($key == 'CB')  $tmpamount = $object->montant_carte;
+                                        if ($key == 'LIQ') $tmpamount = $object->montant_espece;
+                                        if ($key == 'VIR') $tmpamount = $object->montant_tiers;
+                                        if (! ($tmpamount > 0)) continue;
 
-                                    // Create entry into bank account for the payment
-                                    if (! $error)
-                                    {
-                                        if ($conf->banque->enabled && isset($banque[$key]) && $banque[$key] > 0)
+                                        // Creation of payment line
+                                        $paiement = new Paiement($db);
+                                        $paiement->datepaye     = $datecons;
+                                        $paiement->amounts      = array($invoice->id => $tmpamount);    // Array with all payments dispatching
+                                        $paiement->paiementid   = dol_getIdFromCode($db, $key, 'c_paiement');
+                                        $paiement->num_paiement = $object->num_cheque;
+                                        $paiement->note         = '';
+
+                                        if (! $error)
                                         {
-                                            $label='(CustomerInvoicePayment)';
-                                            $result=$paiement->addPaymentToBank($user,'payment',$label,$banque[$key],$object->name,$consult->banque);
-                                            if ($result < 0)
+                                            $paiement_id = $paiement->create($user, 1);
+                                            if ($paiement_id < 0)
                                             {
                                                 setEventMessages($paiement->error, $paiement->errors, 'errors');
                                                 $error++;
                                             }
                                         }
-                                    }
-                                 }
+
+                                        // Create entry into bank account for the payment
+                                        if (! $error)
+                                        {
+                                            if ($conf->banque->enabled && isset($banque[$key]) && $banque[$key] > 0)
+                                            {
+                                                $label='(CustomerInvoicePayment)';
+                                                $result=$paiement->addPaymentToBank($user,'payment',$label,$banque[$key],$soc->name,$object->banque);
+                                                if ($result < 0)
+                                                {
+                                                    setEventMessages($paiement->error, $paiement->errors, 'errors');
+                                                    $error++;
+                                                }
+                                            }
+                                        }
+                                     }
+                                }
+                            }
+                            else
+                            {
+                                $error++;
+                                $object->error = $invoice->error;
                             }
                         }
                         else
                         {
-                            $error++;
-                            $consult->error = $invoice->error;
+                            // Create direct entry into bank account
+                            foreach(array('CHQ','CB','LIQ','VIR') as $key)
+                            {
+                                if ($conf->banque->enabled && isset($banque[$key]) && $banque[$key] > 0)
+                                {
+                                    $bankaccount=new Account($db);
+                                    $result=$bankaccount->fetch($banque[$key]);
+                                    if ($result < 0) dol_print_error($db,$bankaccount->error);
+                                    if ($key == 'CHQ') $lineid=$bankaccount->addline($datecons, $key, $langs->trans("CustomerInvoicePayment"), $amount[$key], $object->num_cheque, '', $user, $soc->name, $object->banque);
+                                    else $lineid=$bankaccount->addline($datecons, $key, $langs->trans("CustomerInvoicePayment"), $amount[$key], '', '', $user, $soc->name, '');
+                                    if ($lineid <= 0)
+                                    {
+                                        $error++;
+                                        $object->error=$bankaccount->error;
+                                    }
+                                    if (! $error)
+                                    {
+                                        $result1=$bankaccount->add_url_line($lineid,$object->id,dol_buildpath('/cabinetmed/consultations.php',1).'?action=edit&socid='.$object->fk_soc.'&id=','Consultation','consultation');
+                                        $result2=$bankaccount->add_url_line($lineid,$object->fk_soc,'',$soc->name,'company');
+                                        if ($result1 <= 0 || $result2 <= 0)
+                                        {
+                                            $error++;
+                                        }
+                                    }
+                                }
+                            }
                         }
                     }
-                    else
+                }
+                if ($action == 'update')
+                {
+                    $result=$soc->fetch($object->fk_soc);
+
+                    $result=$object->update($user);
+                    if ($result < 0)
                     {
-                        // Create direct entry into bank account
-                        foreach(array('CHQ','CB','LIQ','VIR') as $key)
+                        $mesg=$object->error;
+                        $error++;
+                    }
+
+                    if (! $error)
+                    {
+                        foreach(array('CHQ','CB','LIQ','THIRD') as $key)
                         {
-                            if ($conf->banque->enabled && isset($banque[$key]) && $banque[$key] > 0)
+                            $bankmodified=0;
+
+                            if ($key == 'CHQ' &&
+                            (price2num($oldconsult->montant_cheque,'MT') != price2num($_POST["montant_cheque"],'MT') ||
+                            $oldconsult->banque != trim($_POST["banque"]) ||
+                            $oldconsult->num_cheque != trim($_POST["num_cheque"]) ||
+                            $oldconsult->bank['CHQ']['account_id'] != $_POST["bankchequeto"])) $bankmodified=1;
+                            if ($key == 'CB' &&
+                            (price2num($oldconsult->montant_carte,'MT') != price2num($_POST["montant_carte"],'MT') ||
+                            $oldconsult->bank['CB']['account_id'] != $_POST["bankcarteto"])) $bankmodified=1;
+                            if ($key == 'LIQ' &&
+                            (price2num($oldconsult->montant_espece,'MT') != price2num($_POST["montant_espece"],'MT') ||
+                            $oldconsult->bank['LIQ']['account_id'] != $_POST["bankespeceto"])) $bankmodified=1;
+                            if ($key == 'VIR' &&
+                            (price2num($oldconsult->montant_tiers,'MT') != price2num($_POST["montant_tiers"],'MT'))) $bankmodified=1;
+
+                            if ($conf->banque->enabled && $bankmodified)
                             {
-                                $bankaccount=new Account($db);
-                                $result=$bankaccount->fetch($banque[$key]);
-                                if ($result < 0) dol_print_error($db,$bankaccount->error);
-                                if ($key == 'CHQ') $lineid=$bankaccount->addline($datecons, $key, $langs->trans("CustomerInvoicePayment"), $amount[$key], $consult->num_cheque, '', $user, $object->name, $consult->banque);
-                                else $lineid=$bankaccount->addline($datecons, $key, $langs->trans("CustomerInvoicePayment"), $amount[$key], '', '', $user, $object->name, '');
-                                if ($lineid <= 0)
+                                // TODO Check if cheque is already into a receipt
+                                if ($key == 'CHQ' && 1 == 1)
                                 {
-                                    $error++;
-                                    $consult->error=$bankaccount->error;
+
                                 }
-                                if (! $error)
+                                // TODO Check if bank record is already conciliated
+
+                            }
+
+                            //print 'xx '.$key.' => '.$bankmodified;exit;
+                            //if ($key == 'CB') { var_dump($oldconsult->bank);exit; }
+
+                            // If we changed bank informations for this key
+                            if ($bankmodified)
+                            {
+                                // If consult has a bank id for this key, we remove it
+                                if ($object->bank[$key]['bank_id'] && ! $object->bank[$key]['rappro'])
                                 {
-                                    $result1=$bankaccount->add_url_line($lineid,$consult->id,dol_buildpath('/cabinetmed/consultations.php',1).'?action=edit&socid='.$consult->fk_soc.'&id=','Consultation','consultation');
-                                    $result2=$bankaccount->add_url_line($lineid,$consult->fk_soc,'',$object->name,'company');
-                                    if ($result1 <= 0 || $result2 <= 0)
+                                    $bankaccountline=new AccountLine($db);
+                                    $result=$bankaccountline->fetch($object->bank[$key]['bank_id']);
+                                    $bank_chq=$bankaccountline->bank_chq;
+                                    $fk_bordereau=$bankaccountline->fk_bordereau;
+                                    $bankaccountline->delete($user);
+                                }
+
+                                if ($conf->banque->enabled && isset($banque[$key]) && $banque[$key] > 0)
+                                {
+                                    $bankaccount=new Account($db);
+                                    $result=$bankaccount->fetch($banque[$key]);
+                                	if ($result < 0) dol_print_error($db,$bankaccount->error);
+                                    if ($key == 'CHQ') $lineid=$bankaccount->addline($object->datecons, $key, $langs->trans("CustomerInvoicePayment"), $amount[$key], $object->num_cheque, '', $user, $soc->name, $object->banque);
+                                    else $lineid=$bankaccount->addline($object->datecons, $key, $langs->trans("CustomerInvoicePayment"), $amount[$key], '', '', $user, $soc->name, '');
+                                    $result1=$bankaccount->add_url_line($lineid,$object->id,dol_buildpath('/cabinetmed/consultations.php',1).'?action=edit&socid='.$object->fk_soc.'&id=','Consultation','consultation');
+                                    $result2=$bankaccount->add_url_line($lineid,$object->fk_soc,'',$soc->name,'company');
+                                    if ($lineid <= 0 || $result1 <= 0 || $result2 <= 0)
                                     {
                                         $error++;
                                     }
@@ -401,126 +529,58 @@ if ($action == 'add' || $action == 'update')
                             }
                         }
                     }
-                }
-            }
-            if ($action == 'update')
-            {
-                $result=$object->fetch($consult->fk_soc);
-
-                $result=$consult->update($user);
-                if ($result < 0)
-                {
-                    $mesg=$consult->error;
-                    $error++;
-                }
-
-                if (! $error)
-                {
-                    foreach(array('CHQ','CB','LIQ','THIRD') as $key)
-                    {
-                        $bankmodified=0;
-
-                        if ($key == 'CHQ' &&
-                        (price2num($oldconsult->montant_cheque,'MT') != price2num($_POST["montant_cheque"],'MT') ||
-                        $oldconsult->banque != trim($_POST["banque"]) ||
-                        $oldconsult->num_cheque != trim($_POST["num_cheque"]) ||
-                        $oldconsult->bank['CHQ']['account_id'] != $_POST["bankchequeto"])) $bankmodified=1;
-                        if ($key == 'CB' &&
-                        (price2num($oldconsult->montant_carte,'MT') != price2num($_POST["montant_carte"],'MT') ||
-                        $oldconsult->bank['CB']['account_id'] != $_POST["bankcarteto"])) $bankmodified=1;
-                        if ($key == 'LIQ' &&
-                        (price2num($oldconsult->montant_espece,'MT') != price2num($_POST["montant_espece"],'MT') ||
-                        $oldconsult->bank['LIQ']['account_id'] != $_POST["bankespeceto"])) $bankmodified=1;
-                        if ($key == 'VIR' &&
-                        (price2num($oldconsult->montant_tiers,'MT') != price2num($_POST["montant_tiers"],'MT'))) $bankmodified=1;
-
-                        if ($conf->banque->enabled && $bankmodified)
-                        {
-                            // TODO Check if cheque is already into a receipt
-                            if ($key == 'CHQ' && 1 == 1)
-                            {
-
-                            }
-                            // TODO Check if bank record is already conciliated
-
-                        }
-
-                        //print 'xx '.$key.' => '.$bankmodified;exit;
-                        //if ($key == 'CB') { var_dump($oldconsult->bank);exit; }
-
-                        // If we changed bank informations for this key
-                        if ($bankmodified)
-                        {
-                            // If consult has a bank id for this key, we remove it
-                            if ($consult->bank[$key]['bank_id'] && ! $consult->bank[$key]['rappro'])
-                            {
-                                $bankaccountline=new AccountLine($db);
-                                $result=$bankaccountline->fetch($consult->bank[$key]['bank_id']);
-                                $bank_chq=$bankaccountline->bank_chq;
-                                $fk_bordereau=$bankaccountline->fk_bordereau;
-                                $bankaccountline->delete($user);
-                            }
-
-                            if ($conf->banque->enabled && isset($banque[$key]) && $banque[$key] > 0)
-                            {
-                                $bankaccount=new Account($db);
-                                $result=$bankaccount->fetch($banque[$key]);
-                            	if ($result < 0) dol_print_error($db,$bankaccount->error);
-                                if ($key == 'CHQ') $lineid=$bankaccount->addline($consult->datecons, $key, $langs->trans("CustomerInvoicePayment"), $amount[$key], $consult->num_cheque, '', $user, $object->name, $consult->banque);
-                                else $lineid=$bankaccount->addline($consult->datecons, $key, $langs->trans("CustomerInvoicePayment"), $amount[$key], '', '', $user, $object->name, '');
-                                $result1=$bankaccount->add_url_line($lineid,$consult->id,dol_buildpath('/cabinetmed/consultations.php',1).'?action=edit&socid='.$consult->fk_soc.'&id=','Consultation','consultation');
-                                $result2=$bankaccount->add_url_line($lineid,$consult->fk_soc,'',$object->name,'company');
-                                if ($lineid <= 0 || $result1 <= 0 || $result2 <= 0)
-                                {
-                                    $error++;
-                                }
-                            }
-                        }
+                    else
+    				{
+                        $error++;
                     }
                 }
-                else
-				{
-                    $error++;
-                }
             }
-        }
 
-        if (! $error)
-        {
-            $db->commit();
-            header("Location: ".$_SERVER["PHP_SELF"].'?socid='.$consult->fk_soc);
-            exit(0);
+            if (! $error)
+            {
+                $db->commit();
+                header("Location: ".$_SERVER["PHP_SELF"].'?socid='.$object->fk_soc);
+                exit(0);
+            }
+            else
+            {
+                $db->rollback();
+                $mesgarray[]=$object->error;
+                if ($action == 'add')    $action='create';
+                if ($action == 'update') $action='edit';
+            }
         }
         else
         {
-            $db->rollback();
-            $mesgarray[]=$consult->error;
-            if ($action == 'add')    $action='create';
-            if ($action == 'update') $action='edit';
+            if (GETPOST('backtopage','alpha'))
+            {
+                header("Location: ".GETPOST('backtopage','alpha'));
+                exit(0);
+            }
+            $action='';
         }
-    }
-    else
-    {
-        if (GETPOST('backtopage','alpha'))
-        {
-            header("Location: ".GETPOST('backtopage','alpha'));
-            exit(0);
-        }
-        $action='';
     }
 }
 
 
-
 /*
- *	View
+ * view
  */
 
-$form = new Form($db);
+$form=new Form($db);
+$formother=new FormOther($db);
+$thirdpartystatic=new Societe($db);
+$objectstatic = new CabinetmedCons($db);
 $fuser = new User($db);
-$width="242";
 
-llxHeader('',$langs->trans("Consultation"));
+//$help_url="EN:Module_MyObject|FR:Module_MyObject_FR|ES:Módulo_MyObject";
+$help_url='';
+$title = $langs->trans("Consultation");
+
+$width="300";
+if ($conf->browser->layout == 'phone') $width = '150';
+
+llxHeader('', $title);
 
 if (! ($socid > 0))
 {
@@ -530,16 +590,16 @@ if (! ($socid > 0))
 }
 else
 {
-    $result=$object->fetch($socid);
-	if ($result < 0) { dol_print_error('',$object->error); }
+    $result=$soc->fetch($socid);
+	if ($result < 0) { dol_print_error('',$soc->error); }
 
-    if ($id && ! ($consult->id > 0))
+    if ($id && ! ($object->id > 0))
     {
-        $result=$consult->fetch($id);
-        if ($result < 0) dol_print_error($db,$consult->error);
+        $result=$object->fetch($id);
+        if ($result < 0) dol_print_error($db,$object->error);
 
-        $result=$consult->fetch_bankid();
-        if ($result < 0) dol_print_error($db,$consult->error);
+        $result=$object->fetch_bankid();
+        if ($result < 0) dol_print_error($db,$object->error);
     }
 
 	/*
@@ -547,9 +607,7 @@ else
 	 */
     if ($conf->notification->enabled) $langs->load("mails");
 
-    $soc=$object;  // required to have test declared in module successfull
-
-	$head = societe_prepare_head($object);
+	$head = societe_prepare_head($soc);
 
 	// General
 	print '<form method="post" action="'.$_SERVER["PHP_SELF"].'">';
@@ -564,28 +622,28 @@ else
 	else dol_fiche_head($head, 'tabconsultations', $langs->trans("Patient"), -1, 'patient@cabinetmed');
 
     $linkback = '<a href="'.dol_buildpath('/cabinetmed/patients.php', 1).'">'.$langs->trans("BackToList").'</a>';
-	dol_banner_tab($object, 'socid', $linkback, ($user->societe_id?0:1), 'rowid', 'nom');
+	dol_banner_tab($soc, 'socid', $linkback, ($user->societe_id?0:1), 'rowid', 'nom');
 
 	print '<div class="fichecenter">';
 
     print '<div class="underbanner clearboth"></div>';
 	print '<table class="border tableforfield" width="100%">';
 
-	if ($object->client)
+	if ($soc->client)
     {
         print '<tr><td class="titlefield">';
         print $langs->trans('CustomerCode').'</td><td colspan="3">';
-        print $object->code_client;
-        if ($object->check_codeclient() <> 0) print ' <font class="error">('.$langs->trans("WrongCustomerCode").')</font>';
+        print $soc->code_client;
+        if ($soc->check_codeclient() <> 0) print ' <font class="error">('.$langs->trans("WrongCustomerCode").')</font>';
         print '</td></tr>';
     }
 
-    if ($object->fournisseur)
+    if ($soc->fournisseur)
     {
         print '<tr><td class="titlefield">';
         print $langs->trans('SupplierCode').'</td><td colspan="3">';
-        print $object->code_fournisseur;
-        if ($object->check_codefournisseur() <> 0) print ' <font class="error">('.$langs->trans("WrongSupplierCode").')</font>';
+        print $soc->code_fournisseur;
+        if ($soc->check_codefournisseur() <> 0) print ' <font class="error">('.$langs->trans("WrongSupplierCode").')</font>';
         print '</td></tr>';
     }
 
@@ -757,7 +815,7 @@ else
     			}
             });
     		';
-        	if ($consult->typevisit != 'CCAM')
+        	if ($object->typevisit != 'CCAM')
         	{
         		print ' jQuery("#idcodageccam").attr(\'disabled\',\'disabled\'); '."\n";
         	}
@@ -781,50 +839,27 @@ else
 		print ajax_combobox('banque');
 
 
-        /*if ($action=='edit' || $action=='update')
-        {
-	        print '<table class="border" width="100%">';
-			print '<tr><td width="25%">'.$langs->trans('ConsultationNumero').'</td>';
-			print '<td>'.sprintf("%08d",$consult->id);
-            if ($consult->fk_user > 0)
-	        {
-	        	$fuser->fetch($consult->fk_user);
-	        	print ' - '.$langs->trans("CreatedBy").': <strong>'.$fuser->getFullName($langs).'</strong>';
-	        }
-	        if ($consult->date_c > 0)
-	        {
-	        	print ' - '.$langs->trans("DateCreation").': <strong>'.dol_print_date($consult->date_c, 'dayhour').'</strong>';
-	        }
-	        if ($consult->date_m > 0)
-	        {
-	        	print ' - '.$langs->trans("DateModificationShort").': <strong>'.dol_print_date($consult->date_m, 'dayhour').'</strong>';
-	        }
-			print '</td>';
-			print '</tr></table><br>';
-        }*/
+        print '<div id="fieldsetanalyse">';
+        //print '<legend>'.$langs->trans("InfoGenerales").'</legend>'."\n";
 
-        print '<fieldset id="fieldsetanalyse">';
-        print '<legend>'.$langs->trans("InfoGenerales");
-        print '</legend>'."\n";
-
-        $fk_agenda=empty($fk_agenda)?$consult->fk_agenda:$fk_agenda;
+        $fk_agenda=empty($fk_agenda)?$object->fk_agenda:$fk_agenda;
 
 		if ($action=='edit' || $action=='update' || $fk_agenda) print '<table class="notopnoleftnoright" width="100%">';
         if ($action=='edit' || $action=='update')
         {
-			print '<tr><td width="180px">'.$langs->trans('ConsultationNumero').': <div class="refid inline-block"><strong>'.sprintf("%08d",$consult->id).'</strong></div>';
-            if ($consult->fk_user > 0)
+			print '<tr><td width="180px" class="paddingtopbottom"><span class="opacitymedium">'.$langs->trans('ConsultationNumero').':</span> <div class="refid inline-block"><strong>'.sprintf("%08d",$object->id).'</strong></div>';
+            if ($object->fk_user > 0)
 	        {
-	        	$fuser->fetch($consult->fk_user);
-	        	print ' - '.$langs->trans("CreatedBy").': <strong>'.$fuser->getFullName($langs).'</strong>';
+	        	$fuser->fetch($object->fk_user);
+	        	print '<span class="opacitymedium"> - '.$langs->trans("CreatedBy").': </span><strong>'.$fuser->getFullName($langs).'</strong>';
 	        }
-	        if ($consult->date_c > 0)
+	        if ($object->date_c > 0)
 	        {
-	        	print ' - '.$langs->trans("DateCreation").': <strong>'.dol_print_date($consult->date_c, 'dayhour').'</strong>';
+	        	print '<span class="opacitymedium"> - '.$langs->trans("DateCreation").': </span><strong>'.dol_print_date($object->date_c, 'dayhour').'</strong>';
 	        }
-	        if ($consult->date_m > 0)
+	        if ($object->date_m > 0)
 	        {
-	        	print ' - '.$langs->trans("DateModificationShort").': <strong>'.dol_print_date($consult->date_m, 'dayhour').'</strong>';
+	        	print '<span class="opacitymedium"> - '.$langs->trans("DateModificationShort").': </span><strong>'.dol_print_date($object->date_m, 'dayhour').'</strong>';
 	        }
 			print '</td>';
 			print '</tr>';
@@ -852,7 +887,7 @@ else
         print '<tr><td class="titlefield fieldrequired">';
         print $langs->trans("Date").': ';
         print '</td><td align="left">';
-        print $form->selectDate(($consult->datecons?$consult->datecons:''), 'cons', 0, 0, 0, '', 1, 1);
+        print $form->selectDate(($object->datecons?$object->datecons:''), 'cons', 0, 0, 0, '', 1, 1);
         print '</td></tr>';
         print '</table>';
 
@@ -861,73 +896,56 @@ else
         if (! empty($conf->global->CABINETMED_FRENCH_PRISEENCHARGE))
         {
             print $langs->trans("Priseencharge").': &nbsp;';
-            print '<input type="radio" class="flat" name="typepriseencharge" value=""'.(empty($consult->typepriseencharge)?' checked="checked"':'').'> '.$langs->trans("None");
+            print '<input type="radio" class="flat" name="typepriseencharge" value=""'.(empty($object->typepriseencharge)?' checked="checked"':'').'> '.$langs->trans("None");
             print ' &nbsp; ';
-            print '<input type="radio" class="flat" name="typepriseencharge" value="ALD"'.($consult->typepriseencharge=='ALD'?' checked="checked"':'').'> ALD';
+            print '<input type="radio" class="flat" name="typepriseencharge" value="ALD"'.($object->typepriseencharge=='ALD'?' checked="checked"':'').'> ALD';
             print ' &nbsp; ';
-            print '<input type="radio" class="flat" name="typepriseencharge" value="INV"'.($consult->typepriseencharge=='INV'?' checked="checked"':'').'> INV';
+            print '<input type="radio" class="flat" name="typepriseencharge" value="INV"'.($object->typepriseencharge=='INV'?' checked="checked"':'').'> INV';
             print ' &nbsp; ';
-            print '<input type="radio" class="flat" name="typepriseencharge" value="AT"'.($consult->typepriseencharge=='AT'?' checked="checked"':'').'> AT';
+            print '<input type="radio" class="flat" name="typepriseencharge" value="AT"'.($object->typepriseencharge=='AT'?' checked="checked"':'').'> AT';
             print ' &nbsp; ';
-            print '<input type="radio" class="flat" name="typepriseencharge" value="CMU"'.($consult->typepriseencharge=='CMU'?' checked="checked"':'').'> CMU';
+            print '<input type="radio" class="flat" name="typepriseencharge" value="CMU"'.($object->typepriseencharge=='CMU'?' checked="checked"':'').'> CMU';
             print ' &nbsp; ';
-            print '<input type="radio" class="flat" name="typepriseencharge" value="AME"'.($consult->typepriseencharge=='AME'?' checked="checked"':'').'> AME';
+            print '<input type="radio" class="flat" name="typepriseencharge" value="AME"'.($object->typepriseencharge=='AME'?' checked="checked"':'').'> AME';
             print ' &nbsp; ';
-            print '<input type="radio" class="flat" name="typepriseencharge" value="ACS"'.($consult->typepriseencharge=='ACS'?' checked="checked"':'').'> ACS';
+            print '<input type="radio" class="flat" name="typepriseencharge" value="ACS"'.($object->typepriseencharge=='ACS'?' checked="checked"':'').'> ACS';
         }
 
-        //print '</td></tr>';
-        //print '</table>';
         print '</div></div></div>';
 
-        //print '</fieldset>';
-
-        //print '<br>';
-
-        // Analyse
-//        print '<fieldset id="fieldsetanalyse">';
-//        print '<legend>'.$langs->trans("Diagnostiques et prescriptions").'</legend>'."\n";
         print '<div class="fichecenter"></div>';
 
         print '<div class="centpercent" style="margin-top: 5px; margin-bottom: 8px; border-bottom: 1px solid #eee;"></div>';
 
-        //print '<table class="notopnoleftnoright" width="100%">';
-        //print '<tr><td width="60%">';
         print '<div class="fichecenter"><div class="fichehalfleft">';
 
         print '<table class="notopnoleftnoright" id="addmotifbox" width="100%">';
         print '<tr><td class="tdtop titlefield">';
         print $langs->trans("MotifConsultation").':';
         print '</td><td>';
-        //print '<input type="text" size="3" class="flat" name="searchmotifcons" value="'.GETPOST("searchmotifcons").'" id="searchmotifcons">';
-        listmotifcons(1,400);
-        /*print ' '.img_picto('Ajouter motif principal','edit_add_p.png@cabinetmed');
-        print ' '.img_picto('Ajouter motif secondaire','edit_add_s.png@cabinetmed');*/
+        listmotifcons(1,$width);
         print ' <input type="button" class="button" id="addmotifprinc" name="addmotifprinc" value="+P" title="'.dol_escape_htmltag($langs->trans("ClickHereToSetPrimaryReason")).'">';
         print ' <input type="button" class="button" id="addmotifsec" name="addmotifsec" value="+S" title="'.dol_escape_htmltag($langs->trans("ClickHereToSetSecondaryReason")).'">';
         if ($user->admin) print ' '.info_admin($langs->trans("YouCanChangeValuesForThisListFromDictionarySetup"),1);
         print '</td></tr>';
         print '<tr><td class="fieldrequired">'.$langs->trans("MotifPrincipal").':';
         print '</td><td>';
-        print '<input type="text" class="flat minwidth400" name="motifconsprinc" value="'.$consult->motifconsprinc.'" id="motifconsprinc"><br>';
+        print '<input type="text" class="flat minwidth200" name="motifconsprinc" value="'.$object->motifconsprinc.'" id="motifconsprinc"><br>';
         print '</td></tr>';
         print '<tr><td class="tdtop">'.$langs->trans("MotifSecondaires").':';
         print '</td><td>';
-        print '<textarea class="flat quatrevingtpercent" name="motifconssec" id="motifconssec" rows="'.ROWS_3.'">';
-        print $consult->motifconssec;
+        print '<textarea class="flat centpercent" name="motifconssec" id="motifconssec" rows="'.ROWS_3.'">';
+        print $object->motifconssec;
         print '</textarea>';
         print '</td>';
         print '</tr>';
         print '</table>';
 
-        //print '</td><td>';
         print '</div><div class="fichehalfright"><div class="ficheaddleft">';
 
         print ''.$langs->trans("HistoireDeLaMaladie").'<br>';
-        print '<textarea name="hdm" id="hdm" class="flat centpercent" rows="'.ROWS_5.'">'.$consult->hdm.'</textarea>';
+        print '<textarea name="hdm" id="hdm" class="flat centpercent" rows="'.ROWS_5.'">'.$object->hdm.'</textarea>';
 
-        //print '</td><td class="tdtop">';
-        //print '</td></tr><tr><td>';
         print '</div></div></div>';
 
         print '<div class="fichecenter"><div class="fichehalfleft">';
@@ -945,104 +963,96 @@ else
         print '</td></tr>';
         print '<tr><td class="fieldrequired">'.$langs->trans("DiagLesPrincipal").':';
         print '</td><td>';
-        print '<input type="text" class="flat minwidth400" name="diaglesprinc" value="'.$consult->diaglesprinc.'" id="diaglesprinc"><br>';
+        print '<input type="text" class="flat minwidth200" name="diaglesprinc" value="'.$object->diaglesprinc.'" id="diaglesprinc"><br>';
         print '</td></tr>';
         print '<tr><td class="tdtop">'.$langs->trans("DiagLesSecondaires").':';
         print '</td><td>';
-        print '<textarea class="flat quatrevingtpercent" name="diaglessec" id="diaglessec" rows="'.ROWS_3.'">';
-        print $consult->diaglessec;
+        print '<textarea class="flat centpercent" name="diaglessec" id="diaglessec" rows="'.ROWS_3.'">';
+        print $object->diaglessec;
         print '</textarea>';
         print '</td>';
         print '</tr>';
         print '</table>';
 
-        //print '</td><td>';
         print '</div><div class="fichehalfright"><div class="ficheaddleft">';
 
         print ''.$langs->trans("ExamensCliniques").'<br>';
-        print '<textarea name="examenclinique" id="examenclinique" class="flat centpercent" rows="'.ROWS_6.'">'.$consult->examenclinique.'</textarea>';
+        print '<textarea name="examenclinique" id="examenclinique" class="flat centpercent" rows="'.ROWS_6.'">'.$object->examenclinique.'</textarea>';
 
         print '</div></div></div>';
-        //print '</td></tr>';
-        //print '</table>';
-        //print '</fieldset>';
 
         print '<div class="fichecenter"></div>';
 
         // Prescriptions
-        //print '<fieldset id="fieldsetprescription">';
-        //print '<legend>'.$langs->trans("Prescription").'</legend>'."\n";
         print '<div class="centpercent" style="margin-top: 5px; margin-bottom: 8px; border-bottom: 1px solid #eee;"></div>';
 
         print '<div class="fichecenter"><div class="fichehalfleft">';
-        //print '<table class="notopnoleftnoright" width="100%">';
-        //print '<tr><td width="60%" valign="top">';
 
         print '<table class="notopnoleftnoright" id="addexambox" width="100%">';
 
         print '<tr><td class="tdtop titlefield">';
         print $langs->trans("ExamensPrescrits").':';
         print '</td><td>';
-        //print '<input type="text" size="3" class="flat" name="searchexamenprescrit" value="'.GETPOST("searchexamenprescrit").'" id="searchexamenprescrit">';
         listexamen(1,$width,'',0,'examenprescrit');
         print ' <input type="button" class="button" id="addexamenprescrit" name="addexamenprescrit" value="+">';
         if ($user->admin) print ' '.info_admin($langs->trans("YouCanChangeValuesForThisListFromDictionarySetup"),1);
         print '</td></tr>';
         print '<tr><td class="tdtop">';
         print '</td><td>';
-        print '<textarea class="flat" name="examenprescrit" id="examenprescrit" cols="40" rows="'.ROWS_4.'">';
-        print $consult->examenprescrit;
+        print '<textarea class="flat centpercent" name="examenprescrit" id="examenprescrit" rows="'.ROWS_4.'">';
+        print $object->examenprescrit;
         print '</textarea>';
         print '</td>';
         print '</tr>';
 
         print '<tr><td class="tdtop"><br>'.$langs->trans("Commentaires").':';
         print '</td><td><br>';
-        print '<textarea name="comment" id="comment" class="flat" cols="40" rows="'.($nboflines-1).'">'.$consult->comment.'</textarea>';
+        print '<textarea name="comment" id="comment" class="flat centpercent" rows="'.($nboflines-1).'">'.$object->comment.'</textarea>';
         print '</td></tr>';
 
         // Other attributes
         $parameters=array();
-        $reshook=$hookmanager->executeHooks('formObjectOptions',$parameters,$consult,$action);    // Note that $action and $object may have been modified by hook
+        $reshook=$hookmanager->executeHooks('formObjectOptions',$parameters,$object,$action);    // Note that $action and $object may have been modified by hook
         print $hookmanager->resPrint;
         if (empty($reshook))
         {
             $params=array('colspan'=>1);
-            print $consult->showOptionals($extrafields,'edit',$params);
+            print $object->showOptionals($extrafields,'edit',$params);
         }
 
         print '</table>';
 
-        //print '</td><td class="tdtop">';
         print '</div><div class="fichehalfright"><div class="ficheaddleft">';
 
         print $langs->trans("TraitementsPrescrits").'<br>';
-        print '<textarea name="traitementprescrit" class="flat centpercent" rows="'.($nboflines+1).'">'.$consult->traitementprescrit.'</textarea><br>';
+        print '<textarea name="traitementprescrit" class="flat centpercent" rows="'.($nboflines+1).'">'.$object->traitementprescrit.'</textarea><br>';
         print $langs->trans("Infiltrations").'<br>';
-        print '<textarea name="infiltration" id="infiltration" class="flat centpercent" rows="'.ROWS_2.'">'.$consult->infiltration.'</textarea><br>';
-        //print '<input type="text" class="flat" name="infiltration" id="infiltration" value="'.$consult->infiltration.'" size="50">';
+        print '<textarea name="infiltration" id="infiltration" class="flat centpercent" rows="'.ROWS_2.'">'.$object->infiltration.'</textarea><br>';
 
         print '<br><b>'.$langs->trans("TypeVisite").'</b>: &nbsp; &nbsp; &nbsp; ';
-        print '<input type="radio" class="flat" name="typevisit" value="CS" id="cs"'.($consult->typevisit=='CS'?' checked="checked"':'').'> '.$langs->trans("CS");
+        print '<input type="radio" class="flat" name="typevisit" value="CS" id="cs"'.($object->typevisit=='CS'?' checked="checked"':'').'> '.$langs->trans("CS");
         print ' &nbsp; &nbsp; ';
-        print '<input type="radio" class="flat" name="typevisit" value="CS2" id="c2"'.($consult->typevisit=='CS2'?' checked="checked"':'').'> '.$langs->trans("CS2");
+        print '<input type="radio" class="flat" name="typevisit" value="CS2" id="c2"'.($object->typevisit=='CS2'?' checked="checked"':'').'> '.$langs->trans("CS2");
         print ' &nbsp; &nbsp; ';
-        print '<input type="radio" class="flat" name="typevisit" value="CCAM" id="ccam"'.($consult->typevisit=='CCAM'?' checked="checked"':'').'> '.$langs->trans("CCAM");
+        print '<input type="radio" class="flat" name="typevisit" value="CCAM" id="ccam"'.($object->typevisit=='CCAM'?' checked="checked"':'').'> '.$langs->trans("CCAM");
         print '<br>';
         print '<br>'.$langs->trans("CodageCCAM").': &nbsp; ';
-        print '<input type="text" class="flat" name="codageccam" id="idcodageccam" value="'.$consult->codageccam.'" size="30">';	// name must differ from id
+        print '<input type="text" class="flat" name="codageccam" id="idcodageccam" value="'.$object->codageccam.'" size="30">';	// name must differ from id
         print '</td></tr>';
 
         print '</table>';
 
         print '</div></div></div>';
 
-        print '</fieldset>'; // End of general information
+        print '</div>'; // End of general information
 
-        print '<br>';
+        print '<div class="clearboth"><div class="divpayment" style="padding-top: 25px; margin-bottom: 20px;">';
 
-        print '<fieldset id="fieldsetanalyse">';
-        print '<legend>'.$langs->trans("Paiement").'</legend>'."\n";
+        print load_fiche_titre($langs->trans("Payment"), '', 'title_accountancy');
+
+        print '<hr>';
+        //print '<fieldset id="fieldsetanalyse">';
+        //print '<legend>'.$langs->trans("Paiement").'</legend>'."\n";
 
         // Try to autodetect the default bank account to use. For this we search opened account with user name into label or owner
         $defaultbankaccountchq=0;
@@ -1078,9 +1088,9 @@ else
         if (empty($conf->global->SOCIETE_DISABLE_CUSTOMERS) && ! empty($conf->global->CABINETMED_AUTOGENERATE_INVOICE))
         {
             print '<tr><td></td><td>';
-            if ($consult->id > 0 && ! $error)
+            if ($object->id > 0 && ! $error)
             {
-                print '<input name="generateinvoice" type="checkbox" disabled="disabled"> <span class="opacitymedium">'.$langs->trans("GenerateInvoiceAndPayment").'</span> - '.$langs->trans("YouMustEditInvoiceManually");
+                print '<input name="generateinvoice" type="checkbox" disabled="disabled"> <span class="opacitymedium">'.$langs->trans("GenerateInvoiceAndPayment").'</span><span class="hideonsmartphone"> - '.$langs->trans("YouMustEditInvoiceManually").'</span>';
             }
             else
             {
@@ -1091,53 +1101,62 @@ else
 
         // Cheque
         print '<tr class="cabpaymentcheque"><td class="titlefield">';
-        print ''.$langs->trans("PaymentTypeCheque").'</td><td>';
-        print '<input type="text" class="flat" name="montant_cheque" id="idmontant_cheque" value="'.($consult->montant_cheque!=''?price($consult->montant_cheque):'').'" size="5">';
+        print $langs->trans("PaymentTypeCheque").'</td><td>';
+        print '<input type="text" class="flat" name="montant_cheque" id="idmontant_cheque" value="'.($object->montant_cheque!=''?price($object->montant_cheque):'').'" size="4"';
+        print ' placeholder="'.($conf->currency != $langs->getCurrencySymbol($conf->currency) ? $langs->getCurrencySymbol($conf->currency) : '').'"';
+        print '>';
         if ($conf->banque->enabled)
         {
         	print ' &nbsp; '.$langs->trans("RecBank").' ';
-            $form->select_comptes(GETPOST('bankchequeto')?GETPOST('bankchequeto'):($consult->bank['CHQ']['account_id']?$consult->bank['CHQ']['account_id']:$defaultbankaccountchq),'bankchequeto',2,'courant = 1',1);
+            $form->select_comptes(GETPOST('bankchequeto')?GETPOST('bankchequeto'):($object->bank['CHQ']['account_id']?$object->bank['CHQ']['account_id']:$defaultbankaccountchq),'bankchequeto',2,'courant = 1',1);
         }
         print ' &nbsp; ';
         print $langs->trans("ChequeBank").' ';
-        listebanques(1,0,$consult->banque);
+        listebanques(1,0,$object->banque);
         if ($user->admin) print info_admin($langs->trans("YouCanChangeValuesForThisListFromDictionarySetup"),1);
         if ($conf->banque->enabled)
         {
         	print ' &nbsp; '.$langs->trans("ChequeOrTransferNumber").' ';
-        	print '<input type="text" class="flat" name="num_cheque" id="idnum_cheque" value="'.$consult->num_cheque.'" size="6">';
+        	print '<input type="text" class="flat" name="num_cheque" id="idnum_cheque" value="'.$object->num_cheque.'" size="6">';
         }
         print '</td></tr>';
         // Card
-        print '<tr class="cabpaymentcarte"><td>';
+        print '<tr class="cabpaymentcarte"><td class="">';
         print $langs->trans("PaymentTypeCarte").'</td><td>';
-        print '<input type="text" class="flat" name="montant_carte" id="idmontant_carte" value="'.($consult->montant_carte!=''?price($consult->montant_carte):'').'" size="5">';
+        print '<input type="text" class="flat" name="montant_carte" id="idmontant_carte" value="'.($object->montant_carte!=''?price($object->montant_carte):'').'" size="4"';
+        print ' placeholder="'.($conf->currency != $langs->getCurrencySymbol($conf->currency) ? $langs->getCurrencySymbol($conf->currency) : '').'"';
+        print '>';
         if ($conf->banque->enabled)
         {
             print ' &nbsp; '.$langs->trans("RecBank").' ';
-            $form->select_comptes(GETPOST('bankcarteto')?GETPOST('bankcarteto'):($consult->bank['CB']['account_id']?$consult->bank['CB']['account_id']:$defaultbankaccountchq),'bankcarteto',2,'courant = 1',1);
+            $form->select_comptes(GETPOST('bankcarteto')?GETPOST('bankcarteto'):($object->bank['CB']['account_id']?$object->bank['CB']['account_id']:$defaultbankaccountchq),'bankcarteto',2,'courant = 1',1);
         }
         print '</td></tr>';
         // Cash
-        print '<tr class="cabpaymentcash"><td>';
+        print '<tr class="cabpaymentcash"><td class="">';
         print $langs->trans("PaymentTypeEspece").'</td><td>';
-        print '<input type="text" class="flat" name="montant_espece" id="idmontant_espece" value="'.($consult->montant_espece!=''?price($consult->montant_espece):'').'" size="5">';
+        print '<input type="text" class="flat" name="montant_espece" id="idmontant_espece" value="'.($object->montant_espece!=''?price($object->montant_espece):'').'" size="4"';
+        print ' placeholder="'.($conf->currency != $langs->getCurrencySymbol($conf->currency) ? $langs->getCurrencySymbol($conf->currency) : '').'"';
+        print '>';
         if ($conf->banque->enabled)
         {
             print ' &nbsp; '.$langs->trans("RecBank").' ';
-            $form->select_comptes(GETPOST('bankespeceto')?GETPOST('bankespeceto'):($consult->bank['LIQ']['account_id']?$consult->bank['LIQ']['account_id']:$defaultbankaccountliq),'bankespeceto',2,'courant = 2',1);
+            $form->select_comptes(GETPOST('bankespeceto')?GETPOST('bankespeceto'):($object->bank['LIQ']['account_id']?$object->bank['LIQ']['account_id']:$defaultbankaccountliq),'bankespeceto',2,'courant = 2',1);
         }
         print '</td></tr>';
 
         // Third party
-        print '<tr class="cabpaymentthirdparty"><td>';
+        print '<tr class="cabpaymentthirdparty"><td class="">';
         print $langs->trans("PaymentTypeThirdParty").'</td><td>';
-        print '<input type="text" class="flat" name="montant_tiers" id="idmontant_tiers" value="'.($consult->montant_tiers!=''?price($consult->montant_tiers):'').'" size="5">';
-        print ' &nbsp; ('.$langs->trans("ZeroHereIfNoPayment").')';
+        print '<input type="text" class="flat" name="montant_tiers" id="idmontant_tiers" value="'.($object->montant_tiers!=''?price($object->montant_tiers):'').'" size="4"';
+        print ' placeholder="'.($conf->currency != $langs->getCurrencySymbol($conf->currency) ? $langs->getCurrencySymbol($conf->currency) : '').'"';
+        print '>';
+        print '<span class="opacitymedium"> &nbsp; ('.$langs->trans("ZeroHereIfNoPayment").')</span>';
         print '</td></tr>';
 
         print '</table>';
-        print '</fieldset>';
+
+        print '</div></div>';
 
         print '<br>';
 
@@ -1155,7 +1174,7 @@ else
     	    if (! isset($conf->global->CABINETMED_DELAY_TO_LOCK_RECORD)) $conf->global->CABINETMED_DELAY_TO_LOCK_RECORD=30;
 
     	    // If consult was create before current date - CABINETMED_DELAY_TO_LOCK_RECORD days.
-    	    if (! empty($conf->global->CABINETMED_DELAY_TO_LOCK_RECORD) && $consult->date_c < ($now - ($conf->global->CABINETMED_DELAY_TO_LOCK_RECORD * 24 * 3600)))
+    	    if (! empty($conf->global->CABINETMED_DELAY_TO_LOCK_RECORD) && $object->date_c < ($now - ($conf->global->CABINETMED_DELAY_TO_LOCK_RECORD * 24 * 3600)))
     	    {
     	        print '<input type="submit" class="button ignorechange" id="updatebutton" name="update" value="'.$langs->trans("Save").'" disabled="disabled" title="'.dol_escape_htmltag($langs->trans("ConsultTooOld",$conf->global->CABINETMED_DELAY_TO_LOCK_RECORD)).'">';
     	    }
@@ -1180,31 +1199,32 @@ else
 /*
  * Boutons actions
  */
-if ($action == '' || $action == 'delete')
+
+if ($action == '' || $action == 'list' || $action == 'delete')
 {
     print '<div class="tabsAction">';
 
     if ($user->rights->societe->creer)
     {
-        print '<a class="butAction" href="'.$_SERVER["PHP_SELF"].'?socid='.$object->id.'&amp;action=create">'.$langs->trans("NewConsult").'</a>';
+        print '<a class="butAction" href="'.$_SERVER["PHP_SELF"].'?socid='.$soc->id.'&amp;action=create">'.$langs->trans("NewConsult").'</a>';
     }
 
     print '</div>';
 }
 
 
-if ($action == '' || $action == 'delete')
+if ($action == '' || $action == 'list' || $action == 'delete')
 {
-    if ($object->alert_antemed)       $mesgs[]=$langs->transnoentitiesnoconv("Warning").': '.$langs->transnoentitiesnoconv("AlertTriggered",$langs->transnoentitiesnoconv("AntecedentsMed"));
-    if ($object->alert_antechirgen)   $mesgs[]=$langs->transnoentitiesnoconv("Warning").': '.$langs->transnoentitiesnoconv("AlertTriggered",$langs->transnoentitiesnoconv("AntecedentsChirGene"));
-    if ($object->alert_antechirortho) $mesgs[]=$langs->transnoentitiesnoconv("Warning").': '.$langs->transnoentitiesnoconv("AlertTriggered",$langs->transnoentitiesnoconv("AntecedentsChirOrtho"));
-    if ($object->alert_anterhum)      $mesgs[]=$langs->transnoentitiesnoconv("Warning").': '.$langs->transnoentitiesnoconv("AlertTriggered",$langs->transnoentitiesnoconv("AntecedentsRhumato"));
-    if ($object->alert_other)         $mesgs[]=$langs->transnoentitiesnoconv("Warning").': '.$langs->transnoentitiesnoconv("AlertTriggered",$langs->transnoentitiesnoconv("AntecedentsMed"));
-    if ($object->alert_traitclass)    $mesgs[]=$langs->transnoentitiesnoconv("Warning").': '.$langs->transnoentitiesnoconv("AlertTriggered",$langs->transnoentitiesnoconv("xxx"));
-    if ($object->alert_traitallergie) $mesgs[]=$langs->transnoentitiesnoconv("Warning").': '.$langs->transnoentitiesnoconv("AlertTriggered",$langs->transnoentitiesnoconv("Allergies"));
-    if ($object->alert_traitintol)    $mesgs[]=$langs->transnoentitiesnoconv("Warning").': '.$langs->transnoentitiesnoconv("AlertTriggered",$langs->transnoentitiesnoconv("Intolerances"));
-    if ($object->alert_traitspec)     $mesgs[]=$langs->transnoentitiesnoconv("Warning").': '.$langs->transnoentitiesnoconv("AlertTriggered",$langs->transnoentitiesnoconv("SpecPharma"));
-    if ($object->alert_note)          $mesgs[]=$langs->transnoentitiesnoconv("Warning").': '.$langs->transnoentitiesnoconv("AlertTriggered",$langs->transnoentitiesnoconv("Note"));
+    if ($soc->alert_antemed)       $mesgs[]=$langs->transnoentitiesnoconv("Warning").': '.$langs->transnoentitiesnoconv("AlertTriggered",$langs->transnoentitiesnoconv("AntecedentsMed"));
+    if ($soc->alert_antechirgen)   $mesgs[]=$langs->transnoentitiesnoconv("Warning").': '.$langs->transnoentitiesnoconv("AlertTriggered",$langs->transnoentitiesnoconv("AntecedentsChirGene"));
+    if ($soc->alert_antechirortho) $mesgs[]=$langs->transnoentitiesnoconv("Warning").': '.$langs->transnoentitiesnoconv("AlertTriggered",$langs->transnoentitiesnoconv("AntecedentsChirOrtho"));
+    if ($soc->alert_anterhum)      $mesgs[]=$langs->transnoentitiesnoconv("Warning").': '.$langs->transnoentitiesnoconv("AlertTriggered",$langs->transnoentitiesnoconv("AntecedentsRhumato"));
+    if ($soc->alert_other)         $mesgs[]=$langs->transnoentitiesnoconv("Warning").': '.$langs->transnoentitiesnoconv("AlertTriggered",$langs->transnoentitiesnoconv("AntecedentsMed"));
+    if ($soc->alert_traitclass)    $mesgs[]=$langs->transnoentitiesnoconv("Warning").': '.$langs->transnoentitiesnoconv("AlertTriggered",$langs->transnoentitiesnoconv("xxx"));
+    if ($soc->alert_traitallergie) $mesgs[]=$langs->transnoentitiesnoconv("Warning").': '.$langs->transnoentitiesnoconv("AlertTriggered",$langs->transnoentitiesnoconv("Allergies"));
+    if ($soc->alert_traitintol)    $mesgs[]=$langs->transnoentitiesnoconv("Warning").': '.$langs->transnoentitiesnoconv("AlertTriggered",$langs->transnoentitiesnoconv("Intolerances"));
+    if ($soc->alert_traitspec)     $mesgs[]=$langs->transnoentitiesnoconv("Warning").': '.$langs->transnoentitiesnoconv("AlertTriggered",$langs->transnoentitiesnoconv("SpecPharma"));
+    if ($soc->alert_note)          $mesgs[]=$langs->transnoentitiesnoconv("Warning").': '.$langs->transnoentitiesnoconv("AlertTriggered",$langs->transnoentitiesnoconv("Note"));
 
     // Confirm delete consultation
     if (GETPOST("action") == 'delete')
@@ -1213,8 +1233,22 @@ if ($action == '' || $action == 'delete')
         if ($ret == 'html') print '<br>';
     }
 
+    print '<form method="POST" id="searchFormList" action="'.$_SERVER["PHP_SELF"].'" name="formfilter" autocomplete="off">'."\n";
+    if ($optioncss != '') print '<input type="hidden" name="optioncss" value="'.$optioncss.'">';
+    print '<input type="hidden" name="token" value="'.$_SESSION['newtoken'].'">';
+    print '<input type="hidden" name="formfilteraction" id="formfilteraction" value="list">';
+    print '<input type="hidden" name="action" value="list">';
+    print '<input type="hidden" name="sortfield" value="'.$sortfield.'">';
+    print '<input type="hidden" name="sortorder" value="'.$sortorder.'">';
+    print '<input type="hidden" name="page" value="'.$page.'">';
+    print '<input type="hidden" name="contextpage" value="'.$contextpage.'">';
+    print '<input type="hidden" name="socid" value="'.$socid.'">';
+
     print_fiche_titre($langs->trans("ListOfConsultations"));
 
+    $varpage=empty($contextpage)?$_SERVER["PHP_SELF"]:$contextpage;
+    $selectedfields=$form->multiSelectArrayWithCheckbox('selectedfields', $arrayfields, $varpage);	// This also change content of $arrayfields
+    $selectedfields.=(count($arrayofmassactions) ? $form->showCheckAddButtons('checkforselect', 1) : '');
 
     dol_htmloutput_mesg('',$mesgs,'warning');
 
@@ -1222,21 +1256,27 @@ if ($action == '' || $action == 'delete')
     $param='&socid='.$socid;
 
     print "\n";
+
+    print '<div class="div-table-responsive">';
     print '<table class="noborder" width="100%">';
     print '<tr class="liste_titre">';
-    print_liste_field_titre($langs->trans('Num'),$_SERVER['PHP_SELF'],'t.rowid','',$param,'',$sortfield,$sortorder);
-    print_liste_field_titre($langs->trans('Date'),$_SERVER['PHP_SELF'],'t.datecons','',$param,'',$sortfield,$sortorder);
-    print_liste_field_titre($langs->trans('CreatedBy'),$_SERVER['PHP_SELF'],'t.fk_user','',$param,'',$sortfield,$sortorder);
-    print_liste_field_titre($langs->trans("MotifPrincipal"),$_SERVER["PHP_SELF"],"t.motifconsprinc","",$param,'',$sortfield,$sortorder);
-    print_liste_field_titre($langs->trans('DiagLesPrincipal'),$_SERVER['PHP_SELF'],'t.diaglesprinc','',$param,'',$sortfield,$sortorder);
-    if (! empty($conf->global->CABINETMED_FRENCH_PRISEENCHARGE))
-    {
-        print_liste_field_titre($langs->trans('Priseencharge'),$_SERVER['PHP_SELF'],'t.typepriseencharge','',$param,'',$sortfield,$sortorder);
-    }
-    print_liste_field_titre($langs->trans('ConsultActe'),$_SERVER['PHP_SELF'],'t.typevisit','',$param,'',$sortfield,$sortorder);
-    print_liste_field_titre($langs->trans('MontantPaiement'),$_SERVER['PHP_SELF'],'','',$param,'align="right"',$sortfield,$sortorder);
-    print_liste_field_titre($langs->trans('TypePaiement'),$_SERVER['PHP_SELF'],'','',$param,'',$sortfield,$sortorder);
-    print_liste_field_titre('');
+    if (! empty($arrayfields['t.rowid']['checked']))                    print_liste_field_titre($langs->trans('Num'),$_SERVER['PHP_SELF'],'t.rowid','',$param,'',$sortfield,$sortorder);
+    if (! empty($arrayfields['t.datecons']['checked']))                 print_liste_field_titre($arrayfields['t.datecons']['label'],$_SERVER["PHP_SELF"],"c.datecons,c.rowid","",$param,'align="center"',$sortfield,$sortorder);
+    if (! empty($arrayfields['t.fk_user']['checked']))                  print_liste_field_titre($langs->trans('CreatedBy'),$_SERVER['PHP_SELF'],'t.fk_user','',$param,'',$sortfield,$sortorder);
+    if (! empty($arrayfields['t.motifconsprinc']['checked']))           print_liste_field_titre($langs->trans("MotifPrincipal"),$_SERVER["PHP_SELF"],"t.motifconsprinc","",$param,'',$sortfield,$sortorder);
+    if (! empty($arrayfields['t.diaglesprinc']['checked']))             print_liste_field_titre($langs->trans('DiagLesPrincipal'),$_SERVER['PHP_SELF'],'t.diaglesprinc','',$param,'',$sortfield,$sortorder);
+    if (! empty($arrayfields['t.typepriseencharge']['checked']))        print_liste_field_titre($langs->trans('Priseencharge'),$_SERVER['PHP_SELF'],'t.typepriseencharge','',$param,'',$sortfield,$sortorder);
+    if (! empty($arrayfields['t.typevisit']['checked']))                print_liste_field_titre($langs->trans('ConsultActe'),$_SERVER['PHP_SELF'],'t.typevisit','',$param,'',$sortfield,$sortorder);
+    if (! empty($arrayfields['amountpayment']['checked']))              print_liste_field_titre($langs->trans('MontantPaiement'),$_SERVER['PHP_SELF'],'','',$param,'align="right"',$sortfield,$sortorder);
+    if (! empty($arrayfields['typepayment']['checked']))                print_liste_field_titre($langs->trans('TypePaiement'),$_SERVER['PHP_SELF'],'','',$param,'',$sortfield,$sortorder);
+    // Extra fields
+    include DOL_DOCUMENT_ROOT.'/core/tpl/extrafields_list_search_title.tpl.php';
+    // Hook fields
+    $parameters=array('arrayfields'=>$arrayfields,'param'=>$param,'sortfield'=>$sortfield,'sortorder'=>$sortorder);
+    $reshook=$hookmanager->executeHooks('printFieldListTitle', $parameters, $object);    // Note that $action and $object may have been modified by hook
+    print $hookmanager->resPrint;
+    // Action column
+    print_liste_field_titre($selectedfields, $_SERVER["PHP_SELF"],"",'',$param,'align="center"',$sortfield,$sortorder,'maxwidthsearch ');
     print '</tr>';
 
 
@@ -1264,12 +1304,25 @@ if ($action == '' || $action == 'delete')
     $sql.= " t.montant_tiers,";
     $sql.= " t.banque,";
     $sql.= " t.fk_user_creation,";
-    $sql.= " t.fk_user";
-//    $sql.= " bu.fk_bank, b.fk_account, b.fk_type";
+    $sql.= " t.fk_user,";
+    // Add fields from extrafields
+    if (! empty($extrafields->attributes[$object->table_element]['label']))
+        foreach ($extrafields->attributes[$object->table_element]['label'] as $key => $val) $sql.=($extrafields->attributes[$object->table_element]['type'][$key] != 'separate' ? "ef.".$key.' as options_'.$key.', ' : '');
+    // Add fields from hooks
+    $parameters=array();
+    $reshook=$hookmanager->executeHooks('printFieldListSelect',$parameters);    // Note that $action and $object may have been modified by hook
+    $sql.=$hookmanager->resPrint;
+    $sql.=preg_replace('/^,/', '', $hookmanager->resPrint);
+    $sql =preg_replace('/,\s*$/', '', $sql);
     $sql.= " FROM ".MAIN_DB_PREFIX."cabinetmed_cons as t";
-//    $sql.= " LEFT JOIN ".MAIN_DB_PREFIX."bank_url as bu on bu.url_id = t.rowid AND type = 'consultation'";
-//    $sql.= " LEFT JOIN ".MAIN_DB_PREFIX."bank as b on bu.fk_bank = b.rowid";
+    $sql.= " LEFT JOIN ".MAIN_DB_PREFIX."cabinetmed_cons_extrafields as ef ON ef.fk_object = t.rowid";
     $sql.= " WHERE t.fk_soc = ".$socid;
+    // Add where from extra fields
+    include DOL_DOCUMENT_ROOT.'/core/tpl/extrafields_list_search_sql.tpl.php';
+    // Add where from hooks
+    $parameters=array();
+    $reshook=$hookmanager->executeHooks('printFieldListWhere', $parameters);    // Note that $action and $object may have been modified by hook
+    $sql.=$hookmanager->resPrint;
     $sql.= " ORDER BY ".$sortfield." ".$sortorder.", t.rowid DESC";
 
     $resql=$db->query($sql);
@@ -1284,117 +1337,148 @@ if ($action == '' || $action == 'delete')
         {
             $obj = $db->fetch_object($resql);
 
-            $consult->id=$obj->rowid;
-            $consult->fetch_bankid();
+            $object->id=$obj->rowid;
+            $object->fetch_bankid();
 
             print '<tr class="oddeven">';
 
-            print '<td>';
-            print '<a href="'.$_SERVER["PHP_SELF"].'?socid='.$obj->fk_soc.'&id='.$obj->rowid.'&action=edit">'.sprintf("%08d",$obj->rowid).'</a>';
-            print '</td>';
-
-            print '<td>';
-            print dol_print_date($db->jdate($obj->datecons),'day');
-            print '</td>';
-
-            print '<td>';
-            if ($obj->fk_user_creation > 0)
+            if (! empty($arrayfields['t.rowid']['checked']))
             {
-                $usertmp->fetch($obj->fk_user_creation);
-                print $usertmp->getNomUrl(1);
+                print '<td>';
+                print '<a href="'.$_SERVER["PHP_SELF"].'?socid='.$obj->fk_soc.'&id='.$obj->rowid.'&action=edit">'.sprintf("%08d",$obj->rowid).'</a>';
+                print '</td>';
             }
-            print '</td>';
 
-            print '<td>'.dol_trunc($obj->motifconsprinc, 32).'</td>';
+            if (! empty($arrayfields['t.datecons']['checked']))
+            {
+                print '<td class="center">';
+                print dol_print_date($db->jdate($obj->datecons),'day');
+                print '</td>';
+            }
 
-            print '<td>';
-            print dol_trunc($obj->diaglesprinc, 32);
-            print '</td>';
+            if (! empty($arrayfields['t.fk_user']['checked']))
+            {
+                print '<td>';
+                if ($obj->fk_user_creation > 0)
+                {
+                    $usertmp->fetch($obj->fk_user_creation);
+                    print $usertmp->getNomUrl(1);
+                }
+                print '</td>';
+            }
 
-            if (! empty($conf->global->CABINETMED_FRENCH_PRISEENCHARGE))
+            if (! empty($arrayfields['t.motifconsprinc']['checked']))
+            {
+                print '<td>'.dol_trunc($obj->motifconsprinc, 32).'</td>';
+            }
+
+            if (! empty($arrayfields['t.diaglesprinc']['checked']))
+            {
+                print '<td>';
+                print dol_trunc($obj->diaglesprinc, 32);
+                print '</td>';
+            }
+
+            if (! empty($arrayfields['t.typepriseencharge']['checked']))
             {
                 print '<td>';
                 print $obj->typepriseencharge;
                 print '</td>';
             }
 
-            print '<td>';
-            print $langs->trans($obj->typevisit);
-            print '</td>';
+            if (! empty($arrayfields['t.typevisit']['checked']))
+            {
+                print '<td>';
+                print $langs->trans($obj->typevisit);
+                print '</td>';
+            }
 
-            print '<td class="right">';
-            $foundamount=0;
-            if (price2num($obj->montant_cheque) > 0) {
-                if ($foundamount) print '+';
-                print price($obj->montant_cheque);
-                $foundamount++;
+            if (! empty($arrayfields['amountpayment']['checked']))
+            {
+                print '<td class="right">';
+                $foundamount=0;
+                if (price2num($obj->montant_cheque) > 0) {
+                    if ($foundamount) print '+';
+                    print price($obj->montant_cheque);
+                    $foundamount++;
+                }
+                if (price2num($obj->montant_espece) > 0)  {
+                    if ($foundamount) print '+';
+                    print price($obj->montant_espece);
+                    $foundamount++;
+                }
+                if (price2num($obj->montant_carte) > 0)  {
+                    if ($foundamount) print '+';
+                    print price($obj->montant_carte);
+                    $foundamount++;
+                }
+                if (price2num($obj->montant_tiers) > 0)  {
+                    if ($foundamount) print '+';
+                    print price($obj->montant_tiers);
+                    $foundamount++;
+                }
+                print '</td>';
             }
-            if (price2num($obj->montant_espece) > 0)  {
-                if ($foundamount) print '+';
-                print price($obj->montant_espece);
-                $foundamount++;
-            }
-            if (price2num($obj->montant_carte) > 0)  {
-                if ($foundamount) print '+';
-                print price($obj->montant_carte);
-                $foundamount++;
-            }
-            if (price2num($obj->montant_tiers) > 0)  {
-                if ($foundamount) print '+';
-                print price($obj->montant_tiers);
-                $foundamount++;
-            }
-            print '</td>';
 
-            print '<td>';
-            $foundamount=0;
-            if (price2num($obj->montant_cheque) > 0) {
-                if ($foundamount) print ' + ';
-                print $langs->trans("Cheque");
-                if ($conf->banque->enabled && $consult->bank['CHQ']['account_id'])
-                {
-                    $bank=new Account($db);
-                    $bank->fetch($consult->bank['CHQ']['account_id']);
-                    print '&nbsp;('.$bank->getNomUrl(0,'transactions').')';
+            if (! empty($arrayfields['typepayment']['checked']))
+            {
+                print '<td>';
+                $foundamount=0;
+                if (price2num($obj->montant_cheque) > 0) {
+                    if ($foundamount) print ' + ';
+                    print $langs->trans("Cheque");
+                    if ($conf->banque->enabled && $object->bank['CHQ']['account_id'])
+                    {
+                        $bank=new Account($db);
+                        $bank->fetch($object->bank['CHQ']['account_id']);
+                        print '&nbsp;('.$bank->getNomUrl(0,'transactions').')';
+                    }
+                    $foundamount++;
                 }
-                $foundamount++;
-            }
-            if (price2num($obj->montant_espece) > 0)  {
-                if ($foundamount) print ' + ';
-                print $langs->trans("Cash");
-                if ($conf->banque->enabled && $consult->bank['LIQ']['account_id'])
-                {
-                    $bank=new Account($db);
-                    $bank->fetch($consult->bank['LIQ']['account_id']);
-                    print '&nbsp;('.$bank->getNomUrl(0,'transactions').')';
+                if (price2num($obj->montant_espece) > 0)  {
+                    if ($foundamount) print ' + ';
+                    print $langs->trans("Cash");
+                    if ($conf->banque->enabled && $object->bank['LIQ']['account_id'])
+                    {
+                        $bank=new Account($db);
+                        $bank->fetch($object->bank['LIQ']['account_id']);
+                        print '&nbsp;('.$bank->getNomUrl(0,'transactions').')';
+                    }
+                    $foundamount++;
                 }
-                $foundamount++;
-            }
-            if (price2num($obj->montant_carte) > 0)  {
-                if ($foundamount) print ' + ';
-                print $langs->trans("CreditCard");
-                if ($conf->banque->enabled && $consult->bank['CB']['account_id'])
-                {
-                    $bank=new Account($db);
-                    $bank->fetch($consult->bank['CB']['account_id']);
-                    print '&nbsp;('.$bank->getNomUrl(0,'transactions').')';
+                if (price2num($obj->montant_carte) > 0)  {
+                    if ($foundamount) print ' + ';
+                    print $langs->trans("CreditCard");
+                    if ($conf->banque->enabled && $object->bank['CB']['account_id'])
+                    {
+                        $bank=new Account($db);
+                        $bank->fetch($object->bank['CB']['account_id']);
+                        print '&nbsp;('.$bank->getNomUrl(0,'transactions').')';
+                    }
+                    $foundamount++;
                 }
-                $foundamount++;
-            }
-            if (price2num($obj->montant_tiers) > 0)  {
-                if ($foundamount) print ' + ';
-                print $langs->trans("PaymentTypeThirdParty");
-                if ($conf->banque->enabled && $consult->bank['OTH']['account_id'])
-                {
-                    $bank=new Account($db);
-                    $bank->fetch($consult->bank['OTH']['account_id']);
-                    print '&nbsp;('.$bank->getNomUrl(0,'transactions').')';
+                if (price2num($obj->montant_tiers) > 0)  {
+                    if ($foundamount) print ' + ';
+                    print $langs->trans("PaymentTypeThirdParty");
+                    if ($conf->banque->enabled && $object->bank['OTH']['account_id'])
+                    {
+                        $bank=new Account($db);
+                        $bank->fetch($object->bank['OTH']['account_id']);
+                        print '&nbsp;('.$bank->getNomUrl(0,'transactions').')';
+                    }
+                    $foundamount++;
                 }
-                $foundamount++;
+                print '</td>';
             }
-            print '</td>';
 
-            print '<td align="right">';
+            // Extra fields
+            include DOL_DOCUMENT_ROOT.'/core/tpl/extrafields_list_print_fields.tpl.php';
+            // Fields from hook
+            $parameters=array('arrayfields'=>$arrayfields, 'obj'=>$obj);
+            $reshook=$hookmanager->executeHooks('printFieldListValue',$parameters);    // Note that $action and $object may have been modified by hook
+            print $hookmanager->resPrint;
+
+            print '<td class="nowraponall">';
             print '<a href="'.$_SERVER["PHP_SELF"].'?socid='.$obj->fk_soc.'&id='.$obj->rowid.'&action=edit">'.img_edit().'</a>';
             if ($user->rights->societe->supprimer)
             {
@@ -1411,6 +1495,9 @@ if ($action == '' || $action == 'delete')
         dol_print_error($db);
     }
     print '</table>';
+    print '</div>';
+
+    print "</form>\n";
 }
 
 

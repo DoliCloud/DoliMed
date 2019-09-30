@@ -4,7 +4,8 @@
 
 - NEW Compatibilitu with v10.
 - NEW Add preview on files
-- NEW Add outcome_commen on document.
+- NEW Add outcome_comment on document.
+- NEW Support extrafields on list of consultations
 - FIX phone and zip
 
 ## 7.0.1
