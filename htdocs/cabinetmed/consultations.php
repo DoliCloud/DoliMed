@@ -75,7 +75,7 @@ if (empty($page) || $page == -1 || GETPOST('button_search','alpha') || GETPOST('
 $offset = $limit * $page;
 $pageprev = $page - 1;
 $pagenext = $page + 1;
-if (! $sortorder) $sortorder='DESC';
+if (! $sortorder) $sortorder='DESC,DESC';
 if (! $sortfield) $sortfield='t.datecons,t.rowid';
 
 $soc = new Patient($db);
@@ -1261,7 +1261,7 @@ if ($action == '' || $action == 'list' || $action == 'delete')
     print '<table class="noborder" width="100%">';
     print '<tr class="liste_titre">';
     if (! empty($arrayfields['t.rowid']['checked']))                    print_liste_field_titre($langs->trans('Num'),$_SERVER['PHP_SELF'],'t.rowid','',$param,'',$sortfield,$sortorder);
-    if (! empty($arrayfields['t.datecons']['checked']))                 print_liste_field_titre($arrayfields['t.datecons']['label'],$_SERVER["PHP_SELF"],"c.datecons,c.rowid","",$param,'align="center"',$sortfield,$sortorder);
+    if (! empty($arrayfields['t.datecons']['checked']))                 print_liste_field_titre($arrayfields['t.datecons']['label'],$_SERVER["PHP_SELF"],"t.datecons,t.rowid","",$param,'align="center"',$sortfield,$sortorder);
     if (! empty($arrayfields['t.fk_user']['checked']))                  print_liste_field_titre($langs->trans('CreatedBy'),$_SERVER['PHP_SELF'],'t.fk_user','',$param,'',$sortfield,$sortorder);
     if (! empty($arrayfields['t.motifconsprinc']['checked']))           print_liste_field_titre($langs->trans("MotifPrincipal"),$_SERVER["PHP_SELF"],"t.motifconsprinc","",$param,'',$sortfield,$sortorder);
     if (! empty($arrayfields['t.diaglesprinc']['checked']))             print_liste_field_titre($langs->trans('DiagLesPrincipal'),$_SERVER['PHP_SELF'],'t.diaglesprinc','',$param,'',$sortfield,$sortorder);
@@ -1323,7 +1323,7 @@ if ($action == '' || $action == 'list' || $action == 'delete')
     $parameters=array();
     $reshook=$hookmanager->executeHooks('printFieldListWhere', $parameters);    // Note that $action and $object may have been modified by hook
     $sql.=$hookmanager->resPrint;
-    $sql.= " ORDER BY ".$sortfield." ".$sortorder.", t.rowid DESC";
+    $sql.=$db->order($sortfield, $sortorder);
 
     $resql=$db->query($sql);
     if ($resql)

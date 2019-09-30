@@ -69,7 +69,7 @@ if (empty($page) || $page == -1 || GETPOST('button_search','alpha') || GETPOST('
 $offset = $limit * $page;
 $pageprev = $page - 1;
 $pagenext = $page + 1;
-if (! $sortorder) $sortorder="DESC";
+if (! $sortorder) $sortorder="DESC,DESC";
 if (! $sortfield) $sortfield="c.datecons,c.rowid";
 
 $search_nom  = GETPOST("search_nom", 'alpha');
@@ -185,9 +185,9 @@ $sql.= " c.montant_cheque,";
 $sql.= " c.montant_espece,";
 $sql.= " c.montant_carte,";
 $sql.= " c.montant_tiers,";
-$sql.= " c.banque";
+$sql.= " c.banque,";
 // We'll need these fields in order to filter by categ
-if ($search_categ) $sql .= ", cs.fk_categorie, cs.fk_soc";
+if ($search_categ) $sql .= " cs.fk_categorie, cs.fk_soc,";
 // Add fields from extrafields
 if (! empty($extrafields->attributes[$object->table_element]['label']))
     foreach ($extrafields->attributes[$object->table_element]['label'] as $key => $val) $sql.=($extrafields->attributes[$object->table_element]['type'][$key] != 'separate' ? "ef.".$key.' as options_'.$key.', ' : '');
