@@ -1,8 +1,8 @@
 # ChangeLog
 
-## 7.0.2 unreleased
+## 9.0.0 unreleased
 
-- NEW Compatibilitu with v10.
+- NEW Compatibilitu with v9 and v10.
 - NEW Add preview on files
 - NEW Add outcome_comment on document.
 - NEW Support extrafields on list of consultations
