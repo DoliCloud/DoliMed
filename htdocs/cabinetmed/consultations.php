@@ -309,10 +309,10 @@ if (empty($reshook))
 
                     if (! $error)
                     {
-                        $object->fetch($object->fk_soc);
-
                         if (GETPOST('generateinvoice'))
                         {
+                            $soc->fetch($object->fk_soc);
+
                             include_once DOL_DOCUMENT_ROOT.'/compta/facture/class/facture.class.php';
                             include_once DOL_DOCUMENT_ROOT.'/compta/paiement/class/paiement.class.php';
 
