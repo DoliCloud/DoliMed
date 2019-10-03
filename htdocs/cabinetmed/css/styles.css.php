@@ -70,16 +70,19 @@ legend
 	color: #442288;
 }
 
-div.mainmenu.patients {
-	background-image: url(<?php echo dol_buildpath($path.'/theme/'.$theme.'/img/menus/members.png',1) ?>);
+div.mainmenu.patients::before {
+	/* background-image: url(<?php echo dol_buildpath($path.'/theme/'.$theme.'/img/menus/members.png',1) ?>); */
+	content: "\f728";
 }
 
-div.mainmenu.contacts {
-	background-image: url(<?php echo dol_buildpath('/cabinetmed/img/menus/stethoscope.png',1) ?>);
+div.mainmenu.contacts::before {
+	/* background-image: url(<?php echo dol_buildpath('/cabinetmed/img/menus/stethoscope.png',1) ?>); */
+	content: "\f0f0";
 }
 
-div.mainmenu.accountancy2 {
-	background-image: url(<?php echo dol_buildpath($path.'/theme/'.$theme.'/img/menus/money.png',1) ?>);
+div.mainmenu.accountancy2::before {
+	/* background-image: url(<?php echo dol_buildpath($path.'/theme/'.$theme.'/img/menus/money.png',1) ?>); */
+	content: "\f0f0";
 }
 
 .quatrevingtpercent, .inputsearch {
