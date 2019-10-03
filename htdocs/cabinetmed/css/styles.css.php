@@ -70,20 +70,25 @@ legend
 	color: #442288;
 }
 
+
+<?php if ((float) DOL_VERSION >= 10) { ?>
 div.mainmenu.patients::before {
-	/* background-image: url(<?php echo dol_buildpath($path.'/theme/'.$theme.'/img/menus/members.png',1) ?>); */
 	content: "\f728";
 }
 
 div.mainmenu.contacts::before {
-	/* background-image: url(<?php echo dol_buildpath('/cabinetmed/img/menus/stethoscope.png',1) ?>); */
 	content: "\f0f0";
+}
+<?php } else { ?>
+div.mainmenu.patients {
+	background-image: url(<?php echo dol_buildpath($path.'/theme/'.$theme.'/img/menus/members.png',1) ?>);
 }
 
-div.mainmenu.accountancy2::before {
-	/* background-image: url(<?php echo dol_buildpath($path.'/theme/'.$theme.'/img/menus/money.png',1) ?>); */
-	content: "\f0f0";
+div.mainmenu.contacts {
+	background-image: url(<?php echo dol_buildpath('/cabinetmed/img/menus/stethoscope.png',1) ?>);
 }
+<?php } ?>
+
 
 .quatrevingtpercent, .inputsearch {
 	width: 80%;
