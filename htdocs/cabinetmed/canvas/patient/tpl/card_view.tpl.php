@@ -291,11 +291,11 @@ if (empty($conf->global->SOCIETE_DISABLE_BANKACCOUNT))
     {
     	if ((float) DOL_VERSION < 8.0)
     	{
-    		print '<a href="'.DOL_URL_ROOT.'/societe/rib.php?socid='.$object->id.'">'.img_edit().'</a>';
+    		print '<a class="editfielda" href="'.DOL_URL_ROOT.'/societe/rib.php?socid='.$object->id.'">'.img_edit().'</a>';
     	}
     	else
     	{
-    		print '<a href="'.DOL_URL_ROOT.'/societe/paymentmodes.php?socid='.$object->id.'">'.img_edit().'</a>';
+    		print '<a class="editfielda" href="'.DOL_URL_ROOT.'/societe/paymentmodes.php?socid='.$object->id.'">'.img_edit().'</a>';
     	}
     }
     else
@@ -318,7 +318,7 @@ if (empty($conf->global->SOCIETE_DISABLE_PARENTCOMPANY))
     print $langs->trans('ParentPatient');
     print '<td><td align="right">';
     if ($user->rights->societe->creer)
-    print '<a href="'.DOL_URL_ROOT.'/societe/lien.php?socid='.$object->id.'">'.img_edit() .'</a>';
+    print '<a class="editfielda" href="'.DOL_URL_ROOT.'/societe/lien.php?socid='.$object->id.'">'.img_edit() .'</a>';
     else
     print '&nbsp;';
     print '</td></tr></table>';

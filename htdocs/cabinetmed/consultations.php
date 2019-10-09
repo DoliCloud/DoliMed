@@ -83,7 +83,7 @@ $object = new CabinetmedCons($db);
 $extrafields = new ExtraFields($db);
 
 // fetch optionals attributes and labels
-$extralabels=$extrafields->fetch_name_optionals_label($object->table_element);
+$extrafields->fetch_name_optionals_label($object->table_element);
 
 // Initialize technical object to manage hooks of page. Note that conf->hooks_modules contains array array
 $hookmanager->initHooks(array('thirdpartycard','consultationcard','globalcard'));
@@ -289,7 +289,7 @@ if (empty($reshook))
             // Fill array 'array_options' with data from add form
             if (! $error)
             {
-                $ret = $extrafields->setOptionalsFromPost($extralabels, $object);
+            	$ret = $extrafields->setOptionalsFromPost(null, $object);
                 if ($ret < 0) $error++;
             }
 

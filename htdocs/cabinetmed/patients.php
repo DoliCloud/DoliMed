@@ -95,10 +95,10 @@ $extrafields = new ExtraFields($db);
 $hookmanager->initHooks(array('thirdpartylist'));
 
 // fetch optionals attributes and labels
-$extralabels = $extrafields->fetch_name_optionals_label('societe');
+$extrafields->fetch_name_optionals_label('societe');
 
 if ((float) DOL_VERSION >= 9.0) $search_array_options=$extrafields->getOptionalsFromPost($object->table_element,'','search_');
-else $search_array_options=$extrafields->getOptionalsFromPost($extralabels,'','search_');
+else $search_array_options=$extrafields->getOptionalsFromPost($object->table_element, '', 'search_');
 
 // List of fields to search into when doing a "search in all"
 $fieldstosearchall = array(
@@ -329,7 +329,8 @@ if ($search_sale) $sql .= ", sc.fk_soc, sc.fk_user";
 if ($search_categ_cus) $sql .= ", cc.fk_categorie, cc.fk_soc";
 if ($search_categ_sup) $sql .= ", cs.fk_categorie, cs.fk_soc";
 // Add fields from extrafields
-foreach ($extrafields->attribute_label as $key => $val) $sql.=($extrafields->attribute_type[$key] != 'separate' ? ",ef.".$key : '');
+if (! empty($extrafields->attributes[$object->table_element]['label'])) {
+	foreach ($extrafields->attributes[$object->table_element]['label'] as $key => $val) $sql.=($extrafields->attributes[$object->table_element]['type'][$key] != 'separate' ? ", ef.".$key : '');
 // Add fields from hooks
 $parameters=array();
 $reshook=$hookmanager->executeHooks('printFieldListSelect',$parameters);    // Note that $action and $object may have been modified by hook
