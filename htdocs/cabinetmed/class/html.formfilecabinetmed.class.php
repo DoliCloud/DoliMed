@@ -85,7 +85,7 @@ class FormFileCabinetmed extends FormFile
      *  @return int                 		<0 if KO, nb of files shown if OK
 	 *  @see list_of_autoecmfiles()
      */
-	public function list_of_documents($filearray, $object, $modulepart, $param = '', $forcedownload = 0, $relativepath = '', $permtodelete = 1, $useinecm = 0, $textifempty = '', $maxlength = 0, $title = '', $url = '', $showrelpart = 0, $permtoeditline = -1, $upload_dir = '', $sortfield = '', $sortorder = 'ASC', $disablemove = 1, $addfilterfields = 0)
+	public function list_of_documents($filearray, $object, $modulepart, $param = '', $forcedownload = 0, $relativepath = '', $permonobject = 1, $useinecm = 0, $textifempty = '', $maxlength = 0, $title = '', $url = '', $showrelpart = 0, $permtoeditline = -1, $upload_dir = '', $sortfield = '', $sortorder = 'ASC', $disablemove = 1, $addfilterfields = 0)
     {
         // phpcs:enable
         global $user, $conf, $langs, $hookmanager;
@@ -125,6 +125,7 @@ class FormFileCabinetmed extends FormFile
             'relativepath' => $relativepath,    // relative filename to module dir
             'relativedir' => $relativedir,      // relative dirname to DOL_DATA_ROOT
             'permtodelete' => $permonobject,
+            'permissiontodelete' => $permonobject,
             'useinecm' => $useinecm,
             'textifempty' => $textifempty,
             'maxlength' => $maxlength,
@@ -339,7 +340,7 @@ class FormFileCabinetmed extends FormFile
                         // Delete or view link
                         // ($param must start with &)
                         print '<td class="valignmiddle right actionbuttons nowraponall"><!-- action on files -->';
-        	            if ($permtodelete) print '<a class="reposition" href="'.$url.'?socid='.$object->id.'&section='.$_REQUEST["section"].'&action=delete&urlfile='.urlencode($file['name']).'">'.img_delete().'</a>';
+        	            if ($permissiontodelete) print '<a class="reposition" href="'.$url.'?socid='.$object->id.'&section='.$_REQUEST["section"].'&action=delete&urlfile='.urlencode($file['name']).'">'.img_delete().'</a>';
             	        else print '&nbsp;';
                 	    print "</td>";
                     }

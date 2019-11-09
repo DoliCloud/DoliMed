@@ -113,7 +113,7 @@ if (! $res) include_once DOL_DOCUMENT_ROOT . '/core/tpl/document_actions_pre_hea
 /* avec 3.9
 $id = $socid;
 $upload_dir = $conf->societe->dir_output;
-$permissioncreate=$user->rights->societe->creer;
+$permissiontoadd=$user->rights->societe->creer;
 include DOL_DOCUMENT_ROOT.'/core/actions_builddoc.inc.php';
 */
 

@@ -108,7 +108,7 @@ class Patient extends Societe
     var $note_private;
     //! code statut prospect
     var $stcomm_id;
-    var $statut_commercial;
+    var $status_prospect_label;
 
     var $price_level;
 
@@ -455,9 +455,9 @@ class Patient extends Societe
                 $this->state        = $obj->state_id?$obj->state:'';
 
                 $transcode=$langs->trans('StatusProspect'.$obj->fk_stcomm);
-                $libelle=($transcode!='StatusProspect'.$obj->fk_stcomm?$transcode:$obj->stcomm);
-                $this->stcomm_id = $obj->fk_stcomm;     // id statut commercial
-                $this->statut_commercial = $libelle;    // libelle statut commercial
+                $label = ($transcode!='StatusProspect'.$obj->fk_stcomm ? $transcode : $obj->stcomm);
+                $this->stcomm_id = $obj->fk_stcomm;       // id status prospect
+                $this->status_prospect_label = $label;    // label status prospect
 
                 $this->email = $obj->email;
                 $this->url = $obj->url;

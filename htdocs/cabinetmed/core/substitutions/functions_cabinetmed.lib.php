@@ -62,7 +62,7 @@ function cabinetmed_completesubstitutionarray(&$substitutionarray,$langs,$object
         if ($object)
         {
             $nbofnotes = ($object->note||$object->note_private)?1:0;
-            if ($nbofnotes > 0) $substitutionarray['NotesPatient']=$langs->trans("Notes").' <span class="badge">'.$nbofnotes.'</span>';
+            if ($nbofnotes > 0) $substitutionarray['NotesPatient']=$langs->trans("Notes").'<span class="badge marginleftonlyshort">'.$nbofnotes.'</span>';
         }
 
         $substitutionarray['Correspondants']=$langs->trans("Correspondants");
@@ -70,7 +70,7 @@ function cabinetmed_completesubstitutionarray(&$substitutionarray,$langs,$object
         {
     	    $nbChild = count($object->liste_contact(-1,'internal')) + count($object->liste_contact(-1,'external'));
 
-            if ($nbChild > 0) $substitutionarray['Correspondants']=$langs->trans("Correspondants").' <span class="badge">'.$nbChild.'</span>';
+            if ($nbChild > 0) $substitutionarray['Correspondants']=$langs->trans("Correspondants").'<span class="badge marginleftonlyshort">'.$nbChild.'</span>';
         }
 
         $substitutionarray['ConsultationsShort']=$langs->trans("ConsultationsShort");
@@ -92,7 +92,7 @@ function cabinetmed_completesubstitutionarray(&$substitutionarray,$langs,$object
                 dol_print_error($db);
             }
 
-            if ($nbChild > 0) $substitutionarray['ConsultationsShort']=$langs->trans("ConsultationsShort").' <span class="badge">'.$nbChild.'</span>';
+            if ($nbChild > 0) $substitutionarray['ConsultationsShort']=$langs->trans("ConsultationsShort").'<span class="badge marginleftonlyshort">'.$nbChild.'</span>';
         }
 
         $substitutionarray['ResultExamBio']=$langs->trans("ResultExamBio");
@@ -114,7 +114,7 @@ function cabinetmed_completesubstitutionarray(&$substitutionarray,$langs,$object
                 dol_print_error($db);
             }
 
-            if ($nbChild > 0) $substitutionarray['ResultExamBio']=$langs->trans("ResultExamBio").' <span class="badge">'.$nbChild.'</span>';
+            if ($nbChild > 0) $substitutionarray['ResultExamBio']=$langs->trans("ResultExamBio").'<span class="badge marginleftonlyshort">'.$nbChild.'</span>';
         }
 
         $substitutionarray['ResultExamAutre']=$langs->trans("ResultExamAutre");
@@ -136,7 +136,7 @@ function cabinetmed_completesubstitutionarray(&$substitutionarray,$langs,$object
                 dol_print_error($db);
             }
 
-            if ($nbChild > 0) $substitutionarray['ResultExamAutre']=$langs->trans("ResultExamAutre").' <span class="badge">'.$nbChild.'</span>';
+            if ($nbChild > 0) $substitutionarray['ResultExamAutre']=$langs->trans("ResultExamAutre").'<span class="badge marginleftonlyshort">'.$nbChild.'</span>';
         }
 
 
@@ -152,7 +152,7 @@ function cabinetmed_completesubstitutionarray(&$substitutionarray,$langs,$object
            	if ($object->note_traitclass) $nbofnotes++;
            	if ($object->note_traitintol) $nbofnotes++;
            	if ($object->note_traitspec) $nbofnotes++;
-            if ($nbofnotes > 0) $substitutionarray['TabAntecedentsShort']=$langs->trans("AntecedentsShort").' <span class="badge">'.$nbofnotes.'</span>';
+            if ($nbofnotes > 0) $substitutionarray['TabAntecedentsShort']=$langs->trans("AntecedentsShort").'<span class="badge marginleftonlyshort">'.$nbofnotes.'</span>';
        	}
 
         $substitutionarray['DocumentsPatient']=$langs->trans("DocumentsPatient");
@@ -165,7 +165,7 @@ function cabinetmed_completesubstitutionarray(&$substitutionarray,$langs,$object
             $nbFiles = count(dol_dir_list($upload_dir,'files',0,'','(\.meta|_preview.*\.png)$'));
             $nbLinks=0;
             if ((float) DOL_VERSION >= 4.0) $nbLinks=Link::count($db, $object->element, $object->id);
-            if (($nbFiles+$nbLinks) > 0) $substitutionarray['DocumentsPatient']=$langs->trans("DocumentsPatient").' <span class="badge">'.($nbFiles+$nbLinks).'</span>';
+            if (($nbFiles+$nbLinks) > 0) $substitutionarray['DocumentsPatient']=$langs->trans("DocumentsPatient").'<span class="badge marginleftonlyshort">'.($nbFiles+$nbLinks).'</span>';
         }
     }
 
