@@ -309,10 +309,10 @@ if (empty($reshook))
 
                     if (! $error)
                     {
+                        $soc->fetch($object->fk_soc);
+
                         if (GETPOST('generateinvoice'))
                         {
-                            $soc->fetch($object->fk_soc);
-
                             include_once DOL_DOCUMENT_ROOT.'/compta/facture/class/facture.class.php';
                             include_once DOL_DOCUMENT_ROOT.'/compta/paiement/class/paiement.class.php';
 
@@ -430,6 +430,7 @@ if (empty($reshook))
                             {
                                 if ($conf->banque->enabled && isset($banque[$key]) && $banque[$key] > 0)
                                 {
+                                    //var_dump($key.' '.$banque[$key].' '.$soc->name.' '.$object->banque);exit;
                                     $bankaccount=new Account($db);
                                     $result=$bankaccount->fetch($banque[$key]);
                                     if ($result < 0) dol_print_error($db,$bankaccount->error);
