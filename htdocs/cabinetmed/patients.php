@@ -49,6 +49,7 @@ $langs->load("customers");
 $langs->load("suppliers");
 $langs->load("commercial");
 $langs->load("other");
+$langs->load("cabinetmed@cabinetmed");
 
 // Security check
 $socid = GETPOST('socid','int');
