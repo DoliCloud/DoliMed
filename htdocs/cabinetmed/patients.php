@@ -56,7 +56,7 @@ $socid = GETPOST('socid','int');
 if ($user->societe_id) $socid=$user->societe_id;
 $result = restrictedArea($user,'societe',$socid,'');
 
-$search_all=(GETPOSTISSET('search_all')?GETPOST('search_all', 'alpha'):GETPOST('sall', 'alpha'));
+$search_all=trim(GETPOSTISSET('search_all')?GETPOST('search_all', 'alphanohtml'):GETPOST('sall', 'alphanohtml'));
 $search_cti=preg_replace('/^0+/', '', preg_replace('/[^0-9]/', '', GETPOST('search_cti', 'alphanohtml')));	// Phone number without any special chars
 
 $search_id=trim(GETPOST("search_id","int"));
@@ -72,7 +72,7 @@ $search_contactid = GETPOST("search_contactid","int");
 
 $type=GETPOST('type', 'alpha');
 $optioncss=GETPOST('optioncss', 'alpha');
-$mode=GETPOST("mode", 'none');
+$mode=GETPOST("mode", 'alpha');
 
 
 $diroutputmassaction=$conf->societe->dir_output . '/temp/massgeneration/'.$user->id;
@@ -89,11 +89,12 @@ $offset = $limit * $page;
 $pageprev = $page - 1;
 $pagenext = $page + 1;
 
+//$contextpage = 'patientlist';
+
 // Initialize technical objects
 $object = new Societe($db);
-$extrafields = new ExtraFields($db);
-
 $hookmanager->initHooks(array('thirdpartylist'));
+$extrafields = new ExtraFields($db);
 
 // fetch optionals attributes and labels
 $extrafields->fetch_name_optionals_label('societe');
@@ -163,7 +164,6 @@ if (is_array($extrafields->attributes[$object->table_element]['label']) && count
 }
 $object->fields = dol_sort_array($object->fields, 'position');
 $arrayfields = dol_sort_array($arrayfields, 'position');
-
 
 
 /*
@@ -452,7 +452,7 @@ $massactionbutton=$form->selectMassAction('', $arrayofmassactions);
 if ((float) DOL_VERSION >= 9.0)
 {
 	$newcardbutton='';
-	if ($user->rights->societe->creer)
+	if ($user->rights->societe->creer && $contextpage != 'poslist')
 	{
 		$typefilter='';
 		$label='MenuNewPatient';
@@ -574,89 +574,89 @@ if (! empty($arrayfields['s.nom']['checked']))
 {
 	print '<td class="liste_titre">';
 	if (! empty($search_nom_only) && empty($search_nom)) $search_nom=$search_nom_only;
-	print '<input class="flat searchstring maxwidth50" type="text" name="search_nom" value="'.dol_escape_htmltag($search_nom).'">';
+	print '<input class="flat searchstring maxwidth75imp" type="text" name="search_nom" value="'.dol_escape_htmltag($search_nom).'">';
 	print '</td>';
 }
 if (! empty($arrayfields['s.name_alias']['checked']))
 {
 	print '<td class="liste_titre">';
-	print '<input class="flat searchstring maxwidth50" type="text" name="search_alias" value="'.dol_escape_htmltag($search_alias).'">';
+	print '<input class="flat searchstring maxwidth75imp" type="text" name="search_alias" value="'.dol_escape_htmltag($search_alias).'">';
 	print '</td>';
 }
 // Barcode
 if (! empty($arrayfields['s.barcode']['checked']))
 {
 	print '<td class="liste_titre">';
-	print '<input class="flat searchstring maxwidth50" type="text" name="search_barcode" value="'.dol_escape_htmltag($search_barcode).'">';
+	print '<input class="flat searchstring maxwidth75imp" type="text" name="search_barcode" value="'.dol_escape_htmltag($search_barcode).'">';
 	print '</td>';
 }
 // Customer code
 if (! empty($arrayfields['s.code_client']['checked']))
 {
 	print '<td class="liste_titre">';
-	print '<input class="flat searchstring maxwidth50" type="text" name="search_customer_code" value="'.dol_escape_htmltag($search_customer_code).'">';
+	print '<input class="flat searchstring maxwidth75imp" type="text" name="search_customer_code" value="'.dol_escape_htmltag($search_customer_code).'">';
 	print '</td>';
 }
 // Supplier code
 if (! empty($arrayfields['s.code_fournisseur']['checked']))
 {
 	print '<td class="liste_titre">';
-	print '<input class="flat searchstring maxwidth50" type="text" name="search_supplier_code" value="'.dol_escape_htmltag($search_supplier_code).'">';
+	print '<input class="flat searchstring maxwidth75imp" type="text" name="search_supplier_code" value="'.dol_escape_htmltag($search_supplier_code).'">';
 	print '</td>';
 }
 // Account Customer code
 if (! empty($arrayfields['s.code_compta']['checked']))
 {
 	print '<td class="liste_titre">';
-	print '<input class="flat searchstring maxwidth50" type="text" name="search_account_customer_code" value="'.dol_escape_htmltag($search_account_customer_code).'">';
+	print '<input class="flat searchstring maxwidth75imp" type="text" name="search_account_customer_code" value="'.dol_escape_htmltag($search_account_customer_code).'">';
 	print '</td>';
 }
 // Account Supplier code
 if (! empty($arrayfields['s.code_compta_fournisseur']['checked']))
 {
 	print '<td class="liste_titre">';
-	print '<input class="flat maxwidth50" type="text" name="search_account_supplier_code" value="'.dol_escape_htmltag($search_account_supplier_code).'">';
+	print '<input class="flat maxwidth75imp" type="text" name="search_account_supplier_code" value="'.dol_escape_htmltag($search_account_supplier_code).'">';
 	print '</td>';
 }
 // Town
 if (! empty($arrayfields['s.town']['checked']))
 {
 	print '<td class="liste_titre">';
-	print '<input class="flat searchstring" size="6" type="text" name="search_town" value="'.dol_escape_htmltag($search_town).'">';
+	print '<input class="flat searchstring maxwidth50imp" type="text" name="search_town" value="'.dol_escape_htmltag($search_town).'">';
 	print '</td>';
 }
 // Zip
 if (! empty($arrayfields['s.zip']['checked']))
 {
 	print '<td class="liste_titre">';
-	print '<input class="flat searchstring maxwidth50" type="text" name="search_zip" value="'.dol_escape_htmltag($search_zip).'">';
+	print '<input class="flat searchstring maxwidth50imp" type="text" name="search_zip" value="'.dol_escape_htmltag($search_zip).'">';
 	print '</td>';
 }
 // State
 if (! empty($arrayfields['state.nom']['checked']))
 {
 	print '<td class="liste_titre">';
-	print '<input class="flat searchstring maxwidth50" type="text" name="search_state" value="'.dol_escape_htmltag($search_state).'">';
+	print '<input class="flat searchstring maxwidth50imp" type="text" name="search_state" value="'.dol_escape_htmltag($search_state).'">';
 	print '</td>';
 }
 // Region
 if (! empty($arrayfields['region.nom']['checked']))
 {
 	print '<td class="liste_titre">';
-	print '<input class="flat searchstring maxwidth50" type="text" name="search_region" value="'.dol_escape_htmltag($search_region).'">';
+	print '<input class="flat searchstring maxwidth50imp" type="text" name="search_region" value="'.dol_escape_htmltag($search_region).'">';
 	print '</td>';
 }
 // Country
 if (! empty($arrayfields['country.code_iso']['checked']))
 {
-	print '<td class="liste_titre" align="center">';
+	print '<td class="liste_titre center">';
 	print $form->select_country($search_country, 'search_country', '', 0, 'minwidth100imp maxwidth100');
 	print '</td>';
 }
 // Company type
 if (! empty($arrayfields['typent.code']['checked']))
 {
-	print '<td class="liste_titre maxwidthonsmartphone" align="center">';
+	print '<td class="liste_titre maxwidthonsmartphone center">';
 	print $form->selectarray("search_type_thirdparty", $formcompany->typent_array(0), $search_type_thirdparty, 0, 0, 0, '', 0, 0, 0, (empty($conf->global->SOCIETE_SORT_ON_TYPEENT)?'ASC':$conf->global->SOCIETE_SORT_ON_TYPEENT));
 	print '</td>';
 }
@@ -664,84 +664,84 @@ if (! empty($arrayfields['s.email']['checked']))
 {
 	// Email
 	print '<td class="liste_titre">';
-	print '<input class="flat searchemail maxwidth50" type="text" name="search_email" value="'.dol_escape_htmltag($search_email).'">';
+	print '<input class="flat searchemail maxwidth50imp" type="text" name="search_email" value="'.dol_escape_htmltag($search_email).'">';
 	print '</td>';
 }
 if (! empty($arrayfields['s.phone']['checked']))
 {
 	// Phone
 	print '<td class="liste_titre">';
-	print '<input class="flat searchstring maxwidth50" type="text" name="search_phone" value="'.dol_escape_htmltag($search_phone).'">';
+	print '<input class="flat searchstring maxwidth50imp" type="text" name="search_phone" value="'.dol_escape_htmltag($search_phone).'">';
 	print '</td>';
 }
 if (! empty($arrayfields['s.fax']['checked']))
 {
 	// Fax
 	print '<td class="liste_titre">';
-	print '<input class="flat searchstring" size="4" type="text" name="search_fax" value="'.dol_escape_htmltag($search_fax).'">';
+	print '<input class="flat searchstring maxwidth50imp" type="text" name="search_fax" value="'.dol_escape_htmltag($search_fax).'">';
 	print '</td>';
 }
 if (! empty($arrayfields['s.url']['checked']))
 {
 	// Url
 	print '<td class="liste_titre">';
-	print '<input class="flat searchstring maxwidth50" type="text" name="search_url" value="'.dol_escape_htmltag($search_url).'">';
+	print '<input class="flat searchstring maxwidth50imp" type="text" name="search_url" value="'.dol_escape_htmltag($search_url).'">';
 	print '</td>';
 }
 if (! empty($arrayfields['s.siren']['checked']))
 {
 	// IdProf1
 	print '<td class="liste_titre">';
-	print '<input class="flat searchstring maxwidth50" type="text" name="search_idprof1" value="'.dol_escape_htmltag($search_idprof1).'">';
+	print '<input class="flat searchstring maxwidth50imp" type="text" name="search_idprof1" value="'.dol_escape_htmltag($search_idprof1).'">';
 	print '</td>';
 }
 if (! empty($arrayfields['s.siret']['checked']))
 {
 	// IdProf2
 	print '<td class="liste_titre">';
-	print '<input class="flat searchstring" size="4" type="text" name="search_idprof2" value="'.dol_escape_htmltag($search_idprof2).'">';
+	print '<input class="flat searchstring maxwidth50imp" type="text" name="search_idprof2" value="'.dol_escape_htmltag($search_idprof2).'">';
 	print '</td>';
 }
 if (! empty($arrayfields['s.ape']['checked']))
 {
 	// IdProf3
 	print '<td class="liste_titre">';
-	print '<input class="flat searchstring" size="4" type="text" name="search_idprof3" value="'.dol_escape_htmltag($search_idprof3).'">';
+	print '<input class="flat searchstring maxwidth50imp" type="text" name="search_idprof3" value="'.dol_escape_htmltag($search_idprof3).'">';
 	print '</td>';
 }
 if (! empty($arrayfields['s.idprof4']['checked']))
 {
 	// IdProf4
 	print '<td class="liste_titre">';
-	print '<input class="flat searchstring maxwidth50" type="text" name="search_idprof4" value="'.dol_escape_htmltag($search_idprof4).'">';
+	print '<input class="flat searchstring maxwidth50imp" type="text" name="search_idprof4" value="'.dol_escape_htmltag($search_idprof4).'">';
 	print '</td>';
 }
 if (! empty($arrayfields['s.idprof5']['checked']))
 {
 	// IdProf5
 	print '<td class="liste_titre">';
-	print '<input class="flat searchstring maxwidth50" type="text" name="search_idprof5" value="'.dol_escape_htmltag($search_idprof5).'">';
+	print '<input class="flat searchstring maxwidth50imp" type="text" name="search_idprof5" value="'.dol_escape_htmltag($search_idprof5).'">';
 	print '</td>';
 }
 if (! empty($arrayfields['s.idprof6']['checked']))
 {
 	// IdProf6
 	print '<td class="liste_titre">';
-	print '<input class="flat searchstring maxwidth50" type="text" name="search_idprof6" value="'.dol_escape_htmltag($search_idprof6).'">';
+	print '<input class="flat searchstring maxwidth50imp" type="text" name="search_idprof6" value="'.dol_escape_htmltag($search_idprof6).'">';
 	print '</td>';
 }
 if (! empty($arrayfields['s.tva_intra']['checked']))
 {
 	// Vat number
 	print '<td class="liste_titre">';
-	print '<input class="flat searchstring maxwidth50" type="text" name="search_vat" value="'.dol_escape_htmltag($search_vat).'">';
+	print '<input class="flat searchstring maxwidth50imp" type="text" name="search_vat" value="'.dol_escape_htmltag($search_vat).'">';
 	print '</td>';
 }
 
 // Type (customer/prospect/supplier)
 if (! empty($arrayfields['customerorsupplier']['checked']))
 {
-	print '<td class="liste_titre maxwidthonsmartphone" align="middle">';
+	print '<td class="liste_titre maxwidthonsmartphone center">';
 	if ($type != '') print '<input type="hidden" name="type" value="'.$type.'">';
 	print '<select class="flat" name="search_type">';
 	print '<option value="-1"'.($search_type==''?' selected':'').'>&nbsp;</option>';
@@ -783,7 +783,7 @@ if (! empty($arrayfields['s.fk_prospectlevel']['checked']))
 if (! empty($arrayfields['s.fk_stcomm']['checked']))
 {
 	// Prospect status
-	print '<td class="liste_titre maxwidthonsmartphone" align="center">';
+	print '<td class="liste_titre maxwidthonsmartphone center">';
 	$arraystcomm=array();
 	foreach($prospectstatic->cacheprospectstatus as $key => $val)
 	{
@@ -826,7 +826,7 @@ if (! empty($arrayfields['s.tms']['checked']))
 // Status
 if (! empty($arrayfields['s.status']['checked']))
 {
-	print '<td class="liste_titre maxwidthonsmartphone center">';
+	print '<td class="liste_titre minwidth75imp center">';
 	print $form->selectarray('search_status', array('0'=>$langs->trans('ActivityCeased'),'1'=>$langs->trans('InActivity')), $search_status, 1);
 	print '</td>';
 }
