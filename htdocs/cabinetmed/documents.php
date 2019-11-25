@@ -99,6 +99,10 @@ include_once(DOL_DOCUMENT_ROOT.'/core/class/hookmanager.class.php');
 $hookmanager=new HookManager($db);
 $hookmanager->initHooks(array('documentcabinetmed'));
 
+$permissiontoadd = $user->rights->societe->creer;
+
+if (! isset($permission)) $permission = $permissiontoadd;
+if (! isset($permtoedit)) $permtoedit = $permissiontoadd;
 
 
 /*
@@ -314,6 +318,7 @@ if ($object->id)
     // List of document
     print '<br><br>';
     $param='&socid='.$object->id;
+    $disablemove = 0;
 
     $formfilecabinetmed=new FormFileCabinetmed($db);
     $formfilecabinetmed->list_of_documents(
