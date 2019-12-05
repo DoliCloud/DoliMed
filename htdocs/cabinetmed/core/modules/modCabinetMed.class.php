@@ -87,7 +87,7 @@ class modCabinetMed extends DolibarrModules
 			'substitutions' => 1,
 			'menus' => 1,
 			'css' => array('/cabinetmed/css/styles.css.php'),
-            'hooks' => array('index', 'searchform', 'thirdpartycard', 'thirdpartycomm', 'commcard', 'categorycard', 'contactcard', 'actioncard', 'agendathirdparty', 'projectthirdparty', 'infothirdparty', 'thirdpartybancard', 'consumptionthirdparty', 'thirdpartynotification', 'thirdpartymargins', 'thirdpartycustomerprice', 'documentcabinetmed', 'searchform', 'demo'),
+            'hooks' => array('index', 'searchform', 'thirdpartycard', 'thirdpartycomm', 'commcard', 'categorycard', 'contactcard', 'actioncard', 'agendathirdparty', 'projectthirdparty', 'infothirdparty', 'thirdpartybancard', 'consumptionthirdparty', 'thirdpartynotification', 'thirdpartymargins', 'thirdpartycustomerprice', 'thirdpartyticket', 'documentcabinetmed', 'searchform', 'demo'),
 			'moduleforexternal' => 1
         );
 

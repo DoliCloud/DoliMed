@@ -82,7 +82,7 @@ class ActionsCabinetmed
      *                              		=0 if OK but we want to process standard actions too,
      *                              		>0 if OK and we want to replace standard actions.
      */
-    function doActions($parameters,&$object,&$action)
+    function doActions($parameters, &$object, &$action)
     {
         global $db,$langs,$conf,$backtopage;
 
@@ -94,7 +94,7 @@ class ActionsCabinetmed
         // Define cabinetmed context
         $cabinetmedcontext=0;
         if ((isset($parameters['id']) || isset($parameters['socid'])) && isset($parameters['currentcontext'])
-            && in_array($parameters['currentcontext'],array('agendathirdparty','categorycard','commcard','thirdpartycomm','projectthirdparty','infothirdparty','thirdpartybancard','consumptionthirdparty','thirdpartynotification','thirdpartymargins','thirdpartycustomerprice')) && empty($action))
+            && in_array($parameters['currentcontext'], array('agendathirdparty','categorycard','commcard','thirdpartycomm','projectthirdparty','infothirdparty','thirdpartybancard','consumptionthirdparty','thirdpartynotification','thirdpartymargins','thirdpartycustomerprice','thirdpartyticket')) && (empty($action) || $action == 'view'))
         {
         	$thirdparty=new Societe($db);
         	$thirdparty->fetch($parameters['id'] ? $parameters['id'] : $parameters['socid']);

@@ -78,6 +78,9 @@ if (! $sortorder) $sortorder='DESC';
 
 $exambio = new CabinetmedExamBio($db);
 
+// Initialize technical object to manage hooks of page. Note that conf->hooks_modules contains array array
+$hookmanager->initHooks(array('thirdpartycard','exambiocard','globalcard'));
+
 
 /*
  * Actions

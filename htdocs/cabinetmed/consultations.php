@@ -608,7 +608,12 @@ else
 	 */
     if ($conf->notification->enabled) $langs->load("mails");
 
+    $savobject = $object;
+    $object = $soc;
+
 	$head = societe_prepare_head($soc);
+
+	$object = $savobject;
 
 	// General
 	print '<form method="post" action="'.$_SERVER["PHP_SELF"].'">';
