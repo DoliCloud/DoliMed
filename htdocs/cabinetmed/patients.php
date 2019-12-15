@@ -1004,7 +1004,7 @@ while ($i < min($num, $limit))
     // Country
     if (! empty($arrayfields['country.code_iso']['checked']))
     {
-    	print '<td align="center">';
+    	print '<td class="center">';
     	$tmparray=getCountry($obj->fk_pays,'all');
     	print $tmparray['label'];
     	print '</td>';
@@ -1013,7 +1013,7 @@ while ($i < min($num, $limit))
     // Type ent
     if (! empty($arrayfields['typent.code']['checked']))
     {
-    	print '<td align="center">';
+    	print '<td class="center">';
     	if (! is_array($typenArray) || count($typenArray)==0) $typenArray = $formcompany->typent_array(1);
     	print $typenArray[$obj->typent_code];
     	print '</td>';
@@ -1077,7 +1077,7 @@ while ($i < min($num, $limit))
     // Type
     if (! empty($arrayfields['customerorsupplier']['checked']))
     {
-    	print '<td align="center">';
+    	print '<td class="center">';
     	$s='';
     	if (($obj->client==1 || $obj->client==3) && empty($conf->global->SOCIETE_DISABLE_CUSTOMERS))
     	{
@@ -1107,7 +1107,7 @@ while ($i < min($num, $limit))
     if (! empty($arrayfields['s.fk_prospectlevel']['checked']))
     {
     	// Prospect level
-    	print '<td align="center">';
+    	print '<td class="center">';
     	print $companystatic->getLibProspLevel();
     	print "</td>";
     	if (! $i) $totalarray['nbfield']++;
@@ -1137,7 +1137,7 @@ while ($i < min($num, $limit))
     // Nb
     print '<td align="right">'.$obj->nb.'</td>';
     // Last consultation
-    print '<td align="center">';
+    print '<td class="center">';
     print dol_print_date($db->jdate($obj->lastcons),'day');
     print '</td>';
     // Date creation

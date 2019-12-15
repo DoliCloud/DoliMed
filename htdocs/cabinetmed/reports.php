@@ -258,7 +258,7 @@ if ($result)
         $consultstatic->fk_soc=$obj->rowid;
         print $consultstatic->getNomUrl(1,'&amp;backtopage='.urlencode($_SERVER["PHP_SELF"]));
         print '</td>';
-        print '<td align="center">'.dol_print_date($obj->datecons,'day').'</td>';
+        print '<td class="center">'.dol_print_date($obj->datecons,'day').'</td>';
         print '<td>';
         print $obj->typepriseencharge;
         print '</td>';

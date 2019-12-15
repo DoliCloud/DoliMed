@@ -411,7 +411,7 @@ if ($resql)
 		print "<td>".$obj->idprof2."</td>\n";
 		print "<td>".$obj->idprof3."</td>\n";
 		print "<td>".$obj->idprof4."</td>\n";
-		print '<td align="center">';
+		print '<td class="center">';
 		$s='';
 		if (($obj->client==1 || $obj->client==3) && empty($conf->global->SOCIETE_DISABLE_CUSTOMERS))
 		{

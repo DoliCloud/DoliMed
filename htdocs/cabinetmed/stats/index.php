@@ -193,10 +193,10 @@ $data = $stats->getAllByYear();
 
 print '<table class="noborder" width="100%">';
 print '<tr class="liste_titre" height="24">';
-print '<td align="center">'.$langs->trans("Year").'</td>';
-print '<td align="center">'.$langs->trans("Number").'</td>';
-print '<td align="center">'.$langs->trans("AmountTotal").'</td>';
-print '<td align="center">'.$langs->trans("AmountAverage").'</td>';
+print '<td class="center">'.$langs->trans("Year").'</td>';
+print '<td class="center">'.$langs->trans("Number").'</td>';
+print '<td class="center">'.$langs->trans("AmountTotal").'</td>';
+print '<td class="center">'.$langs->trans("AmountAverage").'</td>';
 print '</tr>';
 
 $oldyear=0;
@@ -207,14 +207,14 @@ foreach ($data as $val)
 	{	// If we have empty year
 		$oldyear--;
 		print '<tr height="24">';
-		print '<td align="center">'.$oldyear.'</td>';
+		print '<td class="center">'.$oldyear.'</td>';
 		print '<td align="right">0</td>';
 		print '<td align="right">0</td>';
 		print '<td align="right">0</td>';
 		print '</tr>';
 	}
 	print '<tr height="24">';
-	print '<td align="center">';
+	print '<td class="center">';
 	//print '<a href="month.php?year='.$year.'&amp;mode='.$mode.'">';
 	print $year;
 	//print '</a>';

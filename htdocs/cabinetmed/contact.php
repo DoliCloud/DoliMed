@@ -268,7 +268,7 @@ if ($id > 0 || ! empty($ref))
 	//print '<td>'.$langs->trans("Source").'</td>';
 	print '<td>'.$langs->trans("Contacts").'</td>';
 	print '<td>'.$langs->trans("ContactType").'</td>';
-	print '<td align="center">'.$langs->trans("Status").'</td>';
+	print '<td class="center">'.$langs->trans("Status").'</td>';
 	print '<td colspan="2">&nbsp;</td>';
 	print "</tr>\n";
 
@@ -334,7 +334,7 @@ if ($id > 0 || ! empty($ref))
 			print '<td>'.$tab[$i]['libelle'].'</td>';
 
 			// Statut
-			print '<td align="center">';
+			print '<td class="center">';
 			// Activation desativation du contact
 			if ($societe->statut >= 0)	print '<a href="contact.php?socid='.$societe->id.'&amp;action=swapstatut&amp;ligne='.$tab[$i]['rowid'].'">';
 			print $contactstatic->LibStatut($tab[$i]['status'],3);

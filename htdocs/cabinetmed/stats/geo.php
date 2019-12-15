@@ -269,10 +269,10 @@ if ($mode)
     // Print array
     print '<table class="noborder" width="100%">';
     print '<tr class="liste_titre">';
-    print '<td align="center">'.$label.'</td>';
-    if ($label2) print '<td align="center">'.$label2.'</td>';
+    print '<td class="center">'.$label.'</td>';
+    if ($label2) print '<td class="center">'.$label2.'</td>';
     print '<td align="right">'.$langs->trans("NbConsult").'</td>';
-    print '<td align="center">'.$langs->trans("LastConsultShort").'</td>';
+    print '<td class="center">'.$langs->trans("LastConsultShort").'</td>';
     print '</tr>';
 
     $oldyear=0;
@@ -282,10 +282,10 @@ if ($mode)
         $year = $val['year'];
         $var=!$var;
         print '<tr class="oddeven">';
-        print '<td align="center">'.$val['label'].'</td>';
-        if ($label2) print '<td align="center">'.$val['label2'].'</td>';
+        print '<td class="center">'.$val['label'].'</td>';
+        if ($label2) print '<td class="center">'.$val['label2'].'</td>';
         print '<td align="right">'.$val['nb'].'</td>';
-        print '<td align="center">'.dol_print_date($val['lastdate'],'dayhour').'</td>';
+        print '<td class="center">'.dol_print_date($val['lastdate'],'dayhour').'</td>';
         print '</tr>';
         $oldyear=$year;
     }

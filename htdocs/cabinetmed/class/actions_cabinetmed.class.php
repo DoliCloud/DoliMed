@@ -424,7 +424,7 @@ class ActionsCabinetmed
         else dol_print_error($this->db);
         $out.=$form->selectarray('idconsult',$array_consult,$firstid,1);
         //print '</td>';
-        //print '<td align="center">';
+        //print '<td class="center">';
 
         $out.=' &nbsp; &nbsp; &nbsp; ';
 
@@ -447,7 +447,7 @@ class ActionsCabinetmed
         else dol_print_error($this->db);
         $out.=$form->selectarray('idbio',$array_consult,GETPOST('idbio')?GETPOST('idbio'):'',1);
         //$out.= '</td>';
-        //$out.= '<td align="center">';
+        //$out.= '<td class="center">';
 
         $out.=' &nbsp; &nbsp; &nbsp; ';
 

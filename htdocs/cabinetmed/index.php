@@ -189,7 +189,7 @@ if ($result)
             print $thirdparty_static->getNomUrl(1);
             print "</td>\n";
             // Type
-            print '<td align="center">';
+            print '<td class="center">';
            	$thirdparty_static->name=$langs->trans("Patient");
             print $thirdparty_static->getNomUrl(0,'patient');
             print '</td>';

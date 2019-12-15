@@ -509,7 +509,7 @@ if ($resql)
 
 		if (! empty($arrayfields['c.datecons']['checked']))
 		{
-		    print '<td align="center">'.dol_print_date($db->jdate($obj->datecons),'day').'</td>';
+		    print '<td class="center">'.dol_print_date($db->jdate($obj->datecons),'day').'</td>';
 		}
 
 		if (! empty($arrayfields['c.datec']['checked']))
