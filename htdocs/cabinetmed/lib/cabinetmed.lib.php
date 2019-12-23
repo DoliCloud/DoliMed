@@ -255,7 +255,7 @@ function listebanques($nboflines,$newwidth=0,$defaultvalue='',$htmlname='banque'
             $obj=$db->fetch_object($resql);
             $labeltoshow = trim($obj->label);
             print '<option value="'.dol_escape_htmltag($labeltoshow).'"';
-            if ($defaultvalue == $labeltoshow) print ' selected="selected"';
+            if (strtolower($defaultvalue) == strtolower($labeltoshow)) print ' selected="selected"';
             print '>'.dol_escape_htmltag($labeltoshow).'</option>';
             $i++;
         }

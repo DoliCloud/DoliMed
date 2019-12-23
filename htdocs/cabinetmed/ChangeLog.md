@@ -5,8 +5,9 @@
 - NEW Compatibilitu with v9 and v10.
 - NEW Add preview on files
 - NEW Add outcome_comment on document.
-- NEW Support extrafields on list of consultations
-- FIX phone and zip
+- NEW Support extrafields on list of consultations.
+- FIX phone and zip.
+- FIX Do not loose name of banque if the bank was renamed with a different case.
 
 ## 7.0.1
 
