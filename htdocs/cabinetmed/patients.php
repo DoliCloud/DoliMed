@@ -465,7 +465,7 @@ if ((float) DOL_VERSION >= 9.0)
 			if($type == 'f') $label='NewSupplier';
 		}
 
-		$newcardbutton = '<a class="butActionNew" href="'.DOL_URL_ROOT.'/societe/card.php?action=create&canvas=patient'.$typefilter.'"><span class="valignmiddle text-plus-circle">'.$langs->trans($label).'</span>';
+		$newcardbutton = '<a class="butActionNew" href="card.php?action=create&canvas=patient@cabinetmed"><span class="valignmiddle text-plus-circle">'.$langs->trans($label).'</span>';
 		$newcardbutton.= '<span class="fa fa-plus-circle valignmiddle"></span>';
 		$newcardbutton.= '</a>';
 	}
