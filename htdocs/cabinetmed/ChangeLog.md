@@ -7,6 +7,7 @@
 - NEW Add outcome_comment on document.
 - NEW Support extrafields on list of consultations.
 - NEW Add option DIAGNOSTIC_IS_NOT_MANDATORY.
+- NEW Add tags for extrafields in ODT templates {patient_options_xxx} and {outcome_options_xxx}.
 - FIX phone and zip.
 - FIX Do not loose name of banque if the bank was renamed with a different case.
 

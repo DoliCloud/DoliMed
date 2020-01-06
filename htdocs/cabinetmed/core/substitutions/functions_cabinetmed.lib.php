@@ -174,7 +174,8 @@ function cabinetmed_completesubstitutionarray(&$substitutionarray,$langs,$object
     {
     	$outcome=new CabinetmedCons($db);
     	$result1=$outcome->fetch(GETPOST('idconsult'));
-		$isconsult=1;
+    	$result1extra=$outcome->fetch_optionals();
+    	$isconsult=1;
     }
     if (GETPOST('idbio') > 0)
     {
@@ -238,14 +239,22 @@ function cabinetmed_completesubstitutionarray(&$substitutionarray,$langs,$object
 	    	$substitutionarray['outcome_treatment_title']='';
 	        $substitutionarray['outcome_treatment']='';
 	    }
-	    $substitutionarray['outcome_exam_sugested']=$outcome->examenprescrit;
+	    $substitutionarray['outcome_exam_sugested']=$outcome->examenprescrit;  // For backward compatiblity
+	    $substitutionarray['outcome_exam_suggested']=$outcome->examenprescrit;
 	    $substitutionarray['outcome_comment']=$outcome->comment;
 	    // Payments
 	    $substitutionarray['outcome_total_inctax_card']=$outcome->montant_carte;
     	$substitutionarray['outcome_total_inctax_cheque']=$outcome->montant_cheque;
     	$substitutionarray['outcome_total_inctax_cash']=$outcome->montant_espece;
     	$substitutionarray['outcome_total_inctax_other']=$outcome->montant_tiers;
+    	$substitutionarray['outcome_total_inctax']=($outcome->montant_carte+$outcome->montant_cheque+$outcome->montant_espece+$outcome->montant_tiers);
     	$substitutionarray['outcome_total_ttc']=($outcome->montant_carte+$outcome->montant_cheque+$outcome->montant_espece+$outcome->montant_tiers);
+
+    	if (is_array($outcome->array_options)) {
+    	    foreach($outcome->array_options as $keyextra => $valextra) {
+    	        $substitutionarray['outcome_'.$keyextra] = $valextra;
+    	    }
+    	}
 	}
 	else
 	{
@@ -266,6 +275,7 @@ function cabinetmed_completesubstitutionarray(&$substitutionarray,$langs,$object
     	$substitutionarray['outcome_total_inctax_cheque']='';
     	$substitutionarray['outcome_total_inctax_cash']='';
     	$substitutionarray['outcome_total_inctax_other']='';
+    	$substitutionarray['outcome_total_inctax']='';
     	$substitutionarray['outcome_total_ttc']='';
 	}
 
@@ -303,6 +313,13 @@ function cabinetmed_completesubstitutionarray(&$substitutionarray,$langs,$object
 
         $substitutionarray['patient_gender']=$object->typent_code;
         $substitutionarray['patient_socialnum']=$object->tva_intra;
+
+        if (is_array($object->array_options)) {
+            foreach($object->array_options as $keyextra => $valextra) {
+                $keyextrabis = preg_replace('/^company_/', '', $keyextra);
+                $substitutionarray['patient_'.$keyextrabis] = $valextra;
+            }
+        }
     }
 
     // Replace contact tabs with GENERALREF if defined
@@ -338,5 +355,7 @@ function cabinetmed_completesubstitutionarray(&$substitutionarray,$langs,$object
             }
         }
     }
+
+    //var_export($substitutionarray, false);
 }
 
