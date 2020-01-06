@@ -81,6 +81,8 @@ if ($action == 'update')
 
     $res=dolibarr_set_const($db, 'CABINETMED_BANK_PATIENT_REQUIRED', GETPOST("CABINETMED_BANK_PATIENT_REQUIRED"), 'texte', 0, '', $conf->entity);
 
+    $res=dolibarr_set_const($db, 'DIAGNOSTIC_IS_NOT_MANDATORY', GETPOST("DIAGNOSTIC_IS_NOT_MANDATORY") ? 0 : 1, 'texte', 0, '', $conf->entity);
+
     if ($res == 1) $mesg=$langs->trans("RecordModifiedSuccessfully");
     else
     {
@@ -132,26 +134,30 @@ print '<td>'.$langs->trans("Value").'</td>';
 print "</tr>\n";
 
 print '<tr class="oddeven"><td>'.$langs->trans("HideProspectFeatures").'</td>';
-print '<td>'.$form->selectyesno('SOCIETE_DISABLE_PROSPECTS',$conf->global->SOCIETE_DISABLE_PROSPECTS,1).'</td>';
+print '<td>'.$form->selectyesno('SOCIETE_DISABLE_PROSPECTS',$conf->global->SOCIETE_DISABLE_PROSPECTS, 1).'</td>';
 print '</tr>';
 
 print '<tr class="oddeven"><td>'.$langs->trans("HideCustomerFeatures").'</td>';
-print '<td>'.$form->selectyesno('SOCIETE_DISABLE_CUSTOMERS',$conf->global->SOCIETE_DISABLE_CUSTOMERS,1).'</td>';
+print '<td>'.$form->selectyesno('SOCIETE_DISABLE_CUSTOMERS',$conf->global->SOCIETE_DISABLE_CUSTOMERS, 1).'</td>';
 print '</tr>';
 
 if (empty($conf->global->SOCIETE_DISABLE_CUSTOMERS))
 {
     print '<tr class="oddeven"><td>'.$langs->trans("CABINETMED_AUTOGENERATE_INVOICE").'</td>';
-    print '<td>'.$form->selectyesno('CABINETMED_AUTOGENERATE_INVOICE',$conf->global->CABINETMED_AUTOGENERATE_INVOICE,1).'</td>';
+    print '<td>'.$form->selectyesno('CABINETMED_AUTOGENERATE_INVOICE',$conf->global->CABINETMED_AUTOGENERATE_INVOICE, 1).'</td>';
     print '</tr>';
 }
 
 print '<tr class="oddeven"><td>'.$langs->trans("CABINETMED_BANK_PATIENT_REQUIRED").'</td>';
-print '<td>'.$form->selectyesno('CABINETMED_BANK_PATIENT_REQUIRED',$conf->global->CABINETMED_BANK_PATIENT_REQUIRED,1).'</td>';
+print '<td>'.$form->selectyesno('CABINETMED_BANK_PATIENT_REQUIRED',$conf->global->CABINETMED_BANK_PATIENT_REQUIRED, 1).'</td>';
 print '</tr>';
 
 print '<tr class="oddeven"><td>'.$langs->trans("EnableSpecificFeaturesToRheumatology").'</td>';
-print '<td>'.$form->selectyesno('CABINETMED_RHEUMATOLOGY_ON',$conf->global->CABINETMED_RHEUMATOLOGY_ON,1).'</td>';
+print '<td>'.$form->selectyesno('CABINETMED_RHEUMATOLOGY_ON',$conf->global->CABINETMED_RHEUMATOLOGY_ON, 1).'</td>';
+print '</tr>';
+
+print '<tr class="oddeven"><td>'.$langs->trans("DiagnosticIsMandatoryOnConsultation").'</td>';
+print '<td>'.$form->selectyesno('DIAGNOSTIC_IS_NOT_MANDATORY', ($conf->global->DIAGNOSTIC_IS_NOT_MANDATORY ? 0 : 1), 1).'</td>';
 print '</tr>';
 
 print '</table>';

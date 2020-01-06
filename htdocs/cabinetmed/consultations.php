@@ -280,7 +280,7 @@ if (empty($reshook))
                 $error++;
                 $mesgarray[]=$langs->trans("ErrorFieldRequired",$langs->transnoentities("MotifConsultation"));
             }
-            if (empty($object->diaglesprinc))
+            if (empty($object->diaglesprinc) && empty($conf->global->DIAGNOSTIC_IS_NOT_MANDATORY))
             {
                 $error++;
                 $mesgarray[]=$langs->trans("ErrorFieldRequired",$langs->transnoentities("DiagnostiqueLesionnel"));
@@ -967,7 +967,7 @@ else
         print ' <input type="button" class="button" id="adddiaglessec" name="adddiaglessec" value="+S" title="'.dol_escape_htmltag($langs->trans("ClickHereToSetSecondaryDiagnostic")).'">';
         if ($user->admin) print ' '.info_admin($langs->trans("YouCanChangeValuesForThisListFromDictionarySetup"),1);
         print '</td></tr>';
-        print '<tr><td class="fieldrequired">'.$langs->trans("DiagLesPrincipal").':';
+        print '<tr><td class="'.(empty($conf->global->DIAGNOSTIC_IS_NOT_MANDATORY)?'fieldrequired':'').'">'.$langs->trans("DiagLesPrincipal").':';
         print '</td><td>';
         print '<input type="text" class="flat minwidth200" name="diaglesprinc" value="'.$object->diaglesprinc.'" id="diaglesprinc"><br>';
         print '</td></tr>';

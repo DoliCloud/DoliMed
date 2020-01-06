@@ -2,10 +2,11 @@
 
 ## 9.0.0 unreleased
 
-- NEW Compatibilitu with v9 and v10.
-- NEW Add preview on files
+- NEW Compatibility with v9, v10, v11.
+- NEW Add preview on files.
 - NEW Add outcome_comment on document.
 - NEW Support extrafields on list of consultations.
+- NEW Add option DIAGNOSTIC_IS_NOT_MANDATORY.
 - FIX phone and zip.
 - FIX Do not loose name of banque if the bank was renamed with a different case.
 
