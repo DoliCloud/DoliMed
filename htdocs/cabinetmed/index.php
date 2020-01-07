@@ -120,12 +120,12 @@ print '<table class="noborder" width="100%">';
 print '<tr class="liste_titre"><th colspan="2">'.$langs->trans("Statistics").'</th></tr>';
 if ($conf->cabinetmed->enabled)
 {
-    $statstring.= "<tr $bc[0]>";
+    $statstring.= '<tr class="oddeven">';
     $statstring.= '<td><a href="'.dol_buildpath('/cabinetmed/patients.php',1).'">'.$langs->trans("Patients").'</a></td><td align="right">'.round($third['patient']).'</td>';
     $statstring.= "</tr>";
 }
 print $statstring;
-print $statstring2;
+//print $statstring2;
 print '<tr class="liste_total"><td>'.$langs->trans("UniquePatients").'</td><td align="right">';
 print $total;
 print '</td></tr>';
@@ -176,7 +176,7 @@ if ($result)
             $objp = $db->fetch_object($result);
 
             $var=!$var;
-            print "<tr $bc[$var]>";
+            print '<tr class="oddeven">';
             // Name
             print '<td class="nowrap">';
             $thirdparty_static->id=$objp->rowid;
