@@ -290,6 +290,18 @@ else
 
 $arrayofselected=is_array($toselect)?$toselect:array();
 
+// List of mass actions available
+$arrayofmassactions = array(
+    //'validate'=>$langs->trans("Validate"),
+    //'generate_doc'=>$langs->trans("ReGeneratePDF"),
+    //'builddoc'=>$langs->trans("PDFMerge"),
+    //'presend'=>$langs->trans("SendByMail"),
+);
+
+
+// Output page
+// --------------------------------------------------------------------
+
 llxHeader('', $title, $help_url);
 
 if ($resql)
@@ -366,8 +378,8 @@ if ($resql)
     }
 
     $varpage=empty($contextpage)?$_SERVER["PHP_SELF"]:$contextpage;
-    $selectedfields=$form->multiSelectArrayWithCheckbox('selectedfields', $arrayfields, $varpage);	// This also change content of $arrayfields
-    $selectedfields.=(count($arrayofmassactions) ? $form->showCheckAddButtons('checkforselect', 1) : '');
+    $selectedfields = $form->multiSelectArrayWithCheckbox('selectedfields', $arrayfields, $varpage);	// This also change content of $arrayfields
+    $selectedfields .= (count($arrayofmassactions) ? $form->showCheckAddButtons('checkforselect', 1) : '');
 
     print '<div class="div-table-responsive">';
     print '<table class="tagtable liste'.($moreforfilter?" listwithfilterbefore":"").'">';
