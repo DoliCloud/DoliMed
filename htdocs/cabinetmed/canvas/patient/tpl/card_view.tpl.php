@@ -275,28 +275,23 @@ if (empty($conf->global->SOCIETE_DISABLE_BANKACCOUNT))
 // Parent company
 if (empty($conf->global->SOCIETE_DISABLE_PARENTCOMPANY))
 {
-    print '<tr><td>';
-    print '<table width="100%" class="nobordernopadding"><tr><td>';
-    print $langs->trans('ParentPatient');
-    print '<td><td align="right">';
-    if ($user->rights->societe->creer)
-    print '<a class="editfielda" href="'.DOL_URL_ROOT.'/societe/lien.php?socid='.$object->id.'">'.img_edit() .'</a>';
-    else
-    print '&nbsp;';
-    print '</td></tr></table>';
-    print '</td>';
-    print '<td colspan="3">';
-    if ($object->parent)
-    {
-        $objectm = new Societe($db);
-        $objectm->fetch($object->parent);
-        print $objectm->getNomUrl(1).' '.($objectm->code_client?"(".$objectm->code_client.")":"");
-        print $objectm->town?' - '.$objectm->town:'';
-    }
-    else {
-        print $langs->trans("NoParentCompany");
-    }
-    print '</td></tr>';
+	print '<tr><td>';
+	print '<table class="nobordernopadding" width="100%"><tr><td>';
+	print $langs->trans('ParentPatient');
+	print '</td>';
+	if ($action != 'editparentcompany') print '<td class="right"><a class="editfielda" href="'.$_SERVER["PHP_SELF"].'?action=editparentcompany&amp;socid='.$object->id.'">'.img_edit($langs->transnoentitiesnoconv('Edit'), 1).'</a></td>';
+	print '</tr></table>';
+	print '</td><td>';
+	if ($action == 'editparentcompany')
+	{
+		$form->form_thirdparty($_SERVER['PHP_SELF'].'?socid='.$object->id, $object->parent, 'editparentcompany', 's.rowid <> '.$object->id, 1);
+	}
+	else
+	{
+		$form->form_thirdparty($_SERVER['PHP_SELF'].'?socid='.$object->id, $object->parent, 'none', 's.rowid <> '.$object->id, 1);
+	}
+	print '</td>';
+	print '</tr>';
 }
 
     // Sales representative

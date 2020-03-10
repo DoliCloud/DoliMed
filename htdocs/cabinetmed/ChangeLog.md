@@ -1,6 +1,11 @@
 # ChangeLog
 
-## 9.0.0 unreleased
+## 9.0.1 unreleased
+
+- Can set SOCIETE_DISABLE_PARENTCOMPANY to enabled use of parent company.
+
+
+## 9.0.0
 
 - NEW Compatibility with v9, v10, v11.
 - NEW Add preview on files.
