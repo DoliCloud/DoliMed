@@ -184,3 +184,4 @@ Revenues=Revenues
 PatientsAndConsultations=Patients | Consultations
 ToCreateAConsultationGoOnPatientRecord=To record a new consultation, search and open the Patient record first, then swith to tab 'Consultations' and click on button 'Create consultation'
 SendConsultationRef=Message about the consultation %s
+DiagnosticIsMandatoryOnConsultation=Diagnostic is mandatory on consultations
