@@ -240,45 +240,8 @@ if (! empty($conf->categorie->enabled)  && ! empty($user->rights->categorie->lir
 }
 
 // Other attributes
-$parameters=array('socid'=>$socid, 'colspan' => ' colspan="3"', 'colspanvalue' => '3');
-$reshook=$hookmanager->executeHooks('formObjectOptions',$parameters,$object,$action);    // Note that $action and $object may have been modified by hook
-print $hookmanager->resPrint;
-if (empty($reshook))
-{
-  	$tmp=$object->showOptionals($extrafields);
-  	print '<!-- extrafields -->'."\n";
-
-  	// Replace tmp content to add age
-  	if ($object->array_options['options_birthdate'])
-  	{
-  	    $now = dol_now();
-      	//var_dump($object->array_options['options_birthdate']);
-  	    if (is_numeric($object->array_options['options_birthdate']))
-  	    {
-  	        $birthdate=$object->array_options['options_birthdate'];
-  	    }
-  	    else
-  	    {
-            $birthdate=dol_stringtotime($object->array_options['options_birthdate'].' 00:00:00', 1);
-  	    }
-  	    if ($birthdate)
-      	{
-          	$newtmp=' &nbsp; ';
-          	//$birthdatearray=dol_cm_strptime($dateval,$conf->format_date_short);
-          	//$birthdate=dol_mktime(0,0,0,$birthdatearray['tm_mon']+1,($birthdatearray['tm_mday']),($birthdatearray['tm_year']+1900),true);
-          	$ageyear=convertSecondToTime($now-$birthdate,'year')-1970;
-          	$agemonth=convertSecondToTime($now-$birthdate,'month')-1;
-          	if ($ageyear >= 1) $newtmp.='('.$ageyear.' '.$langs->trans("DurationYears").')';
-          	else if ($agemonth >= 1) $newtmp.='('.$agemonth.' '.$langs->trans("DurationMonths").')';
-          	else $newtmp.='('.$agemonth.' '.$langs->trans("DurationMonth").')';
-            //print $newtmp;
-          	$tmp=preg_replace('/'.preg_quote('<td','/').'[^>]*'.preg_quote('colspan="3">'.dol_print_date($birthdate, 'day').'</td>','/').'/','<td colspan="3">'.dol_print_date($birthdate, 'day').$newtmp.'</td>',$tmp);
-      	}
-  	}
-  	print $tmp;
-
-  	print '<!-- end extrafields -->';
-}
+$parameters = array('socid'=>$socid, 'colspan' => ' colspan="3"', 'colspanvalue' => '3');
+include DOL_DOCUMENT_ROOT.'/core/tpl/extrafields_view.tpl.php';
 
 // Ban
 if (empty($conf->global->SOCIETE_DISABLE_BANKACCOUNT))
@@ -310,7 +273,6 @@ if (empty($conf->global->SOCIETE_DISABLE_BANKACCOUNT))
 }
 
 // Parent company
-/*
 if (empty($conf->global->SOCIETE_DISABLE_PARENTCOMPANY))
 {
     print '<tr><td>';
@@ -336,7 +298,6 @@ if (empty($conf->global->SOCIETE_DISABLE_PARENTCOMPANY))
     }
     print '</td></tr>';
 }
-*/
 
     // Sales representative
     include DOL_DOCUMENT_ROOT.'/societe/tpl/linesalesrepresentative.tpl.php';

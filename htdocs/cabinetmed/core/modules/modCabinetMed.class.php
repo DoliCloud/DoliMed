@@ -117,7 +117,7 @@ class modCabinetMed extends DolibarrModules
                             19=>array('CABINETMED_RHEUMATOLOGY_ON','chaine','0','Enable features for rheumatology',0,'current',0),		// Not visible, Do not remove if module removed
         					20=>array('SOCIETE_DISABLE_CUSTOMERS','chaine','1','Hide customer features',1,'current',1),
         					21=>array('SOCIETE_DISABLE_PROSPECTS','chaine','1','Hide prospect features',1,'current',1),
-        					//22=>array('SOCIETE_DISABLE_PROSPECTS_STATS','chaine','1','Hide prospects stats on home',1,'current',1),
+        					22=>array('SOCIETE_DISABLE_PARENTCOMPANY','chaine','1','Hide parent company field',1,'current',1),
         					23=>array('CABINETMED_HIDETHIRPARTIESMENU','chaine','1','Hide thirdparties',0,'current',1)					// Not visible
         );
 

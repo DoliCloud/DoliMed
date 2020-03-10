@@ -354,8 +354,10 @@ dol_fiche_head('');
         }
 
         // Other attributes
-        $parameters=array('colspan' => ' colspan="3"', 'colspanvalue' => '3');
-        $reshook=$hookmanager->executeHooks('formObjectOptions',$parameters,$object,$action);    // Note that $action and $object may have been modified by hook
+        $parameters = array('socid'=>$socid, 'colspan' => ' colspan="3"', 'colspanvalue' => '3');
+        include DOL_DOCUMENT_ROOT.'/core/tpl/extrafields_create.tpl.php';
+
+        $reshook=$hookmanager->executeHooks('formObjectOptions', $parameters, $object, $action);    // Note that $action and $object may have been modified by hook
         print $hookmanager->resPrint;
         if (empty($reshook))
         {
