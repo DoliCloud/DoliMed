@@ -64,7 +64,7 @@ $mode=GETPOST("mode",'alpha')?GETPOST("mode",'alpha'):'customer';
 
 $sortfield = GETPOST("sortfield",'alpha');
 $sortorder = GETPOST("sortorder",'alpha');
-$page = GETPOST("page",'int');
+$page = GETPOSTISSET('pageplusone') ? (GETPOST('pageplusone') - 1) : GETPOST("page", 'int');
 if ($page == -1) {
     $page = 0;
 }
