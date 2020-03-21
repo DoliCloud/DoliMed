@@ -215,16 +215,16 @@ foreach($consult as $rowid => $val)
         //$objmodel->workbook->getActiveSheet()->getStyle()->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
         $objmodel->workbook->getActiveSheet()->getStyle('J'.($i+1))->getFont()->getColor()->applyFromArray(array('rgb' => '303070'));
         $objmodel->workbook->getActiveSheet()->SetCellValueByColumnAndRow(9, $i+1, $encaiss_chq[$d]+$encaiss_esp[$d]+$encaiss_tie[$d]+$encaiss_car[$d]);
-        $objmodel->write_record($array_selected,$objp,$outputlangs);
+        $objmodel->write_record($array_selected, $objp, $outputlangs, array());
         $i++;
 
         //$coord=$objmodel->workbook->getActiveSheet()->getCellByColumnAndRow(1, $i+1)->getCoordinate();
         //$this->workbook->getActiveSheet()->getStyle($coord)->getNumberFormat()->setFormatCode('yyyy-mm-dd');
 
         $objp=new stdClass();
-        $objmodel->write_record(array(),$objp,$outputlangs);
+        $objmodel->write_record(array(), $objp, $outputlangs, array());
         $i++;
-        $objmodel->write_record(array(),$objp,$outputlangs);
+        $objmodel->write_record(array(), $objp, $outputlangs, array());
         $i++;
 
         $nbact=0;
@@ -316,7 +316,7 @@ foreach($consult as $rowid => $val)
              )
          )
     );
-    $objmodel->write_record($array_selected,$objp,$outputlangs);
+    $objmodel->write_record($array_selected, $objp, $outputlangs, array());
     $i++;
 
     $d=dol_print_date($consult[$rowid]['date'],'%Y-%m-%d');
@@ -356,7 +356,7 @@ if ($i != 0)
         //$objmodel->workbook->getActiveSheet()->getStyle($i+1)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
         $objmodel->workbook->getActiveSheet()->getStyle('J'.($i+1))->getFont()->getColor()->applyFromArray(array('rgb' => '303070'));
         $objmodel->workbook->getActiveSheet()->SetCellValueByColumnAndRow(9, $i+1, $encaiss_chq[$d]+$encaiss_esp[$d]+$encaiss_tie[$d]+$encaiss_car[$d]);
-        $objmodel->write_record($array_selected,$objp,$outputlangs);
+        $objmodel->write_record($array_selected, $objp, $outputlangs, array());
 }
 
 //$objmodel->workbook->setActiveSheetIndex(0);
