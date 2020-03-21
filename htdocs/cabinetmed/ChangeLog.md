@@ -2,6 +2,7 @@
 
 ## 9.0.1 unreleased
 
+- Compatibility of export with PHP 7.4
 - Can set SOCIETE_DISABLE_PARENTCOMPANY to enabled use of parent company.
 
 
