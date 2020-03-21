@@ -287,7 +287,7 @@ foreach($consult as $rowid => $val)
                              'endcolor'   => array('argb' => 'FFFFFFFF')
         	)
         	);
-        $objmodel->write_record($array_selected,$objp,$outputlangs);
+        $objmodel->write_record($array_selected, $objp, $outputlangs, array());
         $i++;
     }
 
