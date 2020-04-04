@@ -193,12 +193,13 @@ class CabinetmedCons extends CommonObject
 				// Uncomment this and change MYOBJECT to your own tag if you
 				// want this action call a trigger.
 
-				// Call triggers
-				include_once(DOL_DOCUMENT_ROOT . "/core/class/interfaces.class.php");
-				$interface=new Interfaces($this->db);
-				$result=$interface->run_triggers('CABINETMED_OUTCOME_CREATE',$this,$user,$langs,$conf);
-				if ($result < 0) { $error++; $this->errors=$interface->errors; }
-				// End call triggers
+				if (!$error && !$notrigger)
+				{
+					// Call trigger
+					$result = $this->call_trigger('CABINETMED_OUTCOME_CREATE', $user);
+					if ($result < 0) $error++;
+					// End call triggers
+				}
 			}
 		}
 
@@ -440,19 +441,6 @@ class CabinetmedCons extends CommonObject
 		            $error++;
 		        }
 		    }
-
-			if (! $error && ! $notrigger)
-			{
-				// Uncomment this and change MYOBJECT to your own tag if you
-				// want this action call a trigger.
-
-				//// Call triggers
-				//include_once(DOL_DOCUMENT_ROOT . "/core/class/interfaces.class.php");
-				//$interface=new Interfaces($this->db);
-				//$result=$interface->run_triggers('MYOBJECT_MODIFY',$this,$user,$langs,$conf);
-				//if ($result < 0) { $error++; $this->errors=$interface->errors; }
-				//// End call triggers
-			}
 		}
 
 		// Commit or rollback
@@ -526,22 +514,6 @@ class CabinetmedCons extends CommonObject
 		dol_syslog(get_class($this)."::delete sql=".$sql);
 		$resql = $this->db->query($sql);
 		if (! $resql) { $error++; $this->errors[]="Error ".$this->db->lasterror(); }
-
-		if (! $error)
-		{
-			if (! $notrigger)
-			{
-				// Uncomment this and change MYOBJECT to your own tag if you
-				// want this action call a trigger.
-
-				//// Call triggers
-				//include_once(DOL_DOCUMENT_ROOT . "/core/class/interfaces.class.php");
-				//$interface=new Interfaces($this->db);
-				//$result=$interface->run_triggers('MYOBJECT_DELETE',$this,$user,$langs,$conf);
-				//if ($result < 0) { $error++; $this->errors=$interface->errors; }
-				//// End call triggers
-			}
-		}
 
 		// Commit or rollback
 		if ($error)
