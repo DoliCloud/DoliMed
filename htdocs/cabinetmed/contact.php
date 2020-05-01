@@ -234,10 +234,9 @@ if ($id > 0 || ! empty($ref))
 		$var = true;
 
 		// Line to add contacts
-		$var=!$var;
-		print "<tr ".$bc[$var].">";
+		print '<tr class="oddeven">';
 
-		print '<td colspan="1">';
+		print '<td>';
 		// $contactAlreadySelected = $commande->getListContactId('external');	// On ne doit pas desactiver un contact deja selectionner car on doit pouvoir le seclectionner une deuxieme fois pour un autre type
 		$nbofcontacts=$html->select_contacts(0, '', 'contactid', 1, '', '', 1);
 		//if ($nbofcontacts == 0) print $langs->trans("NoContactDefined");
