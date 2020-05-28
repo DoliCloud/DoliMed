@@ -184,7 +184,6 @@ class InterfaceActionsCabinetmed
 			$actioncomm->datep       = $now;
 			$actioncomm->datef       = $now;
 			$actioncomm->durationp   = 0;
-			$actioncomm->punctual    = 1;
 			$actioncomm->percentage  = -1;   // Not applicable
 			$actioncomm->socid       = ($object->socid > 0 ? $object->socid : 0);
 			$actioncomm->contactid   = ($object->sendtoid > 0 ? $object->sendtoid : 0);
