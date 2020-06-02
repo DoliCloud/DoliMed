@@ -104,10 +104,10 @@ if (! $user->rights->societe->client->voir && ! $socid) $sql.= " AND s.rowid = s
 if ($socid && empty($conf->global->MAIN_DISABLE_RESTRICTION_ON_THIRDPARTY_FOR_EXTERNAL))	$sql.= " AND s.rowid = ".$socid;
 //if (! $user->rights->fournisseur->lire) $sql.=" AND (s.fournisseur <> 1 OR s.client <> 0)";    // client=0, fournisseur=0 must be visible
 //print $sql;
-$result = $db->query($sql);
-if ($result)
+$resql = $db->query($sql);
+if ($resql)
 {
-    while ($objp = $db->fetch_object($result))
+    while ($objp = $db->fetch_object($resql))
     {
         $found=0;
         if ($conf->cabinetmed->enabled) { $found=1; $third['patient']++; }
@@ -151,10 +151,10 @@ $sql.= $db->order("s.tms","DESC");
 $sql.= $db->plimit($max,0);
 
 //print $sql;
-$result = $db->query($sql);
-if ($result)
+$resql = $db->query($sql);
+if ($resql)
 {
-    $num = $db->num_rows($result);
+    $num = $db->num_rows($resql);
 
     $i = 0;
 
@@ -169,16 +169,10 @@ if ($result)
         print '<th align="right">'.$langs->trans('Status').'</td>';
         print '</tr>';
 
-        $var=True;
-
         while ($i < $num)
         {
-            $objp = $db->fetch_object($result);
+            $objp = $db->fetch_object($resql);
 
-            $var=!$var;
-            print '<tr class="oddeven">';
-            // Name
-            print '<td class="nowrap">';
             $thirdparty_static->id=$objp->rowid;
             $thirdparty_static->name=$objp->name;
             $thirdparty_static->client=$objp->client;
@@ -186,28 +180,38 @@ if ($result)
             $thirdparty_static->datem=$db->jdate($objp->datem);
             $thirdparty_static->status=$objp->status;
             $thirdparty_static->canvas=$objp->canvas;
+
+            print '<tr class="oddeven">';
+
+            // Name
+            print '<td class="nowrap">';
             print $thirdparty_static->getNomUrl(1);
             print "</td>\n";
+
             // Type
             print '<td class="center">';
            	$thirdparty_static->name=$langs->trans("Patient");
-            print $thirdparty_static->getNomUrl(0,'patient');
+            print $thirdparty_static->getNomUrl(0, 'patient');
             print '</td>';
+
             // Last modified date
             print '<td align="right">';
-            print dol_print_date($thirdparty_static->datem,'day');
+            print dol_print_date($thirdparty_static->datem, 'day');
             print "</td>";
+
             print '<td align="right" nowrap="nowrap">';
             print $thirdparty_static->getLibStatut(3);
             print "</td>";
+
             print "</tr>\n";
+
             $i++;
         }
 
-        $db->free();
-
         print "</table>";
     }
+
+    $db->free($resql);
 }
 else
 {
