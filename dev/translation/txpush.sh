@@ -33,7 +33,7 @@ else
 	for file in `find htdocs/cabinetmed/langs/$1/*.lang -type f`
 	do
 		export basefile=`basename $file | sed -s s/\.lang//g`
-		echo "tx push --skip -r project.$basfile -t -l $1 $2 $3 $4"
-		tx push --skip -r project.$basefile -t -l $1 $2 $3 $4
+		echo "tx push --skip -r $project.$basefile -t -l $1 $2 $3 $4"
+		tx push --skip -r $project.$basefile -t -l $1 $2 $3 $4
 	done
 fi
