@@ -7,6 +7,9 @@
 # Usage: txpush.sh (source|xx_XX) [-r dolimed.file] [-f]
 #------------------------------------------------------
 
+
+#echo TX_TOKEN=$TX_TOKEN
+
 export project='dolimed'
 
 # Syntax
@@ -15,7 +18,7 @@ then
 	echo "This push local files to transifex."
 	echo "Note:  If you push a language file (not source), file will be skipped if transifex file is newer."
 	echo "       Using -f will overwrite translation but not memory."
-	echo "Usage: ./dev/translation/txpush.sh (source|xx_XX) [-r ".$project.".file] [-f] [--no-interactive]"
+	echo "Usage: ./dev/translation/txpush.sh (source|xx_XX) [-r $project.file] [-f] [--no-interactive]"
 	exit
 fi
 
