@@ -141,12 +141,15 @@ print '<tr class="oddeven"><td>'.$langs->trans("HideCustomerFeatures").'</td>';
 print '<td>'.$form->selectyesno('SOCIETE_DISABLE_CUSTOMERS',$conf->global->SOCIETE_DISABLE_CUSTOMERS, 1).'</td>';
 print '</tr>';
 
-if (empty($conf->global->SOCIETE_DISABLE_CUSTOMERS))
-{
-    print '<tr class="oddeven"><td>'.$langs->trans("CABINETMED_AUTOGENERATE_INVOICE").'</td>';
-    print '<td>'.$form->selectyesno('CABINETMED_AUTOGENERATE_INVOICE',$conf->global->CABINETMED_AUTOGENERATE_INVOICE, 1).'</td>';
-    print '</tr>';
+print '<tr class="oddeven"><td>'.$langs->trans("CABINETMED_AUTOGENERATE_INVOICE").'</td>';
+print '<td>';
+if (empty($conf->global->SOCIETE_DISABLE_CUSTOMERS)) {
+	print $form->selectyesno('CABINETMED_AUTOGENERATE_INVOICE',$conf->global->CABINETMED_AUTOGENERATE_INVOICE, 1);
+} else {
+	print '<span class="opacitymedium">'.$langs->trans("FeatureForCustomerdisabled").'</span>';
 }
+print '</td>';
+print '</tr>';
 
 print '<tr class="oddeven"><td>'.$langs->trans("CABINETMED_BANK_PATIENT_REQUIRED").'</td>';
 print '<td>'.$form->selectyesno('CABINETMED_BANK_PATIENT_REQUIRED',$conf->global->CABINETMED_BANK_PATIENT_REQUIRED, 1).'</td>';

@@ -185,3 +185,4 @@ PatientsAndConsultations=Patients | Consultations
 ToCreateAConsultationGoOnPatientRecord=To record a new consultation, search and open the Patient record first, then swith to tab 'Consultations' and click on button 'Create consultation'
 SendConsultationRef=Message about the consultation %s
 DiagnosticIsMandatoryOnConsultation=Diagnostic is mandatory on consultations
+FeatureForCustomerdisabled=Features to manage customers is hidden so feature to generate independant invoice document is disabled. Only amount of consultation will be saved in consultation (no accounting invoice document generated). 
