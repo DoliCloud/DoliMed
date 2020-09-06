@@ -435,6 +435,7 @@ elseif ($action == 'presend')
 	$formmail->withcancel=1;
 	// Tableau des substitutions
 	$formmail->substit['__SIGNATURE__']=$user->signature;
+	$formmail->substit['__USER_SIGNATURE__']=$user->signature;
 	$formmail->substit['__PERSONALIZED__']='';		// deprecated
 	$formmail->substit['__CONTACTCIVNAME__']='';
 
