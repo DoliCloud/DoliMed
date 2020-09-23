@@ -101,7 +101,7 @@ if (! empty($canvas))
 }
 
 // Security check
-$result = restrictedArea($user, 'societe', $socid, '&societe', '', 'fk_soc', 'rowid', $objcanvas);
+$result = restrictedArea($user, 'societe', $socid, '&societe', '', 'fk_soc', 'rowid', 0);
 
 
 
