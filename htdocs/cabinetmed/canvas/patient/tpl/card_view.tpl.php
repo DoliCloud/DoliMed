@@ -124,38 +124,6 @@ while ($i <= 6)
 }
 if ($j % 2 == 1)  print '<td colspan="2"></td></tr>';
 
-// Height
-/*
-$profid=$langs->trans('HeightPeople');
-print '<tr><td>'.$profid.'</td><td>';
-print $object->idprof1;
-print '</td>';
-// Weight
-$profid=$langs->trans('Weight');
-print '<td>'.$profid.'</td><td>';
-print $object->idprof2;
-print '</td></tr>';
-
-// Birthday
-$profid=$langs->trans('DateToBirth');
-print '<tr><td>'.$profid.'</td><td colspan="3">';
-print $object->idprof3;
-if ($object->idprof3)
-{
-    print ' &nbsp; ';
-    $birthdatearray=dol_cm_strptime($object->idprof3,$conf->format_date_short);
-    $birthdate=dol_mktime(0,0,0,$birthdatearray['tm_mon']+1,($birthdatearray['tm_mday']),($birthdatearray['tm_year']+1900),true);
-    //var_dump($birthdatearray);
-    $ageyear=convertSecondToTime($now-$birthdate,'year')-1970;
-    $agemonth=convertSecondToTime($now-$birthdate,'month')-1;
-    if ($ageyear >= 2) print '('.$ageyear.' '.$langs->trans("DurationYears").')';
-    else if ($agemonth >= 2) print '('.$agemonth.' '.$langs->trans("DurationMonths").')';
-    else print '('.$agemonth.' '.$langs->trans("DurationMonth").')';
-}
-print '</td>';
-print '</tr>';
-*/
-
 // Num secu
 print '<tr>';
 print '<td class="nowrap">'.$langs->trans('PatientVATIntra').'</td><td colspan="3">';
@@ -242,6 +210,27 @@ if (! empty($conf->categorie->enabled)  && ! empty($user->rights->categorie->lir
 // Other attributes
 $parameters = array('socid'=>$socid, 'colspan' => ' colspan="3"', 'colspanvalue' => '3');
 include DOL_DOCUMENT_ROOT.'/core/tpl/extrafields_view.tpl.php';
+
+// Inject age if a date is defined
+
+if (! empty($object->array_options['options_birthdate']))
+{
+	//$birthdate=dol_mktime(0,0,0,$birthdatearray['mon']+1,($birthdatearray['mday']),($birthdatearray['year']+1900),true);
+	$birthdate = $object->array_options['options_birthdate'];
+	//var_dump($birthdatearray);
+	$ageyear=convertSecondToTime($now-$birthdate, 'year') - 1970;
+	$agemonth=convertSecondToTime($now-$birthdate, 'month');
+	if ($ageyear >= 2) $agetoshow = '('.$ageyear.' '.$langs->trans("DurationYears").')';
+	else if ($agemonth >= 2) $agetoshow = '('.(($ageyear * 12) + $agemonth).' '.$langs->trans("DurationMonths").')';
+	else $agetoshow = '('.(($ageyear * 12) + $agemonth).' '.$langs->trans("DurationMonth").')';
+	$agetoshow = dol_print_date($object->array_options['options_birthdate'], 'day').' <span class="opacitymedium">'.$agetoshow.'</span>';
+	print '<script type="text/javascript" language="javascript">';
+	print "
+		jQuery(document).ready(function() {
+        	jQuery(\".societe_extras_birthdate\").html('".dol_escape_js($agetoshow)."');
+		});";
+	print '</script>'."\n";
+}
 
 // Ban
 if (empty($conf->global->SOCIETE_DISABLE_BANKACCOUNT))
