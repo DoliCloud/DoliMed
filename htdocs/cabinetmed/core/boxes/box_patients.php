@@ -114,7 +114,7 @@ class box_patients extends ModeleBoxes
                     'url' => $url.$objp->socid);
 
 					$this->info_box_contents[$i][2] = array('td' => 'align="right"',
-					'text' => dol_print_date($datem, "day"));
+					'text' => dol_print_date($datem, "dayhour"));
 
                     $this->info_box_contents[$i][3] = array('td' => 'align="right" width="18"',
                     'text' => $thirdpartystatic->LibStatut($objp->status,3));

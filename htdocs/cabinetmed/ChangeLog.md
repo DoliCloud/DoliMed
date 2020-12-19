@@ -5,6 +5,7 @@
 - Compatibility of export with PHP 7.4
 - Can set SOCIETE_DISABLE_PARENTCOMPANY to enabled use of parent company.
 - Add extrafields of consultation into export of patient and consultations.
+- Show hours on date of last consultation.
 
 ## 9.0.0
 

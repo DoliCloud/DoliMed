@@ -1138,7 +1138,7 @@ while ($i < min($num, $limit))
     print '<td align="right">'.$obj->nb.'</td>';
     // Last consultation
     print '<td class="center">';
-    print dol_print_date($db->jdate($obj->lastcons),'day');
+    print dol_print_date($db->jdate($obj->lastcons),'dayhour');
     print '</td>';
     // Date creation
     if (! empty($arrayfields['s.datec']['checked']))
