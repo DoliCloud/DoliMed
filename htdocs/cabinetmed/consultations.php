@@ -403,12 +403,15 @@ if (empty($reshook))
                                         }
 
                                         // Create entry into bank account for the payment
-                                        if (! $error)
-                                        {
-                                            if ($conf->banque->enabled && isset($banque[$key]) && $banque[$key] > 0)
-                                            {
+                                        if (! $error) {
+                                            if ($conf->banque->enabled && isset($banque[$key]) && $banque[$key] > 0) {
                                                 $label='(CustomerInvoicePayment)';
-                                                $result=$paiement->addPaymentToBank($user,'payment',$label,$banque[$key],$soc->name,$object->banque);
+                                                if ((float) DOL_VERSION >= 13) {
+                                                	$accountancycode = empty($conf->global->CABINETMED_ACCOUNTANCY_CODE_FOR_CONSULTATION) ? '' : $conf->global->CABINETMED_ACCOUNTANCY_CODE_FOR_CONSULTATION;
+                                                	$result=$paiement->addPaymentToBank($user, 'payment', $label, $banque[$key], $soc->name, $object->banque, $accountancycode);
+                                                } else {
+                                                	$result=$paiement->addPaymentToBank($user, 'payment', $label, $banque[$key], $soc->name, $object->banque);
+                                                }
                                                 if ($result < 0)
                                                 {
                                                     setEventMessages($paiement->error, $paiement->errors, 'errors');
