@@ -74,6 +74,7 @@ $linkback = '<a href="'.dol_buildpath('/cabinetmed/patients.php', 1).'">'.$langs
 dol_banner_tab($object, 'socid', $linkback, ($user->societe_id?0:1), 'rowid', 'nom');
 
 print '<div class="fichecenter">';
+print '<div class="fichehalfleft">';
 
 print '<div class="underbanner clearboth"></div>';
 print '<table class="border tableforfield" width="100%">';
@@ -174,18 +175,13 @@ print '</tr>';
 print '<tr><td>'.$langs->trans('ActivityBranch').'</td><td colspan="3">'.$object->forme_juridique.'</td>';
 print '</tr>';
 
-// Default language
-if ($conf->global->MAIN_MULTILANGS)
-{
-    require_once(DOL_DOCUMENT_ROOT."/core/lib/functions2.lib.php");
-    print '<tr><td>'.$langs->trans("DefaultLang").'</td><td colspan="3">';
-    //$s=picto_from_langcode($object->default_lang);
-    //print ($s?$s.' ':'');
-    $langs->load("languages");
-    $labellang = ($object->default_lang?$langs->trans('Language_'.$object->default_lang):'');
-    print $labellang;
-    print '</td></tr>';
-}
+print '</table>';
+print '</div>';
+
+print '<div class="fichehalfright"><div class="ficheaddleft">';
+
+print '<div class="underbanner clearboth"></div>';
+print '<table class="border tableforfield" width="100%">';
 
 // Tags / categories
 if (! empty($conf->categorie->enabled)  && ! empty($user->rights->categorie->lire))
@@ -205,6 +201,19 @@ if (! empty($conf->categorie->enabled)  && ! empty($user->rights->categorie->lir
         print $form->showCategories($object->id, 'supplier', 1);
         print "</td></tr>";
     }
+}
+
+// Default language
+if ($conf->global->MAIN_MULTILANGS)
+{
+	require_once(DOL_DOCUMENT_ROOT."/core/lib/functions2.lib.php");
+	print '<tr><td>'.$langs->trans("DefaultLang").'</td><td colspan="3">';
+	//$s=picto_from_langcode($object->default_lang);
+	//print ($s?$s.' ':'');
+	$langs->load("languages");
+	$labellang = ($object->default_lang?$langs->trans('Language_'.$object->default_lang):'');
+	print $labellang;
+	print '</td></tr>';
 }
 
 // Other attributes
@@ -314,8 +323,10 @@ if (empty($conf->global->SOCIETE_DISABLE_PARENTCOMPANY))
     }
 
 print '</table>';
-
 print '</div>';
+
+print '</div></div>';
+print '<div style="clear:both"></div>';
 
 dol_fiche_end();
 
