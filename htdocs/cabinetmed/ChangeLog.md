@@ -8,6 +8,7 @@
 - Show hours on date of last consultation.
 - Add option CABINETMED_ACCOUNTANCY_CODE_FOR_CONSULTATION (need Dolibarr v13)
 - Patient record on 2 columns
+- Need Dolibarr v11+
 
 ## 9.0.0
 

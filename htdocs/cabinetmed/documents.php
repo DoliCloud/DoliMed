@@ -53,11 +53,7 @@ $idconsult=GETPOST('idconsult','int')?GETPOST('idconsult','int'):GETPOST('idcons
 $confirm=GETPOST('confirm');
 $mesg=GETPOST('mesg');
 
-$langs->load("companies");
-$langs->load("bills");
-$langs->load("banks");
-$langs->load("other");
-$langs->load("cabinetmed@cabinetmed");
+$langs->loadLangs(array("companies", "bills", "banks", "other", "cabinetmed@cabinetmed"));
 
 // Security check
 $id=(GETPOST('socid','int') ? GETPOST('socid','int') : GETPOST('id','int'));
@@ -73,7 +69,9 @@ $errors=array();
 $sortfield = GETPOST("sortfield",'alpha');
 $sortorder = GETPOST("sortorder",'alpha');
 $page = GETPOSTISSET('pageplusone') ? (GETPOST('pageplusone') - 1) : GETPOST("page", 'int');
-if ($page == -1) { $page = 0; }
+if (empty($page) || $page == -1) {
+	$page = 0;
+}     // If $page is not defined, or '' or -1
 $offset = $conf->liste_limit * $page;
 $pageprev = $page - 1;
 $pagenext = $page + 1;
