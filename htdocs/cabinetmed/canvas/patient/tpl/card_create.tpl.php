@@ -169,7 +169,7 @@ dol_fiche_head('');
         print '<table class="nobordernopadding"><tr><td>';
         $tmpcode=$object->code_client;
         if ($modCodeClient->code_auto) $tmpcode=$modCodeClient->getNextValue($object,0);
-        print '<input type="text" name="code_client" size="16" value="'.$tmpcode.'" maxlength="15">';
+        print '<input type="text" name="code_client" size="16" value="'.$tmpcode.'" maxlength="24">';
         print '</td><td>';
         $s=$modCodeClient->getToolTip($langs,$object,0);
         print $form->textwithpicto('',$s,1);
