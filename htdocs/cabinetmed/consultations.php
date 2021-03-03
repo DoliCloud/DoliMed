@@ -176,7 +176,7 @@ if (empty($reshook))
         {
             $error=0;
 
-            $datecons=dol_mktime(0,0,0,$_POST["consmonth"],$_POST["consday"],$_POST["consyear"]);
+            $datecons=dol_mktime(0, 0, 0, GETPOST("consmonth", 'int'), GETPOST("consday", 'int'), GETPOST("consyear", 'int'));
 
             if ($action == 'update')
             {
@@ -195,29 +195,29 @@ if (empty($reshook))
             }
             else
             {
-                $object->datecons=$datecons;
-                $object->fk_soc=$_POST["socid"];
+                $object->datecons = $datecons;
+                $object->fk_soc = GETPOST("socid", 'int');
             }
 
             $amount=array();
-            if (! empty($_POST["montant_cheque"])) $amount['CHQ']=price2num($_POST["montant_cheque"]);
-            if (! empty($_POST["montant_carte"]))  $amount['CB']=price2num($_POST["montant_carte"]);
-            if (! empty($_POST["montant_espece"])) $amount['LIQ']=price2num($_POST["montant_espece"]);
-            if (! empty($_POST["montant_tiers"]))  $amount['VIR']=price2num($_POST["montant_tiers"]);
+            if (! empty($_POST["montant_cheque"])) $amount['CHQ'] = price2num(GETPOST("montant_cheque"), 'MT', 2);
+            if (! empty($_POST["montant_carte"]))  $amount['CB'] = price2num(GETPOST("montant_carte"), 'MT', 2);
+            if (! empty($_POST["montant_espece"])) $amount['LIQ'] = price2num(GETPOST("montant_espece"), 'MT', 2);
+            if (! empty($_POST["montant_tiers"]))  $amount['VIR'] = price2num(GETPOST("montant_tiers"), 'MT', 2);
             $banque=array();
-            if (! empty($_POST["bankchequeto"]))   $banque['CHQ']=$_POST["bankchequeto"];
-            if (! empty($_POST["bankcarteto"]))    $banque['CB']=$_POST["bankcarteto"];
-            if (! empty($_POST["bankespeceto"]))   $banque['LIQ']=$_POST["bankespeceto"];
-            if (! empty($_POST["banktiersto"]))    $banque['VIR']=$_POST["banktiersto"];  // Should be always empty
+            if (! empty($_POST["bankchequeto"]))   $banque['CHQ'] = GETPOST("bankchequeto");
+            if (! empty($_POST["bankcarteto"]))    $banque['CB'] = GETPOST("bankcarteto");
+            if (! empty($_POST["bankespeceto"]))   $banque['LIQ'] = GETPOST("bankespeceto");
+            if (! empty($_POST["banktiersto"]))    $banque['VIR'] = GETPOST("banktiersto");  // Should be always empty
 
             unset($object->montant_carte);
             unset($object->montant_cheque);
             unset($object->montant_espece);
             unset($object->montant_tiers);
-            if (GETPOST("montant_cheque") != '') $object->montant_cheque=price2num($_POST["montant_cheque"]);
-            if (GETPOST("montant_espece") != '') $object->montant_espece=price2num($_POST["montant_espece"]);
-            if (GETPOST("montant_carte") != '')  $object->montant_carte=price2num($_POST["montant_carte"]);
-            if (GETPOST("montant_tiers") != '')  $object->montant_tiers=price2num($_POST["montant_tiers"]);
+            if (GETPOST("montant_cheque") != '') $object->montant_cheque = price2num(GETPOST("montant_cheque"), 'MT', 2);
+            if (GETPOST("montant_espece") != '') $object->montant_espece = price2num(GETPOST("montant_espece"), 'MT', 2);
+            if (GETPOST("montant_carte") != '')  $object->montant_carte = price2num(GETPOST("montant_carte"), 'MT', 2);
+            if (GETPOST("montant_tiers") != '')  $object->montant_tiers = price2num(GETPOST("montant_tiers"), 'MT', 2);
 
             $object->banque=trim(GETPOST("banque"));
             $object->num_cheque=trim(GETPOST("num_cheque"));
@@ -247,9 +247,9 @@ if (empty($reshook))
                 $error++;
                 $mesgarray[]=$langs->trans("ErrorFieldRequired",$langs->transnoentities("Amount"));
             }
-            if ((trim($_POST["montant_cheque"])!='' && price2num($_POST["montant_cheque"]) == 0)
-            || (trim($_POST["montant_espece"])!='' && price2num($_POST["montant_espece"]) == 0)
-            || (trim($_POST["montant_carte"])!='' && price2num($_POST["montant_carte"]) == 0))
+            if ((trim($_POST["montant_cheque"])!='' && price2num(GETPOST("montant_cheque")) == 0)
+            || (trim($_POST["montant_espece"])!='' && price2num(GETPOST("montant_espece")) == 0)
+            || (trim($_POST["montant_carte"])!='' && price2num(GETPOST("montant_carte")) == 0))
             {
                 $error++;
                 $mesgarray[]=$langs->trans("ErrorFieldRequired",$langs->transnoentities("Amount"));
@@ -262,7 +262,7 @@ if (empty($reshook))
     			if (! empty($_POST["montant_espece"]) && (! GETPOST('bankespeceto') || GETPOST('bankespeceto') < 0)) { $error++; $mesgarray[]=$langs->trans("ErrorFieldRequired",$langs->transnoentities("RecBank")); }
     		}
             // Other
-            if (trim($_POST["montant_cheque"])!='' && ! empty($conf->global->CABINETMED_BANK_PATIENT_REQUIRED) && ! trim($_POST["banque"]))
+            if (trim(GETPOST("montant_cheque")) != '' && ! empty($conf->global->CABINETMED_BANK_PATIENT_REQUIRED) && ! trim(GETPOST("banque")))
             {
                 $error++;
                 $mesgarray[]=$langs->trans("ErrorFieldRequired",$langs->transnoentities("ChequeBank"));
