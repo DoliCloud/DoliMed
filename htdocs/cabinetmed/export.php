@@ -133,240 +133,253 @@ else {
 }
 
 
+$model='excel2007';
 
 // Build file
 
-$model='excel2007';
+if ((float) DOL_VERSION < 12) {
 
-// Creation de la classe d'export du model ExportXXX
-$dir = DOL_DOCUMENT_ROOT . "/core/modules/export/";
-$file = "export_".$model.".modules.php";
-$classname = "Export".$model;
-require_once($dir.$file);
-$objmodel = new $classname($db);
+	// Creation de la classe d'export du model ExportXXX
+	$dir = DOL_DOCUMENT_ROOT . "/core/modules/export/";
+	$file = "export_".$model.".modules.php";
+	$classname = "Export".$model;
+	require_once($dir.$file);
+	$objmodel = new $classname($db);
 
-$dirname=$conf->cabinetmed->dir_temp;
-$filename='export_'.dol_sanitizeFileName($user->lastname).($year?'_'.$year:'').'.xlsx';
-$outputfile=$dirname."/".$filename;
-dol_mkdir($dirname);
-$outputlangs=dol_clone($langs);
+	$dirname=$conf->cabinetmed->dir_temp;
+	$filename='export_'.dol_sanitizeFileName($user->lastname).($year?'_'.$year:'').'.xlsx';
+	$outputfile=$dirname."/".$filename;
+	dol_mkdir($dirname);
+	$outputlangs=dol_clone($langs);
 
-$array_selected = array('date'=>1, 'cid'=>1, 'name'=>1);
-if ($conf->global->CABINETMED_ADDTYPECCAM)
-{
-    $array_selected['type']=1;
-    $array_selected['codageccam']=1;
+	$array_selected = array('date'=>1, 'cid'=>1, 'name'=>1);
+	if ($conf->global->CABINETMED_ADDTYPECCAM)
+	{
+	    $array_selected['type']=1;
+	    $array_selected['codageccam']=1;
+	}
+	$array_selected['montant_cheque']=1;
+	$array_selected['montant_carte']=1;
+	$array_selected['montant_espece']=1;
+	$array_selected['montant_tiers']=1;
+	$array_export_fields = array('cid'=>'ID', 'name'=>'Name', 'date'=>'Date', 'type'=>'CS', 'codageccam'=>'CCAM', 'montant_cheque'=>'Cheque', 'montant_carte'=>'CreditCard', 'montant_espece'=>'Cash', 'montant_tiers'=>'Other');
+	$objexport->array_export_fields[0]=$array_export_fields;
+	$objexport->array_export_alias[0]=$array_alias;
+
+	// Open file
+	$result=$objmodel->open_file($outputfile, $outputlangs);
+
+	// Genere en-tete
+	$objmodel->write_header($outputlangs);
+
+	$objmodel->workbook->disconnectWorksheets();
+
+	// Write records
+	$activesheet=0;
+	$olddate=0;
+	$oldym=0;
+	$nbact=0;
+	$nbccam=0;
+	$i=0;
+	foreach($consult as $rowid => $val)
+	{
+	    $objp=new stdClass();
+
+	    // Break on day, show total for day
+	    if ($i > 0 && ($olddate != $consult[$rowid]['date']))
+	    {
+	        $objp->date=$langs->trans("Total");
+	        $objp->type=$nbact;
+	        $objp->codageccam=$nbccam;
+	        $objp->montant_cheque=$encaiss_chq[$d]?$encaiss_chq[$d]:'';
+	        $objp->montant_espece=$encaiss_esp[$d]?$encaiss_esp[$d]:'';
+	        $objp->montant_tiers =$encaiss_tie[$d]?$encaiss_tie[$d]:'';
+	        $objp->montant_carte =$encaiss_car[$d]?$encaiss_car[$d]:'';
+
+	        $objmodel->workbook->getActiveSheet()->getStyle('A'.($i+1).':J'.($i+1))->getBorders()->applyFromArray(
+	        	array(
+	                 'allborders' => array(
+	                     'style' => PHPExcel_Style_Border::BORDER_THIN,
+	                     'color' => array('rgb' => '808080')
+	             ))
+	        	);
+	        $objmodel->workbook->getActiveSheet()->getStyle('A'.($i+1).':J'.($i+1))->getFont()->setBold(true);
+	        $objmodel->workbook->getActiveSheet()->getStyle('A'.($i+1).':J'.($i+1))->getFont()->getColor()->applyFromArray(array('rgb' => '303040'));
+	        $objmodel->workbook->getActiveSheet()->getStyle('A'.($i+1).':J'.($i+1))->getFill()->applyFromArray(
+	        	array(
+	                     'type'       => PHPExcel_Style_Fill::FILL_GRADIENT_LINEAR,
+	                     'rotation'   => 0,
+	                     'startcolor' => array('rgb' => 'CCCCCC'),
+	                     'endcolor'   => array('argb' => 'FFFFFFFF')
+	            )
+	        	);
+	        //$objmodel->workbook->getActiveSheet()->getStyle()->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+	        $objmodel->workbook->getActiveSheet()->getStyle('J'.($i+1))->getFont()->getColor()->applyFromArray(array('rgb' => '303070'));
+	        $objmodel->workbook->getActiveSheet()->SetCellValueByColumnAndRow(9, $i+1, $encaiss_chq[$d]+$encaiss_esp[$d]+$encaiss_tie[$d]+$encaiss_car[$d]);
+	        $objmodel->write_record($array_selected, $objp, $outputlangs, array());
+	        $i++;
+
+	        //$coord=$objmodel->workbook->getActiveSheet()->getCellByColumnAndRow(1, $i+1)->getCoordinate();
+	        //$this->workbook->getActiveSheet()->getStyle($coord)->getNumberFormat()->setFormatCode('yyyy-mm-dd');
+
+	        $objp=new stdClass();
+	        $objmodel->write_record(array(), $objp, $outputlangs, array());
+	        $i++;
+	        $objmodel->write_record(array(), $objp, $outputlangs, array());
+	        $i++;
+
+	        $nbact=0;
+	        $nbccam=0;
+	    }
+
+	    $olddate=$consult[$rowid]['date'];
+
+	    // Break on new month
+	    if ($oldym != $consult[$rowid]['ym'])
+	    {
+	        // Add new sheet
+	        $objWorksheet = $objmodel->workbook->createSheet();
+	        $objWorksheet->setTitle($langs->transnoentitiesnoconv("Month".sprintf("%02d",$consult[$rowid]['m'])).' '.$consult[$rowid]['y']);
+	        $objmodel->workbook->setActiveSheetIndex($activesheet);
+	        $activesheet++;
+	        $objmodel->workbook->getActiveSheet()->getSheetView()->setZoomScale(90);
+	        $objmodel->workbook->getActiveSheet()->getColumnDimension('A')->setWidth(12);
+	        $objmodel->workbook->getActiveSheet()->getColumnDimension('B')->setWidth(6);
+	        $objmodel->workbook->getActiveSheet()->getColumnDimension('C')->setWidth(32);
+	        $objmodel->workbook->getActiveSheet()->getColumnDimension('J')->setWidth(12);
+	        // Print definition
+	        $objmodel->workbook->getActiveSheet()->getPageSetup()->setOrientation(PHPExcel_Worksheet_PageSetup::ORIENTATION_PORTRAIT);
+	        $objmodel->workbook->getActiveSheet()->getPageSetup()->setFitToWidth(1);
+	        $objmodel->workbook->getActiveSheet()->getPageSetup()->setFitToHeight(0);
+
+	        $objmodel->row=0;
+
+	        $oldym=$consult[$rowid]['ym'];
+	        $i=0;
+	    }
+
+	    // Add title line
+	    if ($nbact == 0 && $nbccam == 0)
+	    {
+	        $objp->date=$langs->trans("Date");
+	        $objp->cid=$langs->trans("Id");
+	        $objp->name=$langs->trans("Name");
+	        $objp->fk_user=$langs->trans("Author");
+	        $objp->type=$langs->trans("Type");
+	        $objp->codageccam=$langs->trans("CCAM");
+	        $objp->montant_cheque=$langs->trans("Cheque");
+	        $objp->montant_espece=$langs->trans("Cash");
+	        $objp->montant_tiers =$langs->trans("Other");
+	        $objp->montant_carte =$langs->trans("CreditCard");
+	        $objmodel->workbook->getActiveSheet()->getStyle('A'.($i+1).':I'.($i+1))->getFont()->getColor()->applyFromArray(array('rgb' => '303040'));
+	        $objmodel->workbook->getActiveSheet()->getStyle('A'.($i+1).':I'.($i+1))->getBorders()->applyFromArray(
+	        	array(
+	                 'allborders' => array(
+	                     'style' => PHPExcel_Style_Border::BORDER_THIN,
+	                     'color' => array('rgb' => '808080')
+	             ))
+	        	);
+	        $objmodel->workbook->getActiveSheet()->getStyle('A'.($i+1).':I'.($i+1))->getFont()->setBold(true);
+	        $objmodel->workbook->getActiveSheet()->getStyle('A'.($i+1).':I'.($i+1))->getFill()->applyFromArray(
+	        	array(
+	                             'type'       => PHPExcel_Style_Fill::FILL_GRADIENT_LINEAR,
+	                             'rotation'   => 0,
+	                             'startcolor' => array('rgb' => 'EEEEEE'),
+	                             'endcolor'   => array('argb' => 'FFFFFFFF')
+	        	)
+	        	);
+	        $objmodel->write_record($array_selected, $objp, $outputlangs, array());
+	        $i++;
+	    }
+
+	    $objp->date=dol_print_date($consult[$rowid]['date'],'day');
+	    $objp->cid=$rowid;
+	    $objp->name=$consult[$rowid]['name'];
+	    $objp->fk_user=$consult[$rowid]['fk_user'];
+	    $objp->type=$consult[$rowid]['type'];
+	    $objp->codageccam=$consult[$rowid]['codageccam'];
+	    $objp->montant_cheque=$encaiss_chq[$rowid]?$encaiss_chq[$rowid]:'';
+	    $objp->montant_espece=$encaiss_esp[$rowid]?$encaiss_esp[$rowid]:'';
+	    $objp->montant_tiers =$encaiss_tie[$rowid]?$encaiss_tie[$rowid]:'';
+	    $objp->montant_carte =$encaiss_car[$rowid]?$encaiss_car[$rowid]:'';
+	    //f.rowid as cid, f.datecons, f.fk_user, f.typevisit, f.montant_cheque as montant_cheque, f.montant_espece as montant_espece, f.montant_tiers as montant_tiers, f.montant_carte as montant_carte
+
+	    if ($objp->type != 'CCAM') $nbact++;
+	    else $nbccam++;
+
+	    $objmodel->workbook->getActiveSheet()->getStyle('A'.($i+1).':I'.($i+1))->getBorders()->applyFromArray(
+	         array(
+	             'allborders' => array(
+	                 'style' => PHPExcel_Style_Border::BORDER_THIN,
+	                 'color' => array(
+	                     'rgb' => '808080'
+	                 )
+	             )
+	         )
+	    );
+	    $objmodel->write_record($array_selected, $objp, $outputlangs, array());
+	    $i++;
+
+	    $d=dol_print_date($consult[$rowid]['date'],'%Y-%m-%d');
+	    $dm=dol_print_date($consult[$rowid]['date'],'%Y-%m');
+	}
+
+	$objp=new stdClass();
+
+	// Break on day, show total for day
+	if ($i != 0)
+	{
+	    $objp->date=$langs->trans("Total");
+	    $objp->type=$nbact;
+	    $objp->codageccam=$nbccam;
+	    $objp->montant_cheque=$encaiss_chq[$d]?$encaiss_chq[$d]:'';
+	    $objp->montant_espece=$encaiss_esp[$d]?$encaiss_esp[$d]:'';
+	    $objp->montant_tiers =$encaiss_tie[$d]?$encaiss_tie[$d]:'';
+	    $objp->montant_carte =$encaiss_car[$d]?$encaiss_car[$d]:'';
+
+	        $objmodel->workbook->getActiveSheet()->getStyle('A'.($i+1).':J'.($i+1))->getBorders()->applyFromArray(
+	        	array(
+	                 'allborders' => array(
+	                     'style' => PHPExcel_Style_Border::BORDER_THIN,
+	                     'color' => array('rgb' => '808080')
+	             ))
+	        	);
+	        $objmodel->workbook->getActiveSheet()->getStyle('A'.($i+1).':J'.($i+1))->getFont()->setBold(true);
+	        $objmodel->workbook->getActiveSheet()->getStyle('A'.($i+1).':J'.($i+1))->getFont()->getColor()->applyFromArray(array('rgb' => '303040'));
+	        $objmodel->workbook->getActiveSheet()->getStyle('A'.($i+1).':J'.($i+1))->getFill()->applyFromArray(
+	        	array(
+	                     'type'       => PHPExcel_Style_Fill::FILL_GRADIENT_LINEAR,
+	                     'rotation'   => 0,
+	                     'startcolor' => array('rgb' => 'CCCCCC'),
+	                     'endcolor'   => array('argb' => 'FFFFFFFF')
+	            )
+	        	);
+	        //$objmodel->workbook->getActiveSheet()->getStyle($i+1)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+	        $objmodel->workbook->getActiveSheet()->getStyle('J'.($i+1))->getFont()->getColor()->applyFromArray(array('rgb' => '303070'));
+	        $objmodel->workbook->getActiveSheet()->SetCellValueByColumnAndRow(9, $i+1, $encaiss_chq[$d]+$encaiss_esp[$d]+$encaiss_tie[$d]+$encaiss_car[$d]);
+	        $objmodel->write_record($array_selected, $objp, $outputlangs, array());
+	}
+
+	//$objmodel->workbook->setActiveSheetIndex(0);
+	//$objmodel->workbook->getActiveSheet()->setSheetState(PHPExcel_Worksheet::SHEETSTATE_VERYHIDDEN);
+
+	// Genere en-tete
+	$objmodel->write_footer($outputlangs);
+
+	// Close file
+	$objmodel->close_file();
+} else {
+	if ((float) DOL_VERSION < 13) {
+		$model = 'excel2007new';
+	}
+
+	// TODO Repeat code if DOL_VERSION < 12 but using the new library.
+
+
+
+
+
 }
-$array_selected['montant_cheque']=1;
-$array_selected['montant_carte']=1;
-$array_selected['montant_espece']=1;
-$array_selected['montant_tiers']=1;
-$array_export_fields = array('cid'=>'ID', 'name'=>'Name', 'date'=>'Date', 'type'=>'CS', 'codageccam'=>'CCAM', 'montant_cheque'=>'Cheque', 'montant_carte'=>'CreditCard', 'montant_espece'=>'Cash', 'montant_tiers'=>'Other');
-$objexport->array_export_fields[0]=$array_export_fields;
-$objexport->array_export_alias[0]=$array_alias;
-
-// Open file
-$result=$objmodel->open_file($outputfile, $outputlangs);
-
-// Genere en-tete
-$objmodel->write_header($outputlangs);
-
-$objmodel->workbook->disconnectWorksheets();
-
-// Write records
-$activesheet=0;
-$olddate=0;
-$oldym=0;
-$nbact=0;
-$nbccam=0;
-$i=0;
-foreach($consult as $rowid => $val)
-{
-    $objp=new stdClass();
-
-    // Break on day, show total for day
-    if ($i > 0 && ($olddate != $consult[$rowid]['date']))
-    {
-        $objp->date=$langs->trans("Total");
-        $objp->type=$nbact;
-        $objp->codageccam=$nbccam;
-        $objp->montant_cheque=$encaiss_chq[$d]?$encaiss_chq[$d]:'';
-        $objp->montant_espece=$encaiss_esp[$d]?$encaiss_esp[$d]:'';
-        $objp->montant_tiers =$encaiss_tie[$d]?$encaiss_tie[$d]:'';
-        $objp->montant_carte =$encaiss_car[$d]?$encaiss_car[$d]:'';
-
-        $objmodel->workbook->getActiveSheet()->getStyle('A'.($i+1).':J'.($i+1))->getBorders()->applyFromArray(
-        	array(
-                 'allborders' => array(
-                     'style' => PHPExcel_Style_Border::BORDER_THIN,
-                     'color' => array('rgb' => '808080')
-             ))
-        	);
-        $objmodel->workbook->getActiveSheet()->getStyle('A'.($i+1).':J'.($i+1))->getFont()->setBold(true);
-        $objmodel->workbook->getActiveSheet()->getStyle('A'.($i+1).':J'.($i+1))->getFont()->getColor()->applyFromArray(array('rgb' => '303040'));
-        $objmodel->workbook->getActiveSheet()->getStyle('A'.($i+1).':J'.($i+1))->getFill()->applyFromArray(
-        	array(
-                     'type'       => PHPExcel_Style_Fill::FILL_GRADIENT_LINEAR,
-                     'rotation'   => 0,
-                     'startcolor' => array('rgb' => 'CCCCCC'),
-                     'endcolor'   => array('argb' => 'FFFFFFFF')
-            )
-        	);
-        //$objmodel->workbook->getActiveSheet()->getStyle()->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-        $objmodel->workbook->getActiveSheet()->getStyle('J'.($i+1))->getFont()->getColor()->applyFromArray(array('rgb' => '303070'));
-        $objmodel->workbook->getActiveSheet()->SetCellValueByColumnAndRow(9, $i+1, $encaiss_chq[$d]+$encaiss_esp[$d]+$encaiss_tie[$d]+$encaiss_car[$d]);
-        $objmodel->write_record($array_selected, $objp, $outputlangs, array());
-        $i++;
-
-        //$coord=$objmodel->workbook->getActiveSheet()->getCellByColumnAndRow(1, $i+1)->getCoordinate();
-        //$this->workbook->getActiveSheet()->getStyle($coord)->getNumberFormat()->setFormatCode('yyyy-mm-dd');
-
-        $objp=new stdClass();
-        $objmodel->write_record(array(), $objp, $outputlangs, array());
-        $i++;
-        $objmodel->write_record(array(), $objp, $outputlangs, array());
-        $i++;
-
-        $nbact=0;
-        $nbccam=0;
-    }
-
-    $olddate=$consult[$rowid]['date'];
-
-    // Break on new month
-    if ($oldym != $consult[$rowid]['ym'])
-    {
-        // Add new sheet
-        $objWorksheet = $objmodel->workbook->createSheet();
-        $objWorksheet->setTitle($langs->transnoentitiesnoconv("Month".sprintf("%02d",$consult[$rowid]['m'])).' '.$consult[$rowid]['y']);
-        $objmodel->workbook->setActiveSheetIndex($activesheet);
-        $activesheet++;
-        $objmodel->workbook->getActiveSheet()->getSheetView()->setZoomScale(90);
-        $objmodel->workbook->getActiveSheet()->getColumnDimension('A')->setWidth(12);
-        $objmodel->workbook->getActiveSheet()->getColumnDimension('B')->setWidth(6);
-        $objmodel->workbook->getActiveSheet()->getColumnDimension('C')->setWidth(32);
-        $objmodel->workbook->getActiveSheet()->getColumnDimension('J')->setWidth(12);
-        // Print definition
-        $objmodel->workbook->getActiveSheet()->getPageSetup()->setOrientation(PHPExcel_Worksheet_PageSetup::ORIENTATION_PORTRAIT);
-        $objmodel->workbook->getActiveSheet()->getPageSetup()->setFitToWidth(1);
-        $objmodel->workbook->getActiveSheet()->getPageSetup()->setFitToHeight(0);
-
-        $objmodel->row=0;
-
-        $oldym=$consult[$rowid]['ym'];
-        $i=0;
-    }
-
-    // Add title line
-    if ($nbact == 0 && $nbccam == 0)
-    {
-        $objp->date=$langs->trans("Date");
-        $objp->cid=$langs->trans("Id");
-        $objp->name=$langs->trans("Name");
-        $objp->fk_user=$langs->trans("Author");
-        $objp->type=$langs->trans("Type");
-        $objp->codageccam=$langs->trans("CCAM");
-        $objp->montant_cheque=$langs->trans("Cheque");
-        $objp->montant_espece=$langs->trans("Cash");
-        $objp->montant_tiers =$langs->trans("Other");
-        $objp->montant_carte =$langs->trans("CreditCard");
-        $objmodel->workbook->getActiveSheet()->getStyle('A'.($i+1).':I'.($i+1))->getFont()->getColor()->applyFromArray(array('rgb' => '303040'));
-        $objmodel->workbook->getActiveSheet()->getStyle('A'.($i+1).':I'.($i+1))->getBorders()->applyFromArray(
-        	array(
-                 'allborders' => array(
-                     'style' => PHPExcel_Style_Border::BORDER_THIN,
-                     'color' => array('rgb' => '808080')
-             ))
-        	);
-        $objmodel->workbook->getActiveSheet()->getStyle('A'.($i+1).':I'.($i+1))->getFont()->setBold(true);
-        $objmodel->workbook->getActiveSheet()->getStyle('A'.($i+1).':I'.($i+1))->getFill()->applyFromArray(
-        	array(
-                             'type'       => PHPExcel_Style_Fill::FILL_GRADIENT_LINEAR,
-                             'rotation'   => 0,
-                             'startcolor' => array('rgb' => 'EEEEEE'),
-                             'endcolor'   => array('argb' => 'FFFFFFFF')
-        	)
-        	);
-        $objmodel->write_record($array_selected, $objp, $outputlangs, array());
-        $i++;
-    }
-
-    $objp->date=dol_print_date($consult[$rowid]['date'],'day');
-    $objp->cid=$rowid;
-    $objp->name=$consult[$rowid]['name'];
-    $objp->fk_user=$consult[$rowid]['fk_user'];
-    $objp->type=$consult[$rowid]['type'];
-    $objp->codageccam=$consult[$rowid]['codageccam'];
-    $objp->montant_cheque=$encaiss_chq[$rowid]?$encaiss_chq[$rowid]:'';
-    $objp->montant_espece=$encaiss_esp[$rowid]?$encaiss_esp[$rowid]:'';
-    $objp->montant_tiers =$encaiss_tie[$rowid]?$encaiss_tie[$rowid]:'';
-    $objp->montant_carte =$encaiss_car[$rowid]?$encaiss_car[$rowid]:'';
-    //f.rowid as cid, f.datecons, f.fk_user, f.typevisit, f.montant_cheque as montant_cheque, f.montant_espece as montant_espece, f.montant_tiers as montant_tiers, f.montant_carte as montant_carte
-
-    if ($objp->type != 'CCAM') $nbact++;
-    else $nbccam++;
-
-    $objmodel->workbook->getActiveSheet()->getStyle('A'.($i+1).':I'.($i+1))->getBorders()->applyFromArray(
-         array(
-             'allborders' => array(
-                 'style' => PHPExcel_Style_Border::BORDER_THIN,
-                 'color' => array(
-                     'rgb' => '808080'
-                 )
-             )
-         )
-    );
-    $objmodel->write_record($array_selected, $objp, $outputlangs, array());
-    $i++;
-
-    $d=dol_print_date($consult[$rowid]['date'],'%Y-%m-%d');
-    $dm=dol_print_date($consult[$rowid]['date'],'%Y-%m');
-}
-
-$objp=new stdClass();
-
-// Break on day, show total for day
-if ($i != 0)
-{
-    $objp->date=$langs->trans("Total");
-    $objp->type=$nbact;
-    $objp->codageccam=$nbccam;
-    $objp->montant_cheque=$encaiss_chq[$d]?$encaiss_chq[$d]:'';
-    $objp->montant_espece=$encaiss_esp[$d]?$encaiss_esp[$d]:'';
-    $objp->montant_tiers =$encaiss_tie[$d]?$encaiss_tie[$d]:'';
-    $objp->montant_carte =$encaiss_car[$d]?$encaiss_car[$d]:'';
-
-        $objmodel->workbook->getActiveSheet()->getStyle('A'.($i+1).':J'.($i+1))->getBorders()->applyFromArray(
-        	array(
-                 'allborders' => array(
-                     'style' => PHPExcel_Style_Border::BORDER_THIN,
-                     'color' => array('rgb' => '808080')
-             ))
-        	);
-        $objmodel->workbook->getActiveSheet()->getStyle('A'.($i+1).':J'.($i+1))->getFont()->setBold(true);
-        $objmodel->workbook->getActiveSheet()->getStyle('A'.($i+1).':J'.($i+1))->getFont()->getColor()->applyFromArray(array('rgb' => '303040'));
-        $objmodel->workbook->getActiveSheet()->getStyle('A'.($i+1).':J'.($i+1))->getFill()->applyFromArray(
-        	array(
-                     'type'       => PHPExcel_Style_Fill::FILL_GRADIENT_LINEAR,
-                     'rotation'   => 0,
-                     'startcolor' => array('rgb' => 'CCCCCC'),
-                     'endcolor'   => array('argb' => 'FFFFFFFF')
-            )
-        	);
-        //$objmodel->workbook->getActiveSheet()->getStyle($i+1)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-        $objmodel->workbook->getActiveSheet()->getStyle('J'.($i+1))->getFont()->getColor()->applyFromArray(array('rgb' => '303070'));
-        $objmodel->workbook->getActiveSheet()->SetCellValueByColumnAndRow(9, $i+1, $encaiss_chq[$d]+$encaiss_esp[$d]+$encaiss_tie[$d]+$encaiss_car[$d]);
-        $objmodel->write_record($array_selected, $objp, $outputlangs, array());
-}
-
-//$objmodel->workbook->setActiveSheetIndex(0);
-//$objmodel->workbook->getActiveSheet()->setSheetState(PHPExcel_Worksheet::SHEETSTATE_VERYHIDDEN);
-
-// Genere en-tete
-$objmodel->write_footer($outputlangs);
-
-// Close file
-$objmodel->close_file();
 
 
 $db->close();
