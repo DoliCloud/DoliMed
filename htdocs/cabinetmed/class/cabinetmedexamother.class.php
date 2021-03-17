@@ -157,7 +157,7 @@ class CabinetmedExamOther // extends CommonObject
 		$sql.= " t.concsec,";
 		$sql.= " t.tms";
         $sql.= " FROM ".MAIN_DB_PREFIX."cabinetmed_examaut as t";
-        $sql.= " WHERE t.rowid = ".$id;
+        $sql.= " WHERE t.rowid = ".((int) $id);
 
     	dol_syslog(get_class($this)."::fetch sql=".$sql, LOG_DEBUG);
         $resql=$this->db->query($sql);
@@ -230,7 +230,7 @@ class CabinetmedExamOther // extends CommonObject
 		$sql.= " tms=".(dol_strlen($this->tms)!=0 ? "'".$this->db->idate($this->tms)."'" : 'null')."";
 
 
-        $sql.= " WHERE rowid=".$this->id;
+        $sql.= " WHERE rowid=".((int) $this->id);
 
 		$this->db->begin();
 
@@ -270,7 +270,7 @@ class CabinetmedExamOther // extends CommonObject
 		$error=0;
 
 		$sql = "DELETE FROM ".MAIN_DB_PREFIX."cabinetmed_examaut";
-		$sql.= " WHERE rowid=".$this->id;
+		$sql.= " WHERE rowid=".((int) $this->id);
 
 		$this->db->begin();
 

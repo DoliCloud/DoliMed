@@ -219,7 +219,7 @@ class CabinetmedExamBio // extends CommonObject
 
 
         $sql.= " FROM ".MAIN_DB_PREFIX."cabinetmed_exambio as t";
-        $sql.= " WHERE t.rowid = ".$id;
+        $sql.= " WHERE t.rowid = ".((int) $id);
 
     	dol_syslog(get_class($this)."::fetch sql=".$sql, LOG_DEBUG);
         $resql=$this->db->query($sql);
@@ -322,7 +322,7 @@ class CabinetmedExamBio // extends CommonObject
 		$sql.= " suivisa_dma=".(isset($this->suivisa_dma) && $this->suivisa_dma!=''?$this->suivisa_dma:"null").",";
 		$sql.= " suivisa_basdai=".(!empty($this->suivisa_basdai)?$this->suivisa_basdai:"null").",";
 		$sql.= " tms=".(dol_strlen($this->tms)!=0 ? "'".$this->db->idate($this->tms)."'" : 'null')."";
-        $sql.= " WHERE rowid=".$this->id;
+        $sql.= " WHERE rowid=".((int) $this->id);
 
 		$this->db->begin();
 
@@ -362,7 +362,7 @@ class CabinetmedExamBio // extends CommonObject
 		$error=0;
 
 		$sql = "DELETE FROM ".MAIN_DB_PREFIX."cabinetmed_exambio";
-		$sql.= " WHERE rowid=".$this->id;
+		$sql.= " WHERE rowid=".((int) $this->id);
 
 		$this->db->begin();
 

@@ -262,7 +262,7 @@ class CabinetmedCons extends CommonObject
 		$sql.= " FROM ".MAIN_DB_PREFIX."cabinetmed_cons as t";
 		$sql.= " LEFT JOIN ".MAIN_DB_PREFIX."bank_url as bu ON bu.url_id = t.rowid AND bu.type='consultation'";
 		$sql.= " LEFT JOIN ".MAIN_DB_PREFIX."bank as b ON b.rowid = bu.fk_bank";
-		$sql.= " WHERE t.rowid = ".$id;
+		$sql.= " WHERE t.rowid = ".((int) $id);
 
 		dol_syslog(get_class($this)."::fetch sql=".$sql, LOG_DEBUG);
 		$resql=$this->db->query($sql);
@@ -423,7 +423,7 @@ class CabinetmedCons extends CommonObject
 		// date_c must not be edited by an update
 		// tms is modified automatically
 
-		$sql.= " WHERE rowid=".$this->id;
+		$sql.= " WHERE rowid=".((int) $this->id);
 
 		$this->db->begin();
 
@@ -506,7 +506,7 @@ class CabinetmedCons extends CommonObject
 		}
 
 		$sql = "DELETE FROM ".MAIN_DB_PREFIX."cabinetmed_cons";
-		$sql.= " WHERE rowid=".$this->id;
+		$sql.= " WHERE rowid=".((int) $this->id);
 
 		dol_syslog(get_class($this)."::delete sql=".$sql);
 		$resql = $this->db->query($sql);
