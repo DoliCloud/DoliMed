@@ -181,7 +181,7 @@ print_liste_field_titre($langs->trans('Name'),$_SERVER['PHP_SELF'],'s.nom','',$p
 print_liste_field_titre($langs->trans('CustomerCode'),$_SERVER['PHP_SELF'],'s.code_client','',$param,'',$sortfield,$sortorder);
 print_liste_field_titre($langs->trans('Zip'),$_SERVER['PHP_SELF'],'s.zip','',$param,'',$sortfield,$sortorder);
 print_liste_field_titre($langs->trans('Town'),$_SERVER['PHP_SELF'],'s.town','',$param,'',$sortfield,$sortorder);
-print_liste_field_titre($langs->trans('DateToBirth'),$_SERVER['PHP_SELF'],'','',$param,'',$sortfield,$sortorder);
+print_liste_field_titre($langs->trans(((float) DOL_VERSION < 13) ? 'DateToBirth' : 'DateOfBirth'),$_SERVER['PHP_SELF'],'','',$param,'',$sortfield,$sortorder);
 print_liste_field_titre('');
 print '</tr>';
 

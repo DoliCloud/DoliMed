@@ -333,7 +333,7 @@ print '</td>';
 print '</tr>';
 print '<tr>';
 // Date ot birth
-$idprof=$langs->trans('DateToBirth');
+$idprof=$langs->trans(((float) DOL_VERSION < 13) ? 'DateToBirth' : 'DateOfBirth'));
 print '<td>'.$idprof.'</td><td colspan="3">';
 print '<input type="text" name="idprof3" size="18" maxlength="32" value="'.$object->idprof3.'"> ('.$conf->format_date_short_java.')';
 print '</td>';
