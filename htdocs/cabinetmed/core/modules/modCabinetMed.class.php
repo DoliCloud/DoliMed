@@ -619,7 +619,7 @@ class modCabinetMed extends DolibarrModules
 		$result1=$extrafields->addExtraField('height', $langs->trans("HeightPeople"), 'varchar', 1, 128, 'thirdparty');
 		$result2=$extrafields->addExtraField('weight', $langs->trans("WeigthPeople"), 'varchar', 2, 128, 'thirdparty');
 		$result3=$extrafields->addExtraField('prof', $langs->trans("Profession"), 'varchar', 3, 128, 'thirdparty');
-		$result4=$extrafields->addExtraField('birthdate', $langs->trans(((float) DOL_VERSION < 13) ? 'DateToBirth' : 'DateOfBirth')), 'date', 4, 0, 'thirdparty');
+		$result4=$extrafields->addExtraField('birthdate', $langs->trans(((float) DOL_VERSION < 13) ? 'DateToBirth' : 'DateOfBirth'), 'date', 4, 0, 'thirdparty');
 
         return $this->_load_tables('/cabinetmed/sql/');
     }
