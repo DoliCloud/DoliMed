@@ -778,7 +778,7 @@ if (empty($reshook))
                 {
 
                 	$sql = "UPDATE ".MAIN_DB_PREFIX."adherent";
-                	$sql.= " SET fk_soc = NULL WHERE fk_soc = " . $id;
+                	$sql.= " SET fk_soc = NULL WHERE fk_soc = ".((int) $id);
                    	if (! $object->db->query($sql))
                 	{
                 		$error++;

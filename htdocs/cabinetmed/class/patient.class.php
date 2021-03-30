@@ -399,7 +399,7 @@ class Patient extends Societe
         $sql .= ' LEFT JOIN '.MAIN_DB_PREFIX.'c_typent as te ON s.fk_typent = te.id';
 
         $sql .= ' WHERE s.entity IN ('.getEntity($this->element).')';
-        if ($rowid)     $sql .= ' AND s.rowid = '.$rowid;
+        if ($rowid)     $sql .= ' AND s.rowid = '.((int) $rowid);
         if ($ref)       $sql .= " AND s.nom = '".$this->db->escape($ref)."'";
         if ($ref_alias) $sql .= " AND s.nom_alias = '".$this->db->escape($ref_alias)."'";
         if ($ref_ext)   $sql .= " AND s.ref_ext = '".$this->db->escape($ref_ext)."'";

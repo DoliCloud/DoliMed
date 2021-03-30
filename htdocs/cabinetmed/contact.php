@@ -52,6 +52,8 @@ $langs->load("orders");
 $langs->load("sendings");
 $langs->load("companies");
 
+$action = GETPOST('action');
+
 // Security check
 $socid = GETPOST('socid','int');
 if ($user->societe_id) $socid=$user->societe_id;
@@ -62,9 +64,9 @@ $result = restrictedArea($user, 'societe', $socid);
  * Add new contact
  */
 
-if ($_POST["action"] == 'addcontact' && $user->rights->societe->creer)
+if ($action == 'addcontact' && $user->rights->societe->creer)
 {
-	if ($_POST["contactid"] && $_POST["type"])
+	if (GETPOST("contactid", "int") && GETPOST("type"))
 	{
 		$result = 0;
 		$societe = new Societe($db);
@@ -72,7 +74,7 @@ if ($_POST["action"] == 'addcontact' && $user->rights->societe->creer)
 
 	    if ($result > 0 && $socid > 0)
 	    {
-	  		$result = $societe->add_contact($_POST["contactid"], $_POST["type"], $_POST["source"]);
+	  		$result = $societe->add_contact(GETPOST("contactid", 'int'), GETPOST("type"), GETPOST("source"));
 	    }
 
 		if ($result >= 0)
@@ -96,12 +98,12 @@ if ($_POST["action"] == 'addcontact' && $user->rights->societe->creer)
 }
 
 // bascule du statut d'un contact
-if ($_GET["action"] == 'swapstatut' && $user->rights->societe->creer)
+if ($action == 'swapstatut' && $user->rights->societe->creer)
 {
 	$object = new Societe($db);
 	if ($object->fetch(GETPOST('facid','int')))
 	{
-	    $result=$object->swapContactStatus(GETPOST('ligne'));
+	    $result=$object->swapContactStatus(GETPOST('ligne', 'int'));
 	}
 	else
 	{
@@ -110,11 +112,11 @@ if ($_GET["action"] == 'swapstatut' && $user->rights->societe->creer)
 }
 
 // Efface un contact
-if ($_GET["action"] == 'deleteline' && $user->rights->societe->creer)
+if ($action == 'deleteline' && $user->rights->societe->creer)
 {
 	$societe = new Societe($db);
 	$societe->fetch($socid);
-	$result = $societe->delete_contact($_GET["lineid"]);
+	$result = $societe->delete_contact(GETPOST("lineid", 'int'));
 
 	if ($result >= 0)
 	{
