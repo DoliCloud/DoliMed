@@ -27,32 +27,31 @@
 // Load Dolibarr environment
 $res=0;
 // Try main.inc.php into web root known defined into CONTEXT_DOCUMENT_ROOT (not always defined)
-if (! $res && ! empty($_SERVER["CONTEXT_DOCUMENT_ROOT"])) $res=@include($_SERVER["CONTEXT_DOCUMENT_ROOT"]."/main.inc.php");
+if (! $res && ! empty($_SERVER["CONTEXT_DOCUMENT_ROOT"])) $res=@include $_SERVER["CONTEXT_DOCUMENT_ROOT"]."/main.inc.php";
 // Try main.inc.php into web root detected using web root caluclated from SCRIPT_FILENAME
 $tmp=empty($_SERVER['SCRIPT_FILENAME'])?'':$_SERVER['SCRIPT_FILENAME'];$tmp2=realpath(__FILE__); $i=strlen($tmp)-1; $j=strlen($tmp2)-1;
-while($i > 0 && $j > 0 && isset($tmp[$i]) && isset($tmp2[$j]) && $tmp[$i]==$tmp2[$j]) { $i--; $j--; }
-if (! $res && $i > 0 && file_exists(substr($tmp, 0, ($i+1))."/main.inc.php")) $res=@include(substr($tmp, 0, ($i+1))."/main.inc.php");
-if (! $res && $i > 0 && file_exists(dirname(substr($tmp, 0, ($i+1)))."/main.inc.php")) $res=@include(dirname(substr($tmp, 0, ($i+1)))."/main.inc.php");
+while ($i > 0 && $j > 0 && isset($tmp[$i]) && isset($tmp2[$j]) && $tmp[$i]==$tmp2[$j]) { $i--; $j--; }
+if (! $res && $i > 0 && file_exists(substr($tmp, 0, ($i+1))."/main.inc.php")) $res=@include substr($tmp, 0, ($i+1))."/main.inc.php";
+if (! $res && $i > 0 && file_exists(dirname(substr($tmp, 0, ($i+1)))."/main.inc.php")) $res=@include dirname(substr($tmp, 0, ($i+1)))."/main.inc.php";
 // Try main.inc.php using relative path
-if (! $res && file_exists("../main.inc.php")) $res=@include("../main.inc.php");
-if (! $res && file_exists("../../main.inc.php")) $res=@include("../../main.inc.php");
-if (! $res && file_exists("../../../main.inc.php")) $res=@include("../../../main.inc.php");
+if (! $res && file_exists("../main.inc.php")) $res=@include "../main.inc.php";
+if (! $res && file_exists("../../main.inc.php")) $res=@include "../../main.inc.php";
+if (! $res && file_exists("../../../main.inc.php")) $res=@include "../../../main.inc.php";
 if (! $res) die("Include of main fails");
 require_once DOL_DOCUMENT_ROOT.'/core/class/dolgraph.class.php';
 dol_include_once("/cabinetmed/lib/cabinetmed.lib.php");
 dol_include_once("/cabinetmed/class/cabinetmedcons.class.php");
 dol_include_once("/cabinetmed/class/cabinetmedstats.class.php");
 
-$WIDTH=DolGraph::getDefaultGraphSizeForStats('width',500);
-$HEIGHT=DolGraph::getDefaultGraphSizeForStats('height',200);
+$WIDTH=DolGraph::getDefaultGraphSizeForStats('width', 500);
+$HEIGHT=DolGraph::getDefaultGraphSizeForStats('height', 200);
 
-$userid=GETPOST('userid','int'); if ($userid < 0) $userid=0;
-$socid=GETPOST('socid','int'); if ($socid < 0) $socid=0;
+$userid=GETPOST('userid', 'int'); if ($userid < 0) $userid=0;
+$socid=GETPOST('socid', 'int'); if ($socid < 0) $socid=0;
 // Security check
-if ($user->societe_id > 0)
-{
-    $action = '';
-    $socid = $user->societe_id;
+if ($user->societe_id > 0) {
+	$action = '';
+	$socid = $user->societe_id;
 }
 
 $year = strftime("%Y", time());
@@ -83,13 +82,13 @@ print_fiche_titre($title, $mesg);
 
 dol_mkdir($dir);
 
-$morefilter=($codageccam?" AND codageccam LIKE '".$db->escape(preg_replace('/\*/','%',$codageccam))."'":'');
+$morefilter=($codageccam?" AND codageccam LIKE '".$db->escape(preg_replace('/\*/', '%', $codageccam))."'":'');
 if (! empty($typevisit) && $typevisit != '-1') $morefilter.=" AND typevisit = '".$typevisit."'";
 $stats = new CabinetMedStats($db, $socid, $mode, ($userid>0?$userid:0), $morefilter);
 
 // Build graphic number of object
 // $data = array(array('Lib',val1,val2,val3),...)
-$data = $stats->getNbByMonthWithPrevYear($endyear,$startyear);
+$data = $stats->getNbByMonthWithPrevYear($endyear, $startyear);
 //var_dump($data);
 
 $filenamenb = $dir."/outcomesnbinyear-".$year.".png";
@@ -97,12 +96,10 @@ $fileurlnb = DOL_URL_ROOT.'/viewimage.php?modulepart=cabinetmed_temp&amp;file=ou
 
 $px1 = new DolGraph();
 $mesg = $px1->isGraphKo();
-if (! $mesg)
-{
+if (! $mesg) {
 	$px1->SetData($data);
 	$i=$startyear;
-	while ($i <= $endyear)
-	{
+	while ($i <= $endyear) {
 		$legend[]=$i;
 		$i++;
 	}
@@ -116,11 +113,11 @@ if (! $mesg)
 	$px1->mode='depth';
 	$px1->SetTitle($langs->trans("NumberConsultByMonth"));
 
-	$px1->draw($filenamenb,$fileurlnb);
+	$px1->draw($filenamenb, $fileurlnb);
 }
 
 // Build graphic amount of object
-$data = $stats->getAmountByMonthWithPrevYear($endyear,$startyear);
+$data = $stats->getAmountByMonthWithPrevYear($endyear, $startyear);
 //var_dump($data);
 // $data = array(array('Lib',val1,val2,val3),...)
 
@@ -129,18 +126,16 @@ $fileurlamount = DOL_URL_ROOT.'/viewimage.php?modulepart=cabinetmed_temp&amp;fil
 
 $px2 = new DolGraph();
 $mesg = $px2->isGraphKo();
-if (! $mesg)
-{
+if (! $mesg) {
 	$px2->SetData($data);
 	$i=$startyear;
-	while ($i <= $endyear)
-	{
+	while ($i <= $endyear) {
 		$legend[]=$i;
 		$i++;
 	}
 	$px2->SetLegend($legend);
 	$px2->SetMaxValue($px2->GetCeilMaxValue());
-	$px2->SetMinValue(min(0,$px2->GetFloorMinValue()));
+	$px2->SetMinValue(min(0, $px2->GetFloorMinValue()));
 	$px2->SetWidth($WIDTH);
 	$px2->SetHeight($HEIGHT);
 	$px2->SetYLabel($langs->trans("Amount"));
@@ -149,7 +144,7 @@ if (! $mesg)
 	$px2->mode='depth';
 	$px2->SetTitle($langs->trans("AmountByMonth"));
 
-	$px2->draw($filenameamount,$fileurlamount);
+	$px2->draw($filenameamount, $fileurlamount);
 }
 
 
@@ -200,11 +195,9 @@ print '<td class="center">'.$langs->trans("AmountAverage").'</td>';
 print '</tr>';
 
 $oldyear=0;
-foreach ($data as $val)
-{
+foreach ($data as $val) {
 	$year = $val['year'];
-	while ($year && $oldyear > $year+1)
-	{	// If we have empty year
+	while ($year && $oldyear > $year+1) {	// If we have empty year
 		$oldyear--;
 		print '<tr height="24">';
 		print '<td class="center">'.$oldyear.'</td>';
@@ -220,8 +213,8 @@ foreach ($data as $val)
 	//print '</a>';
 	print '</td>';
 	print '<td align="right">'.$val['nb'].'</td>';
-	print '<td align="right">'.price(price2num($val['total'],'MT'),1).'</td>';
-	print '<td align="right">'.price(price2num($val['avg'],'MT'),1).'</td>';
+	print '<td align="right">'.price(price2num($val['total'], 'MT'), 1).'</td>';
+	print '<td align="right">'.price(price2num($val['avg'], 'MT'), 1).'</td>';
 	print '</tr>';
 	$oldyear=$year;
 }
@@ -234,8 +227,7 @@ print '</div><div class="fichetwothirdright"><div class="ficheaddleft">';
 
 // Show graphs
 print '<table class="border" width="100%"><tr class="pair nohover"><td align="center">';
-if ($mesg) { print $mesg; }
-else {
+if ($mesg) { print $mesg; } else {
 	print $px1->show();
 	print "<br>\n";
 	print $px2->show();

@@ -27,19 +27,19 @@
 // Load Dolibarr environment
 $res=0;
 // Try main.inc.php into web root known defined into CONTEXT_DOCUMENT_ROOT (not always defined)
-if (! $res && ! empty($_SERVER["CONTEXT_DOCUMENT_ROOT"])) $res=@include($_SERVER["CONTEXT_DOCUMENT_ROOT"]."/main.inc.php");
+if (! $res && ! empty($_SERVER["CONTEXT_DOCUMENT_ROOT"])) $res=@include $_SERVER["CONTEXT_DOCUMENT_ROOT"]."/main.inc.php";
 // Try main.inc.php into web root detected using web root caluclated from SCRIPT_FILENAME
 $tmp=empty($_SERVER['SCRIPT_FILENAME'])?'':$_SERVER['SCRIPT_FILENAME'];$tmp2=realpath(__FILE__); $i=strlen($tmp)-1; $j=strlen($tmp2)-1;
-while($i > 0 && $j > 0 && isset($tmp[$i]) && isset($tmp2[$j]) && $tmp[$i]==$tmp2[$j]) { $i--; $j--; }
-if (! $res && $i > 0 && file_exists(substr($tmp, 0, ($i+1))."/main.inc.php")) $res=@include(substr($tmp, 0, ($i+1))."/main.inc.php");
-if (! $res && $i > 0 && file_exists(dirname(substr($tmp, 0, ($i+1)))."/main.inc.php")) $res=@include(dirname(substr($tmp, 0, ($i+1)))."/main.inc.php");
+while ($i > 0 && $j > 0 && isset($tmp[$i]) && isset($tmp2[$j]) && $tmp[$i]==$tmp2[$j]) { $i--; $j--; }
+if (! $res && $i > 0 && file_exists(substr($tmp, 0, ($i+1))."/main.inc.php")) $res=@include substr($tmp, 0, ($i+1))."/main.inc.php";
+if (! $res && $i > 0 && file_exists(dirname(substr($tmp, 0, ($i+1)))."/main.inc.php")) $res=@include dirname(substr($tmp, 0, ($i+1)))."/main.inc.php";
 // Try main.inc.php using relative path
-if (! $res && file_exists("../main.inc.php")) $res=@include("../main.inc.php");
-if (! $res && file_exists("../../main.inc.php")) $res=@include("../../main.inc.php");
-if (! $res && file_exists("../../../main.inc.php")) $res=@include("../../../main.inc.php");
+if (! $res && file_exists("../main.inc.php")) $res=@include "../main.inc.php";
+if (! $res && file_exists("../../main.inc.php")) $res=@include "../../main.inc.php";
+if (! $res && file_exists("../../../main.inc.php")) $res=@include "../../../main.inc.php";
 if (! $res) die("Include of main fails");
-require_once(DOL_DOCUMENT_ROOT."/core/class/dolgraph.class.php");
-require_once(DOL_DOCUMENT_ROOT."/contact/class/contact.class.php");
+require_once DOL_DOCUMENT_ROOT."/core/class/dolgraph.class.php";
+require_once DOL_DOCUMENT_ROOT."/contact/class/contact.class.php";
 dol_include_once("/cabinetmed/lib/cabinetmed.lib.php");
 dol_include_once("/cabinetmed/class/cabinetmedcons.class.php");
 dol_include_once("/cabinetmed/class/cabinetmedstats.class.php");
@@ -47,33 +47,32 @@ dol_include_once("/cabinetmed/class/cabinetmedstats.class.php");
 $WIDTH=500;
 $HEIGHT=200;
 
-$userid=GETPOST('userid','int'); if ($userid < 0) $userid=0;
-$socid=GETPOST('socid','int'); if ($socid < 0) $socid=0;
+$userid=GETPOST('userid', 'int'); if ($userid < 0) $userid=0;
+$socid=GETPOST('socid', 'int'); if ($socid < 0) $socid=0;
 // Security check
-if ($user->societe_id > 0)
-{
-    $action = '';
-    $socid = $user->societe_id;
+if ($user->societe_id > 0) {
+	$action = '';
+	$socid = $user->societe_id;
 }
 
 $year = strftime("%Y", time());
 $startyear=$year-2;
 $endyear=$year;
 
-$mode=GETPOST("mode",'alpha')?GETPOST("mode",'alpha'):'customer';
+$mode=GETPOST("mode", 'alpha')?GETPOST("mode", 'alpha'):'customer';
 
-$sortfield = GETPOST("sortfield",'alpha');
-$sortorder = GETPOST("sortorder",'alpha');
+$sortfield = GETPOST("sortfield", 'alpha');
+$sortorder = GETPOST("sortorder", 'alpha');
 $page = GETPOSTISSET('pageplusone') ? (GETPOST('pageplusone') - 1) : GETPOST("page", 'int');
 if ($page == -1) {
-    $page = 0;
+	$page = 0;
 }
 $offset = $conf->liste_limit * $page;
 $pageprev = $page - 1;
 $pagenext = $page + 1;
 if (! $sortfield) $sortfield='nb';
 if (! $sortorder) $sortorder='DESC';
-$limit = GETPOST('limit','int')?GETPOST('limit','int'):$conf->liste_limit;
+$limit = GETPOST('limit', 'int')?GETPOST('limit', 'int'):$conf->liste_limit;
 
 if (empty($conf->cabinetmed->enabled)) accessforbidden();
 
@@ -182,9 +181,9 @@ $param='&userid='.$user->id;
 
 print '<table class="noborder" width="100%">';
 print '<tr class="liste_titre">';
-print_liste_field_titre($langs->trans('Contact'),$_SERVER['PHP_SELF'],'c.name','',$param,'',$sortfield,$sortorder);
-print_liste_field_titre($langs->trans('NumberOfPatient'),$_SERVER['PHP_SELF'],'nb','',$param,'align="right"',$sortfield,$sortorder);
-print_liste_field_titre($langs->trans('AverageOld'),$_SERVER['PHP_SELF'],'averageold','',$param,'align="right"',$sortfield,$sortorder);
+print_liste_field_titre($langs->trans('Contact'), $_SERVER['PHP_SELF'], 'c.name', '', $param, '', $sortfield, $sortorder);
+print_liste_field_titre($langs->trans('NumberOfPatient'), $_SERVER['PHP_SELF'], 'nb', '', $param, 'align="right"', $sortfield, $sortorder);
+print_liste_field_titre($langs->trans('AverageOld'), $_SERVER['PHP_SELF'], 'averageold', '', $param, 'align="right"', $sortfield, $sortorder);
 print '</tr>';
 
 
@@ -209,42 +208,37 @@ $sql.= " ORDER BY ".$sortfield." ".$sortorder;
 
 //print $sql;
 $resql=$db->query($sql);
-if ($resql)
-{
-    $num=$db->num_rows($resql);
+if ($resql) {
+	$num=$db->num_rows($resql);
 
-    $contactstatic=new Contact($db);
+	$contactstatic=new Contact($db);
 
-    $i=0;
-    while ($i < $num)
-    {
-        $obj=$db->fetch_object($resql);
+	$i=0;
+	while ($i < $num) {
+		$obj=$db->fetch_object($resql);
 
-        if ($obj)
-        {
-            $contactstatic->id=$obj->rowid;
-            $contactstatic->lastname=$obj->lastname;
-            $contactstatic->firstname=$obj->firstname;
+		if ($obj) {
+			$contactstatic->id=$obj->rowid;
+			$contactstatic->lastname=$obj->lastname;
+			$contactstatic->firstname=$obj->firstname;
 
-            print '<tr class="oddeven">';
-        	print '<td>'.$contactstatic->getNomUrl(1).'</td>';
-        	print '<td align="right">'.round($obj->nb).'</td>';
-        	print '<td align="right">';
-        	$ageyear=convertSecondToTime($obj->averageold*24*3600,'year')-1970;
-        	$agemonth=convertSecondToTime($obj->averageold*24*3600,'month')-1;
-        	if ($ageyear >= 2) print $ageyear.' '.$langs->trans("DurationYears");
-        	else if ($agemonth >= 2) print $agemonth.' '.$langs->trans("DurationMonths");
-        	else print $agemonth.' '.$langs->trans("DurationMonth");
-        	print '</td>';
-        	print '</tr>';
-        }
+			print '<tr class="oddeven">';
+			print '<td>'.$contactstatic->getNomUrl(1).'</td>';
+			print '<td align="right">'.round($obj->nb).'</td>';
+			print '<td align="right">';
+			$ageyear=convertSecondToTime($obj->averageold*24*3600, 'year')-1970;
+			$agemonth=convertSecondToTime($obj->averageold*24*3600, 'month')-1;
+			if ($ageyear >= 2) print $ageyear.' '.$langs->trans("DurationYears");
+			elseif ($agemonth >= 2) print $agemonth.' '.$langs->trans("DurationMonths");
+			else print $agemonth.' '.$langs->trans("DurationMonth");
+			print '</td>';
+			print '</tr>';
+		}
 
-    	$i++;
-    }
-}
-else
-{
-    dol_print_error($db);
+		$i++;
+	}
+} else {
+	dol_print_error($db);
 }
 
 print '</table>';
@@ -259,4 +253,3 @@ dol_fiche_end();
 llxFooter();
 
 $db->close();
-

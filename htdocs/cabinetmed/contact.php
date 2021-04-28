@@ -27,25 +27,25 @@
 // Load Dolibarr environment
 $res=0;
 // Try main.inc.php into web root known defined into CONTEXT_DOCUMENT_ROOT (not always defined)
-if (! $res && ! empty($_SERVER["CONTEXT_DOCUMENT_ROOT"])) $res=@include($_SERVER["CONTEXT_DOCUMENT_ROOT"]."/main.inc.php");
+if (! $res && ! empty($_SERVER["CONTEXT_DOCUMENT_ROOT"])) $res=@include $_SERVER["CONTEXT_DOCUMENT_ROOT"]."/main.inc.php";
 // Try main.inc.php into web root detected using web root caluclated from SCRIPT_FILENAME
 $tmp=empty($_SERVER['SCRIPT_FILENAME'])?'':$_SERVER['SCRIPT_FILENAME'];$tmp2=realpath(__FILE__); $i=strlen($tmp)-1; $j=strlen($tmp2)-1;
-while($i > 0 && $j > 0 && isset($tmp[$i]) && isset($tmp2[$j]) && $tmp[$i]==$tmp2[$j]) { $i--; $j--; }
-if (! $res && $i > 0 && file_exists(substr($tmp, 0, ($i+1))."/main.inc.php")) $res=@include(substr($tmp, 0, ($i+1))."/main.inc.php");
-if (! $res && $i > 0 && file_exists(dirname(substr($tmp, 0, ($i+1)))."/main.inc.php")) $res=@include(dirname(substr($tmp, 0, ($i+1)))."/main.inc.php");
+while ($i > 0 && $j > 0 && isset($tmp[$i]) && isset($tmp2[$j]) && $tmp[$i]==$tmp2[$j]) { $i--; $j--; }
+if (! $res && $i > 0 && file_exists(substr($tmp, 0, ($i+1))."/main.inc.php")) $res=@include substr($tmp, 0, ($i+1))."/main.inc.php";
+if (! $res && $i > 0 && file_exists(dirname(substr($tmp, 0, ($i+1)))."/main.inc.php")) $res=@include dirname(substr($tmp, 0, ($i+1)))."/main.inc.php";
 // Try main.inc.php using relative path
-if (! $res && file_exists("../main.inc.php")) $res=@include("../main.inc.php");
-if (! $res && file_exists("../../main.inc.php")) $res=@include("../../main.inc.php");
-if (! $res && file_exists("../../../main.inc.php")) $res=@include("../../../main.inc.php");
+if (! $res && file_exists("../main.inc.php")) $res=@include "../main.inc.php";
+if (! $res && file_exists("../../main.inc.php")) $res=@include "../../main.inc.php";
+if (! $res && file_exists("../../../main.inc.php")) $res=@include "../../../main.inc.php";
 if (! $res) die("Include of main fails");
 
-include_once(DOL_DOCUMENT_ROOT."/core/lib/company.lib.php");
-include_once(DOL_DOCUMENT_ROOT."/core/lib/ajax.lib.php");
-include_once(DOL_DOCUMENT_ROOT."/core/lib/admin.lib.php");
-require_once(DOL_DOCUMENT_ROOT."/contact/class/contact.class.php");
-require_once(DOL_DOCUMENT_ROOT.'/core/class/html.formcompany.class.php');
-include_once("./class/patient.class.php");
-include_once("./class/cabinetmedcons.class.php");
+include_once DOL_DOCUMENT_ROOT."/core/lib/company.lib.php";
+include_once DOL_DOCUMENT_ROOT."/core/lib/ajax.lib.php";
+include_once DOL_DOCUMENT_ROOT."/core/lib/admin.lib.php";
+require_once DOL_DOCUMENT_ROOT."/contact/class/contact.class.php";
+require_once DOL_DOCUMENT_ROOT.'/core/class/html.formcompany.class.php';
+include_once "./class/patient.class.php";
+include_once "./class/cabinetmedcons.class.php";
 
 $langs->load("cabinetmed@cabinetmed");
 $langs->load("orders");
@@ -55,7 +55,7 @@ $langs->load("companies");
 $action = GETPOST('action');
 
 // Security check
-$socid = GETPOST('socid','int');
+$socid = GETPOST('socid', 'int');
 if ($user->societe_id) $socid=$user->societe_id;
 $result = restrictedArea($user, 'societe', $socid);
 
@@ -64,33 +64,24 @@ $result = restrictedArea($user, 'societe', $socid);
  * Add new contact
  */
 
-if ($action == 'addcontact' && $user->rights->societe->creer)
-{
-	if (GETPOST("contactid", "int") && GETPOST("type"))
-	{
+if ($action == 'addcontact' && $user->rights->societe->creer) {
+	if (GETPOST("contactid", "int") && GETPOST("type")) {
 		$result = 0;
 		$societe = new Societe($db);
 		$result = $societe->fetch($socid);
 
-	    if ($result > 0 && $socid > 0)
-	    {
-	  		$result = $societe->add_contact(GETPOST("contactid", 'int'), GETPOST("type"), GETPOST("source"));
-	    }
+		if ($result > 0 && $socid > 0) {
+			$result = $societe->add_contact(GETPOST("contactid", 'int'), GETPOST("type"), GETPOST("source"));
+		}
 
-		if ($result >= 0)
-		{
+		if ($result >= 0) {
 			Header("Location: contact.php?socid=".$societe->id);
 			exit;
-		}
-		else
-		{
-			if ($societe->error == 'DB_ERROR_RECORD_ALREADY_EXISTS')
-			{
+		} else {
+			if ($societe->error == 'DB_ERROR_RECORD_ALREADY_EXISTS') {
 				$langs->load("errors");
 				$mesg = '<div class="error">'.$langs->trans("ErrorThisContactIsAlreadyDefinedAsThisType").'</div>';
-			}
-			else
-			{
+			} else {
 				$mesg = '<div class="error">'.$societe->error.'</div>';
 			}
 		}
@@ -98,32 +89,25 @@ if ($action == 'addcontact' && $user->rights->societe->creer)
 }
 
 // bascule du statut d'un contact
-if ($action == 'swapstatut' && $user->rights->societe->creer)
-{
+if ($action == 'swapstatut' && $user->rights->societe->creer) {
 	$object = new Societe($db);
-	if ($object->fetch(GETPOST('facid','int')))
-	{
-	    $result=$object->swapContactStatus(GETPOST('ligne', 'int'));
-	}
-	else
-	{
+	if ($object->fetch(GETPOST('facid', 'int'))) {
+		$result=$object->swapContactStatus(GETPOST('ligne', 'int'));
+	} else {
 		dol_print_error($db);
 	}
 }
 
 // Efface un contact
-if ($action == 'deleteline' && $user->rights->societe->creer)
-{
+if ($action == 'deleteline' && $user->rights->societe->creer) {
 	$societe = new Societe($db);
 	$societe->fetch($socid);
 	$result = $societe->delete_contact(GETPOST("lineid", 'int'));
 
-	if ($result >= 0)
-	{
+	if ($result >= 0) {
 		Header("Location: contact.php?socid=".$societe->id);
 		exit;
-	}
-	else {
+	} else {
 		dol_print_error($db);
 	}
 }
@@ -133,7 +117,7 @@ if ($action == 'deleteline' && $user->rights->societe->creer)
  * View
  */
 
-llxHeader('',$langs->trans('Contacts'),'');
+llxHeader('', $langs->trans('Contacts'), '');
 
 $html = new Form($db);
 $form = new Form($db);
@@ -151,8 +135,7 @@ if (isset($mesg)) print $mesg;
 
 $id = $_GET['socid'];
 $ref= $_GET['ref'];
-if ($id > 0 || ! empty($ref))
-{
+if ($id > 0 || ! empty($ref)) {
 	$societe = new Patient($db);
 	$societe->fetch($id);
 
@@ -163,69 +146,67 @@ if ($id > 0 || ! empty($ref))
 	if ((float) DOL_VERSION < 7) dol_fiche_head($head, 'tabpatientcontacts', $langs->trans("Patient"), 0, 'patient@cabinetmed');
 	else dol_fiche_head($head, 'tabpatientcontacts', $langs->trans("Patient"), -1, 'patient@cabinetmed');
 
-    $width=300;
-    print '
+	$width=300;
+	print '
             <style>
             .ui-autocomplete-input { width: '.$width.'px; }
             </style>
             ';
 
-    print ajax_combobox('contactid');
+	print ajax_combobox('contactid');
 
-    print "<form method=\"post\" action=\"".$_SERVER["PHP_SELF"]."\">";
-    print '<input type="hidden" name="token" value="'.$_SESSION['newtoken'].'">';
+	print "<form method=\"post\" action=\"".$_SERVER["PHP_SELF"]."\">";
+	print '<input type="hidden" name="token" value="'.$_SESSION['newtoken'].'">';
 
-    $linkback = '<a href="'.dol_buildpath('/cabinetmed/patients.php', 1).'">'.$langs->trans("BackToList").'</a>';
-    dol_banner_tab($object, 'socid', $linkback, ($user->societe_id?0:1), 'rowid', 'nom');
+	$linkback = '<a href="'.dol_buildpath('/cabinetmed/patients.php', 1).'">'.$langs->trans("BackToList").'</a>';
+	dol_banner_tab($object, 'socid', $linkback, ($user->societe_id?0:1), 'rowid', 'nom');
 
-    print '<div class="fichecenter">';
-    print '<div class="underbanner clearboth"></div>';
-    print '<table class="border tableforfield" width="100%">';
+	print '<div class="fichecenter">';
+	print '<div class="underbanner clearboth"></div>';
+	print '<table class="border tableforfield" width="100%">';
 
-    //if ($societe->client)
-    //{
-        print '<tr><td class="titlefield">';
-        print $langs->trans('CustomerCode').'</td><td colspan="3">';
-        print $societe->code_client;
-        if ($societe->check_codeclient() <> 0) print ' <font class="error">('.$langs->trans("WrongPatientCode").')</font>';
-        print '</td></tr>';
-    //}
+	//if ($societe->client)
+	//{
+		print '<tr><td class="titlefield">';
+		print $langs->trans('CustomerCode').'</td><td colspan="3">';
+		print $societe->code_client;
+		if ($societe->check_codeclient() <> 0) print ' <font class="error">('.$langs->trans("WrongPatientCode").')</font>';
+		print '</td></tr>';
+	//}
 
-    if ($societe->fournisseur)
-    {
-        print '<tr><td class="titlefield">';
-        print $langs->trans('SupplierCode').'</td><td colspan="3">';
-        print $societe->code_fournisseur;
-        if ($societe->check_codefournisseur() <> 0) print ' <font class="error">('.$langs->trans("WrongSupplierCode").')</font>';
-        print '</td></tr>';
-    }
+	if ($societe->fournisseur) {
+		print '<tr><td class="titlefield">';
+		print $langs->trans('SupplierCode').'</td><td colspan="3">';
+		print $societe->code_fournisseur;
+		if ($societe->check_codefournisseur() <> 0) print ' <font class="error">('.$langs->trans("WrongSupplierCode").')</font>';
+		print '</td></tr>';
+	}
 
-    print "</table>";
+	print "</table>";
 	print '</div>';
 
-    print '</form>';
+	print '</form>';
 
-    dol_fiche_end();
+	dol_fiche_end();
 
 	/*
 	* Lines of contacts
 	*/
-    print '<form action="contact.php?socid='.$socid.'" method="post">';
-    print '<input type="hidden" name="token" value="'.$_SESSION['newtoken'].'">';
-    print '<input type="hidden" name="action" value="addcontact">';
-    print '<input type="hidden" name="source" value="external">';
-    print '<input type="hidden" name="socid" value="'.$socid.'">';
+	print '<form action="contact.php?socid='.$socid.'" method="post">';
+	print '<input type="hidden" name="token" value="'.$_SESSION['newtoken'].'">';
+	print '<input type="hidden" name="action" value="addcontact">';
+	print '<input type="hidden" name="source" value="external">';
+	print '<input type="hidden" name="socid" value="'.$socid.'">';
 
-    print '<br>';
+	print '<br>';
 
-    print '<table class="noborder" width="100%">';
+	print '<table class="noborder" width="100%">';
 
 	/*
 	* Ajouter une ligne de contact
 	* Non affiche en mode modification de ligne
 	*/
-	if ($_GET["action"] != 'editline')
-	{
+	if ($_GET["action"] != 'editline') {
 		print '<thead><tr class="liste_titre">';
 		//print '<td>'.$langs->trans("Source").'</td>';
 		print '<td>'.$langs->trans("Contacts").'</td>';
@@ -242,18 +223,15 @@ if ($id > 0 || ! empty($ref))
 		// $contactAlreadySelected = $commande->getListContactId('external');	// On ne doit pas desactiver un contact deja selectionner car on doit pouvoir le seclectionner une deuxieme fois pour un autre type
 		$nbofcontacts=$html->select_contacts(0, '', 'contactid', 1, '', '', 1);
 		//if ($nbofcontacts == 0) print $langs->trans("NoContactDefined");
-		if (versioncompare(versiondolibarrarray(),array(3,7,-3)) >= 0)
-		{
-	        print ' <a href="'.DOL_URL_ROOT.'/contact/card.php?leftmenu=contacts&action=create&backtopage='.urlencode($_SERVER["PHP_SELF"]).'?socid='.$socid.'">'.$langs->trans("Add").'</a>';
-		}
-		else
-		{
-	        print ' <a href="'.DOL_URL_ROOT.'/contact/card.php?leftmenu=contacts&action=create&backtopage='.urlencode($_SERVER["PHP_SELF"]).'?socid='.$socid.'">'.$langs->trans("Add").'</a>';
+		if (versioncompare(versiondolibarrarray(), array(3,7,-3)) >= 0) {
+			print ' <a href="'.DOL_URL_ROOT.'/contact/card.php?leftmenu=contacts&action=create&backtopage='.urlencode($_SERVER["PHP_SELF"]).'?socid='.$socid.'">'.$langs->trans("Add").'</a>';
+		} else {
+			print ' <a href="'.DOL_URL_ROOT.'/contact/card.php?leftmenu=contacts&action=create&backtopage='.urlencode($_SERVER["PHP_SELF"]).'?socid='.$socid.'">'.$langs->trans("Add").'</a>';
 		}
 		print '</td>';
 		print '<td>';
-		$formcompany->selectTypeContact($societe, '', 'type','external','libelle',1);
-        //if ($user->admin) print info_admin($langs->trans("YouCanChangeValuesForThisListFromDictionarySetup"),1);
+		$formcompany->selectTypeContact($societe, '', 'type', 'external', 'libelle', 1);
+		//if ($user->admin) print info_admin($langs->trans("YouCanChangeValuesForThisListFromDictionarySetup"),1);
 		print '</td>';
 		print '<td align="center" colspan="3" ><input type="submit" class="button" value="'.$langs->trans("AddLink").'"';
 		if (! $nbofcontacts) print ' disabled="disabled"';
@@ -276,14 +254,12 @@ if ($id > 0 || ! empty($ref))
 	$companystatic=new Societe($db);
 	$var = true;
 
-	foreach(array('external') as $source)
-	{
-		$tab = $societe->liste_contact(-1,$source);
+	foreach (array('external') as $source) {
+		$tab = $societe->liste_contact(-1, $source);
 		$num=count($tab);
 
 		$i = 0;
-		while ($i < $num)
-		{
+		while ($i < $num) {
 			$var = !$var;
 
 			print '<tr '.$bc[$var].' valign="top">';
@@ -315,20 +291,18 @@ if ($id > 0 || ! empty($ref))
 
 			// Contact
 			print '<td>';
-            if ($tab[$i]['source']=='internal')
-            {
-                $userstatic->id=$tab[$i]['id'];
-                $userstatic->lastname=$tab[$i]['lastname'];
-                $userstatic->firstname=$tab[$i]['firstname'];
-                print $userstatic->getNomUrl(1);
-            }
-            if ($tab[$i]['source']=='external')
-            {
-                $contactstatic->id=$tab[$i]['id'];
-                $contactstatic->lastname=$tab[$i]['lastname'];
-                $contactstatic->firstname=$tab[$i]['firstname'];
-                print $contactstatic->getNomUrl(1);
-            }
+			if ($tab[$i]['source']=='internal') {
+				$userstatic->id=$tab[$i]['id'];
+				$userstatic->lastname=$tab[$i]['lastname'];
+				$userstatic->firstname=$tab[$i]['firstname'];
+				print $userstatic->getNomUrl(1);
+			}
+			if ($tab[$i]['source']=='external') {
+				$contactstatic->id=$tab[$i]['id'];
+				$contactstatic->lastname=$tab[$i]['lastname'];
+				$contactstatic->firstname=$tab[$i]['firstname'];
+				print $contactstatic->getNomUrl(1);
+			}
 			print '</td>';
 
 			// Type de contact
@@ -338,14 +312,13 @@ if ($id > 0 || ! empty($ref))
 			print '<td class="center">';
 			// Activation desativation du contact
 			if ($societe->statut >= 0)	print '<a href="contact.php?socid='.$societe->id.'&amp;action=swapstatut&amp;ligne='.$tab[$i]['rowid'].'">';
-			print $contactstatic->LibStatut($tab[$i]['status'],3);
+			print $contactstatic->LibStatut($tab[$i]['status'], 3);
 			if ($societe->statut >= 0)	print '</a>';
 			print '</td>';
 
 			// Icon update et delete
 			print '<td align="center" nowrap>';
-			if ($societe->statut < 5 && $user->rights->societe->creer)
-			{
+			if ($societe->statut < 5 && $user->rights->societe->creer) {
 				print '&nbsp;';
 				print '<a href="contact.php?socid='.$societe->id.'&amp;action=deleteline&amp;lineid='.$tab[$i]['rowid'].'">';
 				print img_delete();

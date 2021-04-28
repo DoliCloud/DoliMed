@@ -23,7 +23,7 @@
  */
 
 // Put here all includes required by your class file
-require_once(DOL_DOCUMENT_ROOT."/core/class/commonobject.class.php");
+require_once DOL_DOCUMENT_ROOT."/core/class/commonobject.class.php";
 //require_once(DOL_DOCUMENT_ROOT."/societe/class/societe.class.php");
 //require_once(DOL_DOCUMENT_ROOT."/product/class/product.class.php");
 
@@ -71,11 +71,11 @@ class CabinetmedCons extends CommonObject
 	var $bank;
 
 
-    /**
-     *	Constructor
-     *
-     *  @param	DoliDB	$db		Database handler
-     */
+	/**
+	 *	Constructor
+	 *
+	 *  @param	DoliDB	$db		Database handler
+	 */
 	function __construct($db)
 	{
 		$this->db = $db;
@@ -90,7 +90,7 @@ class CabinetmedCons extends CommonObject
 	 *      @param 	int		$notrigger	    0=launch triggers after, 1=disable triggers
 	 *      @return int         			<0 if KO, Id of created object if OK
 	 */
-	function create($user, $notrigger=0)
+	function create($user, $notrigger = 0)
 	{
 		global $conf, $langs;
 		$error=0;
@@ -104,7 +104,7 @@ class CabinetmedCons extends CommonObject
 		if (isset($this->diaglesprinc)) $this->diagles=trim($this->diaglesprinc);
 		if (isset($this->motifconssec)) $this->motifconssec=trim($this->motifconssec);
 		if (isset($this->diaglessec)) $this->diaglessec=trim($this->diaglessec);
-        if (isset($this->hdm)) $this->hdm=trim($this->hdm);
+		if (isset($this->hdm)) $this->hdm=trim($this->hdm);
 		if (isset($this->examenclinique)) $this->examenclinique=trim($this->examenclinique);
 		if (isset($this->examenprescrit)) $this->examenprescrit=trim($this->examenprescrit);
 		if (isset($this->traitementprescrit)) $this->traitementprescrit=trim($this->traitementprescrit);
@@ -125,7 +125,7 @@ class CabinetmedCons extends CommonObject
 		// Insert request
 		$sql = "INSERT INTO ".MAIN_DB_PREFIX."cabinetmed_cons(";
 		$sql.= "fk_soc,";
-        $sql.= "fk_user,";
+		$sql.= "fk_user,";
 		$sql.= "datecons,";
 		$sql.= "date_c,";
 		$sql.= "typepriseencharge,";
@@ -150,7 +150,7 @@ class CabinetmedCons extends CommonObject
 		$sql.= "fk_user_creation";
 		$sql.= ") VALUES (";
 		$sql.= " ".(! isset($this->fk_soc)?'NULL':"'".$this->fk_soc."'").",";
-        $sql.= " ".$user->id.",";
+		$sql.= " ".$user->id.",";
 		$sql.= " ".(! isset($this->datecons) || dol_strlen($this->datecons)==0?'NULL':"'".$this->db->idate($this->datecons))."',";
 		$sql.= " '".$this->db->idate($now)."',";
 		$sql.= " ".(! isset($this->typepriseencharge)?'NULL':"'".$this->db->escape($this->typepriseencharge)."'").",";
@@ -159,7 +159,7 @@ class CabinetmedCons extends CommonObject
 		$sql.= " ".(! isset($this->motifconssec)?'NULL':"'".$this->db->escape($this->motifconssec)."'").",";
 		$sql.= " ".(! isset($this->diaglessec)?'NULL':"'".$this->db->escape($this->diaglessec)."'").",";
 		$sql.= " ".(! isset($this->hdm)?'NULL':"'".$this->db->escape($this->hdm)."'").",";
-        $sql.= " ".(! isset($this->examenclinique)?'NULL':"'".$this->db->escape($this->examenclinique)."'").",";
+		$sql.= " ".(! isset($this->examenclinique)?'NULL':"'".$this->db->escape($this->examenclinique)."'").",";
 		$sql.= " ".(! isset($this->examenprescrit)?'NULL':"'".$this->db->escape($this->examenprescrit)."'").",";
 		$sql.= " ".(! isset($this->traitementprescrit)?'NULL':"'".$this->db->escape($this->traitementprescrit)."'").",";
 		$sql.= " ".(! isset($this->comment)?'NULL':"'".$this->db->escape($this->comment)."'").",";
@@ -181,20 +181,17 @@ class CabinetmedCons extends CommonObject
 		$resql=$this->db->query($sql);
 		if (! $resql) { $error++; $this->errors[]="Error ".$this->db->lasterror(); }
 
-		if (! $error)
-		{
+		if (! $error) {
 			$this->id = $this->db->last_insert_id(MAIN_DB_PREFIX."cabinetmed_cons");
 
 			$result=$this->insertExtraFields();
 			if ($result < 0) $error++;
 
-			if (! $error && ! $notrigger)
-			{
+			if (! $error && ! $notrigger) {
 				// Uncomment this and change MYOBJECT to your own tag if you
 				// want this action call a trigger.
 
-				if (!$error && !$notrigger)
-				{
+				if (!$error && !$notrigger) {
 					// Call trigger
 					$result = $this->call_trigger('CABINETMED_OUTCOME_CREATE', $user);
 					if ($result < 0) $error++;
@@ -204,18 +201,14 @@ class CabinetmedCons extends CommonObject
 		}
 
 		// Commit or rollback
-		if ($error)
-		{
-			foreach($this->errors as $errmsg)
-			{
+		if ($error) {
+			foreach ($this->errors as $errmsg) {
 				dol_syslog(get_class($this)."::create ".$errmsg, LOG_ERR);
 				$this->error.=($this->error?', '.$errmsg:$errmsg);
 			}
 			$this->db->rollback();
 			return -1*$error;
-		}
-		else
-		{
+		} else {
 			$this->db->commit();
 			return $this->id;
 		}
@@ -266,10 +259,8 @@ class CabinetmedCons extends CommonObject
 
 		dol_syslog(get_class($this)."::fetch sql=".$sql, LOG_DEBUG);
 		$resql=$this->db->query($sql);
-		if ($resql)
-		{
-			if ($this->db->num_rows($resql))
-			{
+		if ($resql) {
+			if ($this->db->num_rows($resql)) {
 				$obj = $this->db->fetch_object($resql);
 
 				$this->id    = $obj->rowid;
@@ -307,56 +298,49 @@ class CabinetmedCons extends CommonObject
 			$this->db->free($resql);
 
 			return 1;
-		}
-		else
-		{
+		} else {
 			$this->error="Error ".$this->db->lasterror();
 			dol_syslog(get_class($this)."::fetch ".$this->error, LOG_ERR);
 			return -1;
 		}
 	}
 
-    /**
-     *    Load bank informations of payments if exists for consult
-     *
-     *    @return     int         <0 if KO, >0 if OK
-     */
-    function fetch_bankid()
-    {
-        $this->bank=array();
+	/**
+	 *    Load bank informations of payments if exists for consult
+	 *
+	 *    @return     int         <0 if KO, >0 if OK
+	 */
+	function fetch_bankid()
+	{
+		$this->bank=array();
 
-        // Search if there is some bank lines
-        $bid=0;
-        $sql.= "SELECT b.rowid, b.rappro, b.fk_account, b.fk_type, b.num_chq FROM ".MAIN_DB_PREFIX."bank_url as bu, ".MAIN_DB_PREFIX."bank as b";
-        $sql.= " WHERE bu.url_id = ".$this->id." AND bu.type = 'consultation'";
-        $sql.= " AND bu.fk_bank = b.rowid";
-        dol_syslog(get_class($this)."::fetch_bankid sql=".$sql, LOG_DEBUG);
-        $resql=$this->db->query($sql);
-        if ($resql)
-        {
-            $num=$this->db->num_rows($resql);
-            $i=0;
-            while ($i < $num)
-            {
-                $obj=$this->db->fetch_object($resql);
-                if ($obj)
-                {
-                    $this->bank[$obj->fk_type]['bank_id']=$obj->rowid;
-                    $this->bank[$obj->fk_type]['rappro']=$obj->rappro;
-                    $this->bank[$obj->fk_type]['account_id']=$obj->fk_account;
-                    if ($obj->fk_type == 'CHQ') $this->num_cheque=$obj->num_chq;
-                }
-                $i++;
-            }
-            return 1;
-        }
-        else
-        {
-            $error++;
-            $this->error=$this->db->lasterror();
-            return -1;
-        }
-    }
+		// Search if there is some bank lines
+		$bid=0;
+		$sql.= "SELECT b.rowid, b.rappro, b.fk_account, b.fk_type, b.num_chq FROM ".MAIN_DB_PREFIX."bank_url as bu, ".MAIN_DB_PREFIX."bank as b";
+		$sql.= " WHERE bu.url_id = ".$this->id." AND bu.type = 'consultation'";
+		$sql.= " AND bu.fk_bank = b.rowid";
+		dol_syslog(get_class($this)."::fetch_bankid sql=".$sql, LOG_DEBUG);
+		$resql=$this->db->query($sql);
+		if ($resql) {
+			$num=$this->db->num_rows($resql);
+			$i=0;
+			while ($i < $num) {
+				$obj=$this->db->fetch_object($resql);
+				if ($obj) {
+					$this->bank[$obj->fk_type]['bank_id']=$obj->rowid;
+					$this->bank[$obj->fk_type]['rappro']=$obj->rappro;
+					$this->bank[$obj->fk_type]['account_id']=$obj->fk_account;
+					if ($obj->fk_type == 'CHQ') $this->num_cheque=$obj->num_chq;
+				}
+				$i++;
+			}
+			return 1;
+		} else {
+			$error++;
+			$this->error=$this->db->lasterror();
+			return -1;
+		}
+	}
 
 
 	/**
@@ -366,7 +350,7 @@ class CabinetmedCons extends CommonObject
 	 *      @param  int		$notrigger	    0=launch triggers after, 1=disable triggers
 	 *      @return int         			<0 if KO, >0 if OK
 	 */
-	function update($user=null, $notrigger=0)
+	function update($user = null, $notrigger = 0)
 	{
 		global $conf, $langs;
 		$error=0;
@@ -431,28 +415,22 @@ class CabinetmedCons extends CommonObject
 		$resql = $this->db->query($sql);
 		if (! $resql) { $error++; $this->errors[]="Error ".$this->db->lasterror(); }
 
-		if (! $error)
-		{
-	        $result=$this->insertExtraFields();
-	        if ($result < 0)
-	        {
-	            $error++;
-		    }
+		if (! $error) {
+			$result=$this->insertExtraFields();
+			if ($result < 0) {
+				$error++;
+			}
 		}
 
 		// Commit or rollback
-		if ($error)
-		{
-			foreach($this->errors as $errmsg)
-			{
+		if ($error) {
+			foreach ($this->errors as $errmsg) {
 				dol_syslog(get_class($this)."::update ".$errmsg, LOG_ERR);
 				$this->error.=($this->error?', '.$errmsg:$errmsg);
 			}
 			$this->db->rollback();
 			return -1*$error;
-		}
-		else
-		{
+		} else {
 			$this->db->commit();
 			return 1;
 		}
@@ -466,7 +444,7 @@ class CabinetmedCons extends CommonObject
 	 *   @param      int	$notrigger	    0=launch triggers after, 1=disable triggers
 	 *	 @return	 int					<0 if KO, >0 if OK
 	 */
-	function delete($user, $notrigger=0)
+	function delete($user, $notrigger = 0)
 	{
 		global $conf, $langs;
 		$error=0;
@@ -480,25 +458,19 @@ class CabinetmedCons extends CommonObject
 		$sql.= " AND bu.fk_bank = b.rowid";
 		dol_syslog($sql);
 		$resql=$this->db->query($sql);
-		if ($resql)
-		{
+		if ($resql) {
 			$obj=$this->db->fetch_object($resql);
-			if ($obj)
-			{
+			if ($obj) {
 				$bid=$obj->rowid;
 			}
-		}
-		else
-		{
+		} else {
 			$error++;
 			$consult->error=$this->db->lasterror();
 		}
 
-		if (! $error)
-		{
+		if (! $error) {
 			// If bid
-			if ($bid)
-			{
+			if ($bid) {
 				$bankaccountline=new AccountLine($this->db);
 				$result=$bankaccountline->fetch($bid);
 				$bankaccountline->delete($user);
@@ -513,18 +485,14 @@ class CabinetmedCons extends CommonObject
 		if (! $resql) { $error++; $this->errors[]="Error ".$this->db->lasterror(); }
 
 		// Commit or rollback
-		if ($error)
-		{
-			foreach($this->errors as $errmsg)
-			{
+		if ($error) {
+			foreach ($this->errors as $errmsg) {
 				dol_syslog(get_class($this)."::delete ".$errmsg, LOG_ERR);
 				$this->error.=($this->error?', '.$errmsg:$errmsg);
 			}
 			$this->db->rollback();
 			return -1*$error;
-		}
-		else
-		{
+		} else {
 			$this->db->commit();
 			return 1;
 		}
@@ -560,27 +528,19 @@ class CabinetmedCons extends CommonObject
 		$result=$object->create($user);
 
 		// Other options
-		if ($result < 0)
-		{
+		if ($result < 0) {
 			$this->error=$object->error;
 			$error++;
 		}
 
-		if (! $error)
-		{
-
-
-
+		if (! $error) {
 		}
 
 		// End
-		if (! $error)
-		{
+		if (! $error) {
 			$this->db->commit();
 			return $object->id;
-		}
-		else
-		{
+		} else {
 			$this->db->rollback();
 			return -1;
 		}
@@ -624,109 +584,100 @@ class CabinetmedCons extends CommonObject
 	}
 
 
-    /**
-     *      Return a link on thirdparty (with picto)
-     *
-     *      @param	int		$withpicto      Inclut le picto dans le lien (0=No picto, 1=Inclut le picto dans le lien, 2=Picto seul)
-     *      @param  string	$more           Add more param on url
-     *      @return string          		String with URL
-     */
-    function getNomUrl($withpicto=0,$more='')
-    {
-        global $conf,$langs;
+	/**
+	 *      Return a link on thirdparty (with picto)
+	 *
+	 *      @param	int		$withpicto      Inclut le picto dans le lien (0=No picto, 1=Inclut le picto dans le lien, 2=Picto seul)
+	 *      @param  string	$more           Add more param on url
+	 *      @return string          		String with URL
+	 */
+	function getNomUrl($withpicto = 0, $more = '')
+	{
+		global $conf,$langs;
 
-        $result='';
-        $lien=$lienfin='';
+		$result='';
+		$lien=$lienfin='';
 
-        $lien = '<a href="'.dol_buildpath('/cabinetmed/consultations.php',1).'?socid='.$this->fk_soc.'&amp;id='.$this->id.'&amp;action=edit';
-        if ($more) $lien.=$more;
-        // Add type of canvas
-        $lien.=(!empty($this->canvas)?'&amp;canvas='.$this->canvas:'').'">';
-        $lienfin='</a>';
+		$lien = '<a href="'.dol_buildpath('/cabinetmed/consultations.php', 1).'?socid='.$this->fk_soc.'&amp;id='.$this->id.'&amp;action=edit';
+		if ($more) $lien.=$more;
+		// Add type of canvas
+		$lien.=(!empty($this->canvas)?'&amp;canvas='.$this->canvas:'').'">';
+		$lienfin='</a>';
 
-        if ($withpicto) $result.=($lien.img_object($langs->trans("ShowConsult").': '.sprintf('%08d',$this->id),'generic').$lienfin);
-        if ($withpicto && $withpicto != 2) $result.=' ';
-        $result.=$lien.sprintf('%08d',$this->id).$lienfin;
+		if ($withpicto) $result.=($lien.img_object($langs->trans("ShowConsult").': '.sprintf('%08d', $this->id), 'generic').$lienfin);
+		if ($withpicto && $withpicto != 2) $result.=' ';
+		$result.=$lien.sprintf('%08d', $this->id).$lienfin;
 
-        return $result;
-    }
-
-
-    /**
-     *   Charge indicateurs this->nb de tableau de bord
-     *
-     *   @return     int         <0 si ko, >0 si ok
-     */
-    function load_state_board()
-    {
-        global $conf, $user;
-
-        $this->nb=array();
-        $clause = "WHERE";
-
-        $sql = "SELECT count(c.rowid) as nb";
-        $sql.= " FROM ".MAIN_DB_PREFIX."cabinetmed_cons as c";
-        //$sql.= " ".$clause." c.entity = ".$conf->entity;
-
-        $resql=$this->db->query($sql);
-        if ($resql)
-        {
-            while ($obj=$this->db->fetch_object($resql))
-            {
-                $this->nb["Cabinetmedcons"]=$obj->nb;
-            }
-
-            $sql = "SELECT count(rowid) as nb";
-            $sql.= " FROM ".MAIN_DB_PREFIX."societe WHERE canvas = 'patient@cabinetmed'";
-            //$sql.= " ".$clause." c.entity = ".$conf->entity;
-
-            $resql2=$this->db->query($sql);
-            if ($resql2)
-            {
-                while ($obj=$this->db->fetch_object($resql2))
-                {
-                    $this->nb["Patients"]=$obj->nb;
-                }
-            }
-
-            $this->db->free($resql2);
-            $this->db->free($resql);
-            return 1;
-        }
-        else
-        {
-            dol_print_error($this->db);
-            $this->error=$this->db->error();
-            return -1;
-        }
-    }
+		return $result;
+	}
 
 
-    /**
-     *	Return status label of Order
-     *
-     *	@param      int		$mode       0=libelle long, 1=libelle court, 2=Picto + Libelle court, 3=Picto, 4=Picto + Libelle long, 5=Libelle court + Picto
-     *	@return     string      		Libelle
-     */
-    function getLibStatut($mode)
-    {
-        return $this->LibStatut(1,$mode);
-    }
+	/**
+	 *   Charge indicateurs this->nb de tableau de bord
+	 *
+	 *   @return     int         <0 si ko, >0 si ok
+	 */
+	function load_state_board()
+	{
+		global $conf, $user;
 
-    /**
-     *	Return label of status
-     *
-     *	@param		int		$statut      	  Id statut
-     *	@param      int		$mode        	  0=libelle long, 1=libelle court, 2=Picto + Libelle court, 3=Picto, 4=Picto + Libelle long, 5=Libelle court + Picto
-     *  @return     string					  Label of status
-     */
-    function LibStatut($statut,$mode)
-    {
-        global $langs, $conf;
+		$this->nb=array();
+		$clause = "WHERE";
 
-        return '';
-    }
+		$sql = "SELECT count(c.rowid) as nb";
+		$sql.= " FROM ".MAIN_DB_PREFIX."cabinetmed_cons as c";
+		//$sql.= " ".$clause." c.entity = ".$conf->entity;
+
+		$resql=$this->db->query($sql);
+		if ($resql) {
+			while ($obj=$this->db->fetch_object($resql)) {
+				$this->nb["Cabinetmedcons"]=$obj->nb;
+			}
+
+			$sql = "SELECT count(rowid) as nb";
+			$sql.= " FROM ".MAIN_DB_PREFIX."societe WHERE canvas = 'patient@cabinetmed'";
+			//$sql.= " ".$clause." c.entity = ".$conf->entity;
+
+			$resql2=$this->db->query($sql);
+			if ($resql2) {
+				while ($obj=$this->db->fetch_object($resql2)) {
+					$this->nb["Patients"]=$obj->nb;
+				}
+			}
+
+			$this->db->free($resql2);
+			$this->db->free($resql);
+			return 1;
+		} else {
+			dol_print_error($this->db);
+			$this->error=$this->db->error();
+			return -1;
+		}
+	}
 
 
+	/**
+	 *	Return status label of Order
+	 *
+	 *	@param      int		$mode       0=libelle long, 1=libelle court, 2=Picto + Libelle court, 3=Picto, 4=Picto + Libelle long, 5=Libelle court + Picto
+	 *	@return     string      		Libelle
+	 */
+	function getLibStatut($mode)
+	{
+		return $this->LibStatut(1, $mode);
+	}
+
+	/**
+	 *	Return label of status
+	 *
+	 *	@param		int		$statut      	  Id statut
+	 *	@param      int		$mode        	  0=libelle long, 1=libelle court, 2=Picto + Libelle court, 3=Picto, 4=Picto + Libelle long, 5=Libelle court + Picto
+	 *  @return     string					  Label of status
+	 */
+	function LibStatut($statut, $mode)
+	{
+		global $langs, $conf;
+
+		return '';
+	}
 }
-

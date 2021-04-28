@@ -27,21 +27,21 @@
 // Load Dolibarr environment
 $res=0;
 // Try main.inc.php into web root known defined into CONTEXT_DOCUMENT_ROOT (not always defined)
-if (! $res && ! empty($_SERVER["CONTEXT_DOCUMENT_ROOT"])) $res=@include($_SERVER["CONTEXT_DOCUMENT_ROOT"]."/main.inc.php");
+if (! $res && ! empty($_SERVER["CONTEXT_DOCUMENT_ROOT"])) $res=@include $_SERVER["CONTEXT_DOCUMENT_ROOT"]."/main.inc.php";
 // Try main.inc.php into web root detected using web root caluclated from SCRIPT_FILENAME
 $tmp=empty($_SERVER['SCRIPT_FILENAME'])?'':$_SERVER['SCRIPT_FILENAME'];$tmp2=realpath(__FILE__); $i=strlen($tmp)-1; $j=strlen($tmp2)-1;
-while($i > 0 && $j > 0 && isset($tmp[$i]) && isset($tmp2[$j]) && $tmp[$i]==$tmp2[$j]) { $i--; $j--; }
-if (! $res && $i > 0 && file_exists(substr($tmp, 0, ($i+1))."/main.inc.php")) $res=@include(substr($tmp, 0, ($i+1))."/main.inc.php");
-if (! $res && $i > 0 && file_exists(dirname(substr($tmp, 0, ($i+1)))."/main.inc.php")) $res=@include(dirname(substr($tmp, 0, ($i+1)))."/main.inc.php");
+while ($i > 0 && $j > 0 && isset($tmp[$i]) && isset($tmp2[$j]) && $tmp[$i]==$tmp2[$j]) { $i--; $j--; }
+if (! $res && $i > 0 && file_exists(substr($tmp, 0, ($i+1))."/main.inc.php")) $res=@include substr($tmp, 0, ($i+1))."/main.inc.php";
+if (! $res && $i > 0 && file_exists(dirname(substr($tmp, 0, ($i+1)))."/main.inc.php")) $res=@include dirname(substr($tmp, 0, ($i+1)))."/main.inc.php";
 // Try main.inc.php using relative path
-if (! $res && file_exists("../main.inc.php")) $res=@include("../main.inc.php");
-if (! $res && file_exists("../../main.inc.php")) $res=@include("../../main.inc.php");
-if (! $res && file_exists("../../../main.inc.php")) $res=@include("../../../main.inc.php");
+if (! $res && file_exists("../main.inc.php")) $res=@include "../main.inc.php";
+if (! $res && file_exists("../../main.inc.php")) $res=@include "../../main.inc.php";
+if (! $res && file_exists("../../../main.inc.php")) $res=@include "../../../main.inc.php";
 if (! $res) die("Include of main fails");
 
-include_once(DOL_DOCUMENT_ROOT."/core/lib/company.lib.php");
-include_once("./class/patient.class.php");
-include_once("./lib/cabinetmed.lib.php");
+include_once DOL_DOCUMENT_ROOT."/core/lib/company.lib.php";
+include_once "./class/patient.class.php";
+include_once "./lib/cabinetmed.lib.php";
 
 $langs->load("companies");
 $langs->load("cabinetmed@cabinetmed");
@@ -51,7 +51,7 @@ $action = isset($_GET["action"])?$_GET["action"]:$_POST["action"];
 $langs->load("companies");
 
 // Security check
-$socid = GETPOST('socid','int');
+$socid = GETPOST('socid', 'int');
 if ($user->societe_id) $socid=$user->societe_id;
 $result = restrictedArea($user, 'societe', $socid, '&societe');
 
@@ -62,35 +62,30 @@ if ($socid > 0) $object->fetch($socid);
  * Actions
  */
 
-if ($action == 'add' && ! GETPOST('cancel','alpha'))
-{
-    $error=0;
+if ($action == 'add' && ! GETPOST('cancel', 'alpha')) {
+	$error=0;
 
-    $db->begin();
+	$db->begin();
 
-    $result=$object->update_note(dol_html_entity_decode(dol_htmlcleanlastbr(GETPOST('note_private','none')?GETPOST('note_private','none'):GETPOST('note','none')), ENT_QUOTES),'_private');
-    if ($result < 0)
-    {
-        $error++;
-        $errors[]=$object->errors;
-    }
+	$result=$object->update_note(dol_html_entity_decode(dol_htmlcleanlastbr(GETPOST('note_private', 'none')?GETPOST('note_private', 'none'):GETPOST('note', 'none')), ENT_QUOTES), '_private');
+	if ($result < 0) {
+		$error++;
+		$errors[]=$object->errors;
+	}
 
-    $alert_note=($_POST["alert_note"]?'1':'0');
-    $result=addAlert($db, 'alert_note', $socid, $alert_note);
+	$alert_note=($_POST["alert_note"]?'1':'0');
+	$result=addAlert($db, 'alert_note', $socid, $alert_note);
 
-    if ($result == '')
-    {
-         $object->alert_note=$alert_note;
-         $mesgs[]=$langs->trans("RecordModifiedSuccessfully");
-    }
-    else
-    {
-        $error++;
-        $errmesgs[]=$result;
-    }
+	if ($result == '') {
+		 $object->alert_note=$alert_note;
+		 $mesgs[]=$langs->trans("RecordModifiedSuccessfully");
+	} else {
+		$error++;
+		$errmesgs[]=$result;
+	}
 
-    if (! $error) $db->commit();
-    else $db->rollback();
+	if (! $error) $db->commit();
+	else $db->rollback();
 }
 
 
@@ -102,24 +97,23 @@ if ($conf->global->MAIN_DIRECTEDITMODE && $user->rights->societe->creer) $action
 
 $form = new Form($db);
 
-llxHeader('',$langs->trans("Patient").' - '.$langs->trans("Notes"),$help_url);
+llxHeader('', $langs->trans("Patient").' - '.$langs->trans("Notes"), $help_url);
 
-if ($socid > 0)
-{
-    /*
-     * Affichage onglets
-     */
-    if ($conf->notification->enabled) $langs->load("mails");
+if ($socid > 0) {
+	/*
+	 * Affichage onglets
+	 */
+	if ($conf->notification->enabled) $langs->load("mails");
 
-    $head = societe_prepare_head($object);
-
-
-    if ((float) DOL_VERSION < 7) dol_fiche_head($head, 'tabnotes', $langs->trans("Patient"), 0, 'patient@cabinetmed');
-    else dol_fiche_head($head, 'tabnotes', $langs->trans("Patient"), -1, 'patient@cabinetmed');
+	$head = societe_prepare_head($object);
 
 
+	if ((float) DOL_VERSION < 7) dol_fiche_head($head, 'tabnotes', $langs->trans("Patient"), 0, 'patient@cabinetmed');
+	else dol_fiche_head($head, 'tabnotes', $langs->trans("Patient"), -1, 'patient@cabinetmed');
 
-    print '<script type="text/javascript">
+
+
+	print '<script type="text/javascript">
         var changed=false;
         jQuery(function() {
             jQuery(window).bind(\'beforeunload\', function(){
@@ -141,75 +135,68 @@ if ($socid > 0)
          });
         </script>';
 
-    print '<form method="POST" action="'.$_SERVER['PHP_SELF'].'">';
-    print '<input type="hidden" name="token" value="'.$_SESSION['newtoken'].'">';
+	print '<form method="POST" action="'.$_SERVER['PHP_SELF'].'">';
+	print '<input type="hidden" name="token" value="'.$_SESSION['newtoken'].'">';
 
-    $linkback = '<a href="'.dol_buildpath('/cabinetmed/patients.php', 1).'">'.$langs->trans("BackToList").'</a>';
-    dol_banner_tab($object, 'socid', $linkback, ($user->societe_id?0:1), 'rowid', 'nom');
+	$linkback = '<a href="'.dol_buildpath('/cabinetmed/patients.php', 1).'">'.$langs->trans("BackToList").'</a>';
+	dol_banner_tab($object, 'socid', $linkback, ($user->societe_id?0:1), 'rowid', 'nom');
 
-    print '<div class="underbanner clearboth"></div>';
-    print '<table class="border tableforfield" width="100%">';
+	print '<div class="underbanner clearboth"></div>';
+	print '<table class="border tableforfield" width="100%">';
 
-    if (! empty($conf->global->SOCIETE_USEPREFIX))  // Old not used prefix field
-    {
-        print '<tr><td>'.$langs->trans('Prefix').'</td><td colspan="3">'.$object->prefix_comm.'</td></tr>';
-    }
+	if (! empty($conf->global->SOCIETE_USEPREFIX)) {  // Old not used prefix field
+		print '<tr><td>'.$langs->trans('Prefix').'</td><td colspan="3">'.$object->prefix_comm.'</td></tr>';
+	}
 
-    if ($object->client)
-    {
-        print '<tr><td class="titlefield">';
-        print $langs->trans('CustomerCode').'</td><td colspan="3">';
-        print $object->code_client;
-        if ($object->check_codeclient() <> 0) print ' <font class="error">('.$langs->trans("WrongCustomerCode").')</font>';
-        print '</td></tr>';
-    }
+	if ($object->client) {
+		print '<tr><td class="titlefield">';
+		print $langs->trans('CustomerCode').'</td><td colspan="3">';
+		print $object->code_client;
+		if ($object->check_codeclient() <> 0) print ' <font class="error">('.$langs->trans("WrongCustomerCode").')</font>';
+		print '</td></tr>';
+	}
 
-    if ($object->fournisseur)
-    {
-        print '<tr><td class="titlefield">';
-        print $langs->trans('SupplierCode').'</td><td colspan="3">';
-        print $object->code_fournisseur;
-        if ($object->check_codefournisseur() <> 0) print ' <font class="error">('.$langs->trans("WrongSupplierCode").')</font>';
-        print '</td></tr>';
-    }
+	if ($object->fournisseur) {
+		print '<tr><td class="titlefield">';
+		print $langs->trans('SupplierCode').'</td><td colspan="3">';
+		print $object->code_fournisseur;
+		if ($object->check_codefournisseur() <> 0) print ' <font class="error">('.$langs->trans("WrongSupplierCode").')</font>';
+		print '</td></tr>';
+	}
 
-    print '<tr><td class="tdtop titlefield">'.$langs->trans("Note");
-    print '<br><input type="checkbox" id="alert_note" name="alert_note"'.((isset($_POST['alert_note'])?GETPOST('alert_note'):$object->alert_note)?' checked="checked"':'').'"> '.$langs->trans("Alert");
-    print '</td>';
-    print '<td class="tdtop">';
-    $note=($object->note_private?$object->note_private:$object->note);
-    if ($user->rights->societe->creer)
-    {
-        print '<input type="hidden" name="action" value="add" />';
-        print '<input type="hidden" name="socid" value="'.$object->id.'" />';
+	print '<tr><td class="tdtop titlefield">'.$langs->trans("Note");
+	print '<br><input type="checkbox" id="alert_note" name="alert_note"'.((isset($_POST['alert_note'])?GETPOST('alert_note'):$object->alert_note)?' checked="checked"':'').'"> '.$langs->trans("Alert");
+	print '</td>';
+	print '<td class="tdtop">';
+	$note=($object->note_private?$object->note_private:$object->note);
+	if ($user->rights->societe->creer) {
+		print '<input type="hidden" name="action" value="add" />';
+		print '<input type="hidden" name="socid" value="'.$object->id.'" />';
 
-        // Editeur wysiwyg
-        require_once(DOL_DOCUMENT_ROOT."/core/class/doleditor.class.php");
-        $doleditor=new DolEditor('note',$note,'',360,'dolibarr_notes','In',true,false,$conf->global->FCKEDITOR_ENABLE_SOCIETE,20,'90%');
-        $doleditor->Create(0,'.on( \'key\', function(e) { console.log("changed"); changed=true; }) ');  // Add on to detect changes with key pressed
-    }
-    else
-    {
-        print dol_textishtml($note)?$note:dol_nl2br($note,1,true);
-    }
-    print "</td></tr>";
+		// Editeur wysiwyg
+		require_once DOL_DOCUMENT_ROOT."/core/class/doleditor.class.php";
+		$doleditor=new DolEditor('note', $note, '', 360, 'dolibarr_notes', 'In', true, false, $conf->global->FCKEDITOR_ENABLE_SOCIETE, 20, '90%');
+		$doleditor->Create(0, '.on( \'key\', function(e) { console.log("changed"); changed=true; }) ');  // Add on to detect changes with key pressed
+	} else {
+		print dol_textishtml($note)?$note:dol_nl2br($note, 1, true);
+	}
+	print "</td></tr>";
 
-    print "</table>";
+	print "</table>";
 
-    if ($user->rights->societe->creer)
-    {
-        print '<center><br>';
-        print '<input type="submit" class="button ignorechange" name="save" value="'.$langs->trans("Save").'">';
-        print '</center>';
-    }
+	if ($user->rights->societe->creer) {
+		print '<center><br>';
+		print '<input type="submit" class="button ignorechange" name="save" value="'.$langs->trans("Save").'">';
+		print '</center>';
+	}
 
-    print '</form>';
+	print '</form>';
 
-    dol_fiche_end();
+	dol_fiche_end();
 }
 
-dol_htmloutput_mesg('',$mesgs);
-dol_htmloutput_errors('',$errmesgs);
+dol_htmloutput_mesg('', $mesgs);
+dol_htmloutput_errors('', $errmesgs);
 
 
 llxFooter();

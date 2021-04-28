@@ -27,16 +27,16 @@
 // Load Dolibarr environment
 $res=0;
 // Try main.inc.php into web root known defined into CONTEXT_DOCUMENT_ROOT (not always defined)
-if (! $res && ! empty($_SERVER["CONTEXT_DOCUMENT_ROOT"])) $res=@include($_SERVER["CONTEXT_DOCUMENT_ROOT"]."/main.inc.php");
+if (! $res && ! empty($_SERVER["CONTEXT_DOCUMENT_ROOT"])) $res=@include $_SERVER["CONTEXT_DOCUMENT_ROOT"]."/main.inc.php";
 // Try main.inc.php into web root detected using web root caluclated from SCRIPT_FILENAME
 $tmp=empty($_SERVER['SCRIPT_FILENAME'])?'':$_SERVER['SCRIPT_FILENAME'];$tmp2=realpath(__FILE__); $i=strlen($tmp)-1; $j=strlen($tmp2)-1;
-while($i > 0 && $j > 0 && isset($tmp[$i]) && isset($tmp2[$j]) && $tmp[$i]==$tmp2[$j]) { $i--; $j--; }
-if (! $res && $i > 0 && file_exists(substr($tmp, 0, ($i+1))."/main.inc.php")) $res=@include(substr($tmp, 0, ($i+1))."/main.inc.php");
-if (! $res && $i > 0 && file_exists(dirname(substr($tmp, 0, ($i+1)))."/main.inc.php")) $res=@include(dirname(substr($tmp, 0, ($i+1)))."/main.inc.php");
+while ($i > 0 && $j > 0 && isset($tmp[$i]) && isset($tmp2[$j]) && $tmp[$i]==$tmp2[$j]) { $i--; $j--; }
+if (! $res && $i > 0 && file_exists(substr($tmp, 0, ($i+1))."/main.inc.php")) $res=@include substr($tmp, 0, ($i+1))."/main.inc.php";
+if (! $res && $i > 0 && file_exists(dirname(substr($tmp, 0, ($i+1)))."/main.inc.php")) $res=@include dirname(substr($tmp, 0, ($i+1)))."/main.inc.php";
 // Try main.inc.php using relative path
-if (! $res && file_exists("../main.inc.php")) $res=@include("../main.inc.php");
-if (! $res && file_exists("../../main.inc.php")) $res=@include("../../main.inc.php");
-if (! $res && file_exists("../../../main.inc.php")) $res=@include("../../../main.inc.php");
+if (! $res && file_exists("../main.inc.php")) $res=@include "../main.inc.php";
+if (! $res && file_exists("../../main.inc.php")) $res=@include "../../main.inc.php";
+if (! $res && file_exists("../../../main.inc.php")) $res=@include "../../../main.inc.php";
 if (! $res) die("Include of main fails");
 
 include_once DOL_DOCUMENT_ROOT.'/contact/class/contact.class.php';
@@ -47,9 +47,9 @@ $langs->load("customers");
 $langs->load("suppliers");
 
 // Security check
-$socid = GETPOST('socid','int');
+$socid = GETPOST('socid', 'int');
 if ($user->societe_id) $socid=$user->societe_id;
-$result = restrictedArea($user,'societe',$socid,'');
+$result = restrictedArea($user, 'societe', $socid, '');
 
 $search_all=trim(GETPOSTISSET('search_all')?GETPOST('search_all', 'alpha'):GETPOST('sall', 'alpha'));
 $search_nom=trim(GETPOST("search_nom"));
@@ -68,8 +68,8 @@ $mode=GETPOST("mode");
 $modesearch=GETPOST("mode_search");
 $search_type=trim(GETPOST('search_type'));
 
-$sortfield=GETPOST("sortfield",'alpha');
-$sortorder=GETPOST("sortorder",'alpha');
+$sortfield=GETPOST("sortfield", 'alpha');
+$sortorder=GETPOST("sortorder", 'alpha');
 $page = GETPOSTISSET('pageplusone') ? (GETPOST('pageplusone') - 1) : GETPOST("page", 'int');
 if (! $sortorder) $sortorder="ASC";
 if (! $sortfield) $sortfield="s.nom";
@@ -80,11 +80,11 @@ $pagenext = $page + 1;
 
 // List of fields to search into when doing a "search in all"
 $fieldstosearchall = array(
-    's.nom'=>"ThirdPartyName",
-    's.code_client'=>"CustomerCode",
-    's.email'=>"EMail",
-    's.url'=>"URL",
-    's.tva_intra'=>"VATIntra"
+	's.nom'=>"ThirdPartyName",
+	's.code_client'=>"CustomerCode",
+	's.email'=>"EMail",
+	's.url'=>"URL",
+	's.tva_intra'=>"VATIntra"
 );
 
 
@@ -93,56 +93,49 @@ $fieldstosearchall = array(
  */
 
 // Recherche
-if ($mode == 'search')
-{
+if ($mode == 'search') {
 	$search_nom=$socname;
 
 	$sql = "SELECT s.rowid";
 	$sql.= " FROM ".MAIN_DB_PREFIX."societe as s";
 	if ($search_sale || !$user->rights->societe->client->voir && !$socid) $sql.= ", ".MAIN_DB_PREFIX."societe_commerciaux as sc";
-    // We'll need this table joined to the select in order to filter by categ
-    if ($search_categ) $sql.= ", ".MAIN_DB_PREFIX."categorie_societe as cs";
-    $sql.= " WHERE s.entity IN (".getEntity('societe', 1).")";
+	// We'll need this table joined to the select in order to filter by categ
+	if ($search_categ) $sql.= ", ".MAIN_DB_PREFIX."categorie_societe as cs";
+	$sql.= " WHERE s.entity IN (".getEntity('societe', 1).")";
 	$sql.= " AND (";
 	$sql.= " s.nom LIKE '%".$db->escape($socname)."%'";
 	$sql.= " OR s.code_client LIKE '%".$db->escape($socname)."%'";
 	$sql.= " OR s.email LIKE '%".$db->escape($socname)."%'";
 	$sql.= " OR s.url LIKE '%".$db->escape($socname)."%'";
 
-	if (!empty($conf->barcode->enabled))
-	{
+	if (!empty($conf->barcode->enabled)) {
 		$sql.= "OR s.barcode LIKE '".$db->escape($socname)."'";
 	}
 
 	$sql.= ")";
 	if (!$user->rights->societe->client->voir && !$socid) $sql.= " AND s.rowid = sc.fk_soc AND sc.fk_user = " .$user->id;
 	if ($socid) $sql.= " AND s.rowid = ".$socid;
-    if ($search_sale) $sql.= " AND s.rowid = sc.fk_soc";        // Join for the needed table to filter by sale
-    if ($search_categ) $sql.= " AND s.rowid = cs.fk_soc";   // Join for the needed table to filter by categ
-	if (! $user->rights->societe->lire || ! $user->rights->fournisseur->lire)
-	{
+	if ($search_sale) $sql.= " AND s.rowid = sc.fk_soc";        // Join for the needed table to filter by sale
+	if ($search_categ) $sql.= " AND s.rowid = cs.fk_soc";   // Join for the needed table to filter by categ
+	if (! $user->rights->societe->lire || ! $user->rights->fournisseur->lire) {
 		if (! $user->rights->fournisseur->lire) $sql.=" AND s.fourn != 1";
 	}
-    // Insert sale filter
-    if ($search_sale)
-    {
-        $sql .= " AND sc.fk_user = ".$search_sale;
-    }
-    // Insert categ filter
-    if ($search_categ)
-    {
-        $sql .= " AND cs.fk_categorie = ".$search_categ;
-    }
-    // Filter on type of thirdparty
-	if ($search_type > 0 && in_array($search_type,array('1,3','2,3'))) $sql .= " AND s.client IN (".$db->escape($search_type).")";
-	if ($search_type > 0 && in_array($search_type,array('4')))         $sql .= " AND s.fournisseur = 1";
+	// Insert sale filter
+	if ($search_sale) {
+		$sql .= " AND sc.fk_user = ".$search_sale;
+	}
+	// Insert categ filter
+	if ($search_categ) {
+		$sql .= " AND cs.fk_categorie = ".$search_categ;
+	}
+	// Filter on type of thirdparty
+	if ($search_type > 0 && in_array($search_type, array('1,3','2,3'))) $sql .= " AND s.client IN (".$db->escape($search_type).")";
+	if ($search_type > 0 && in_array($search_type, array('4')))         $sql .= " AND s.fournisseur = 1";
 	if ($search_type == '0') $sql .= " AND s.client = 0 AND s.fournisseur = 0";
 
 	$result=$db->query($sql);
-	if ($result)
-	{
-		if ($db->num_rows($result) == 1)
-		{
+	if ($result) {
+		if ($db->num_rows($result) == 1) {
 			$obj = $db->fetch_object($result);
 			$socid = $obj->rowid;
 			header("Location: ".DOL_URL_ROOT."/societe/soc.php?socid=".$socid);
@@ -153,18 +146,17 @@ if ($mode == 'search')
 }
 
 // Do we click on purge search criteria ?
-if (GETPOST("button_removefilter_x") || GETPOST("button_removefilter.x") || GETPOST("button_removefilter"))
-{
-    $search_categ='';
-    $search_sale='';
-    $socname="";
-    $search_nom="";
-    $search_ville="";
-    $search_idprof1='';
-    $search_idprof2='';
-    $search_idprof3='';
-    $search_idprof4='';
-    $search_type='';
+if (GETPOST("button_removefilter_x") || GETPOST("button_removefilter.x") || GETPOST("button_removefilter")) {
+	$search_categ='';
+	$search_sale='';
+	$socname="";
+	$search_nom="";
+	$search_ville="";
+	$search_idprof1='';
+	$search_idprof2='';
+	$search_idprof3='';
+	$search_idprof4='';
+	$search_type='';
 }
 
 
@@ -177,10 +169,9 @@ $htmlother=new FormOther($db);
 $companystatic=new Societe($db);
 
 $help_url='EN:Module_Third_Parties|FR:Module_Tiers|ES:Empresas';
-llxHeader('',$langs->trans("ThirdParty"),$help_url);
+llxHeader('', $langs->trans("ThirdParty"), $help_url);
 
-if ($socname)
-{
+if ($socname) {
 	$search_nom=$socname;
 }
 
@@ -218,22 +209,18 @@ if ($search_sale) $sql.= " AND s.rowid = sc.fk_soc";        // Join for the need
 if ($search_categ) $sql.= " AND s.rowid = cs.fk_soc";   // Join for the needed table to filter by categ
 if (! $user->rights->fournisseur->lire) $sql.=" AND (s.fournisseur <> 1 OR s.client <> 0)";    // client=0, fournisseur=0 must be visible
 // Insert sale filter
-if ($search_sale)
-{
-    $sql .= " AND sc.fk_user = ".$search_sale;
+if ($search_sale) {
+	$sql .= " AND sc.fk_user = ".$search_sale;
 }
 // Insert categ filter
-if ($search_categ)
-{
-    $sql .= " AND cs.fk_categorie = ".$search_categ;
+if ($search_categ) {
+	$sql .= " AND cs.fk_categorie = ".$search_categ;
 }
-if ($search_nom_only)
-{
+if ($search_nom_only) {
 	$sql.= " AND s.nom LIKE '%".$db->escape($search_nom_only)."%'";
 }
 if ($search_all)      $sql.= natural_search(array_keys($fieldstosearchall), $search_all);
-if ($search_nom)
-{
+if ($search_nom) {
 	$sql.= " AND (";
 	$sql.= "s.nom LIKE '%".$db->escape($search_nom)."%'";
 	$sql.= " OR s.code_client LIKE '%".$db->escape($search_nom)."%'";
@@ -249,25 +236,23 @@ if ($search_idprof4) $sql .= " AND s.idprof4 LIKE '%".$db->escape($search_idprof
 if ($search_idprof5) $sql .= " AND s.idprof5 LIKE '%".$db->escape($search_idprof5)."%'";
 if ($search_idprof6) $sql .= " AND s.idprof6 LIKE '%".$db->escape($search_idprof6)."%'";
 // Filter on type of thirdparty
-if ($search_type > 0 && in_array($search_type,array('1,3','2,3'))) $sql .= " AND s.client IN (".$db->escape($search_type).")";
-if ($search_type > 0 && in_array($search_type,array('4')))         $sql .= " AND s.fournisseur = 1";
+if ($search_type > 0 && in_array($search_type, array('1,3','2,3'))) $sql .= " AND s.client IN (".$db->escape($search_type).")";
+if ($search_type > 0 && in_array($search_type, array('4')))         $sql .= " AND s.fournisseur = 1";
 if ($search_type == '0') $sql .= " AND s.client = 0 AND s.fournisseur = 0";
 //print $sql;
 
 // Count total nb of records
 $nbtotalofrecords = '';
-if (empty($conf->global->MAIN_DISABLE_FULL_SCANLIST))
-{
+if (empty($conf->global->MAIN_DISABLE_FULL_SCANLIST)) {
 	$result = $db->query($sql);
 	$nbtotalofrecords = $db->num_rows($result);
 }
 
-$sql.= $db->order($sortfield,$sortorder);
+$sql.= $db->order($sortfield, $sortorder);
 $sql.= $db->plimit($conf->liste_limit+1, $offset);
 
 $resql = $db->query($sql);
-if ($resql)
-{
+if ($resql) {
 	$num = $db->num_rows($resql);
 	$i = 0;
 
@@ -277,74 +262,70 @@ if ($resql)
 	$params.= '&amp;search_idprof3='.$search_idprof3;
 	$params.= '&amp;search_idprof4='.$search_idprof4;
 
-	print_barre_liste($title, $page, $_SERVER["PHP_SELF"],$params,$sortfield,$sortorder,'',$num,$nbtotalofrecords);
+	print_barre_liste($title, $page, $_SERVER["PHP_SELF"], $params, $sortfield, $sortorder, '', $num, $nbtotalofrecords);
 
-    // Show delete result message
-    if (GETPOST('delsoc'))
-    {
-        dol_htmloutput_mesg($langs->trans("CompanyDeleted",GETPOST('delsoc')),'','ok');
-    }
+	// Show delete result message
+	if (GETPOST('delsoc')) {
+		dol_htmloutput_mesg($langs->trans("CompanyDeleted", GETPOST('delsoc')), '', 'ok');
+	}
 
 	$langs->load("other");
 	$textprofid=array();
-	foreach(array(1,2,3,4) as $key)
-	{
+	foreach (array(1,2,3,4) as $key) {
 		$label=$langs->transnoentities("ProfId".$key.$mysoc->country_code);
 		$textprofid[$key]='';
-		if ($label != "ProfId".$key.$mysoc->country_code)
-		{	// Get only text between ()
-			if (preg_match('/\((.*)\)/i',$label,$reg)) $label=$reg[1];
-			$textprofid[$key]=$langs->trans("ProfIdShortDesc",$key,$mysoc->country_code,$label);
+		if ($label != "ProfId".$key.$mysoc->country_code) {	// Get only text between ()
+			if (preg_match('/\((.*)\)/i', $label, $reg)) $label=$reg[1];
+			$textprofid[$key]=$langs->trans("ProfIdShortDesc", $key, $mysoc->country_code, $label);
 		}
 	}
 
-	if ($search_all)
-	{
-	    foreach($fieldstosearchall as $key => $val) $fieldstosearchall[$key]=$langs->trans($val);
-	    print '<div class="divsearchfieldfilter">'.$langs->trans("FilterOnInto", $search_all) . join(', ',$fieldstosearchall).'</div>';
+	if ($search_all) {
+		foreach ($fieldstosearchall as $key => $val) $fieldstosearchall[$key]=$langs->trans($val);
+		print '<div class="divsearchfieldfilter">'.$langs->trans("FilterOnInto", $search_all) . join(', ', $fieldstosearchall).'</div>';
 	}
 
 	print '<form method="post" action="'.$_SERVER["PHP_SELF"].'" name="formfilter">';
 	print '<input type="hidden" name="token" value="'.$_SESSION['newtoken'].'">';
 
 
-    // Filter on categories
-    /* Not possible in this page because list is for ALL third parties type
+	// Filter on categories
+	/* Not possible in this page because list is for ALL third parties type
 	$moreforfilter='';
-    if (! empty($conf->categorie->enabled))
-    {
-        $moreforfilter.=$langs->trans('Categories'). ': ';
-        $moreforfilter.=$htmlother->select_categories(2,$search_categ,'search_categ');
-        $moreforfilter.=' &nbsp; &nbsp; &nbsp; ';
-    }
-    // If the user can view prospects other than his'
-    if ($user->rights->societe->client->voir || $socid)
-    {
-        $moreforfilter.=$langs->trans('SalesRepresentatives'). ': ';
-        $moreforfilter.=$htmlother->select_salesrepresentatives($search_sale,'search_sale',$user, 0, 1, 'maxwidth300');
-    }
-    if ($moreforfilter)
-    {
-        print '<tr class="liste_titre">';
-        print '<td class="liste_titre" colspan="8">';
-        print $moreforfilter;
-        print '</td></tr>';
-    }
+	if (! empty($conf->categorie->enabled))
+	{
+		$moreforfilter.=$langs->trans('Categories'). ': ';
+		$moreforfilter.=$htmlother->select_categories(2,$search_categ,'search_categ');
+		$moreforfilter.=' &nbsp; &nbsp; &nbsp; ';
+	}
+	// If the user can view prospects other than his'
+	if ($user->rights->societe->client->voir || $socid)
+	{
+		$moreforfilter.=$langs->trans('SalesRepresentatives'). ': ';
+		$moreforfilter.=$htmlother->select_salesrepresentatives($search_sale,'search_sale',$user, 0, 1, 'maxwidth300');
+	}
+	if ($moreforfilter)
+	{
+		print '<tr class="liste_titre">';
+		print '<td class="liste_titre" colspan="8">';
+		print $moreforfilter;
+		print '</td></tr>';
+	}
 	*/
 
-    print '<div class="div-table-responsive">';
+	print '<div class="div-table-responsive">';
 	print '<table class="tagtable liste'.($moreforfilter?" listwithfilterbefore":"").'">';
 
 	// Lines of titles
-    print '<tr class="liste_titre">';
-	print_liste_field_titre($langs->trans("Company"),$_SERVER["PHP_SELF"],"s.nom","",$params,"",$sortfield,$sortorder);
-	print_liste_field_titre($langs->trans("Town"),$_SERVER["PHP_SELF"],"s.town","",$params,'',$sortfield,$sortorder);
-	print_liste_field_titre($form->textwithpicto($langs->trans("ProfId1Short"),$textprofid[1],1,0),$_SERVER["PHP_SELF"],"s.siren","",$params,'nowrap="nowrap"',$sortfield,$sortorder);
-	print_liste_field_titre($form->textwithpicto($langs->trans("ProfId2Short"),$textprofid[2],1,0),$_SERVER["PHP_SELF"],"s.siret","",$params,'nowrap="nowrap"',$sortfield,$sortorder);
-	print_liste_field_titre($form->textwithpicto($langs->trans("ProfId3Short"),$textprofid[3],1,0),$_SERVER["PHP_SELF"],"s.ape","",$params,'nowrap="nowrap"',$sortfield,$sortorder);
-	print_liste_field_titre($form->textwithpicto($langs->trans("ProfId4Short"),$textprofid[4],1,0),$_SERVER["PHP_SELF"],"s.idprof4","",$params,'nowrap="nowrap"',$sortfield,$sortorder);
+	print '<tr class="liste_titre">';
+	print_liste_field_titre($langs->trans("Company"), $_SERVER["PHP_SELF"], "s.nom", "", $params, "", $sortfield, $sortorder);
+	print_liste_field_titre($langs->trans("Town"), $_SERVER["PHP_SELF"], "s.town", "", $params, '', $sortfield, $sortorder);
+	print_liste_field_titre($form->textwithpicto($langs->trans("ProfId1Short"), $textprofid[1], 1, 0), $_SERVER["PHP_SELF"], "s.siren", "", $params, 'nowrap="nowrap"', $sortfield, $sortorder);
+	print_liste_field_titre($form->textwithpicto($langs->trans("ProfId2Short"), $textprofid[2], 1, 0), $_SERVER["PHP_SELF"], "s.siret", "", $params, 'nowrap="nowrap"', $sortfield, $sortorder);
+	print_liste_field_titre($form->textwithpicto($langs->trans("ProfId3Short"), $textprofid[3], 1, 0), $_SERVER["PHP_SELF"], "s.ape", "", $params, 'nowrap="nowrap"', $sortfield, $sortorder);
+	print_liste_field_titre($form->textwithpicto($langs->trans("ProfId4Short"), $textprofid[4], 1, 0), $_SERVER["PHP_SELF"], "s.idprof4", "", $params, 'nowrap="nowrap"', $sortfield, $sortorder);
 	print '<td></td>';
-	print_liste_field_titre($langs->trans("Status"),$_SERVER["PHP_SELF"],"s.status","",$params,'align="right"',$sortfield,$sortorder);
+	print_liste_field_titre($langs->trans("Status"), $_SERVER["PHP_SELF"], "s.status", "", $params, 'align="right"', $sortfield, $sortorder);
 	print "</tr>\n";
 
 	// Fields title search
@@ -352,7 +333,7 @@ if ($resql)
 	print '<td class="liste_titre">';
 	print '<input type="hidden" name="sortfield" value="'.$sortfield.'">';
 	print '<input type="hidden" name="sortorder" value="'.$sortorder.'">';
-    print '<input type="hidden" name="page" value="'.$page.'">';
+	print '<input type="hidden" name="page" value="'.$page.'">';
 	if (! empty($search_nom_only) && empty($search_nom)) $search_nom=$search_nom_only;
 	print '<input class="flat" type="text" name="search_nom" value="'.$search_nom.'">';
 	print '</td><td class="liste_titre">';
@@ -392,19 +373,18 @@ if ($resql)
 	print '</td>';
 	print "</tr>\n";
 
-	$var=True;
+	$var=true;
 
-	while ($i < min($num,$conf->liste_limit))
-	{
+	while ($i < min($num, $conf->liste_limit)) {
 		$obj = $db->fetch_object($resql);
 		$var=!$var;
 		print "<tr $bc[$var]><td>";
 		$companystatic->id=$obj->rowid;
 		$companystatic->name=$obj->name;
 		$companystatic->canvas=$obj->canvas;
-        $companystatic->client=$obj->client;
-        $companystatic->status=$obj->status;
-		print $companystatic->getNomUrl(1,'',24);
+		$companystatic->client=$obj->client;
+		$companystatic->status=$obj->status;
+		print $companystatic->getNomUrl(1, '', 24);
 		print "</td>\n";
 		print "<td>".$obj->town."</td>\n";
 		print "<td>".$obj->idprof1."</td>\n";
@@ -413,26 +393,23 @@ if ($resql)
 		print "<td>".$obj->idprof4."</td>\n";
 		print '<td class="center">';
 		$s='';
-		if (($obj->client==1 || $obj->client==3) && empty($conf->global->SOCIETE_DISABLE_CUSTOMERS))
-		{
-	  		$companystatic->name=$langs->trans("Customer");
-		    $s.=$companystatic->getNomUrl(0,'customer');
+		if (($obj->client==1 || $obj->client==3) && empty($conf->global->SOCIETE_DISABLE_CUSTOMERS)) {
+			$companystatic->name=$langs->trans("Customer");
+			$s.=$companystatic->getNomUrl(0, 'customer');
 		}
-		if (($obj->client==2 || $obj->client==3) && empty($conf->global->SOCIETE_DISABLE_PROSPECTS))
-		{
-            if ($s) $s.=" / ";
-		    $companystatic->name=$langs->trans("Prospect");
-            $s.=$companystatic->getNomUrl(0,'prospect');
-		}
-		if (! empty($conf->fournisseur->enabled) && $obj->fournisseur)
-		{
+		if (($obj->client==2 || $obj->client==3) && empty($conf->global->SOCIETE_DISABLE_PROSPECTS)) {
 			if ($s) $s.=" / ";
-            $companystatic->name=$langs->trans("Supplier");
-            $s.=$companystatic->getNomUrl(0,'supplier');
+			$companystatic->name=$langs->trans("Prospect");
+			$s.=$companystatic->getNomUrl(0, 'prospect');
+		}
+		if (! empty($conf->fournisseur->enabled) && $obj->fournisseur) {
+			if ($s) $s.=" / ";
+			$companystatic->name=$langs->trans("Supplier");
+			$s.=$companystatic->getNomUrl(0, 'supplier');
 		}
 		print $s;
 		print '</td>';
-        print '<td align="right">'.$companystatic->getLibStatut(3).'</td>';
+		print '<td align="right">'.$companystatic->getLibStatut(3).'</td>';
 
 		print '</tr>'."\n";
 		$i++;
@@ -441,13 +418,10 @@ if ($resql)
 	$db->free($resql);
 
 	print "</table>";
-    print '</div>';
+	print '</div>';
 
 	print '</form>';
-
-}
-else
-{
+} else {
 	dol_print_error($db);
 }
 

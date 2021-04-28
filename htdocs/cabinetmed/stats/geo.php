@@ -24,16 +24,16 @@
 // Load Dolibarr environment
 $res=0;
 // Try main.inc.php into web root known defined into CONTEXT_DOCUMENT_ROOT (not always defined)
-if (! $res && ! empty($_SERVER["CONTEXT_DOCUMENT_ROOT"])) $res=@include($_SERVER["CONTEXT_DOCUMENT_ROOT"]."/main.inc.php");
+if (! $res && ! empty($_SERVER["CONTEXT_DOCUMENT_ROOT"])) $res=@include $_SERVER["CONTEXT_DOCUMENT_ROOT"]."/main.inc.php";
 // Try main.inc.php into web root detected using web root caluclated from SCRIPT_FILENAME
 $tmp=empty($_SERVER['SCRIPT_FILENAME'])?'':$_SERVER['SCRIPT_FILENAME'];$tmp2=realpath(__FILE__); $i=strlen($tmp)-1; $j=strlen($tmp2)-1;
-while($i > 0 && $j > 0 && isset($tmp[$i]) && isset($tmp2[$j]) && $tmp[$i]==$tmp2[$j]) { $i--; $j--; }
-if (! $res && $i > 0 && file_exists(substr($tmp, 0, ($i+1))."/main.inc.php")) $res=@include(substr($tmp, 0, ($i+1))."/main.inc.php");
-if (! $res && $i > 0 && file_exists(dirname(substr($tmp, 0, ($i+1)))."/main.inc.php")) $res=@include(dirname(substr($tmp, 0, ($i+1)))."/main.inc.php");
+while ($i > 0 && $j > 0 && isset($tmp[$i]) && isset($tmp2[$j]) && $tmp[$i]==$tmp2[$j]) { $i--; $j--; }
+if (! $res && $i > 0 && file_exists(substr($tmp, 0, ($i+1))."/main.inc.php")) $res=@include substr($tmp, 0, ($i+1))."/main.inc.php";
+if (! $res && $i > 0 && file_exists(dirname(substr($tmp, 0, ($i+1)))."/main.inc.php")) $res=@include dirname(substr($tmp, 0, ($i+1)))."/main.inc.php";
 // Try main.inc.php using relative path
-if (! $res && file_exists("../main.inc.php")) $res=@include("../main.inc.php");
-if (! $res && file_exists("../../main.inc.php")) $res=@include("../../main.inc.php");
-if (! $res && file_exists("../../../main.inc.php")) $res=@include("../../../main.inc.php");
+if (! $res && file_exists("../main.inc.php")) $res=@include "../main.inc.php";
+if (! $res && file_exists("../../main.inc.php")) $res=@include "../../main.inc.php";
+if (! $res && file_exists("../../../main.inc.php")) $res=@include "../../../main.inc.php";
 if (! $res) die("Include of main fails");
 dol_include_once("/cabinetmed/lib/cabinetmed.lib.php");
 dol_include_once("/cabinetmed/class/cabinetmedcons.class.php");
@@ -47,10 +47,9 @@ $mode=GETPOST('mode')?GETPOST('mode'):'';
 
 
 // Security check
-if ($user->societe_id > 0)
-{
-    $action = '';
-    $socid = $user->societe_id;
+if ($user->societe_id > 0) {
+	$action = '';
+	$socid = $user->societe_id;
 }
 
 if (empty($conf->cabinetmed->enabled)) accessforbidden();
@@ -67,7 +66,7 @@ $endyear=$year;
 
 $langs->load("cabinetmed@cabinetmed");
 
-llxHeader('','','','',0,0,array('http://www.google.com/jsapi'));
+llxHeader('', '', '', '', 0, 0, array('http://www.google.com/jsapi'));
 
 $title=$langs->trans("Statistics");
 
@@ -78,113 +77,101 @@ dol_mkdir($dir);
 $countrytable="c_pays";
 $fieldlabel='libelle';
 include_once DOL_DOCUMENT_ROOT.'/core/lib/admin.lib.php';
-if (versioncompare(versiondolibarrarray(),array(3,7,-3)) >= 0)
-{
+if (versioncompare(versiondolibarrarray(), array(3,7,-3)) >= 0) {
 	$countrytable="c_country";
 	$fieldlabel="label";
 }
 
-if ($mode)
-{
-    // Define sql
-    if ($mode == 'cabinetmedbycountry')
-    {
-        $label=$langs->trans("Country");
-        $tab='statscountry';
+if ($mode) {
+	// Define sql
+	if ($mode == 'cabinetmedbycountry') {
+		$label=$langs->trans("Country");
+		$tab='statscountry';
 
-        $data = array();
-        $sql.="SELECT COUNT(d.rowid) as nb, MAX(d.datevalid) as lastdate, c.code, c.label";
-        $sql.=" FROM ".MAIN_DB_PREFIX."adherent as d LEFT JOIN ".MAIN_DB_PREFIX.$countrytable." as c on d.country = c.rowid";
-        $sql.=" WHERE d.statut = 1";
-        $sql.=" GROUP BY c.label, c.code";
-        //print $sql;
-    }
-    if ($mode == 'cabinetmedbystate')
-    {
-        $label=$langs->trans("Country");
-        $label2=$langs->trans("State");
-        $tab='statsstate';
+		$data = array();
+		$sql.="SELECT COUNT(d.rowid) as nb, MAX(d.datevalid) as lastdate, c.code, c.label";
+		$sql.=" FROM ".MAIN_DB_PREFIX."adherent as d LEFT JOIN ".MAIN_DB_PREFIX.$countrytable." as c on d.country = c.rowid";
+		$sql.=" WHERE d.statut = 1";
+		$sql.=" GROUP BY c.label, c.code";
+		//print $sql;
+	}
+	if ($mode == 'cabinetmedbystate') {
+		$label=$langs->trans("Country");
+		$label2=$langs->trans("State");
+		$tab='statsstate';
 
-        $data = array();
-        $sql.="SELECT COUNT(d.rowid) as nb, MAX(d.datevalid) as lastdate, p.code, p.label, c.nom as label2";
-        $sql.=" FROM ".MAIN_DB_PREFIX."cabinetmed_cons as d LEFT JOIN ".MAIN_DB_PREFIX."c_departements as c on d.fk_departement = c.rowid";
-        $sql.=" LEFT JOIN ".MAIN_DB_PREFIX."c_regions as r on c.fk_region = r.code_region";
-        $sql.=" LEFT JOIN ".MAIN_DB_PREFIX.$countrytable." as p on d.country = p.rowid";
-        $sql.=" WHERE d.statut = 1";
-        //if (!$user->rights->societe->client->voir && ! $socid) $sql.= " AND s.rowid = sc.fk_soc AND sc.fk_user = " .$user->id;
-        if ($socid && empty($conf->global->MAIN_DISABLE_RESTRICTION_ON_THIRDPARTY_FOR_EXTERNAL)) $sql.= " AND s.rowid = ".$socid;
-        $sql.=" GROUP BY p.label, p.code, c.nom";
-        //print $sql;
-    }
-    if ($mode == 'cabinetmedbytown')
-    {
-        $label=$langs->trans("Country");
-        $label2=$langs->trans("Town");
-        $tab='statstown';
+		$data = array();
+		$sql.="SELECT COUNT(d.rowid) as nb, MAX(d.datevalid) as lastdate, p.code, p.label, c.nom as label2";
+		$sql.=" FROM ".MAIN_DB_PREFIX."cabinetmed_cons as d LEFT JOIN ".MAIN_DB_PREFIX."c_departements as c on d.fk_departement = c.rowid";
+		$sql.=" LEFT JOIN ".MAIN_DB_PREFIX."c_regions as r on c.fk_region = r.code_region";
+		$sql.=" LEFT JOIN ".MAIN_DB_PREFIX.$countrytable." as p on d.country = p.rowid";
+		$sql.=" WHERE d.statut = 1";
+		//if (!$user->rights->societe->client->voir && ! $socid) $sql.= " AND s.rowid = sc.fk_soc AND sc.fk_user = " .$user->id;
+		if ($socid && empty($conf->global->MAIN_DISABLE_RESTRICTION_ON_THIRDPARTY_FOR_EXTERNAL)) $sql.= " AND s.rowid = ".$socid;
+		$sql.=" GROUP BY p.label, p.code, c.nom";
+		//print $sql;
+	}
+	if ($mode == 'cabinetmedbytown') {
+		$label=$langs->trans("Country");
+		$label2=$langs->trans("Town");
+		$tab='statstown';
 
-        $data = array();
-        $sql.="SELECT COUNT(d.rowid) as nb, MAX(d.datecons) as lastdate, p.code, p.label, s.town as label2";
-        $sql.=" FROM ".MAIN_DB_PREFIX."cabinetmed_cons as d, ".MAIN_DB_PREFIX."societe as s";
-        $sql.=" LEFT JOIN ".MAIN_DB_PREFIX.$countrytable." as p on s.fk_pays = p.rowid";
-        $sql.=" WHERE d.fk_soc = s.rowid";
-        $sql.=' AND s.entity IN ('.getEntity('societe', 1).')';
-        //if (!$user->rights->societe->client->voir && ! $socid) $sql.= " AND s.rowid = sc.fk_soc AND sc.fk_user = " .$user->id;
-        if ($socid && empty($conf->global->MAIN_DISABLE_RESTRICTION_ON_THIRPARTY_FOR_EXTERNAL)) $sql.= " AND s.rowid = ".$socid;
-        $sql.=" GROUP BY p.label, p.code, s.town";
-        //print $sql;
-    }
+		$data = array();
+		$sql.="SELECT COUNT(d.rowid) as nb, MAX(d.datecons) as lastdate, p.code, p.label, s.town as label2";
+		$sql.=" FROM ".MAIN_DB_PREFIX."cabinetmed_cons as d, ".MAIN_DB_PREFIX."societe as s";
+		$sql.=" LEFT JOIN ".MAIN_DB_PREFIX.$countrytable." as p on s.fk_pays = p.rowid";
+		$sql.=" WHERE d.fk_soc = s.rowid";
+		$sql.=' AND s.entity IN ('.getEntity('societe', 1).')';
+		//if (!$user->rights->societe->client->voir && ! $socid) $sql.= " AND s.rowid = sc.fk_soc AND sc.fk_user = " .$user->id;
+		if ($socid && empty($conf->global->MAIN_DISABLE_RESTRICTION_ON_THIRPARTY_FOR_EXTERNAL)) $sql.= " AND s.rowid = ".$socid;
+		$sql.=" GROUP BY p.label, p.code, s.town";
+		//print $sql;
+	}
 
-    $langsen=new Translate('',$conf);
-    $langsen->setDefaultLang('en_US');
-    $langsen->load("dict");
-    //print $langsen->trans("Country"."FI");exit;
+	$langsen=new Translate('', $conf);
+	$langsen->setDefaultLang('en_US');
+	$langsen->load("dict");
+	//print $langsen->trans("Country"."FI");exit;
 
-    // Define $data array
-    dol_syslog("Count cabinetmed sql=".$sql);
-    $resql=$db->query($sql);
-    if ($resql)
-    {
-        $num=$db->num_rows($resql);
-        $i=0;
-        while ($i < $num)
-        {
-            $obj=$db->fetch_object($resql);
-            if ($mode == 'cabinetmedbycountry')
-            {
-                $data[]=array('label'=>(($obj->code && $langs->trans("Country".$obj->code)!="Country".$obj->code)?$langs->trans("Country".$obj->code):($obj->label?$obj->label:$langs->trans("Unknown"))),
-                            'label_en'=>(($obj->code && $langsen->transnoentitiesnoconv("Country".$obj->code)!="Country".$obj->code)?$langsen->transnoentitiesnoconv("Country".$obj->code):($obj->label?$obj->label:$langs->trans("Unknown"))),
+	// Define $data array
+	dol_syslog("Count cabinetmed sql=".$sql);
+	$resql=$db->query($sql);
+	if ($resql) {
+		$num=$db->num_rows($resql);
+		$i=0;
+		while ($i < $num) {
+			$obj=$db->fetch_object($resql);
+			if ($mode == 'cabinetmedbycountry') {
+				$data[]=array('label'=>(($obj->code && $langs->trans("Country".$obj->code)!="Country".$obj->code)?$langs->trans("Country".$obj->code):($obj->label?$obj->label:$langs->trans("Unknown"))),
+							'label_en'=>(($obj->code && $langsen->transnoentitiesnoconv("Country".$obj->code)!="Country".$obj->code)?$langsen->transnoentitiesnoconv("Country".$obj->code):($obj->label?$obj->label:$langs->trans("Unknown"))),
 							'code'=>$obj->code,
 							'nb'=>$obj->nb,
 							'lastdate'=>$db->jdate($obj->lastdate)
-                );
-            }
-            if ($mode == 'cabinetmedbystate')
-            {
-                $data[]=array('label'=>(($obj->code && $langs->trans("Country".$obj->code)!="Country".$obj->code)?$langs->trans("Country".$obj->code):($obj->label?$obj->label:$langs->trans("Unknown"))),
-                            'label_en'=>(($obj->code && $langsen->transnoentitiesnoconv("Country".$obj->code)!="Country".$obj->code)?$langsen->transnoentitiesnoconv("Country".$obj->code):($obj->label?$obj->label:$langs->trans("Unknown"))),
-				            'label2'=>($obj->label2?$obj->label2:$langs->trans("Unknown")),
+				);
+			}
+			if ($mode == 'cabinetmedbystate') {
+				$data[]=array('label'=>(($obj->code && $langs->trans("Country".$obj->code)!="Country".$obj->code)?$langs->trans("Country".$obj->code):($obj->label?$obj->label:$langs->trans("Unknown"))),
+							'label_en'=>(($obj->code && $langsen->transnoentitiesnoconv("Country".$obj->code)!="Country".$obj->code)?$langsen->transnoentitiesnoconv("Country".$obj->code):($obj->label?$obj->label:$langs->trans("Unknown"))),
+							'label2'=>($obj->label2?$obj->label2:$langs->trans("Unknown")),
 							'nb'=>$obj->nb,
 							'lastdate'=>$db->jdate($obj->lastdate)
-                );
-            }
-            if ($mode == 'cabinetmedbytown')
-            {
-                $data[]=array('label'=>(($obj->code && $langs->trans("Country".$obj->code)!="Country".$obj->code)?$langs->trans("Country".$obj->code):($obj->label?$obj->label:$langs->trans("Unknown"))),
-                            'label_en'=>(($obj->code && $langsen->transnoentitiesnoconv("Country".$obj->code)!="Country".$obj->code)?$langsen->transnoentitiesnoconv("Country".$obj->code):($obj->label?$obj->label:$langs->trans("Unknown"))),
-                            'label2'=>($obj->label2?$obj->label2:$langs->trans("Unknown")),
-                            'nb'=>$obj->nb,
-                            'lastdate'=>$db->jdate($obj->lastdate)
-                );
-            }
+				);
+			}
+			if ($mode == 'cabinetmedbytown') {
+				$data[]=array('label'=>(($obj->code && $langs->trans("Country".$obj->code)!="Country".$obj->code)?$langs->trans("Country".$obj->code):($obj->label?$obj->label:$langs->trans("Unknown"))),
+							'label_en'=>(($obj->code && $langsen->transnoentitiesnoconv("Country".$obj->code)!="Country".$obj->code)?$langsen->transnoentitiesnoconv("Country".$obj->code):($obj->label?$obj->label:$langs->trans("Unknown"))),
+							'label2'=>($obj->label2?$obj->label2:$langs->trans("Unknown")),
+							'nb'=>$obj->nb,
+							'lastdate'=>$db->jdate($obj->lastdate)
+				);
+			}
 
-            $i++;
-        }
-        $db->free($resql);
-    }
-    else
-    {
-        dol_print_error($db);
-    }
+			$i++;
+		}
+		$db->free($resql);
+	} else {
+		dol_print_error($db);
+	}
 }
 
 
@@ -194,103 +181,95 @@ dol_fiche_head($head, $tab, $langs->trans("Consultations"), ((float) DOL_VERSION
 
 
 // Print title
-if ($mode && ! count($data))
-{
-    print $langs->trans("NoRecordFound").'<br>';
-    print '<br>';
-}
-else
-{
-    if ($mode == 'cabinetmedbycountry') print $langs->trans("ConsultsByCountryDesc").'<br>';
-    else if ($mode == 'cabinetmedbystate') print $langs->trans("ConsultsByStateDesc").'<br>';
-    else if ($mode == 'cabinetmedbytown') print $langs->trans("ConsultsByTownDesc").'<br>';
-    else
-    {
-        print $langs->trans("ConsultsStatisticsDesc").'<br>';
-        print '<br>';
-        print '<a href="'.$_SERVER["PHP_SELF"].'?mode=cabinetmedbycountry">'.$langs->trans("ConsultsStatisticsByCountries").'</a><br>';
-        print '<br>';
-        print '<a href="'.$_SERVER["PHP_SELF"].'?mode=cabinetmedbystate">'.$langs->trans("ConsultsStatisticsByState").'</a><br>';
-        print '<br>';
-        print '<a href="'.$_SERVER["PHP_SELF"].'?mode=cabinetmedbytown">'.$langs->trans("ConsultsStatisticsByTown").'</a><br>';
-    }
-    print '<br>';
+if ($mode && ! count($data)) {
+	print $langs->trans("NoRecordFound").'<br>';
+	print '<br>';
+} else {
+	if ($mode == 'cabinetmedbycountry') print $langs->trans("ConsultsByCountryDesc").'<br>';
+	elseif ($mode == 'cabinetmedbystate') print $langs->trans("ConsultsByStateDesc").'<br>';
+	elseif ($mode == 'cabinetmedbytown') print $langs->trans("ConsultsByTownDesc").'<br>';
+	else {
+		print $langs->trans("ConsultsStatisticsDesc").'<br>';
+		print '<br>';
+		print '<a href="'.$_SERVER["PHP_SELF"].'?mode=cabinetmedbycountry">'.$langs->trans("ConsultsStatisticsByCountries").'</a><br>';
+		print '<br>';
+		print '<a href="'.$_SERVER["PHP_SELF"].'?mode=cabinetmedbystate">'.$langs->trans("ConsultsStatisticsByState").'</a><br>';
+		print '<br>';
+		print '<a href="'.$_SERVER["PHP_SELF"].'?mode=cabinetmedbytown">'.$langs->trans("ConsultsStatisticsByTown").'</a><br>';
+	}
+	print '<br>';
 }
 
 
 // Show graphics
-if ($mode == 'cabinetmedbycountry')
-{
-    // Assume we've already included the proper headers so just call our script inline
-    print "\n<script type='text/javascript'>\n";
-    print "google.load('visualization', '1', {'packages': ['geomap']});\n";
-    print "google.setOnLoadCallback(drawMap);\n";
-    print "function drawMap() {\n\tvar data = new google.visualization.DataTable();\n";
+if ($mode == 'cabinetmedbycountry') {
+	// Assume we've already included the proper headers so just call our script inline
+	print "\n<script type='text/javascript'>\n";
+	print "google.load('visualization', '1', {'packages': ['geomap']});\n";
+	print "google.setOnLoadCallback(drawMap);\n";
+	print "function drawMap() {\n\tvar data = new google.visualization.DataTable();\n";
 
-    // Get the total number of rows
-    print "\tdata.addRows(".count($data).");\n";
-    print "\tdata.addColumn('string', 'Country');\n";
-    print "\tdata.addColumn('number', 'Number');\n";
+	// Get the total number of rows
+	print "\tdata.addRows(".count($data).");\n";
+	print "\tdata.addColumn('string', 'Country');\n";
+	print "\tdata.addColumn('number', 'Number');\n";
 
-    // loop and dump
-    $i=0;
-    foreach($data as $val)
-    {
-        //$valcountry=ucfirst($val['code']);
-        $valcountry=ucfirst($val['label_en']);
-        // fix case of uk
-        if ($valcountry == 'Great Britain') { $valcountry = 'United Kingdom'; }
-        print "\tdata.setValue(".$i.", 0, \"".$valcountry."\");\n";
-        print "\tdata.setValue(".$i.", 1, ".$val['nb'].");\n";
-        // Google's Geomap only supports up to 400 entries
-        if ($i >= 400){ break; }
-        $i++;
-    }
+	// loop and dump
+	$i=0;
+	foreach ($data as $val) {
+		//$valcountry=ucfirst($val['code']);
+		$valcountry=ucfirst($val['label_en']);
+		// fix case of uk
+		if ($valcountry == 'Great Britain') { $valcountry = 'United Kingdom'; }
+		print "\tdata.setValue(".$i.", 0, \"".$valcountry."\");\n";
+		print "\tdata.setValue(".$i.", 1, ".$val['nb'].");\n";
+		// Google's Geomap only supports up to 400 entries
+		if ($i >= 400) { break; }
+		$i++;
+	}
 
-    print "\tvar options = {};\n";
-    print "\toptions['dataMode'] = 'regions';\n";
-    print "\toptions['showZoomOut'] = false;\n";
-    //print "\toptions['zoomOutLabel'] = '".dol_escape_js($langs->transnoentitiesnoconv("Numbers"))."';\n";
-    print "\toptions['width'] = ".$graphwidth.";\n";
-    print "\toptions['height'] = ".$graphheight.";\n";
-    print "\tvar container = document.getElementById('".$mode."');\n";
-    print "\tvar geomap = new google.visualization.GeoMap(container);\n";
-    print "\tgeomap.draw(data, options);\n";
-    print "};\n";
-    print "</script>\n";
+	print "\tvar options = {};\n";
+	print "\toptions['dataMode'] = 'regions';\n";
+	print "\toptions['showZoomOut'] = false;\n";
+	//print "\toptions['zoomOutLabel'] = '".dol_escape_js($langs->transnoentitiesnoconv("Numbers"))."';\n";
+	print "\toptions['width'] = ".$graphwidth.";\n";
+	print "\toptions['height'] = ".$graphheight.";\n";
+	print "\tvar container = document.getElementById('".$mode."');\n";
+	print "\tvar geomap = new google.visualization.GeoMap(container);\n";
+	print "\tgeomap.draw(data, options);\n";
+	print "};\n";
+	print "</script>\n";
 
-    // print the div tag that will contain the map
-    print '<div align="center" id="'.$mode.'"></div>'."\n";
-    print '<br>';
+	// print the div tag that will contain the map
+	print '<div align="center" id="'.$mode.'"></div>'."\n";
+	print '<br>';
 }
 
-if ($mode)
-{
-    // Print array
-    print '<table class="noborder" width="100%">';
-    print '<tr class="liste_titre">';
-    print '<td class="center">'.$label.'</td>';
-    if ($label2) print '<td class="center">'.$label2.'</td>';
-    print '<td align="right">'.$langs->trans("NbConsult").'</td>';
-    print '<td class="center">'.$langs->trans("LastConsultShort").'</td>';
-    print '</tr>';
+if ($mode) {
+	// Print array
+	print '<table class="noborder" width="100%">';
+	print '<tr class="liste_titre">';
+	print '<td class="center">'.$label.'</td>';
+	if ($label2) print '<td class="center">'.$label2.'</td>';
+	print '<td align="right">'.$langs->trans("NbConsult").'</td>';
+	print '<td class="center">'.$langs->trans("LastConsultShort").'</td>';
+	print '</tr>';
 
-    $oldyear=0;
-    $var=true;
-    foreach ($data as $val)
-    {
-        $year = $val['year'];
-        $var=!$var;
-        print '<tr class="oddeven">';
-        print '<td class="center">'.$val['label'].'</td>';
-        if ($label2) print '<td class="center">'.$val['label2'].'</td>';
-        print '<td align="right">'.$val['nb'].'</td>';
-        print '<td class="center">'.dol_print_date($val['lastdate'],'dayhour').'</td>';
-        print '</tr>';
-        $oldyear=$year;
-    }
+	$oldyear=0;
+	$var=true;
+	foreach ($data as $val) {
+		$year = $val['year'];
+		$var=!$var;
+		print '<tr class="oddeven">';
+		print '<td class="center">'.$val['label'].'</td>';
+		if ($label2) print '<td class="center">'.$val['label2'].'</td>';
+		print '<td align="right">'.$val['nb'].'</td>';
+		print '<td class="center">'.dol_print_date($val['lastdate'], 'dayhour').'</td>';
+		print '</tr>';
+		$oldyear=$year;
+	}
 
-    print '</table>';
+	print '</table>';
 }
 
 
@@ -299,4 +278,3 @@ dol_fiche_end();
 llxFooter();
 
 $db->close();
-

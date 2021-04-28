@@ -17,30 +17,30 @@
 
 //if (! defined('NOREQUIREUSER')) define('NOREQUIREUSER','1');	// Not disabled because need to load personalized language
 //if (! defined('NOREQUIREDB'))   define('NOREQUIREDB','1');	// Not disabled to increase speed. Language code is found on url.
-if (! defined('NOREQUIRESOC'))    define('NOREQUIRESOC','1');
+if (! defined('NOREQUIRESOC'))    define('NOREQUIRESOC', '1');
 //if (! defined('NOREQUIRETRAN')) define('NOREQUIRETRAN','1');	// Not disabled because need to do translations
-if (! defined('NOCSRFCHECK'))     define('NOCSRFCHECK',1);
-if (! defined('NOTOKENRENEWAL'))  define('NOTOKENRENEWAL',1);
-if (! defined('NOLOGIN'))         define('NOLOGIN',1);          // File must be accessed by logon page so without login
-if (! defined('NOREQUIREMENU'))   define('NOREQUIREMENU',1);
-if (! defined('NOREQUIREHTML'))   define('NOREQUIREHTML',1);
-if (! defined('NOREQUIREAJAX'))   define('NOREQUIREAJAX','1');
+if (! defined('NOCSRFCHECK'))     define('NOCSRFCHECK', 1);
+if (! defined('NOTOKENRENEWAL'))  define('NOTOKENRENEWAL', 1);
+if (! defined('NOLOGIN'))         define('NOLOGIN', 1);          // File must be accessed by logon page so without login
+if (! defined('NOREQUIREMENU'))   define('NOREQUIREMENU', 1);
+if (! defined('NOREQUIREHTML'))   define('NOREQUIREHTML', 1);
+if (! defined('NOREQUIREAJAX'))   define('NOREQUIREAJAX', '1');
 
-session_cache_limiter(FALSE);
+session_cache_limiter(false);
 
 // Load Dolibarr environment
 $res=0;
 // Try main.inc.php into web root known defined into CONTEXT_DOCUMENT_ROOT (not always defined)
-if (! $res && ! empty($_SERVER["CONTEXT_DOCUMENT_ROOT"])) $res=@include($_SERVER["CONTEXT_DOCUMENT_ROOT"]."/main.inc.php");
+if (! $res && ! empty($_SERVER["CONTEXT_DOCUMENT_ROOT"])) $res=@include $_SERVER["CONTEXT_DOCUMENT_ROOT"]."/main.inc.php";
 // Try main.inc.php into web root detected using web root caluclated from SCRIPT_FILENAME
 $tmp=empty($_SERVER['SCRIPT_FILENAME'])?'':$_SERVER['SCRIPT_FILENAME'];$tmp2=realpath(__FILE__); $i=strlen($tmp)-1; $j=strlen($tmp2)-1;
-while($i > 0 && $j > 0 && isset($tmp[$i]) && isset($tmp2[$j]) && $tmp[$i]==$tmp2[$j]) { $i--; $j--; }
-if (! $res && $i > 0 && file_exists(substr($tmp, 0, ($i+1))."/main.inc.php")) $res=@include(substr($tmp, 0, ($i+1))."/main.inc.php");
-if (! $res && $i > 0 && file_exists(dirname(substr($tmp, 0, ($i+1)))."/main.inc.php")) $res=@include(dirname(substr($tmp, 0, ($i+1)))."/main.inc.php");
+while ($i > 0 && $j > 0 && isset($tmp[$i]) && isset($tmp2[$j]) && $tmp[$i]==$tmp2[$j]) { $i--; $j--; }
+if (! $res && $i > 0 && file_exists(substr($tmp, 0, ($i+1))."/main.inc.php")) $res=@include substr($tmp, 0, ($i+1))."/main.inc.php";
+if (! $res && $i > 0 && file_exists(dirname(substr($tmp, 0, ($i+1)))."/main.inc.php")) $res=@include dirname(substr($tmp, 0, ($i+1)))."/main.inc.php";
 // Try main.inc.php using relative path
-if (! $res && file_exists("../main.inc.php")) $res=@include("../main.inc.php");
-if (! $res && file_exists("../../main.inc.php")) $res=@include("../../main.inc.php");
-if (! $res && file_exists("../../../main.inc.php")) $res=@include("../../../main.inc.php");
+if (! $res && file_exists("../main.inc.php")) $res=@include "../main.inc.php";
+if (! $res && file_exists("../../main.inc.php")) $res=@include "../../main.inc.php";
+if (! $res && file_exists("../../../main.inc.php")) $res=@include "../../../main.inc.php";
 if (! $res) die("Include of main fails");
 
 // Define css type
@@ -66,7 +66,7 @@ $dol_use_jmobile=$conf->dol_use_jmobile;
 
 legend
 {
-    font-weight: normal;
+	font-weight: normal;
 	color: #442288;
 }
 
@@ -81,11 +81,11 @@ div.mainmenu.contacts::before {
 }
 <?php } else { ?>
 div.mainmenu.patients {
-	background-image: url(<?php echo dol_buildpath($path.'/theme/'.$theme.'/img/menus/members.png',1) ?>);
+	background-image: url(<?php echo dol_buildpath($path.'/theme/'.$theme.'/img/menus/members.png', 1) ?>);
 }
 
 div.mainmenu.contacts {
-	background-image: url(<?php echo dol_buildpath('/cabinetmed/img/menus/stethoscope.png',1) ?>);
+	background-image: url(<?php echo dol_buildpath('/cabinetmed/img/menus/stethoscope.png', 1) ?>);
 }
 <?php } ?>
 
@@ -97,9 +97,9 @@ div.mainmenu.contacts {
 /* Force values for small screen 570 */
 @media only screen and (max-width: 570px)
 {
-    .centpercent {
-    	width: auto !important;
-    }
+	.centpercent {
+		width: auto !important;
+	}
 }
 
 <?php if (! empty($dol_use_jmobile)) { ?>
@@ -107,5 +107,5 @@ div.mainmenu.contacts {
 .cabpaymentcarte { border-top: 1px solid #AAA; margin-top: 4px; }
 .cabpaymentcash { border-top: 1px solid #AAA; margin-top: 4px; }
 .cabpaymentthirdparty { border-top: 1px solid #AAA; margin-top: 4px; }
-<?php
+	<?php
 }

@@ -39,7 +39,7 @@ class CabinetmedExamOther // extends CommonObject
 	//var $element='cabinetmed_examaut';			//!< Id that identify managed objects
 	//var $table_element='cabinetmed_examaut';	//!< Name of table without prefix where object is stored
 
-    var $id;
+	var $id;
 
 	var $fk_soc;
 	var $fk_user;
@@ -52,28 +52,28 @@ class CabinetmedExamOther // extends CommonObject
 
 
 
-    /**
-     *	Constructor
-     *
-     *  @param	DoliDB	$db		Database handler
-     */
+	/**
+	 *	Constructor
+	 *
+	 *  @param	DoliDB	$db		Database handler
+	 */
 	function __construct($db)
-    {
-        $this->db = $db;
-        return 1;
-    }
+	{
+		$this->db = $db;
+		return 1;
+	}
 
 
-    /**
-     *      Create object into database
-     *
-     *      @param	User	$user        	User that create
-     *      @param  int		$notrigger	    0=launch triggers after, 1=disable triggers
-     *      @return int         			<0 if KO, Id of created object if OK
-     */
-    function create($user, $notrigger=0)
-    {
-    	global $conf, $langs;
+	/**
+	 *      Create object into database
+	 *
+	 *      @param	User	$user        	User that create
+	 *      @param  int		$notrigger	    0=launch triggers after, 1=disable triggers
+	 *      @return int         			<0 if KO, Id of created object if OK
+	 */
+	function create($user, $notrigger = 0)
+	{
+		global $conf, $langs;
 		$error=0;
 
 		// Clean parameters
@@ -88,7 +88,7 @@ class CabinetmedExamOther // extends CommonObject
 		// Check parameters
 		// Put here code to add control on parameters values
 
-        // Insert request
+		// Insert request
 		$sql = "INSERT INTO ".MAIN_DB_PREFIX."cabinetmed_examaut(";
 		$sql.= "fk_soc,";
 		$sql.= "fk_user,";
@@ -97,7 +97,7 @@ class CabinetmedExamOther // extends CommonObject
 		$sql.= "examsec,";
 		$sql.= "concprinc,";
 		$sql.= "concsec";
-        $sql.= ") VALUES (";
+		$sql.= ") VALUES (";
 		$sql.= " ".(! isset($this->fk_soc)?'NULL':"'".$this->fk_soc."'").",";
 		$sql.= " ".$user->id.",";
 		$sql.= " ".(! isset($this->dateexam) || dol_strlen($this->dateexam)==0?'NULL':"'".$this->db->idate($this->dateexam))."',";
@@ -109,44 +109,39 @@ class CabinetmedExamOther // extends CommonObject
 
 		$this->db->begin();
 
-	   	dol_syslog(get_class($this)."::create sql=".$sql, LOG_DEBUG);
-        $resql=$this->db->query($sql);
-    	if (! $resql) { $error++; $this->errors[]="Error ".$this->db->lasterror(); }
+		dol_syslog(get_class($this)."::create sql=".$sql, LOG_DEBUG);
+		$resql=$this->db->query($sql);
+		if (! $resql) { $error++; $this->errors[]="Error ".$this->db->lasterror(); }
 
-		if (! $error)
-        {
-            $this->id = $this->db->last_insert_id(MAIN_DB_PREFIX."cabinetmed_examaut");
-        }
+		if (! $error) {
+			$this->id = $this->db->last_insert_id(MAIN_DB_PREFIX."cabinetmed_examaut");
+		}
 
-        // Commit or rollback
-        if ($error)
-		{
-			foreach($this->errors as $errmsg)
-			{
-	            dol_syslog(get_class($this)."::create ".$errmsg, LOG_ERR);
-	            $this->error.=($this->error?', '.$errmsg:$errmsg);
+		// Commit or rollback
+		if ($error) {
+			foreach ($this->errors as $errmsg) {
+				dol_syslog(get_class($this)."::create ".$errmsg, LOG_ERR);
+				$this->error.=($this->error?', '.$errmsg:$errmsg);
 			}
 			$this->db->rollback();
 			return -1*$error;
-		}
-		else
-		{
+		} else {
 			$this->db->commit();
-            return $this->id;
+			return $this->id;
 		}
-    }
+	}
 
 
-    /**
-     *    Load object in memory from database
-     *
-     *    @param	int		$id         id object
-     *    @return   int         		<0 if KO, >0 if OK
-     */
-    function fetch($id)
-    {
-    	global $langs;
-        $sql = "SELECT";
+	/**
+	 *    Load object in memory from database
+	 *
+	 *    @param	int		$id         id object
+	 *    @return   int         		<0 if KO, >0 if OK
+	 */
+	function fetch($id)
+	{
+		global $langs;
+		$sql = "SELECT";
 		$sql.= " t.rowid,";
 		$sql.= " t.fk_soc,";
 		$sql.= " t.fk_user,";
@@ -156,18 +151,16 @@ class CabinetmedExamOther // extends CommonObject
 		$sql.= " t.concprinc,";
 		$sql.= " t.concsec,";
 		$sql.= " t.tms";
-        $sql.= " FROM ".MAIN_DB_PREFIX."cabinetmed_examaut as t";
-        $sql.= " WHERE t.rowid = ".((int) $id);
+		$sql.= " FROM ".MAIN_DB_PREFIX."cabinetmed_examaut as t";
+		$sql.= " WHERE t.rowid = ".((int) $id);
 
-    	dol_syslog(get_class($this)."::fetch sql=".$sql, LOG_DEBUG);
-        $resql=$this->db->query($sql);
-        if ($resql)
-        {
-            if ($this->db->num_rows($resql))
-            {
-                $obj = $this->db->fetch_object($resql);
+		dol_syslog(get_class($this)."::fetch sql=".$sql, LOG_DEBUG);
+		$resql=$this->db->query($sql);
+		if ($resql) {
+			if ($this->db->num_rows($resql)) {
+				$obj = $this->db->fetch_object($resql);
 
-                $this->id    = $obj->rowid;
+				$this->id    = $obj->rowid;
 
 				$this->fk_soc = $obj->fk_soc;
 				$this->fk_user = $obj->fk_user;
@@ -177,32 +170,28 @@ class CabinetmedExamOther // extends CommonObject
 				$this->concprinc = $obj->concprinc;
 				$this->concsec = $obj->concsec;
 				$this->tms = $this->db->jdate($obj->tms);
+			}
+			$this->db->free($resql);
+
+			return 1;
+		} else {
+			$this->error="Error ".$this->db->lasterror();
+			dol_syslog(get_class($this)."::fetch ".$this->error, LOG_ERR);
+			return -1;
+		}
+	}
 
 
-            }
-            $this->db->free($resql);
-
-            return 1;
-        }
-        else
-        {
-      	    $this->error="Error ".$this->db->lasterror();
-            dol_syslog(get_class($this)."::fetch ".$this->error, LOG_ERR);
-            return -1;
-        }
-    }
-
-
-    /**
-     *      Update object into database
-     *
-     *      @param	User	$user        	User that modify
-     *      @param  int		$notrigger	    0=launch triggers after, 1=disable triggers
-     *      @return int         			<0 if KO, >0 if OK
-     */
-    function update($user=null, $notrigger=0)
-    {
-    	global $conf, $langs;
+	/**
+	 *      Update object into database
+	 *
+	 *      @param	User	$user        	User that modify
+	 *      @param  int		$notrigger	    0=launch triggers after, 1=disable triggers
+	 *      @return int         			<0 if KO, >0 if OK
+	 */
+	function update($user = null, $notrigger = 0)
+	{
+		global $conf, $langs;
 		$error=0;
 
 		// Clean parameters
@@ -218,8 +207,8 @@ class CabinetmedExamOther // extends CommonObject
 		// Check parameters
 		// Put here code to add control on parameters values
 
-        // Update request
-        $sql = "UPDATE ".MAIN_DB_PREFIX."cabinetmed_examaut SET";
+		// Update request
+		$sql = "UPDATE ".MAIN_DB_PREFIX."cabinetmed_examaut SET";
 
 		$sql.= " fk_soc=".(isset($this->fk_soc)?$this->fk_soc:"null").",";
 		$sql.= " dateexam=".(dol_strlen($this->dateexam)!=0 ? "'".$this->db->idate($this->dateexam)."'" : 'null').",";
@@ -230,41 +219,37 @@ class CabinetmedExamOther // extends CommonObject
 		$sql.= " tms=".(dol_strlen($this->tms)!=0 ? "'".$this->db->idate($this->tms)."'" : 'null')."";
 
 
-        $sql.= " WHERE rowid=".((int) $this->id);
+		$sql.= " WHERE rowid=".((int) $this->id);
 
 		$this->db->begin();
 
 		dol_syslog(get_class($this)."::update sql=".$sql, LOG_DEBUG);
-        $resql = $this->db->query($sql);
-    	if (! $resql) { $error++; $this->errors[]="Error ".$this->db->lasterror(); }
+		$resql = $this->db->query($sql);
+		if (! $resql) { $error++; $this->errors[]="Error ".$this->db->lasterror(); }
 
-        // Commit or rollback
-		if ($error)
-		{
-			foreach($this->errors as $errmsg)
-			{
-	            dol_syslog(get_class($this)."::update ".$errmsg, LOG_ERR);
-	            $this->error.=($this->error?', '.$errmsg:$errmsg);
+		// Commit or rollback
+		if ($error) {
+			foreach ($this->errors as $errmsg) {
+				dol_syslog(get_class($this)."::update ".$errmsg, LOG_ERR);
+				$this->error.=($this->error?', '.$errmsg:$errmsg);
 			}
 			$this->db->rollback();
 			return -1*$error;
-		}
-		else
-		{
+		} else {
 			$this->db->commit();
 			return 1;
 		}
-    }
+	}
 
 
- 	/**
+	/**
 	 *   Delete object in database
 	 *
-     *	 @param		User	$user        	User that delete
-     *   @param     int		$notrigger	    0=launch triggers after, 1=disable triggers
+	 *	 @param		User	$user        	User that delete
+	 *   @param     int		$notrigger	    0=launch triggers after, 1=disable triggers
 	 *   @return	int						<0 if KO, >0 if OK
 	 */
-	function delete($user, $notrigger=0)
+	function delete($user, $notrigger = 0)
 	{
 		global $conf, $langs;
 		$error=0;
@@ -276,21 +261,17 @@ class CabinetmedExamOther // extends CommonObject
 
 		dol_syslog(get_class($this)."::delete sql=".$sql);
 		$resql = $this->db->query($sql);
-    	if (! $resql) { $error++; $this->errors[]="Error ".$this->db->lasterror(); }
+		if (! $resql) { $error++; $this->errors[]="Error ".$this->db->lasterror(); }
 
-        // Commit or rollback
-		if ($error)
-		{
-			foreach($this->errors as $errmsg)
-			{
-	            dol_syslog(get_class($this)."::delete ".$errmsg, LOG_ERR);
-	            $this->error.=($this->error?', '.$errmsg:$errmsg);
+		// Commit or rollback
+		if ($error) {
+			foreach ($this->errors as $errmsg) {
+				dol_syslog(get_class($this)."::delete ".$errmsg, LOG_ERR);
+				$this->error.=($this->error?', '.$errmsg:$errmsg);
 			}
 			$this->db->rollback();
 			return -1*$error;
-		}
-		else
-		{
+		} else {
 			$this->db->commit();
 			return 1;
 		}
@@ -326,27 +307,19 @@ class CabinetmedExamOther // extends CommonObject
 		$result=$object->create($user);
 
 		// Other options
-		if ($result < 0)
-		{
+		if ($result < 0) {
 			$this->error=$object->error;
 			$error++;
 		}
 
-		if (! $error)
-		{
-
-
-
+		if (! $error) {
 		}
 
 		// End
-		if (! $error)
-		{
+		if (! $error) {
 			$this->db->commit();
 			return $object->id;
-		}
-		else
-		{
+		} else {
 			$this->db->rollback();
 			return -1;
 		}
@@ -371,6 +344,4 @@ class CabinetmedExamOther // extends CommonObject
 		$this->concsec='';
 		$this->tms='';
 	}
-
 }
-

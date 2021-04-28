@@ -30,153 +30,149 @@
  */
 class InterfaceActionsCabinetmed
 {
-    var $db;
-    var $error;
+	var $db;
+	var $error;
 
-    var $date;
-    var $duree;
-    var $texte;
-    var $desc;
+	var $date;
+	var $duree;
+	var $texte;
+	var $desc;
 
-    /**
-     *	Constructor
-     *
-     *  @param	DoliDB	$db		Database handler
-     */
+	/**
+	 *	Constructor
+	 *
+	 *  @param	DoliDB	$db		Database handler
+	 */
 	function __construct($db)
-    {
-        $this->db = $db;
+	{
+		$this->db = $db;
 
-        $this->name = preg_replace('/^Interface/i','',get_class($this));
-        $this->family = "cabinetmed";
-        $this->description = "Triggers of this module add actions in cabinetmed according to setup made in cabinetmed setup.";
-        $this->picto = 'user';
-    }
+		$this->name = preg_replace('/^Interface/i', '', get_class($this));
+		$this->family = "cabinetmed";
+		$this->description = "Triggers of this module add actions in cabinetmed according to setup made in cabinetmed setup.";
+		$this->picto = 'user';
+	}
 
-    /**
-     *   Return name of trigger file
-     *
-     *   @return     string      Name of trigger file
-     */
-    function getName()
-    {
-        return $this->name;
-    }
+	/**
+	 *   Return name of trigger file
+	 *
+	 *   @return     string      Name of trigger file
+	 */
+	function getName()
+	{
+		return $this->name;
+	}
 
-    /**
-     *   Return description of trigger file
-     *
-     *   @return     string      Description of trigger file
-     */
-    function getDesc()
-    {
-        return $this->description;
-    }
+	/**
+	 *   Return description of trigger file
+	 *
+	 *   @return     string      Description of trigger file
+	 */
+	function getDesc()
+	{
+		return $this->description;
+	}
 
-    /**
-     *   Return version of trigger file
-     *
-     *   @return     string      Version of trigger file
-     */
-    function getVersion()
-    {
-        global $langs;
-        $langs->load("admin");
+	/**
+	 *   Return version of trigger file
+	 *
+	 *   @return     string      Version of trigger file
+	 */
+	function getVersion()
+	{
+		global $langs;
+		$langs->load("admin");
 
-        if ($this->version == 'experimental') return $langs->trans("VersionExperimental");
-        elseif ($this->version == 'dolibarr') return DOL_VERSION;
-        elseif ($this->version) return $this->version;
-        else return $langs->trans("Unknown");
-    }
+		if ($this->version == 'experimental') return $langs->trans("VersionExperimental");
+		elseif ($this->version == 'dolibarr') return DOL_VERSION;
+		elseif ($this->version) return $this->version;
+		else return $langs->trans("Unknown");
+	}
 
-    /**
-     *      Function called when a Dolibarrr business event is done.
-     *      All functions "runTrigger" are triggered if file is inside directory htdocs/core/triggers
-     *      Following properties must be filled:
-     *      $object->actiontypecode (translation action code: AC_OTH, ...)
-     *      $object->actionmsg (note, long text)
-     *      $object->actionmsg2 (label, short text)
-     *      $object->sendtoid (id of contact)
-     *      $object->socid
-     *      Optionnal:
-     *      $object->fk_element
-     *      $object->elementtype
-     *
-     *      @param	string		$action     Event code (COMPANY_CREATE, PROPAL_VALIDATE, ...)
-     *      @param  Object		$object     Object action is done on
-     *      @param  User		$user       Object user
-     *      @param  Translate	$langs      Object langs
-     *      @param  Conf		$conf       Object conf
-     *      @return int         			<0 if KO, 0 if no action are done, >0 if OK
-     */
-    function runTrigger($action,$object,$user,$langs,$conf)
-    {
+	/**
+	 *      Function called when a Dolibarrr business event is done.
+	 *      All functions "runTrigger" are triggered if file is inside directory htdocs/core/triggers
+	 *      Following properties must be filled:
+	 *      $object->actiontypecode (translation action code: AC_OTH, ...)
+	 *      $object->actionmsg (note, long text)
+	 *      $object->actionmsg2 (label, short text)
+	 *      $object->sendtoid (id of contact)
+	 *      $object->socid
+	 *      Optionnal:
+	 *      $object->fk_element
+	 *      $object->elementtype
+	 *
+	 *      @param	string		$action     Event code (COMPANY_CREATE, PROPAL_VALIDATE, ...)
+	 *      @param  Object		$object     Object action is done on
+	 *      @param  User		$user       Object user
+	 *      @param  Translate	$langs      Object langs
+	 *      @param  Conf		$conf       Object conf
+	 *      @return int         			<0 if KO, 0 if no action are done, >0 if OK
+	 */
+	function runTrigger($action, $object, $user, $langs, $conf)
+	{
 		$ok=0;
 
 		// Actions
-        if ($action == 'CABINETMED_OUTCOME_CREATE')
-        {
-            // object is consultation.class.php
-            if (empty($conf->agenda->enabled)) return 0;     // Module not active, we do nothing
+		if ($action == 'CABINETMED_OUTCOME_CREATE') {
+			// object is consultation.class.php
+			if (empty($conf->agenda->enabled)) return 0;     // Module not active, we do nothing
 
-            dol_syslog("Trigger '".$this->name."' for action '$action' launched by ".__FILE__.". id=".$object->id);
-            $langs->load("agenda");
-            $langs->load("cabinetmed@cabinetmed");
+			dol_syslog("Trigger '".$this->name."' for action '$action' launched by ".__FILE__.". id=".$object->id);
+			$langs->load("agenda");
+			$langs->load("cabinetmed@cabinetmed");
 
-            $thirdparty=new Societe($this->db);
-            $thirdparty->fetch($object->fk_soc);
+			$thirdparty=new Societe($this->db);
+			$thirdparty->fetch($object->fk_soc);
 
-            $object->actiontypecode='AC_OTH_AUTO';
-            if (empty($object->actionmsg2)) $object->actionmsg2=$langs->transnoentities("NewOutcomeToDolibarr",$object->id,$thirdparty->name);
-            $object->actionmsg=$langs->transnoentities("NewOutcomeToDolibarr",$object->id,$thirdparty->name);
-            //$this->desc.="\n".$langs->transnoentities("Customer").': '.yn($object->client);
-            //$this->desc.="\n".$langs->transnoentities("Supplier").': '.yn($object->fournisseur);
-            $object->actionmsg.="\n".$langs->transnoentities("Author").': '.$user->login;
+			$object->actiontypecode='AC_OTH_AUTO';
+			if (empty($object->actionmsg2)) $object->actionmsg2=$langs->transnoentities("NewOutcomeToDolibarr", $object->id, $thirdparty->name);
+			$object->actionmsg=$langs->transnoentities("NewOutcomeToDolibarr", $object->id, $thirdparty->name);
+			//$this->desc.="\n".$langs->transnoentities("Customer").': '.yn($object->client);
+			//$this->desc.="\n".$langs->transnoentities("Supplier").': '.yn($object->fournisseur);
+			$object->actionmsg.="\n".$langs->transnoentities("Author").': '.$user->login;
 
-            $object->sendtoid=0;
-            $object->socid=$object->fk_soc;
-            $ok=1;
-        }
-        if ($action == 'CABINETMED_SENTBYMAIL')
-        {
-            // object is societe.class.php
-            if (empty($conf->agenda->enabled)) return 0;     // Module not active, we do nothing
+			$object->sendtoid=0;
+			$object->socid=$object->fk_soc;
+			$ok=1;
+		}
+		if ($action == 'CABINETMED_SENTBYMAIL') {
+			// object is societe.class.php
+			if (empty($conf->agenda->enabled)) return 0;     // Module not active, we do nothing
 
-            dol_syslog("Trigger '".$this->name."' for action '$action' launched by ".__FILE__.". id=".$object->id);
-            $langs->load("agenda");
-            $langs->load("cabinetmed@cabinetmed");
+			dol_syslog("Trigger '".$this->name."' for action '$action' launched by ".__FILE__.". id=".$object->id);
+			$langs->load("agenda");
+			$langs->load("cabinetmed@cabinetmed");
 
-            $object->actiontypecode='AC_CABMED';
-            if (empty($object->actionmsg2)) $object->actionmsg2=$langs->transnoentities("DocumentSentByEMail",$object->ref);
-            if (empty($object->actionmsg))
-            {
-                $object->actionmsg=$langs->transnoentities("DocumentSentByEMail",$object->ref);
-                $object->actionmsg.="\n".$langs->transnoentities("Author").': '.$user->login;
-            }
+			$object->actiontypecode='AC_CABMED';
+			if (empty($object->actionmsg2)) $object->actionmsg2=$langs->transnoentities("DocumentSentByEMail", $object->ref);
+			if (empty($object->actionmsg)) {
+				$object->actionmsg=$langs->transnoentities("DocumentSentByEMail", $object->ref);
+				$object->actionmsg.="\n".$langs->transnoentities("Author").': '.$user->login;
+			}
 
-            // Parameters $object->sendtoid and $object->socid defined by caller
-            $ok=1;
+			// Parameters $object->sendtoid and $object->socid defined by caller
+			$ok=1;
 		}
 
 		// If not found
-        /*
-        else
-        {
-            dol_syslog("Trigger '".$this->name."' for action '$action' was ran by ".__FILE__." but no handler found for this action.");
+		/*
+		else
+		{
+			dol_syslog("Trigger '".$this->name."' for action '$action' was ran by ".__FILE__." but no handler found for this action.");
 			return 0;
-        }
-        */
+		}
+		*/
 
-        // Add entry in event table
-        if ($ok)
-        {
+		// Add entry in event table
+		if ($ok) {
 			$now=dol_now();
 
-            require_once(DOL_DOCUMENT_ROOT.'/contact/class/contact.class.php');
-            require_once(DOL_DOCUMENT_ROOT.'/societe/class/societe.class.php');
+			require_once DOL_DOCUMENT_ROOT.'/contact/class/contact.class.php';
+			require_once DOL_DOCUMENT_ROOT.'/societe/class/societe.class.php';
 
 			// Insertion action
-			require_once(DOL_DOCUMENT_ROOT.'/comm/action/class/actioncomm.class.php');
+			require_once DOL_DOCUMENT_ROOT.'/comm/action/class/actioncomm.class.php';
 			$actioncomm = new ActionComm($this->db);
 			$actioncomm->type_code   = $object->actiontypecode;
 			$actioncomm->label       = $object->actionmsg2;
@@ -194,22 +190,17 @@ class InterfaceActionsCabinetmed
 			$actioncomm->elementtype = $object->element;
 
 			$ret=$actioncomm->create($user);       // User qui saisit l'action
-			if ($ret > 0)
-			{
+			if ($ret > 0) {
 				return 1;
-			}
-			else
-			{
-                $error ="Failed to insert : ".$actioncomm->error;
-                $this->error=$error;
+			} else {
+				$error ="Failed to insert : ".$actioncomm->error;
+				$this->error=$error;
 
-                dol_syslog(get_class($this).": ".$this->error, LOG_ERR);
-                return -1;
+				dol_syslog(get_class($this).": ".$this->error, LOG_ERR);
+				return -1;
 			}
 		}
 
 		return 0;
-    }
-
+	}
 }
-

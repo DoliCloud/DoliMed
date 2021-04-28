@@ -47,9 +47,9 @@ class box_patients extends ModeleBoxes
 	 *  Constructor
 	 *
 	 *  @param  DoliDB	$db      	Database handler
-     *  @param	string	$param		More parameters
+	 *  @param	string	$param		More parameters
 	 */
-	function __construct($db,$param='')
+	function __construct($db, $param = '')
 	{
 		global $conf, $user;
 
@@ -57,25 +57,24 @@ class box_patients extends ModeleBoxes
 	}
 
 	/**
-     *  Load data for box to show them later
-     *
-     *  @param	int		$max        Maximum number of records to load
-     *  @return	void
+	 *  Load data for box to show them later
+	 *
+	 *  @param	int		$max        Maximum number of records to load
+	 *  @return	void
 	 */
-	function loadBox($max=5)
+	function loadBox($max = 5)
 	{
 		global $user, $langs, $db, $conf;
 		$langs->load("boxes");
 
 		$this->max=$max;
 
-        include_once DOL_DOCUMENT_ROOT.'/societe/class/societe.class.php';
-        $thirdpartystatic=new Societe($db);
+		include_once DOL_DOCUMENT_ROOT.'/societe/class/societe.class.php';
+		$thirdpartystatic=new Societe($db);
 
-        $this->info_box_head = array('text' => $langs->trans("BoxTitleLastModifiedPatients",$max));
+		$this->info_box_head = array('text' => $langs->trans("BoxTitleLastModifiedPatients", $max));
 
-		if ($user->rights->societe->lire)
-		{
+		if ($user->rights->societe->lire) {
 			$sql = "SELECT s.nom, s.rowid as socid, s.datec, s.tms, s.status";
 			$sql.= " FROM ".MAIN_DB_PREFIX."societe as s";
 			if (!$user->rights->societe->client->voir && !$user->societe_id) $sql.= ", ".MAIN_DB_PREFIX."societe_commerciaux as sc";
@@ -86,38 +85,35 @@ class box_patients extends ModeleBoxes
 			$sql.= " ORDER BY s.tms DESC";
 			$sql.= $db->plimit($max, 0);
 
-			dol_syslog(get_class($this)."::loadBox sql=".$sql,LOG_DEBUG);
+			dol_syslog(get_class($this)."::loadBox sql=".$sql, LOG_DEBUG);
 			$result = $db->query($sql);
-			if ($result)
-			{
+			if ($result) {
 				$num = $db->num_rows($result);
-                if (empty($conf->global->SOCIETE_DISABLE_CUSTOMERS)) $url= DOL_URL_ROOT."/comm/card.php?socid=";
-                else
-                {
-                	if ((float) DOL_VERSION < 6.0) $url= DOL_URL_ROOT."/societe/soc.php?socid=";
-                	else $url= DOL_URL_ROOT."/societe/card.php?socid=";
-                }
+				if (empty($conf->global->SOCIETE_DISABLE_CUSTOMERS)) $url= DOL_URL_ROOT."/comm/card.php?socid=";
+				else {
+					if ((float) DOL_VERSION < 6.0) $url= DOL_URL_ROOT."/societe/soc.php?socid=";
+					else $url= DOL_URL_ROOT."/societe/card.php?socid=";
+				}
 
 				$i = 0;
-				while ($i < $num)
-				{
+				while ($i < $num) {
 					$objp = $db->fetch_object($result);
 					$datec=$db->jdate($objp->datec);
 					$datem=$db->jdate($objp->tms);
 
 					$this->info_box_contents[$i][0] = array('td' => 'align="left" width="16"',
-                    'logo' => $this->boximg,
-                    'url' => $url.$objp->socid);
+					'logo' => $this->boximg,
+					'url' => $url.$objp->socid);
 
 					$this->info_box_contents[$i][1] = array('td' => 'align="left"',
-                    'text' => $objp->nom,
-                    'url' => $url.$objp->socid);
+					'text' => $objp->nom,
+					'url' => $url.$objp->socid);
 
 					$this->info_box_contents[$i][2] = array('td' => 'align="right"',
 					'text' => dol_print_date($datem, "dayhour"));
 
-                    $this->info_box_contents[$i][3] = array('td' => 'align="right" width="18"',
-                    'text' => $thirdpartystatic->LibStatut($objp->status,3));
+					$this->info_box_contents[$i][3] = array('td' => 'align="right" width="18"',
+					'text' => $thirdpartystatic->LibStatut($objp->status, 3));
 
 					$i++;
 				}
@@ -125,18 +121,15 @@ class box_patients extends ModeleBoxes
 				if ($num==0) $this->info_box_contents[$i][0] = array('td' => 'align="center"','text'=>$langs->trans("NoRecordedPatients"));
 
 				$db->free($result);
-			}
-			else {
+			} else {
 				$this->info_box_contents[0][0] = array(	'td' => 'align="left"',
-    	        										'maxlength'=>500,
-	            										'text' => ($db->error().' sql='.$sql));
+														'maxlength'=>500,
+														'text' => ($db->error().' sql='.$sql));
 			}
-		}
-		else {
+		} else {
 			$this->info_box_contents[0][0] = array('align' => 'left',
-            'text' => $langs->trans("ReadPermissionNotAllowed"));
+			'text' => $langs->trans("ReadPermissionNotAllowed"));
 		}
-
 	}
 
 	/**
@@ -150,6 +143,4 @@ class box_patients extends ModeleBoxes
 	{
 		parent::showBox($this->info_box_head, $this->info_box_contents);
 	}
-
 }
-

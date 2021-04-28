@@ -28,20 +28,20 @@
 // Load Dolibarr environment
 $res=0;
 // Try main.inc.php into web root known defined into CONTEXT_DOCUMENT_ROOT (not always defined)
-if (! $res && ! empty($_SERVER["CONTEXT_DOCUMENT_ROOT"])) $res=@include($_SERVER["CONTEXT_DOCUMENT_ROOT"]."/main.inc.php");
+if (! $res && ! empty($_SERVER["CONTEXT_DOCUMENT_ROOT"])) $res=@include $_SERVER["CONTEXT_DOCUMENT_ROOT"]."/main.inc.php";
 // Try main.inc.php into web root detected using web root caluclated from SCRIPT_FILENAME
 $tmp=empty($_SERVER['SCRIPT_FILENAME'])?'':$_SERVER['SCRIPT_FILENAME'];$tmp2=realpath(__FILE__); $i=strlen($tmp)-1; $j=strlen($tmp2)-1;
-while($i > 0 && $j > 0 && isset($tmp[$i]) && isset($tmp2[$j]) && $tmp[$i]==$tmp2[$j]) { $i--; $j--; }
-if (! $res && $i > 0 && file_exists(substr($tmp, 0, ($i+1))."/main.inc.php")) $res=@include(substr($tmp, 0, ($i+1))."/main.inc.php");
-if (! $res && $i > 0 && file_exists(dirname(substr($tmp, 0, ($i+1)))."/main.inc.php")) $res=@include(dirname(substr($tmp, 0, ($i+1)))."/main.inc.php");
+while ($i > 0 && $j > 0 && isset($tmp[$i]) && isset($tmp2[$j]) && $tmp[$i]==$tmp2[$j]) { $i--; $j--; }
+if (! $res && $i > 0 && file_exists(substr($tmp, 0, ($i+1))."/main.inc.php")) $res=@include substr($tmp, 0, ($i+1))."/main.inc.php";
+if (! $res && $i > 0 && file_exists(dirname(substr($tmp, 0, ($i+1)))."/main.inc.php")) $res=@include dirname(substr($tmp, 0, ($i+1)))."/main.inc.php";
 // Try main.inc.php using relative path
-if (! $res && file_exists("../main.inc.php")) $res=@include("../main.inc.php");
-if (! $res && file_exists("../../main.inc.php")) $res=@include("../../main.inc.php");
-if (! $res && file_exists("../../../main.inc.php")) $res=@include("../../../main.inc.php");
+if (! $res && file_exists("../main.inc.php")) $res=@include "../main.inc.php";
+if (! $res && file_exists("../../main.inc.php")) $res=@include "../../main.inc.php";
+if (! $res && file_exists("../../../main.inc.php")) $res=@include "../../../main.inc.php";
 if (! $res) die("Include of main fails");
 
-require_once(DOL_DOCUMENT_ROOT."/core/class/html.formother.class.php");
-include_once("./class/cabinetmedcons.class.php");
+require_once DOL_DOCUMENT_ROOT."/core/class/html.formother.class.php";
+include_once "./class/cabinetmedcons.class.php";
 
 $langs->load("companies");
 $langs->load("customers");
@@ -49,9 +49,9 @@ $langs->load("suppliers");
 $langs->load("commercial");
 
 // Security check
-$socid = GETPOST('socid','int');
+$socid = GETPOST('socid', 'int');
 if ($user->societe_id) $socid=$user->societe_id;
-$result = restrictedArea($user,'societe',$socid,'');
+$result = restrictedArea($user, 'societe', $socid, '');
 
 if (!$user->rights->cabinetmed->read) accessforbidden();
 
@@ -86,17 +86,16 @@ $consultstatic = new CabinetmedCons($db);
 llxHeader();
 
 // Do we click on purge search criteria ?
-if (GETPOST("button_removefilter_x"))
-{
-    $search_categ='';
-    $search_sale='';
-    $socname="";
-    $search_nom="";
-    $search_ville="";
-    $search_idprof1='';
-    $search_idprof2='';
-    $search_idprof3='';
-    $search_idprof4='';
+if (GETPOST("button_removefilter_x")) {
+	$search_categ='';
+	$search_sale='';
+	$socname="";
+	$search_nom="";
+	$search_ville="";
+	$search_idprof1='';
+	$search_idprof2='';
+	$search_idprof3='';
+	$search_idprof4='';
 }
 
 $sql = "SELECT s.rowid, s.nom as name, s.client, s.town, st.libelle as stcomm, s.prefix_comm, s.code_client,";
@@ -123,168 +122,157 @@ if ($search_nom)   $sql.= " AND s.nom like '%".$db->escape(strtolower($search_no
 if ($search_ville) $sql.= " AND s.town like '%".$db->escape(strtolower($search_ville))."%'";
 if ($search_code)  $sql.= " AND s.code_client like '%".$db->escape(strtolower($search_code))."%'";
 // Insert sale filter
-if ($search_sale)
-{
-    $sql .= " AND sc.fk_user = ".$search_sale;
+if ($search_sale) {
+	$sql .= " AND sc.fk_user = ".$search_sale;
 }
 // Insert categ filter
-if ($search_categ)
-{
-    $sql .= " AND cs.fk_categorie = ".$search_categ;
+if ($search_categ) {
+	$sql .= " AND cs.fk_categorie = ".$search_categ;
 }
-if ($socname)
-{
-    $sql.= " AND s.nom like '%".$db->escape(strtolower($socname))."%'";
-    $sortfield = "s.nom";
-    $sortorder = "ASC";
+if ($socname) {
+	$sql.= " AND s.nom like '%".$db->escape(strtolower($socname))."%'";
+	$sortfield = "s.nom";
+	$sortorder = "ASC";
 }
 
 // Count total nb of records
 $nbtotalofrecords = '';
-if (empty($conf->global->MAIN_DISABLE_FULL_SCANLIST))
-{
-    $result = $db->query($sql);
-    $nbtotalofrecords = $db->num_rows($result);
+if (empty($conf->global->MAIN_DISABLE_FULL_SCANLIST)) {
+	$result = $db->query($sql);
+	$nbtotalofrecords = $db->num_rows($result);
 }
 
-$sql.= $db->order($sortfield,$sortorder);
+$sql.= $db->order($sortfield, $sortorder);
 $sql.= $db->plimit($conf->liste_limit +1, $offset);
 
 $result = $db->query($sql);
-if ($result)
-{
-    $num = $db->num_rows($result);
+if ($result) {
+	$num = $db->num_rows($result);
 
-    $param = "&amp;search_nom=".$search_nom."&amp;search_code=".$search_code."&amp;search_ville=".$search_ville;
-    if ($search_categ != '') $param.='&amp;search_categ='.$search_categ;
-    if ($search_sale != '') $param.='&amp;search_sale='.$search_sale;
+	$param = "&amp;search_nom=".$search_nom."&amp;search_code=".$search_code."&amp;search_ville=".$search_ville;
+	if ($search_categ != '') $param.='&amp;search_categ='.$search_categ;
+	if ($search_sale != '') $param.='&amp;search_sale='.$search_sale;
 
-    print_barre_liste($langs->trans("ListOfConsultations"), $page, $_SERVER["PHP_SELF"],$param,$sortfield,$sortorder,'',$num,$nbtotalofrecords);
+	print_barre_liste($langs->trans("ListOfConsultations"), $page, $_SERVER["PHP_SELF"], $param, $sortfield, $sortorder, '', $num, $nbtotalofrecords);
 
-    $i = 0;
+	$i = 0;
 
-    //print '<div class="error">PAGE EN DEVELOPPEMENT ...</div><br>';
+	//print '<div class="error">PAGE EN DEVELOPPEMENT ...</div><br>';
 
-    print '<form method="get" action="'.$_SERVER["PHP_SELF"].'">'."\n";
+	print '<form method="get" action="'.$_SERVER["PHP_SELF"].'">'."\n";
 
-    // Filter on categories
-    $moreforfilter='';
-    if ($conf->categorie->enabled)
-    {
-        $moreforfilter.='<div class="divsearchfield">';
-        $moreforfilter.=$langs->trans('Categories'). ': ';
-        $moreforfilter.=$htmlother->select_categories(2,$search_categ,'search_categ');
-        $moreforfilter.='</div>';
-    }
-    // If the user can view prospects other than his'
-    if ($user->rights->societe->client->voir || $socid)
-    {
-        $moreforfilter.='<div class="divsearchfield">';
-        $moreforfilter.=$langs->trans('SalesRepresentatives'). ': ';
-        $moreforfilter.=$htmlother->select_salesrepresentatives($search_sale,'search_sale',$user, 0, 1, 'maxwidth300');
-        $moreforfilter.='</div>';
-    }
+	// Filter on categories
+	$moreforfilter='';
+	if ($conf->categorie->enabled) {
+		$moreforfilter.='<div class="divsearchfield">';
+		$moreforfilter.=$langs->trans('Categories'). ': ';
+		$moreforfilter.=$htmlother->select_categories(2, $search_categ, 'search_categ');
+		$moreforfilter.='</div>';
+	}
+	// If the user can view prospects other than his'
+	if ($user->rights->societe->client->voir || $socid) {
+		$moreforfilter.='<div class="divsearchfield">';
+		$moreforfilter.=$langs->trans('SalesRepresentatives'). ': ';
+		$moreforfilter.=$htmlother->select_salesrepresentatives($search_sale, 'search_sale', $user, 0, 1, 'maxwidth300');
+		$moreforfilter.='</div>';
+	}
 
-    if (! empty($moreforfilter))
-    {
-        print '<div class="liste_titre liste_titre_bydiv centpercent">';
-        print $moreforfilter;
-        $parameters=array();
-        $reshook=$hookmanager->executeHooks('printFieldPreListTitle',$parameters);    // Note that $action and $object may have been modified by hook
-        print $hookmanager->resPrint;
-        print '</div>';
-    }
+	if (! empty($moreforfilter)) {
+		print '<div class="liste_titre liste_titre_bydiv centpercent">';
+		print $moreforfilter;
+		$parameters=array();
+		$reshook=$hookmanager->executeHooks('printFieldPreListTitle', $parameters);    // Note that $action and $object may have been modified by hook
+		print $hookmanager->resPrint;
+		print '</div>';
+	}
 
-    print '<div class="div-table-responsive">';
-    print '<table class="tagtable liste'.($moreforfilter?" listwithfilterbefore":"").'">';
+	print '<div class="div-table-responsive">';
+	print '<table class="tagtable liste'.($moreforfilter?" listwithfilterbefore":"").'">';
 
-    print '<tr class="liste_titre">';
-    print_liste_field_titre($langs->trans("Company"),$_SERVER["PHP_SELF"],"s.nom","",$param,"",$sortfield,$sortorder);
-    print_liste_field_titre($langs->trans("CustomerCode"),$_SERVER["PHP_SELF"],"s.code_client","",$param,"",$sortfield,$sortorder);
-    print_liste_field_titre($langs->trans("IdConsultShort"),$_SERVER["PHP_SELF"],"c.rowid","",$param,"",$sortfield,$sortorder);
-    print_liste_field_titre($langs->trans("DateConsultationShort"),$_SERVER["PHP_SELF"],"c.datecons,c.rowid","",$param,'align="center"',$sortfield,$sortorder);
-    print_liste_field_titre($langs->trans('Prise en charge'),$_SERVER['PHP_SELF'],'c.typepriseencharge','',$param,'',$sortfield,$sortorder);
-    print_liste_field_titre($langs->trans("MotifPrincipal"),$_SERVER["PHP_SELF"],"c.motifconsprinc","",$param,'',$sortfield,$sortorder);
-    print_liste_field_titre($langs->trans("DiagLesPrincipal"),$_SERVER["PHP_SELF"],"","",$param,'',$sortfield,$sortorder);
-    print_liste_field_titre($langs->trans('ConsultActe'),$_SERVER['PHP_SELF'],'c.typevisit','',$param,'align="right"',$sortfield,$sortorder);
-    print "</tr>\n";
+	print '<tr class="liste_titre">';
+	print_liste_field_titre($langs->trans("Company"), $_SERVER["PHP_SELF"], "s.nom", "", $param, "", $sortfield, $sortorder);
+	print_liste_field_titre($langs->trans("CustomerCode"), $_SERVER["PHP_SELF"], "s.code_client", "", $param, "", $sortfield, $sortorder);
+	print_liste_field_titre($langs->trans("IdConsultShort"), $_SERVER["PHP_SELF"], "c.rowid", "", $param, "", $sortfield, $sortorder);
+	print_liste_field_titre($langs->trans("DateConsultationShort"), $_SERVER["PHP_SELF"], "c.datecons,c.rowid", "", $param, 'align="center"', $sortfield, $sortorder);
+	print_liste_field_titre($langs->trans('Prise en charge'), $_SERVER['PHP_SELF'], 'c.typepriseencharge', '', $param, '', $sortfield, $sortorder);
+	print_liste_field_titre($langs->trans("MotifPrincipal"), $_SERVER["PHP_SELF"], "c.motifconsprinc", "", $param, '', $sortfield, $sortorder);
+	print_liste_field_titre($langs->trans("DiagLesPrincipal"), $_SERVER["PHP_SELF"], "", "", $param, '', $sortfield, $sortorder);
+	print_liste_field_titre($langs->trans('ConsultActe'), $_SERVER['PHP_SELF'], 'c.typevisit', '', $param, 'align="right"', $sortfield, $sortorder);
+	print "</tr>\n";
 
-    print '<tr class="liste_titre">';
-    print '<td class="liste_titre">';
-    print '<input type="text" class="flat" size="8" name="search_nom" value="'.$search_nom.'">';
-    print '</td><td class="liste_titre">';
-    print '<input type="text" class="flat" size="8" name="search_code" value="'.$search_code.'">';
-    print '</td>';
-    print '<td class="liste_titre">';
-    print '&nbsp;';
-    print '</td>';
-    print '<td class="liste_titre">';
-    print '&nbsp;';
-    print '</td>';
-    print '<td class="liste_titre">';
-    print '&nbsp;';
-    print '</td>';
-    print '<td class="liste_titre">';
-    print '&nbsp;';
-    print '</td>';
-    print '<td class="liste_titre">';
-    print '&nbsp;';
-    print '</td>';
-    print '<td class="liste_titre" align="right"><input class="liste_titre" type="image" src="'.DOL_URL_ROOT.'/theme/'.$conf->theme.'/img/search.png" value="'.dol_escape_htmltag($langs->trans("Search")).'" title="'.dol_escape_htmltag($langs->trans("Search")).'">';
-    print '&nbsp; ';
-    print '<input type="image" class="liste_titre" name="button_removefilter" src="'.DOL_URL_ROOT.'/theme/'.$conf->theme.'/img/searchclear.png" value="'.dol_escape_htmltag($langs->trans("RemoveFilter")).'" title="'.dol_escape_htmltag($langs->trans("RemoveFilter")).'">';
-    print '</td>';
-    print "</tr>\n";
+	print '<tr class="liste_titre">';
+	print '<td class="liste_titre">';
+	print '<input type="text" class="flat" size="8" name="search_nom" value="'.$search_nom.'">';
+	print '</td><td class="liste_titre">';
+	print '<input type="text" class="flat" size="8" name="search_code" value="'.$search_code.'">';
+	print '</td>';
+	print '<td class="liste_titre">';
+	print '&nbsp;';
+	print '</td>';
+	print '<td class="liste_titre">';
+	print '&nbsp;';
+	print '</td>';
+	print '<td class="liste_titre">';
+	print '&nbsp;';
+	print '</td>';
+	print '<td class="liste_titre">';
+	print '&nbsp;';
+	print '</td>';
+	print '<td class="liste_titre">';
+	print '&nbsp;';
+	print '</td>';
+	print '<td class="liste_titre" align="right"><input class="liste_titre" type="image" src="'.DOL_URL_ROOT.'/theme/'.$conf->theme.'/img/search.png" value="'.dol_escape_htmltag($langs->trans("Search")).'" title="'.dol_escape_htmltag($langs->trans("Search")).'">';
+	print '&nbsp; ';
+	print '<input type="image" class="liste_titre" name="button_removefilter" src="'.DOL_URL_ROOT.'/theme/'.$conf->theme.'/img/searchclear.png" value="'.dol_escape_htmltag($langs->trans("RemoveFilter")).'" title="'.dol_escape_htmltag($langs->trans("RemoveFilter")).'">';
+	print '</td>';
+	print "</tr>\n";
 
-    $var=True;
+	$var=true;
 
-    while ($i < min($num,$conf->liste_limit))
-    {
-        $obj = $db->fetch_object($result);
+	while ($i < min($num, $conf->liste_limit)) {
+		$obj = $db->fetch_object($result);
 
-        $var=!$var;
+		$var=!$var;
 
-        print "<tr ".$bc[$var].">";
-        print '<td>';
-        $thirdpartystatic->id=$obj->rowid;
-        $thirdpartystatic->name=$obj->name;
-        $thirdpartystatic->client=$obj->client;
-        $thirdpartystatic->canvas=$obj->canvas;
-        print $thirdpartystatic->getNomUrl(1);
-        print '</td>';
-        print '<td>'.$obj->code_client.'</td>';
-        print '<td>';
-        $consultstatic->id=$obj->cid;
-        $consultstatic->fk_soc=$obj->rowid;
-        print $consultstatic->getNomUrl(1,'&amp;backtopage='.urlencode($_SERVER["PHP_SELF"]));
-        print '</td>';
-        print '<td class="center">'.dol_print_date($obj->datecons,'day').'</td>';
-        print '<td>';
-        print $obj->typepriseencharge;
-        print '</td>';
-        print '<td>'.$obj->motifconsprinc.'</td>';
-        print '<td>';
-        print dol_trunc($obj->diaglesprinc,20);
-        /*$val=dol_trunc($obj->examenprescrit,20);
-        if ($val) $val.='<br>';
-        $val=dol_trunc($obj->traitementprescrit,20);*/
-        print '</td>';
-        print '<td align="right">';
-        print $obj->typevisit;
-        print '</td>';
-        print "</tr>\n";
-        $i++;
-    }
-    //print_barre_liste($langs->trans("ListOfCustomers"), $page, $_SERVER["PHP_SELF"],'',$sortfield,$sortorder,'',$num);
-    print "</table>\n";
-    print '</div>';
+		print "<tr ".$bc[$var].">";
+		print '<td>';
+		$thirdpartystatic->id=$obj->rowid;
+		$thirdpartystatic->name=$obj->name;
+		$thirdpartystatic->client=$obj->client;
+		$thirdpartystatic->canvas=$obj->canvas;
+		print $thirdpartystatic->getNomUrl(1);
+		print '</td>';
+		print '<td>'.$obj->code_client.'</td>';
+		print '<td>';
+		$consultstatic->id=$obj->cid;
+		$consultstatic->fk_soc=$obj->rowid;
+		print $consultstatic->getNomUrl(1, '&amp;backtopage='.urlencode($_SERVER["PHP_SELF"]));
+		print '</td>';
+		print '<td class="center">'.dol_print_date($obj->datecons, 'day').'</td>';
+		print '<td>';
+		print $obj->typepriseencharge;
+		print '</td>';
+		print '<td>'.$obj->motifconsprinc.'</td>';
+		print '<td>';
+		print dol_trunc($obj->diaglesprinc, 20);
+		/*$val=dol_trunc($obj->examenprescrit,20);
+		if ($val) $val.='<br>';
+		$val=dol_trunc($obj->traitementprescrit,20);*/
+		print '</td>';
+		print '<td align="right">';
+		print $obj->typevisit;
+		print '</td>';
+		print "</tr>\n";
+		$i++;
+	}
+	//print_barre_liste($langs->trans("ListOfCustomers"), $page, $_SERVER["PHP_SELF"],'',$sortfield,$sortorder,'',$num);
+	print "</table>\n";
+	print '</div>';
 
-    print "</form>\n";
-    $db->free($result);
-}
-else
-{
-    dol_print_error($db);
+	print "</form>\n";
+	$db->free($result);
+} else {
+	dol_print_error($db);
 }
 
 

@@ -26,28 +26,28 @@
 // Load Dolibarr environment
 $res=0;
 // Try main.inc.php into web root known defined into CONTEXT_DOCUMENT_ROOT (not always defined)
-if (! $res && ! empty($_SERVER["CONTEXT_DOCUMENT_ROOT"])) $res=@include($_SERVER["CONTEXT_DOCUMENT_ROOT"]."/main.inc.php");
+if (! $res && ! empty($_SERVER["CONTEXT_DOCUMENT_ROOT"])) $res=@include $_SERVER["CONTEXT_DOCUMENT_ROOT"]."/main.inc.php";
 // Try main.inc.php into web root detected using web root caluclated from SCRIPT_FILENAME
 $tmp=empty($_SERVER['SCRIPT_FILENAME'])?'':$_SERVER['SCRIPT_FILENAME'];$tmp2=realpath(__FILE__); $i=strlen($tmp)-1; $j=strlen($tmp2)-1;
-while($i > 0 && $j > 0 && isset($tmp[$i]) && isset($tmp2[$j]) && $tmp[$i]==$tmp2[$j]) { $i--; $j--; }
-if (! $res && $i > 0 && file_exists(substr($tmp, 0, ($i+1))."/main.inc.php")) $res=@include(substr($tmp, 0, ($i+1))."/main.inc.php");
-if (! $res && $i > 0 && file_exists(dirname(substr($tmp, 0, ($i+1)))."/main.inc.php")) $res=@include(dirname(substr($tmp, 0, ($i+1)))."/main.inc.php");
+while ($i > 0 && $j > 0 && isset($tmp[$i]) && isset($tmp2[$j]) && $tmp[$i]==$tmp2[$j]) { $i--; $j--; }
+if (! $res && $i > 0 && file_exists(substr($tmp, 0, ($i+1))."/main.inc.php")) $res=@include substr($tmp, 0, ($i+1))."/main.inc.php";
+if (! $res && $i > 0 && file_exists(dirname(substr($tmp, 0, ($i+1)))."/main.inc.php")) $res=@include dirname(substr($tmp, 0, ($i+1)))."/main.inc.php";
 // Try main.inc.php using relative path
-if (! $res && file_exists("../main.inc.php")) $res=@include("../main.inc.php");
-if (! $res && file_exists("../../main.inc.php")) $res=@include("../../main.inc.php");
-if (! $res && file_exists("../../../main.inc.php")) $res=@include("../../../main.inc.php");
+if (! $res && file_exists("../main.inc.php")) $res=@include "../main.inc.php";
+if (! $res && file_exists("../../main.inc.php")) $res=@include "../../main.inc.php";
+if (! $res && file_exists("../../../main.inc.php")) $res=@include "../../../main.inc.php";
 if (! $res) die("Include of main fails");
 
-require_once(DOL_DOCUMENT_ROOT.'/societe/class/societe.class.php');
+require_once DOL_DOCUMENT_ROOT.'/societe/class/societe.class.php';
 dol_include_once('/cabinetmed/class/patient.class.php');
 
 $langs->load("companies");
 
-$socid = GETPOST('socid','int');
+$socid = GETPOST('socid', 'int');
 if ($user->societe_id) $socid=$user->societe_id;
 
 // Security check
-$result=restrictedArea($user,'societe',0,'','','','');
+$result=restrictedArea($user, 'societe', 0, '', '', '', '');
 
 $thirdparty_static = new Patient($db);
 
@@ -59,7 +59,7 @@ $thirdparty_static = new Patient($db);
 $transAreaType = $langs->trans("PatientsArea");
 $helpurl='';
 
-llxHeader("",$langs->trans("Patients"),$helpurl);
+llxHeader("", $langs->trans("Patients"), $helpurl);
 
 print_fiche_titre($transAreaType);
 
@@ -105,24 +105,20 @@ if ($socid && empty($conf->global->MAIN_DISABLE_RESTRICTION_ON_THIRDPARTY_FOR_EX
 //if (! $user->rights->fournisseur->lire) $sql.=" AND (s.fournisseur <> 1 OR s.client <> 0)";    // client=0, fournisseur=0 must be visible
 //print $sql;
 $resql = $db->query($sql);
-if ($resql)
-{
-    while ($objp = $db->fetch_object($resql))
-    {
-        $found=0;
-        if ($conf->cabinetmed->enabled) { $found=1; $third['patient']++; }
-        if ($found) $total++;
-    }
-}
-else dol_print_error($db);
+if ($resql) {
+	while ($objp = $db->fetch_object($resql)) {
+		$found=0;
+		if ($conf->cabinetmed->enabled) { $found=1; $third['patient']++; }
+		if ($found) $total++;
+	}
+} else dol_print_error($db);
 
 print '<table class="noborder" width="100%">';
 print '<tr class="liste_titre"><th colspan="2">'.$langs->trans("Statistics").'</th></tr>';
-if ($conf->cabinetmed->enabled)
-{
-    $statstring.= '<tr class="oddeven">';
-    $statstring.= '<td><a href="'.dol_buildpath('/cabinetmed/patients.php',1).'">'.$langs->trans("Patients").'</a></td><td align="right">'.round($third['patient']).'</td>';
-    $statstring.= "</tr>";
+if ($conf->cabinetmed->enabled) {
+	$statstring.= '<tr class="oddeven">';
+	$statstring.= '<td><a href="'.dol_buildpath('/cabinetmed/patients.php', 1).'">'.$langs->trans("Patients").'</a></td><td align="right">'.round($third['patient']).'</td>';
+	$statstring.= "</tr>";
 }
 print $statstring;
 //print $statstring2;
@@ -147,75 +143,70 @@ $sql.= " AND s.canvas='patient@cabinetmed'";
 if (! $user->rights->societe->client->voir && ! $socid) $sql.= " AND s.rowid = sc.fk_soc AND sc.fk_user = " .$user->id;
 if ($socid)	$sql.= " AND s.rowid = ".$socid;
 //if (! $user->rights->fournisseur->lire) $sql.=" AND (s.fournisseur <> 1 OR s.client <> 0)";
-$sql.= $db->order("s.tms","DESC");
-$sql.= $db->plimit($max,0);
+$sql.= $db->order("s.tms", "DESC");
+$sql.= $db->plimit($max, 0);
 
 //print $sql;
 $resql = $db->query($sql);
-if ($resql)
-{
-    $num = $db->num_rows($resql);
+if ($resql) {
+	$num = $db->num_rows($resql);
 
-    $i = 0;
+	$i = 0;
 
-    if ($num > 0)
-    {
-        $transRecordedType = $langs->trans("LastModifiedPatients",$max);
+	if ($num > 0) {
+		$transRecordedType = $langs->trans("LastModifiedPatients", $max);
 
-        print '<table class="noborder" width="100%">';
+		print '<table class="noborder" width="100%">';
 
-        print '<tr class="liste_titre"><th colspan="2">'.$transRecordedType.'</td>';
-        print '<th>&nbsp;</td>';
-        print '<th align="right">'.$langs->trans('Status').'</td>';
-        print '</tr>';
+		print '<tr class="liste_titre"><th colspan="2">'.$transRecordedType.'</td>';
+		print '<th>&nbsp;</td>';
+		print '<th align="right">'.$langs->trans('Status').'</td>';
+		print '</tr>';
 
-        while ($i < $num)
-        {
-            $objp = $db->fetch_object($resql);
+		while ($i < $num) {
+			$objp = $db->fetch_object($resql);
 
-            $thirdparty_static->id=$objp->rowid;
-            $thirdparty_static->name=$objp->name;
-            $thirdparty_static->client=$objp->client;
-            $thirdparty_static->fournisseur=$objp->fournisseur;
-            $thirdparty_static->datem=$db->jdate($objp->datem);
-            $thirdparty_static->status=$objp->status;
-            $thirdparty_static->canvas=$objp->canvas;
+			$thirdparty_static->id=$objp->rowid;
+			$thirdparty_static->name=$objp->name;
+			$thirdparty_static->client=$objp->client;
+			$thirdparty_static->fournisseur=$objp->fournisseur;
+			$thirdparty_static->datem=$db->jdate($objp->datem);
+			$thirdparty_static->status=$objp->status;
+			$thirdparty_static->canvas=$objp->canvas;
 
-            print '<tr class="oddeven">';
+			print '<tr class="oddeven">';
 
-            // Name
-            print '<td class="nowrap">';
-            print $thirdparty_static->getNomUrl(1);
-            print "</td>\n";
+			// Name
+			print '<td class="nowrap">';
+			print $thirdparty_static->getNomUrl(1);
+			print "</td>\n";
 
-            // Type
-            print '<td class="center">';
-           	$thirdparty_static->name=$langs->trans("Patient");
-            print $thirdparty_static->getNomUrl(0, 'patient');
-            print '</td>';
+			// Type
+			print '<td class="center">';
+			$thirdparty_static->name=$langs->trans("Patient");
+			print $thirdparty_static->getNomUrl(0, 'patient');
+			print '</td>';
 
-            // Last modified date
-            print '<td align="right">';
-            print dol_print_date($thirdparty_static->datem, 'day');
-            print "</td>";
+			// Last modified date
+			print '<td align="right">';
+			print dol_print_date($thirdparty_static->datem, 'day');
+			print "</td>";
 
-            print '<td align="right" nowrap="nowrap">';
-            print $thirdparty_static->getLibStatut(3);
-            print "</td>";
+			print '<td align="right" nowrap="nowrap">';
+			print $thirdparty_static->getLibStatut(3);
+			print "</td>";
 
-            print "</tr>\n";
+			print "</tr>\n";
 
-            $i++;
-        }
+			$i++;
+		}
 
-        print "</table>";
-    }
+		print "</table>";
+	}
 
-    $db->free($resql);
-}
-else
-{
-    dol_print_error($db);
+	$db->free($resql);
+} else {
+	dol_print_error($db);
 }
 
 

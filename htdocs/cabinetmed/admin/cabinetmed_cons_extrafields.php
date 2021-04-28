@@ -24,16 +24,16 @@
 // Load Dolibarr environment
 $res=0;
 // Try main.inc.php into web root known defined into CONTEXT_DOCUMENT_ROOT (not always defined)
-if (! $res && ! empty($_SERVER["CONTEXT_DOCUMENT_ROOT"])) $res=@include($_SERVER["CONTEXT_DOCUMENT_ROOT"]."/main.inc.php");
+if (! $res && ! empty($_SERVER["CONTEXT_DOCUMENT_ROOT"])) $res=@include $_SERVER["CONTEXT_DOCUMENT_ROOT"]."/main.inc.php";
 // Try main.inc.php into web root detected using web root caluclated from SCRIPT_FILENAME
 $tmp=empty($_SERVER['SCRIPT_FILENAME'])?'':$_SERVER['SCRIPT_FILENAME'];$tmp2=realpath(__FILE__); $i=strlen($tmp)-1; $j=strlen($tmp2)-1;
-while($i > 0 && $j > 0 && isset($tmp[$i]) && isset($tmp2[$j]) && $tmp[$i]==$tmp2[$j]) { $i--; $j--; }
-if (! $res && $i > 0 && file_exists(substr($tmp, 0, ($i+1))."/main.inc.php")) $res=@include(substr($tmp, 0, ($i+1))."/main.inc.php");
-if (! $res && $i > 0 && file_exists(dirname(substr($tmp, 0, ($i+1)))."/main.inc.php")) $res=@include(dirname(substr($tmp, 0, ($i+1)))."/main.inc.php");
+while ($i > 0 && $j > 0 && isset($tmp[$i]) && isset($tmp2[$j]) && $tmp[$i]==$tmp2[$j]) { $i--; $j--; }
+if (! $res && $i > 0 && file_exists(substr($tmp, 0, ($i+1))."/main.inc.php")) $res=@include substr($tmp, 0, ($i+1))."/main.inc.php";
+if (! $res && $i > 0 && file_exists(dirname(substr($tmp, 0, ($i+1)))."/main.inc.php")) $res=@include dirname(substr($tmp, 0, ($i+1)))."/main.inc.php";
 // Try main.inc.php using relative path
-if (! $res && file_exists("../main.inc.php")) $res=@include("../main.inc.php");
-if (! $res && file_exists("../../main.inc.php")) $res=@include("../../main.inc.php");
-if (! $res && file_exists("../../../main.inc.php")) $res=@include("../../../main.inc.php");
+if (! $res && file_exists("../main.inc.php")) $res=@include "../main.inc.php";
+if (! $res && file_exists("../../main.inc.php")) $res=@include "../../main.inc.php";
+if (! $res && file_exists("../../../main.inc.php")) $res=@include "../../../main.inc.php";
 if (! $res) die("Include of main fails");
 
 require_once '../lib/cabinetmed.lib.php';
@@ -78,10 +78,10 @@ require DOL_DOCUMENT_ROOT.'/core/actions_extrafields.inc.php';
 
 $textobject=$langs->transnoentitiesnoconv("CabinetMedSetup");
 
-llxHeader('',$langs->trans("SendingsSetup"));
+llxHeader('', $langs->trans("SendingsSetup"));
 
 $linkback='<a href="'.DOL_URL_ROOT.'/admin/modules.php">'.$langs->trans("BackToModuleList").'</a>';
-print load_fiche_titre($langs->trans("CabinetMedSetup"),$linkback,'title_setup');
+print load_fiche_titre($langs->trans("CabinetMedSetup"), $linkback, 'title_setup');
 print '<br>';
 
 $h=0;
@@ -109,11 +109,10 @@ dol_fiche_end();
 
 
 // Buttons
-if ($action != 'create' && $action != 'edit')
-{
-    print '<div class="tabsAction">';
-    print "<a class=\"butAction\" href=\"".$_SERVER["PHP_SELF"]."?action=create#newattrib\">".$langs->trans("NewAttribute")."</a>";
-    print "</div>";
+if ($action != 'create' && $action != 'edit') {
+	print '<div class="tabsAction">';
+	print "<a class=\"butAction\" href=\"".$_SERVER["PHP_SELF"]."?action=create#newattrib\">".$langs->trans("NewAttribute")."</a>";
+	print "</div>";
 }
 
 
@@ -123,12 +122,11 @@ if ($action != 'create' && $action != 'edit')
 /*                                                                            */
 /* ************************************************************************** */
 
-if ($action == 'create')
-{
+if ($action == 'create') {
 	print '<br><div id="newattrib"></div>';
 	print load_fiche_titre($langs->trans('NewAttribute'));
 
-    require DOL_DOCUMENT_ROOT.'/core/tpl/admin_extrafields_add.tpl.php';
+	require DOL_DOCUMENT_ROOT.'/core/tpl/admin_extrafields_add.tpl.php';
 }
 
 /* ************************************************************************** */
@@ -136,12 +134,11 @@ if ($action == 'create')
 /* Edition of an optional field                                                */
 /*                                                                            */
 /* ************************************************************************** */
-if ($action == 'edit' && ! empty($attrname))
-{
-    print "<br>";
-    print load_fiche_titre($langs->trans("FieldEdition", $attrname));
+if ($action == 'edit' && ! empty($attrname)) {
+	print "<br>";
+	print load_fiche_titre($langs->trans("FieldEdition", $attrname));
 
-    require DOL_DOCUMENT_ROOT.'/core/tpl/admin_extrafields_edit.tpl.php';
+	require DOL_DOCUMENT_ROOT.'/core/tpl/admin_extrafields_edit.tpl.php';
 }
 
 llxFooter();

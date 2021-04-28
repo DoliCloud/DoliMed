@@ -18,8 +18,7 @@
  */
 
 // Protection to avoid direct call of template
-if (empty($conf) || ! is_object($conf))
-{
+if (empty($conf) || ! is_object($conf)) {
 	print "Error, template page can't be called as URL";
 	exit;
 }
@@ -29,9 +28,9 @@ $object=$GLOBALS['object'];
 
 global $db,$conf,$mysoc,$langs,$user,$hookmanager,$extrafields;
 
-require_once(DOL_DOCUMENT_ROOT ."/core/class/html.formcompany.class.php");
-require_once(DOL_DOCUMENT_ROOT ."/core/class/html.formfile.class.php");
-require_once(DOL_DOCUMENT_ROOT ."/core/lib/date.lib.php");
+require_once DOL_DOCUMENT_ROOT ."/core/class/html.formcompany.class.php";
+require_once DOL_DOCUMENT_ROOT ."/core/class/html.formfile.class.php";
+require_once DOL_DOCUMENT_ROOT ."/core/lib/date.lib.php";
 if (! empty($conf->adherent->enabled)) require_once DOL_DOCUMENT_ROOT.'/adherents/class/adherent.class.php';
 dol_include_once("/cabinetmed/lib/cabinetmed.lib.php");
 
@@ -57,17 +56,16 @@ $now=dol_now();
 if ((float) DOL_VERSION < 7) dol_fiche_head($head, 'card', $langs->trans("Patient"), 0, 'patient@cabinetmed');
 else dol_fiche_head($head, 'card', $langs->trans("Patient"), -1, 'patient@cabinetmed');
 
-dol_htmloutput_errors($error,$errors);
+dol_htmloutput_errors($error, $errors);
 
 
 // Confirm delete third party
-if ($action == 'delete' || ($conf->use_javascript_ajax && empty($conf->dol_use_jmobile)))
-{
-    $ret=$form->form_confirm($_SERVER["PHP_SELF"]."?socid=".$object->id,$langs->trans("DeleteACompany"),$langs->trans("ConfirmDeleteCompany"),"confirm_delete",'',0,"action-delete");
-    if ($ret == 'html') print '<br>';
+if ($action == 'delete' || ($conf->use_javascript_ajax && empty($conf->dol_use_jmobile))) {
+	$ret=$form->form_confirm($_SERVER["PHP_SELF"]."?socid=".$object->id, $langs->trans("DeleteACompany"), $langs->trans("ConfirmDeleteCompany"), "confirm_delete", '', 0, "action-delete");
+	if ($ret == 'html') print '<br>';
 }
 
-dol_htmloutput_errors($GLOBALS['error'],$GLOBALS['errors']);
+dol_htmloutput_errors($GLOBALS['error'], $GLOBALS['errors']);
 
 
 $linkback = '<a href="'.dol_buildpath('/cabinetmed/patients.php', 1).'">'.$langs->trans("BackToList").'</a>';
@@ -78,43 +76,38 @@ print '<div class="fichehalfleft">';
 
 print '<div class="underbanner clearboth"></div>';
 print '<table class="border tableforfield" width="100%">';
-if (! empty($conf->global->SOCIETE_USEPREFIX))  // Old not used prefix field
-{
-    print '<tr><td>'.$langs->trans('Prefix').'</td><td colspan="3">'.$object->prefix_comm.'</td></tr>';
+if (! empty($conf->global->SOCIETE_USEPREFIX)) {  // Old not used prefix field
+	print '<tr><td>'.$langs->trans('Prefix').'</td><td colspan="3">'.$object->prefix_comm.'</td></tr>';
 }
 
 //if ($object->client)
 //{
-    print '<tr><td class="titlefield">';
-    print $langs->trans('CustomerCode').'</td><td colspan="3">';
-    print $object->code_client;
-    if ($object->check_codeclient() <> 0) print ' <font class="error">('.$langs->trans("WrongPatientCode").')</font>';
-    print '</td></tr>';
+	print '<tr><td class="titlefield">';
+	print $langs->trans('CustomerCode').'</td><td colspan="3">';
+	print $object->code_client;
+	if ($object->check_codeclient() <> 0) print ' <font class="error">('.$langs->trans("WrongPatientCode").')</font>';
+	print '</td></tr>';
 //}
 
 // Barcode
-if ($conf->global->MAIN_MODULE_BARCODE)
-{
-    print '<tr><td>'.$langs->trans('Gencod').'</td><td colspan="3">'.$object->barcode.'</td></tr>';
+if ($conf->global->MAIN_MODULE_BARCODE) {
+	print '<tr><td>'.$langs->trans('Gencod').'</td><td colspan="3">'.$object->barcode.'</td></tr>';
 }
 
 // Prof ids
 $i=1; $j=0;
-while ($i <= 6)
-{
-    $key='CABINETMED_SHOW_PROFID'.$i;
+while ($i <= 6) {
+	$key='CABINETMED_SHOW_PROFID'.$i;
 	if (empty($conf->global->$key)) { $i++; continue; }
 
-	$idprof=$langs->transcountry('ProfId'.$i,$object->country_code);
-	if ($idprof!='-')
-	{
+	$idprof=$langs->transcountry('ProfId'.$i, $object->country_code);
+	if ($idprof!='-') {
 		if (($j % 2) == 0) print '<tr>';
 		print '<td>'.$idprof.'</td><td>';
 		$key='idprof'.$i;
 		print $object->$key;
-		if ($object->$key)
-		{
-			if ($object->id_prof_check($i,$object) > 0) print ' &nbsp; '.$object->id_prof_url($i,$object);
+		if ($object->$key) {
+			if ($object->id_prof_check($i, $object) > 0) print ' &nbsp; '.$object->id_prof_url($i, $object);
 			else print ' <font class="error">('.$langs->trans("ErrorWrongValue").')</font>';
 		}
 		print '</td>';
@@ -128,38 +121,31 @@ if ($j % 2 == 1)  print '<td colspan="2"></td></tr>';
 // Num secu
 print '<tr>';
 print '<td class="nowrap">'.$langs->trans('PatientVATIntra').'</td><td colspan="3">';
-if ($object->tva_intra)
-{
-    $s='';
-    $s.=$object->tva_intra;
-    $s.='<input type="hidden" name="tva_intra" size="12" maxlength="20" value="'.$object->tva_intra.'">';
+if ($object->tva_intra) {
+	$s='';
+	$s.=$object->tva_intra;
+	$s.='<input type="hidden" name="tva_intra" size="12" maxlength="20" value="'.$object->tva_intra.'">';
 
-    if (empty($conf->global->MAIN_DISABLEVATCHECK))
-    {
-        $s.=' &nbsp; ';
+	if (empty($conf->global->MAIN_DISABLEVATCHECK)) {
+		$s.=' &nbsp; ';
 
-        if ($conf->use_javascript_ajax)
-        {
-            print "\n";
-            print '<script language="JavaScript" type="text/javascript">';
-            print "function CheckVAT(a) {\n";
-            print "newpopup('".DOL_URL_ROOT."/societe/checkvat/checkVatPopup.php?vatNumber='+a,'".dol_escape_js($langs->trans("VATIntraCheckableOnEUSite"))."',500,285);\n";
-            print "}\n";
-            print '</script>';
-            print "\n";
-            $s.='<a href="#" onclick="javascript: CheckVAT(document.formsoc.tva_intra.value);">'.$langs->trans("VATIntraCheck").'</a>';
-            $s = $form->textwithpicto($s,$langs->trans("VATIntraCheckDesc",$langs->trans("VATIntraCheck")),1);
-        }
-        else
-        {
-            $s.='<a href="'.$langs->transcountry("VATIntraCheckURL",$object->id_pays).'" target="_blank">'.img_picto($langs->trans("VATIntraCheckableOnEUSite"),'help').'</a>';
-        }
-    }
-    print $s;
-}
-else
-{
-    print '&nbsp;';
+		if ($conf->use_javascript_ajax) {
+			print "\n";
+			print '<script language="JavaScript" type="text/javascript">';
+			print "function CheckVAT(a) {\n";
+			print "newpopup('".DOL_URL_ROOT."/societe/checkvat/checkVatPopup.php?vatNumber='+a,'".dol_escape_js($langs->trans("VATIntraCheckableOnEUSite"))."',500,285);\n";
+			print "}\n";
+			print '</script>';
+			print "\n";
+			$s.='<a href="#" onclick="javascript: CheckVAT(document.formsoc.tva_intra.value);">'.$langs->trans("VATIntraCheck").'</a>';
+			$s = $form->textwithpicto($s, $langs->trans("VATIntraCheckDesc", $langs->trans("VATIntraCheck")), 1);
+		} else {
+			$s.='<a href="'.$langs->transcountry("VATIntraCheckURL", $object->id_pays).'" target="_blank">'.img_picto($langs->trans("VATIntraCheckableOnEUSite"), 'help').'</a>';
+		}
+	}
+	print $s;
+} else {
+	print '&nbsp;';
 }
 print '</td>';
 print '</tr>';
@@ -184,29 +170,27 @@ print '<div class="underbanner clearboth"></div>';
 print '<table class="border tableforfield" width="100%">';
 
 // Tags / categories
-if (! empty($conf->categorie->enabled)  && ! empty($user->rights->categorie->lire))
-{
-    // Customer
-    if ($object->prospect || $object->client) {
-        print '<tr><td>' . $langs->trans("CustomersCategoriesShort") . '</td>';
-        print '<td colspan="3">';
-        print $form->showCategories($object->id, 'customer', 1);
-        print "</td></tr>";
-    }
+if (! empty($conf->categorie->enabled)  && ! empty($user->rights->categorie->lire)) {
+	// Customer
+	if ($object->prospect || $object->client) {
+		print '<tr><td>' . $langs->trans("CustomersCategoriesShort") . '</td>';
+		print '<td colspan="3">';
+		print $form->showCategories($object->id, 'customer', 1);
+		print "</td></tr>";
+	}
 
-    // Supplier
-    if ($object->fournisseur) {
-        print '<tr><td>' . $langs->trans("SuppliersCategoriesShort") . '</td>';
-        print '<td colspan="3">';
-        print $form->showCategories($object->id, 'supplier', 1);
-        print "</td></tr>";
-    }
+	// Supplier
+	if ($object->fournisseur) {
+		print '<tr><td>' . $langs->trans("SuppliersCategoriesShort") . '</td>';
+		print '<td colspan="3">';
+		print $form->showCategories($object->id, 'supplier', 1);
+		print "</td></tr>";
+	}
 }
 
 // Default language
-if ($conf->global->MAIN_MULTILANGS)
-{
-	require_once(DOL_DOCUMENT_ROOT."/core/lib/functions2.lib.php");
+if ($conf->global->MAIN_MULTILANGS) {
+	require_once DOL_DOCUMENT_ROOT."/core/lib/functions2.lib.php";
 	print '<tr><td>'.$langs->trans("DefaultLang").'</td><td colspan="3">';
 	//$s=picto_from_langcode($object->default_lang);
 	//print ($s?$s.' ':'');
@@ -222,15 +206,14 @@ include DOL_DOCUMENT_ROOT.'/core/tpl/extrafields_view.tpl.php';
 
 // Inject age if a date is defined
 
-if (! empty($object->array_options['options_birthdate']))
-{
+if (! empty($object->array_options['options_birthdate'])) {
 	//$birthdate=dol_mktime(0,0,0,$birthdatearray['mon']+1,($birthdatearray['mday']),($birthdatearray['year']+1900),true);
 	$birthdate = $object->array_options['options_birthdate'];
 	//var_dump($birthdatearray);
 	$ageyear=convertSecondToTime($now-$birthdate, 'year') - 1970;
 	$agemonth=convertSecondToTime($now-$birthdate, 'month');
 	if ($ageyear >= 2) $agetoshow = '('.$ageyear.' '.$langs->trans("DurationYears").')';
-	else if ($agemonth >= 2) $agetoshow = '('.(($ageyear * 12) + $agemonth).' '.$langs->trans("DurationMonths").')';
+	elseif ($agemonth >= 2) $agetoshow = '('.(($ageyear * 12) + $agemonth).' '.$langs->trans("DurationMonths").')';
 	else $agetoshow = '('.(($ageyear * 12) + $agemonth).' '.$langs->trans("DurationMonth").')';
 	$agetoshow = dol_print_date($object->array_options['options_birthdate'], 'day').' <span class="opacitymedium">'.$agetoshow.'</span>';
 	print '<script type="text/javascript" language="javascript">';
@@ -242,37 +225,29 @@ if (! empty($object->array_options['options_birthdate']))
 }
 
 // Ban
-if (empty($conf->global->SOCIETE_DISABLE_BANKACCOUNT))
-{
-    print '<tr><td>';
-    print '<table width="100%" class="nobordernopadding"><tr><td>';
-    print $langs->trans('RIB');
-    print '<td><td align="right">';
-    if ($user->rights->societe->creer)
-    {
-    	if ((float) DOL_VERSION < 8.0)
-    	{
-    		print '<a class="editfielda" href="'.DOL_URL_ROOT.'/societe/rib.php?socid='.$object->id.'">'.img_edit().'</a>';
-    	}
-    	else
-    	{
-    		print '<a class="editfielda" href="'.DOL_URL_ROOT.'/societe/paymentmodes.php?socid='.$object->id.'">'.img_edit().'</a>';
-    	}
-    }
-    else
-    {
-    	print '&nbsp;';
-    }
-    print '</td></tr></table>';
-    print '</td>';
-    print '<td colspan="3">';
-    print $object->display_rib();
-    print '</td></tr>';
+if (empty($conf->global->SOCIETE_DISABLE_BANKACCOUNT)) {
+	print '<tr><td>';
+	print '<table width="100%" class="nobordernopadding"><tr><td>';
+	print $langs->trans('RIB');
+	print '<td><td align="right">';
+	if ($user->rights->societe->creer) {
+		if ((float) DOL_VERSION < 8.0) {
+			print '<a class="editfielda" href="'.DOL_URL_ROOT.'/societe/rib.php?socid='.$object->id.'">'.img_edit().'</a>';
+		} else {
+			print '<a class="editfielda" href="'.DOL_URL_ROOT.'/societe/paymentmodes.php?socid='.$object->id.'">'.img_edit().'</a>';
+		}
+	} else {
+		print '&nbsp;';
+	}
+	print '</td></tr></table>';
+	print '</td>';
+	print '<td colspan="3">';
+	print $object->display_rib();
+	print '</td></tr>';
 }
 
 // Parent company
-if (empty($conf->global->SOCIETE_DISABLE_PARENTCOMPANY))
-{
+if (empty($conf->global->SOCIETE_DISABLE_PARENTCOMPANY)) {
 	print '<tr><td>';
 	print '<table class="nobordernopadding" width="100%"><tr><td>';
 	print $langs->trans('ParentPatient');
@@ -280,47 +255,40 @@ if (empty($conf->global->SOCIETE_DISABLE_PARENTCOMPANY))
 	if ($action != 'editparentcompany') print '<td class="right"><a class="editfielda" href="'.$_SERVER["PHP_SELF"].'?action=editparentcompany&amp;socid='.$object->id.'">'.img_edit($langs->transnoentitiesnoconv('Edit'), 1).'</a></td>';
 	print '</tr></table>';
 	print '</td><td>';
-	if ($action == 'editparentcompany')
-	{
+	if ($action == 'editparentcompany') {
 		$form->form_thirdparty($_SERVER['PHP_SELF'].'?socid='.$object->id, $object->parent, 'editparentcompany', 's.rowid <> '.$object->id, 1);
-	}
-	else
-	{
+	} else {
 		$form->form_thirdparty($_SERVER['PHP_SELF'].'?socid='.$object->id, $object->parent, 'none', 's.rowid <> '.$object->id, 1);
 	}
 	print '</td>';
 	print '</tr>';
 }
 
-    // Sales representative
-    include DOL_DOCUMENT_ROOT.'/societe/tpl/linesalesrepresentative.tpl.php';
+	// Sales representative
+	include DOL_DOCUMENT_ROOT.'/societe/tpl/linesalesrepresentative.tpl.php';
 
-    // Module Adherent
-    if (! empty($conf->adherent->enabled))
-    {
-        $langs->load("members");
-        print '<tr><td>'.$langs->trans("LinkedToDolibarrMember").'</td>';
-        print '<td colspan="3">';
-        $adh=new Adherent($db);
-        $result=$adh->fetch('','',$object->id);
-        if ($result > 0)
-        {
-            $adh->ref=$adh->getFullName($langs);
-            print $adh->getNomUrl(1);
-        }
-        else
-        {
-            print '<span class="opacitymedium">'.$langs->trans("ThirdpartyNotLinkedToMember").'</span>';
-        }
-        print '</td>';
-        print "</tr>\n";
-    }
+	// Module Adherent
+if (! empty($conf->adherent->enabled)) {
+	$langs->load("members");
+	print '<tr><td>'.$langs->trans("LinkedToDolibarrMember").'</td>';
+	print '<td colspan="3">';
+	$adh=new Adherent($db);
+	$result=$adh->fetch('', '', $object->id);
+	if ($result > 0) {
+		$adh->ref=$adh->getFullName($langs);
+		print $adh->getNomUrl(1);
+	} else {
+		print '<span class="opacitymedium">'.$langs->trans("ThirdpartyNotLinkedToMember").'</span>';
+	}
+	print '</td>';
+	print "</tr>\n";
+}
 
-    // Webservices url/key
-    if (!empty($conf->syncsupplierwebservices->enabled)) {
-        print '<tr><td>'.$langs->trans("WebServiceURL").'</td><td>'.dol_print_url($object->webservices_url).'</td>';
-        print '<td class="nowrap">'.$langs->trans('WebServiceKey').'</td><td>'.$object->webservices_key.'</td></tr>';
-    }
+	// Webservices url/key
+if (!empty($conf->syncsupplierwebservices->enabled)) {
+	print '<tr><td>'.$langs->trans("WebServiceURL").'</td><td>'.dol_print_url($object->webservices_url).'</td>';
+	print '<td class="nowrap">'.$langs->trans('WebServiceKey').'</td><td>'.$object->webservices_key.'</td></tr>';
+}
 
 print '</table>';
 print '</div>';
@@ -338,33 +306,24 @@ dol_fiche_end();
 print '<div class="tabsAction">'."\n";
 
 $parameters=array();
-$reshook=$hookmanager->executeHooks('addMoreActionsButtons',$parameters,$object,$action);    // Note that $action and $object may have been modified by hook
-if (empty($reshook))
-{
-	if (! empty($object->email))
-	{
+$reshook=$hookmanager->executeHooks('addMoreActionsButtons', $parameters, $object, $action);    // Note that $action and $object may have been modified by hook
+if (empty($reshook)) {
+	if (! empty($object->email)) {
 		$langs->load("mails");
 		print '<div class="inline-block divButAction"><a class="butAction" href="'.$_SERVER['PHP_SELF'].'?socid='.$object->id.'&amp;action=presend&amp;mode=init">'.$langs->trans('SendMail').'</a></div>';
-	}
-	else
-	{
+	} else {
 		$langs->load("mails");
 		print '<div class="inline-block divButAction"><a class="butActionRefused" href="#" title="'.dol_escape_htmltag($langs->trans("NoEMail")).'">'.$langs->trans('SendMail').'</a></div>';
 	}
 
-	if ($user->rights->societe->creer)
-	{
+	if ($user->rights->societe->creer) {
 		print '<div class="inline-block divButAction"><a class="butAction" href="'.$_SERVER["PHP_SELF"].'?socid='.$object->id.'&amp;action=edit">'.$langs->trans("Modify").'</a></div>'."\n";
 	}
 
-	if ($user->rights->societe->supprimer)
-	{
-		if ($conf->use_javascript_ajax && empty($conf->dol_use_jmobile))	// We can't use preloaded confirm form with jmobile
-		{
+	if ($user->rights->societe->supprimer) {
+		if ($conf->use_javascript_ajax && empty($conf->dol_use_jmobile)) {	// We can't use preloaded confirm form with jmobile
 			print '<div class="inline-block divButAction"><span id="action-delete" class="butActionDelete">'.$langs->trans('Delete').'</span></div>'."\n";
-		}
-		else
-		{
+		} else {
 			print '<div class="inline-block divButAction"><a class="butActionDelete" href="'.$_SERVER["PHP_SELF"].'?socid='.$object->id.'&amp;action=delete">'.$langs->trans('Delete').'</a></div>'."\n";
 		}
 	}
@@ -378,8 +337,7 @@ if (GETPOST('modelselected')) {
 	$action = 'presend';
 }
 
-if ((float) DOL_VERSION >= 7.0)
-{
+if ((float) DOL_VERSION >= 7.0) {
 	// Presend form
 	$modelmail='thirdparty';
 	$defaulttopic='Information';
@@ -387,9 +345,7 @@ if ((float) DOL_VERSION >= 7.0)
 	$trackid = 'thi'.$object->id;
 
 	include DOL_DOCUMENT_ROOT.'/core/tpl/card_presend.tpl.php';
-}
-elseif ($action == 'presend')
-{
+} elseif ($action == 'presend') {
 	// By default if $action=='presend'
 	$titreform='SendMail';
 	$topicmail='';
@@ -416,8 +372,7 @@ elseif ($action == 'presend')
 	$formmail->fromname = $user->getFullName($langs);
 	$formmail->frommail = $user->email;
 	$formmail->trackid='thi'.$object->id;
-	if (! empty($conf->global->MAIN_EMAIL_ADD_TRACK_ID) && ($conf->global->MAIN_EMAIL_ADD_TRACK_ID & 2))	// If bit 2 is set
-	{
+	if (! empty($conf->global->MAIN_EMAIL_ADD_TRACK_ID) && ($conf->global->MAIN_EMAIL_ADD_TRACK_ID & 2)) {	// If bit 2 is set
 		include DOL_DOCUMENT_ROOT.'/core/lib/functions2.lib.php';
 		$formmail->frommail=dolAddEmailTrackId($formmail->frommail, 'inv'.$object->id);
 	}
@@ -447,10 +402,9 @@ elseif ($action == 'presend')
 	$formmail->param['returnurl']=$_SERVER["PHP_SELF"].'?socid='.$object->id;
 
 	// Init list of files
-	if (GETPOST("mode")=='init')
-	{
+	if (GETPOST("mode")=='init') {
 		$formmail->clear_attached_files();
-		$formmail->add_attached_files($file,basename($file),dol_mimetype($file));
+		$formmail->add_attached_files($file, basename($file), dol_mimetype($file));
 	}
 
 	print $formmail->get_form();
@@ -459,8 +413,7 @@ elseif ($action == 'presend')
 }
 
 
-if ($action != 'presend')
-{
+if ($action != 'presend') {
 	print '<br>';
 
 
@@ -487,7 +440,7 @@ if ($action != 'presend')
 	*/
 
 	// Subsidiaries list
-	$result=show_subsidiaries($conf,$langs,$db,$object);
+	$result=show_subsidiaries($conf, $langs, $db, $object);
 
 	/*
 	// Contacts list

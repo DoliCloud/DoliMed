@@ -39,7 +39,7 @@ class CabinetmedExamBio // extends CommonObject
 	//var $element='cabinetmed_exambio';			//!< Id that identify managed objects
 	//var $table_element='cabinetmed_exambio';	//!< Name of table without prefix where object is stored
 
-    var $id;
+	var $id;
 
 	var $fk_soc;
 	var $fk_user;
@@ -69,21 +69,21 @@ class CabinetmedExamBio // extends CommonObject
 	 */
 	function __construct($db)
 	{
-        $this->db = $db;
-        return 1;
-    }
+		$this->db = $db;
+		return 1;
+	}
 
 
-    /**
-     *      Create object into database
-     *
-     *      @param	User	$user        	User that create
-     *      @param  int		$notrigger	    0=launch triggers after, 1=disable triggers
-     *      @return int         			<0 if KO, Id of created object if OK
-     */
-    function create($user, $notrigger=0)
-    {
-    	global $conf, $langs;
+	/**
+	 *      Create object into database
+	 *
+	 *      @param	User	$user        	User that create
+	 *      @param  int		$notrigger	    0=launch triggers after, 1=disable triggers
+	 *      @return int         			<0 if KO, Id of created object if OK
+	 */
+	function create($user, $notrigger = 0)
+	{
+		global $conf, $langs;
 		$error=0;
 
 		// Clean parameters
@@ -97,8 +97,8 @@ class CabinetmedExamBio // extends CommonObject
 		if (isset($this->suivipr_vs)) $this->suivipr_vs=trim($this->suivipr_vs);
 		if (isset($this->suivipr_eva)) $this->suivipr_eva=trim($this->suivipr_eva);
 		if (isset($this->suivipr_err)) $this->suivipr_err=trim($this->suivipr_err);
-        if (isset($this->suivipr_das28)) $this->suivipr_das28=trim($this->suivipr_das28);
-        if (isset($this->suivisa_fat)) $this->suivisa_fat=trim($this->suivisa_fat);
+		if (isset($this->suivipr_das28)) $this->suivipr_das28=trim($this->suivipr_das28);
+		if (isset($this->suivisa_fat)) $this->suivisa_fat=trim($this->suivisa_fat);
 		if (isset($this->suivisa_dax)) $this->suivisa_dax=trim($this->suivisa_dax);
 		if (isset($this->suivisa_dpe)) $this->suivisa_dpe=trim($this->suivisa_dpe);
 		if (isset($this->suivisa_dpa)) $this->suivisa_dpa=trim($this->suivisa_dpa);
@@ -111,7 +111,7 @@ class CabinetmedExamBio // extends CommonObject
 		// Check parameters
 		// Put here code to add control on parameters values
 
-        // Insert request
+		// Insert request
 		$sql = "INSERT INTO ".MAIN_DB_PREFIX."cabinetmed_exambio(";
 		$sql.= "fk_soc,";
 		$sql.= "fk_user,";
@@ -123,16 +123,16 @@ class CabinetmedExamBio // extends CommonObject
 		$sql.= "suivipr_ag,";
 		$sql.= "suivipr_vs,";
 		$sql.= "suivipr_eva,";
-        $sql.= "suivipr_das28,";
+		$sql.= "suivipr_das28,";
 		$sql.= "suivipr_err,";
-        $sql.= "suivisa_fat,";
+		$sql.= "suivisa_fat,";
 		$sql.= "suivisa_dax,";
 		$sql.= "suivisa_dpe,";
 		$sql.= "suivisa_dpa,";
 		$sql.= "suivisa_rno,";
 		$sql.= "suivisa_dma,";
 		$sql.= "suivisa_basdai";
-        $sql.= ") VALUES (";
+		$sql.= ") VALUES (";
 		$sql.= " ".(! isset($this->fk_soc)?'NULL':"'".$this->fk_soc."'").",";
 		$sql.= " ".$user->id.",";
 		$sql.= " ".(! isset($this->dateexam) || dol_strlen($this->dateexam)==0?'NULL':"'".$this->db->idate($this->dateexam))."',";
@@ -143,9 +143,9 @@ class CabinetmedExamBio // extends CommonObject
 		$sql.= " ".(! isset($this->suivipr_ag) || $this->suivipr_ag==''?'NULL':"'".$this->suivipr_ag."'").",";
 		$sql.= " ".(! isset($this->suivipr_vs) || $this->suivipr_vs==''?'NULL':"'".$this->suivipr_vs."'").",";
 		$sql.= " ".(! isset($this->suivipr_eva) || $this->suivipr_eva==''?'NULL':"'".$this->suivipr_eva."'").",";
-        $sql.= " ".(empty($this->suivipr_das28)?'NULL':"'".$this->suivipr_das28."'").",";
+		$sql.= " ".(empty($this->suivipr_das28)?'NULL':"'".$this->suivipr_das28."'").",";
 		$sql.= " ".(! isset($this->suivipr_err) || $this->suivipr_err==''?'NULL':"'".$this->suivipr_err."'").",";
-        $sql.= " ".(! isset($this->suivisa_fat) || $this->suivisa_fat==''?'NULL':"'".$this->suivisa_fat."'").",";
+		$sql.= " ".(! isset($this->suivisa_fat) || $this->suivisa_fat==''?'NULL':"'".$this->suivisa_fat."'").",";
 		$sql.= " ".(! isset($this->suivisa_dax) || $this->suivisa_dax==''?'NULL':"'".$this->suivisa_dax."'").",";
 		$sql.= " ".(! isset($this->suivisa_dpe) || $this->suivisa_dpe==''?'NULL':"'".$this->suivisa_dpe."'").",";
 		$sql.= " ".(! isset($this->suivisa_dpa) || $this->suivisa_dpa==''?'NULL':"'".$this->suivisa_dpa."'").",";
@@ -156,44 +156,39 @@ class CabinetmedExamBio // extends CommonObject
 
 		$this->db->begin();
 
-	   	dol_syslog(get_class($this)."::create sql=".$sql, LOG_DEBUG);
-        $resql=$this->db->query($sql);
-    	if (! $resql) { $error++; $this->errors[]="Error ".$this->db->lasterror(); }
+		dol_syslog(get_class($this)."::create sql=".$sql, LOG_DEBUG);
+		$resql=$this->db->query($sql);
+		if (! $resql) { $error++; $this->errors[]="Error ".$this->db->lasterror(); }
 
-		if (! $error)
-        {
-            $this->id = $this->db->last_insert_id(MAIN_DB_PREFIX."cabinetmed_exambio");
-        }
+		if (! $error) {
+			$this->id = $this->db->last_insert_id(MAIN_DB_PREFIX."cabinetmed_exambio");
+		}
 
-        // Commit or rollback
-        if ($error)
-		{
-			foreach($this->errors as $errmsg)
-			{
-	            dol_syslog(get_class($this)."::create ".$errmsg, LOG_ERR);
-	            $this->error.=($this->error?', '.$errmsg:$errmsg);
+		// Commit or rollback
+		if ($error) {
+			foreach ($this->errors as $errmsg) {
+				dol_syslog(get_class($this)."::create ".$errmsg, LOG_ERR);
+				$this->error.=($this->error?', '.$errmsg:$errmsg);
 			}
 			$this->db->rollback();
 			return -1*$error;
-		}
-		else
-		{
+		} else {
 			$this->db->commit();
-            return $this->id;
+			return $this->id;
 		}
-    }
+	}
 
 
-    /**
-     *    Load object in memory from database
-     *
-     *    @param	int		$id     id object
-     *    @return   int        		<0 if KO, >0 if OK
-     */
-    function fetch($id)
-    {
-    	global $langs;
-        $sql = "SELECT";
+	/**
+	 *    Load object in memory from database
+	 *
+	 *    @param	int		$id     id object
+	 *    @return   int        		<0 if KO, >0 if OK
+	 */
+	function fetch($id)
+	{
+		global $langs;
+		$sql = "SELECT";
 		$sql.= " t.rowid,";
 
 		$sql.= " t.fk_soc,";
@@ -206,7 +201,7 @@ class CabinetmedExamBio // extends CommonObject
 		$sql.= " t.suivipr_ag,";
 		$sql.= " t.suivipr_vs,";
 		$sql.= " t.suivipr_eva,";
-        $sql.= " t.suivipr_das28,";
+		$sql.= " t.suivipr_das28,";
 		$sql.= " t.suivipr_err,";
 		$sql.= " t.suivisa_fat,";
 		$sql.= " t.suivisa_dax,";
@@ -218,18 +213,16 @@ class CabinetmedExamBio // extends CommonObject
 		$sql.= " t.tms";
 
 
-        $sql.= " FROM ".MAIN_DB_PREFIX."cabinetmed_exambio as t";
-        $sql.= " WHERE t.rowid = ".((int) $id);
+		$sql.= " FROM ".MAIN_DB_PREFIX."cabinetmed_exambio as t";
+		$sql.= " WHERE t.rowid = ".((int) $id);
 
-    	dol_syslog(get_class($this)."::fetch sql=".$sql, LOG_DEBUG);
-        $resql=$this->db->query($sql);
-        if ($resql)
-        {
-            if ($this->db->num_rows($resql))
-            {
-                $obj = $this->db->fetch_object($resql);
+		dol_syslog(get_class($this)."::fetch sql=".$sql, LOG_DEBUG);
+		$resql=$this->db->query($sql);
+		if ($resql) {
+			if ($this->db->num_rows($resql)) {
+				$obj = $this->db->fetch_object($resql);
 
-                $this->id    = $obj->rowid;
+				$this->id    = $obj->rowid;
 
 				$this->fk_soc = $obj->fk_soc;
 				$this->fk_user = $obj->fk_user;
@@ -241,7 +234,7 @@ class CabinetmedExamBio // extends CommonObject
 				$this->suivipr_ag = $obj->suivipr_ag;
 				$this->suivipr_vs = $obj->suivipr_vs;
 				$this->suivipr_eva = $obj->suivipr_eva;
-                $this->suivipr_das28 = $obj->suivipr_das28;
+				$this->suivipr_das28 = $obj->suivipr_das28;
 				$this->suivipr_err = $obj->suivipr_err;
 				$this->suivisa_fat = $obj->suivisa_fat;
 				$this->suivisa_dax = $obj->suivisa_dax;
@@ -251,30 +244,28 @@ class CabinetmedExamBio // extends CommonObject
 				$this->suivisa_dma = $obj->suivisa_dma;
 				$this->suivisa_basdai = $obj->suivisa_basdai;
 				$this->tms = $this->db->jdate($obj->tms);
-            }
-            $this->db->free($resql);
+			}
+			$this->db->free($resql);
 
-            return 1;
-        }
-        else
-        {
-      	    $this->error="Error ".$this->db->lasterror();
-            dol_syslog(get_class($this)."::fetch ".$this->error, LOG_ERR);
-            return -1;
-        }
-    }
+			return 1;
+		} else {
+			$this->error="Error ".$this->db->lasterror();
+			dol_syslog(get_class($this)."::fetch ".$this->error, LOG_ERR);
+			return -1;
+		}
+	}
 
 
-    /**
-     *      Update object into database
-     *
-     *      @param	User	$user        	User that modify
-     *      @param  int		$notrigger	    0=launch triggers after, 1=disable triggers
-     *      @return int         			<0 if KO, >0 if OK
-     */
-    function update($user=null, $notrigger=0)
-    {
-    	global $conf, $langs;
+	/**
+	 *      Update object into database
+	 *
+	 *      @param	User	$user        	User that modify
+	 *      @param  int		$notrigger	    0=launch triggers after, 1=disable triggers
+	 *      @return int         			<0 if KO, >0 if OK
+	 */
+	function update($user = null, $notrigger = 0)
+	{
+		global $conf, $langs;
 		$error=0;
 
 		// Clean parameters
@@ -288,7 +279,7 @@ class CabinetmedExamBio // extends CommonObject
 		if (isset($this->suivipr_vs)) $this->suivipr_vs=trim($this->suivipr_vs);
 		if (isset($this->suivipr_eva)) $this->suivipr_eva=trim($this->suivipr_eva);
 		if (isset($this->suivipr_das28)) $this->suivipr_das28=trim($this->suivipr_das28);
-        if (isset($this->suivipr_err)) $this->suivipr_err=trim($this->suivipr_err);
+		if (isset($this->suivipr_err)) $this->suivipr_err=trim($this->suivipr_err);
 		if (isset($this->suivisa_fat)) $this->suivisa_fat=trim($this->suivisa_fat);
 		if (isset($this->suivisa_dax)) $this->suivisa_dax=trim($this->suivisa_dax);
 		if (isset($this->suivisa_dpe)) $this->suivisa_dpe=trim($this->suivisa_dpe);
@@ -301,8 +292,8 @@ class CabinetmedExamBio // extends CommonObject
 		// Check parameters
 		// Put here code to add control on parameters values
 
-        // Update request
-        $sql = "UPDATE ".MAIN_DB_PREFIX."cabinetmed_exambio SET";
+		// Update request
+		$sql = "UPDATE ".MAIN_DB_PREFIX."cabinetmed_exambio SET";
 		$sql.= " fk_soc=".(isset($this->fk_soc)?$this->fk_soc:"null").",";
 		$sql.= " dateexam=".(dol_strlen($this->dateexam)!=0 ? "'".$this->db->idate($this->dateexam)."'" : 'null').",";
 		$sql.= " resultat=".(isset($this->resultat)?"'".$this->db->escape($this->resultat)."'":"null").",";
@@ -312,9 +303,9 @@ class CabinetmedExamBio // extends CommonObject
 		$sql.= " suivipr_ag=".(isset($this->suivipr_ag) && $this->suivipr_ag!=''?$this->suivipr_ag:"null").",";
 		$sql.= " suivipr_vs=".(isset($this->suivipr_vs) && $this->suivipr_vs!=''?$this->suivipr_vs:"null").",";
 		$sql.= " suivipr_eva=".(isset($this->suivipr_eva) && $this->suivipr_eva!=''?$this->suivipr_eva:"null").",";
-        $sql.= " suivipr_das28=".(!empty($this->suivipr_das28) && $this->suivipr_das28!=''?$this->suivipr_das28:"null").",";
+		$sql.= " suivipr_das28=".(!empty($this->suivipr_das28) && $this->suivipr_das28!=''?$this->suivipr_das28:"null").",";
 		$sql.= " suivipr_err=".(isset($this->suivipr_err) && $this->suivipr_err!=''?$this->suivipr_err:"null").",";
-        $sql.= " suivisa_fat=".(isset($this->suivisa_fat) && $this->suivisa_fat!=''?$this->suivisa_fat:"null").",";
+		$sql.= " suivisa_fat=".(isset($this->suivisa_fat) && $this->suivisa_fat!=''?$this->suivisa_fat:"null").",";
 		$sql.= " suivisa_dax=".(isset($this->suivisa_dax) && $this->suivisa_dax!=''?$this->suivisa_dax:"null").",";
 		$sql.= " suivisa_dpe=".(isset($this->suivisa_dpe) && $this->suivisa_dpe!=''?$this->suivisa_dpe:"null").",";
 		$sql.= " suivisa_dpa=".(isset($this->suivisa_dpa) && $this->suivisa_dpa!=''?$this->suivisa_dpa:"null").",";
@@ -322,41 +313,37 @@ class CabinetmedExamBio // extends CommonObject
 		$sql.= " suivisa_dma=".(isset($this->suivisa_dma) && $this->suivisa_dma!=''?$this->suivisa_dma:"null").",";
 		$sql.= " suivisa_basdai=".(!empty($this->suivisa_basdai)?$this->suivisa_basdai:"null").",";
 		$sql.= " tms=".(dol_strlen($this->tms)!=0 ? "'".$this->db->idate($this->tms)."'" : 'null')."";
-        $sql.= " WHERE rowid=".((int) $this->id);
+		$sql.= " WHERE rowid=".((int) $this->id);
 
 		$this->db->begin();
 
 		dol_syslog(get_class($this)."::update sql=".$sql, LOG_DEBUG);
-        $resql = $this->db->query($sql);
-    	if (! $resql) { $error++; $this->errors[]="Error ".$this->db->lasterror(); }
+		$resql = $this->db->query($sql);
+		if (! $resql) { $error++; $this->errors[]="Error ".$this->db->lasterror(); }
 
-        // Commit or rollback
-		if ($error)
-		{
-			foreach($this->errors as $errmsg)
-			{
-	            dol_syslog(get_class($this)."::update ".$errmsg, LOG_ERR);
-	            $this->error.=($this->error?', '.$errmsg:$errmsg);
+		// Commit or rollback
+		if ($error) {
+			foreach ($this->errors as $errmsg) {
+				dol_syslog(get_class($this)."::update ".$errmsg, LOG_ERR);
+				$this->error.=($this->error?', '.$errmsg:$errmsg);
 			}
 			$this->db->rollback();
 			return -1*$error;
-		}
-		else
-		{
+		} else {
 			$this->db->commit();
 			return 1;
 		}
-    }
+	}
 
 
- 	/**
+	/**
 	 *   Delete object in database
 	 *
-     *	 @param		User	$user        	User that delete
-     *   @param     int		$notrigger	    0=launch triggers after, 1=disable triggers
+	 *	 @param		User	$user        	User that delete
+	 *   @param     int		$notrigger	    0=launch triggers after, 1=disable triggers
 	 *   @return	int						<0 if KO, >0 if OK
 	 */
-	function delete($user, $notrigger=0)
+	function delete($user, $notrigger = 0)
 	{
 		global $conf, $langs;
 		$error=0;
@@ -368,21 +355,17 @@ class CabinetmedExamBio // extends CommonObject
 
 		dol_syslog(get_class($this)."::delete sql=".$sql);
 		$resql = $this->db->query($sql);
-    	if (! $resql) { $error++; $this->errors[]="Error ".$this->db->lasterror(); }
+		if (! $resql) { $error++; $this->errors[]="Error ".$this->db->lasterror(); }
 
-        // Commit or rollback
-		if ($error)
-		{
-			foreach($this->errors as $errmsg)
-			{
-	            dol_syslog(get_class($this)."::delete ".$errmsg, LOG_ERR);
-	            $this->error.=($this->error?', '.$errmsg:$errmsg);
+		// Commit or rollback
+		if ($error) {
+			foreach ($this->errors as $errmsg) {
+				dol_syslog(get_class($this)."::delete ".$errmsg, LOG_ERR);
+				$this->error.=($this->error?', '.$errmsg:$errmsg);
 			}
 			$this->db->rollback();
 			return -1*$error;
-		}
-		else
-		{
+		} else {
 			$this->db->commit();
 			return 1;
 		}
@@ -418,27 +401,19 @@ class CabinetmedExamBio // extends CommonObject
 		$result=$object->create($user);
 
 		// Other options
-		if ($result < 0)
-		{
+		if ($result < 0) {
 			$this->error=$object->error;
 			$error++;
 		}
 
-		if (! $error)
-		{
-
-
-
+		if (! $error) {
 		}
 
 		// End
-		if (! $error)
-		{
+		if (! $error) {
 			$this->db->commit();
 			return $object->id;
-		}
-		else
-		{
+		} else {
 			$this->db->rollback();
 			return -1;
 		}
@@ -473,9 +448,5 @@ class CabinetmedExamBio // extends CommonObject
 		$this->suivisa_dma='';
 		$this->suivisa_basdai='';
 		$this->tms='';
-
-
 	}
-
 }
-
