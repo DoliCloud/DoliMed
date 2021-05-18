@@ -358,10 +358,12 @@ if ((float) DOL_VERSION >= 7.0) {
 	// Define output language
 	$outputlangs = $langs;
 	$newlang = '';
-	if ($conf->global->MAIN_MULTILANGS && empty($newlang) && ! empty($_REQUEST['lang_id']))
-		$newlang = $_REQUEST['lang_id'];
-	if ($conf->global->MAIN_MULTILANGS && empty($newlang))
+	if ($conf->global->MAIN_MULTILANGS && empty($newlang) && GETPOST('lang_id', 'aZ09')) {
+		$newlang = GETPOST('lang_id', 'aZ09');
+	}
+	if ($conf->global->MAIN_MULTILANGS && empty($newlang)) {
 		$newlang = $object->client->default_lang;
+	}
 
 	// Cree l'objet formulaire mail
 	include_once DOL_DOCUMENT_ROOT.'/core/class/html.formmail.class.php';
