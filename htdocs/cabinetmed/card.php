@@ -721,7 +721,11 @@ if (empty($reshook)) {
 	// Set parent company
 	if ($action == 'set_thirdparty' && $user->rights->societe->creer) {
 		$object->fetch($socid);
-		$result = $object->set_parent(GETPOST('editparentcompany', 'int'));
+		if (method_exists($object, 'set_parent')) {
+			$result = $object->set_parent(GETPOST('editparentcompany', 'int'));
+		} else {
+			$result = $object->setParent(GETPOST('editparentcompany', 'int'));
+		}
 	}
 
 	// Set incoterm
