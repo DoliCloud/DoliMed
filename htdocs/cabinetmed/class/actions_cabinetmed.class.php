@@ -108,6 +108,7 @@ class ActionsCabinetmed
 		}
 
 		require_once DOL_DOCUMENT_ROOT ."/core/lib/date.lib.php";
+		require_once dol_buildpath('/cabinetmed/lib/cabinetmed.lib.php', 1);
 
 		// Hook called when asking to add a new record
 		if ($action == 'add') {
