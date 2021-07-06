@@ -1,5 +1,10 @@
 # ChangeLog
 
+## 9.0.2
+
+- Fix call to undefined dol_cm_strptime()
+
+
 ## 9.0.1
 
 - Compatibility of export with PHP 7.4
