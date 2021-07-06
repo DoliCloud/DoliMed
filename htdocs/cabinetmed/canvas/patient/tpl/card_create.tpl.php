@@ -210,7 +210,7 @@ if (! empty($conf->global->SOCIETE_DISABLE_CUSTOMERS) && ! empty($conf->global->
 		// State
 if (empty($conf->global->SOCIETE_DISABLE_STATE)) {
 	print '<tr><td>'.$langs->trans('State').'</td><td colspan="3">';
-	$formcompany->select_departement($object->state_id, $object->country_code);
+	print $formcompany->select_state($object->state_id, $object->country_code);
 	print '</td></tr>';
 }
 ?>
