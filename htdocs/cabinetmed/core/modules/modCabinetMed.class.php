@@ -65,7 +65,7 @@ class modCabinetMed extends DolibarrModules
 		$this->editor_url = 'https://www.dolimed.com';
 
 		// Possible values for version are: 'development', 'experimental', 'dolibarr' or version
-		$this->version = '9.0.1';
+		$this->version = '9.0.2';
 		// Key used in llx_const table to save module status enabled/disabled (where MYMODULE is value of property name of module in uppercase)
 		$this->const_name = 'MAIN_MODULE_'.strtoupper($this->name);
 		// Name of image file used for this module.
@@ -94,7 +94,7 @@ class modCabinetMed extends DolibarrModules
 		// Dependencies
 		$this->depends = array('modSociete');       // List of modules id that must be enabled if this module is enabled
 		$this->requiredby = array();    // List of modules id to disable if this one is disabled
-		$this->phpmin = array(4,3);                 // Minimum version of PHP required by module
+		$this->phpmin = array(5,6);                 // Minimum version of PHP required by module
 		$this->need_dolibarr_version = array(11, 0, -3);   // Minimum version of Dolibarr required by module
 		$this->langfiles = array('cabinetmed@cabinetmed','companies');
 
