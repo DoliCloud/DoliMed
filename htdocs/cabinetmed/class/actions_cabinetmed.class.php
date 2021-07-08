@@ -107,8 +107,8 @@ class ActionsCabinetmed
 			$langs->tab_translate["ErrorBadThirdPartyName"]=$langs->transnoentitiesnoconv("ErrorBadPatientName");
 		}
 
-		require_once DOL_DOCUMENT_ROOT ."/core/lib/date.lib.php";
-		require_once dol_buildpath('/cabinetmed/lib/cabinetmed.lib.php', 1);
+		require_once DOL_DOCUMENT_ROOT."/core/lib/date.lib.php";
+		require_once dol_buildpath('/cabinetmed/lib/cabinetmed.lib.php', 0);
 
 		// Hook called when asking to add a new record
 		if ($action == 'add') {

@@ -146,7 +146,7 @@ if ($id > 0) {
 	print '<div class="fichecenter">';
 	print '<div class="underbanner clearboth"></div>';
 
-	print '<table class="border centpercent">';
+	print '<table class="border centpercent tableforfield">';
 
 	// Civility
 	print '<tr><td class="'.$cssclass.'">'.$langs->trans("UserTitle").'</td><td>';
@@ -169,6 +169,8 @@ print_fiche_titre($langs->trans("ListOfPatients"), '', '');
 $param='&id='.$id;
 
 print "\n";
+
+print '<div class="div-table-responsive">';
 print '<table class="noborder" width="100%">';
 print '<tr class="liste_titre">';
 print_liste_field_titre($langs->trans('Name'), $_SERVER['PHP_SELF'], 's.nom', '', $param, '', $sortfield, $sortorder);
@@ -243,6 +245,8 @@ if ($resql) {
 }
 
 print '</table>';
+print '</div>';
+
 print '<br>';
 
 llxFooter();

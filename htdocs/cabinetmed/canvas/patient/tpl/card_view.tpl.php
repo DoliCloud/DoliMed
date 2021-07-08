@@ -61,11 +61,8 @@ dol_htmloutput_errors($error, $errors);
 
 // Confirm delete third party
 if ($action == 'delete' || ($conf->use_javascript_ajax && empty($conf->dol_use_jmobile))) {
-	$ret=$form->form_confirm($_SERVER["PHP_SELF"]."?socid=".$object->id, $langs->trans("DeleteACompany"), $langs->trans("ConfirmDeleteCompany"), "confirm_delete", '', 0, "action-delete");
-	if ($ret == 'html') print '<br>';
+	print $form->formconfirm($_SERVER["PHP_SELF"]."?socid=".$object->id, $langs->trans("DeleteACompany"), $langs->trans("ConfirmDeleteCompany"), "confirm_delete", '', 0, "action-delete");
 }
-
-dol_htmloutput_errors($GLOBALS['error'], $GLOBALS['errors']);
 
 
 $linkback = '<a href="'.dol_buildpath('/cabinetmed/patients.php', 1).'">'.$langs->trans("BackToList").'</a>';
