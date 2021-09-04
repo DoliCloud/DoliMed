@@ -177,7 +177,7 @@ class CabinetmedCons extends CommonObject
 
 		$this->db->begin();
 
-		dol_syslog(get_class($this)."::create sql=".$sql, LOG_DEBUG);
+		dol_syslog(get_class($this)."::create", LOG_DEBUG);
 		$resql=$this->db->query($sql);
 		if (! $resql) { $error++; $this->errors[]="Error ".$this->db->lasterror(); }
 
@@ -257,7 +257,7 @@ class CabinetmedCons extends CommonObject
 		$sql.= " LEFT JOIN ".MAIN_DB_PREFIX."bank as b ON b.rowid = bu.fk_bank";
 		$sql.= " WHERE t.rowid = ".((int) $id);
 
-		dol_syslog(get_class($this)."::fetch sql=".$sql, LOG_DEBUG);
+		dol_syslog(get_class($this)."::fetch", LOG_DEBUG);
 		$resql=$this->db->query($sql);
 		if ($resql) {
 			if ($this->db->num_rows($resql)) {
@@ -319,7 +319,7 @@ class CabinetmedCons extends CommonObject
 		$sql.= "SELECT b.rowid, b.rappro, b.fk_account, b.fk_type, b.num_chq FROM ".MAIN_DB_PREFIX."bank_url as bu, ".MAIN_DB_PREFIX."bank as b";
 		$sql.= " WHERE bu.url_id = ".$this->id." AND bu.type = 'consultation'";
 		$sql.= " AND bu.fk_bank = b.rowid";
-		dol_syslog(get_class($this)."::fetch_bankid sql=".$sql, LOG_DEBUG);
+		dol_syslog(get_class($this)."::fetch_bankid", LOG_DEBUG);
 		$resql=$this->db->query($sql);
 		if ($resql) {
 			$num=$this->db->num_rows($resql);
@@ -411,7 +411,7 @@ class CabinetmedCons extends CommonObject
 
 		$this->db->begin();
 
-		dol_syslog(get_class($this)."::update sql=".$sql, LOG_DEBUG);
+		dol_syslog(get_class($this)."::update", LOG_DEBUG);
 		$resql = $this->db->query($sql);
 		if (! $resql) { $error++; $this->errors[]="Error ".$this->db->lasterror(); }
 
