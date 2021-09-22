@@ -115,6 +115,8 @@ $arrayfields = dol_sort_array($arrayfields, 'position');
 
 $search_array_options=array();
 
+$arrayofmassactions = array();
+
 
 /*
  * Actions
@@ -1157,7 +1159,7 @@ if ($action == '' || $action == 'list' || $action == 'delete') {
 
 	$varpage=empty($contextpage)?$_SERVER["PHP_SELF"]:$contextpage;
 	$selectedfields=$form->multiSelectArrayWithCheckbox('selectedfields', $arrayfields, $varpage);	// This also change content of $arrayfields
-	$selectedfields.=(count($arrayofmassactions) ? $form->showCheckAddButtons('checkforselect', 1) : '');
+	$selectedfields.=((is_array($arrayofmassactions) && count($arrayofmassactions)) ? $form->showCheckAddButtons('checkforselect', 1) : '');
 
 	dol_htmloutput_mesg('', $mesgs, 'warning');
 
