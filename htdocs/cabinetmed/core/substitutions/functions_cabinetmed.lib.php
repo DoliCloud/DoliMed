@@ -226,7 +226,7 @@ function cabinetmed_completesubstitutionarray(&$substitutionarray, $langs, $obje
 		$substitutionarray['outcome_total_inctax_cash']=$outcome->montant_espece;
 		$substitutionarray['outcome_total_inctax_other']=$outcome->montant_tiers;
 		$substitutionarray['outcome_total_inctax']=($outcome->montant_carte+$outcome->montant_cheque+$outcome->montant_espece+$outcome->montant_tiers);
-		$substitutionarray['outcome_total_ttc']=($outcome->montant_carte+$outcome->montant_cheque+$outcome->montant_espece+$outcome->montant_tiers);
+		$substitutionarray['outcome_total_ttc']=($outcome->montant_carte+$outcome->montant_cheque+$outcome->montant_espece+$outcome->montant_tiers);	// For compatibility
 
 		if (is_array($outcome->array_options)) {
 			foreach ($outcome->array_options as $keyextra => $valextra) {
@@ -247,6 +247,7 @@ function cabinetmed_completesubstitutionarray(&$substitutionarray, $langs, $obje
 		$substitutionarray['outcome_comment']='';
 
 		$substitutionarray['outcome_exam_sugested']='';
+
 		$substitutionarray['outcome_total_inctax_card']='';
 		$substitutionarray['outcome_total_inctax_cheque']='';
 		$substitutionarray['outcome_total_inctax_cash']='';
