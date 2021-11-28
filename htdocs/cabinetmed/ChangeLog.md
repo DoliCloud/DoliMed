@@ -3,6 +3,7 @@
 ## 9.0.2
 
 - Fix call to undefined dol_cm_strptime()
+- Fix filters on list of patients, consultations and contacts
 
 
 ## 9.0.1
