@@ -258,10 +258,10 @@ $sql.= " s.phone, s.fax,";
 $sql.= " s.datec, s.canvas, s.status as status,";
 $sql.= " MAX(c.datecons) as lastcons, COUNT(c.rowid) as nb";
 // We'll need these fields in order to filter by sale (including the case where the user can only see his prospects)
-if ($search_sale) $sql .= ", sc.fk_soc, sc.fk_user";
+if ($search_sale > 0) $sql .= ", sc.fk_soc, sc.fk_user";
 // We'll need these fields in order to filter by categ
-if ($search_categ_cus) $sql .= ", cc.fk_categorie, cc.fk_soc";
-if ($search_categ_sup) $sql .= ", cs.fk_categorie, cs.fk_soc";
+if ($search_categ_cus > 0) $sql .= ", cc.fk_categorie, cc.fk_soc";
+if ($search_categ_sup > 0) $sql .= ", cs.fk_categorie, cs.fk_soc";
 // Add fields from extrafields
 if (! empty($extrafields->attributes[$object->table_element]['label'])) {
 	foreach ($extrafields->attributes[$object->table_element]['label'] as $key => $val) $sql.=($extrafields->attributes[$object->table_element]['type'][$key] != 'separate' ? ", ef.".$key." as options_".$key : '');
@@ -272,9 +272,9 @@ $reshook=$hookmanager->executeHooks('printFieldListSelect', $parameters);    // 
 $sql.=$hookmanager->resPrint;
 $sql.= " FROM ".MAIN_DB_PREFIX."c_stcomm as st";
 // We'll need this table joined to the select in order to filter by sale
-if ($search_sale || (!$user->rights->societe->client->voir && !$socid)) $sql.= ", ".MAIN_DB_PREFIX."societe_commerciaux as sc";
+if ($search_sale > 0 || (!$user->rights->societe->client->voir && !$socid)) $sql.= ", ".MAIN_DB_PREFIX."societe_commerciaux as sc";
 // We'll need this table joined to the select in order to filter by categ
-if ($search_categ) $sql.= ", ".MAIN_DB_PREFIX."categorie_societe as cs";
+if ($search_categ > 0) $sql.= ", ".MAIN_DB_PREFIX."categorie_societe as cs";
 $sql.= ", ".MAIN_DB_PREFIX."societe as s";
 $sql.= " LEFT JOIN ".MAIN_DB_PREFIX."cabinetmed_cons as c ON c.fk_soc = s.rowid";
 $sql.= " LEFT JOIN ".MAIN_DB_PREFIX."societe_extrafields as ef ON ef.fk_object = s.rowid";
@@ -288,19 +288,19 @@ if ($search_diagles) {
 }
 if (! $user->rights->societe->client->voir && ! $socid)	$sql.= " AND s.rowid = sc.fk_soc AND sc.fk_user = " .$user->id;
 if ($socid && empty($conf->global->MAIN_DISABLE_RESTRICTION_ON_THIRDPARTY_FOR_EXTERNAL)) $sql.= " AND s.rowid = ".$socid;
-if ($search_sale)  $sql.= " AND s.rowid = sc.fk_soc";		// Join for the needed table to filter by sale
-if ($search_categ) $sql.= " AND s.rowid = cs.fk_soc";	// Join for the needed table to filter by categ
+if ($search_sale > 0)  $sql.= " AND s.rowid = sc.fk_soc";		// Join for the needed table to filter by sale
+if ($search_categ > 0) $sql.= " AND s.rowid = cs.fk_soc";	// Join for the needed table to filter by categ
 if ($search_nom)   $sql.= natural_search("s.nom", $search_nom);
 if ($search_ville) $sql.= natural_search("s.town", $search_ville);
 if ($search_code)  $sql.= natural_search("s.code_client", $search_code);
 if ($search_all)   $sql.= natural_search(array_keys($fieldstosearchall), $search_all);
 // Insert sale filter
-if ($search_sale) {
-	$sql .= " AND sc.fk_user = ".$db->escape($search_sale);
+if ($search_sale > 0) {
+	$sql .= " AND sc.fk_user = ".((int) $search_sale);
 }
 // Insert categ filter
-if ($search_categ) {
-	$sql .= " AND cs.fk_categorie = ".$db->escape($search_categ);
+if ($search_categ > 0) {
+	$sql .= " AND cs.fk_categorie = ".((int) $search_categ);
 }
 if ($socname) {
 	$sql.= natural_search("s.nom", $socname);
@@ -320,8 +320,8 @@ $sql.=$hookmanager->resPrint;
 $sql.= " GROUP BY s.rowid, s.nom, s.client, s.zip, s.town, st.libelle, s.prefix_comm, s.code_client, s.phone, s.fax, s.datec, s.canvas, s.status";
 if ($search_sale) $sql .= ", sc.fk_soc, sc.fk_user";
 // We'll need these fields in order to filter by categ
-if ($search_categ_cus) $sql .= ", cc.fk_categorie, cc.fk_soc";
-if ($search_categ_sup) $sql .= ", cs.fk_categorie, cs.fk_soc";
+if ($search_categ_cus > 0) $sql .= ", cc.fk_categorie, cc.fk_soc";
+if ($search_categ_sup > 0) $sql .= ", cs.fk_categorie, cs.fk_soc";
 // Add fields from extrafields
 if (! empty($extrafields->attributes[$object->table_element]['label'])) {
 	foreach ($extrafields->attributes[$object->table_element]['label'] as $key => $val) $sql.=($extrafields->attributes[$object->table_element]['type'][$key] != 'separate' ? ", ef.".$key : '');
