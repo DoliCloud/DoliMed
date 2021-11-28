@@ -54,8 +54,8 @@ if (! $year_start) {
 }
 
 // Define modecompta ('CREANCES-DETTES' or 'RECETTES-DEPENSES')
-$modecompta=GETPOST("modecompta")?GETPOST("modecompta"):$conf->global->COMPTA_MODE;
-$search_sale=GETPOST('search_sale');
+$modecompta=GETPOST("modecompta", 'aZ09') ? GETPOST("modecompta", 'aZ09') : $conf->global->COMPTA_MODE;
+$search_sale=GETPOST('search_sale', 'int');
 
 
 // Security check
@@ -87,7 +87,7 @@ if ($user->rights->societe->client->voir || $socid) {
 	$period.=$langs->trans('ConsultCreatedBy'). ': ';
 	$period.=$htmlother->select_salesrepresentatives($search_sale, 'search_sale', $user, 0, 1, 'maxwidth300');
 }
-$periodlink=($year_start?"<a href='".$_SERVER["PHP_SELF"]."?year_start=".($year_start-1)."&search_sale=".$search_sale."'>".img_previous()."</a> <a href='".$_SERVER["PHP_SELF"]."?year_start=".($year_start+1)."&search_sale=".$search_sale."'>".img_next()."</a>":"");
+$periodlink=($year_start?"<a href='".$_SERVER["PHP_SELF"]."?year_start=".($year_start-1).($search_sale > 0 ? "&search_sale=".((int) $search_sale) : '')."'>".img_previous()."</a> <a href='".$_SERVER["PHP_SELF"]."?year_start=".($year_start+1)."&search_sale=".$search_sale."'>".img_next()."</a>":"");
 $description=$langs->trans("CabinetMedRulesResultInOut");
 $builddate=dol_now();
 $exportlink='';
@@ -98,14 +98,15 @@ report_header($nom, $nomlink, $period, $periodlink, $description, $builddate, $e
 /*
  * Sums
  */
+
 $subtotal_ht = 0;
 $subtotal_ttc = 0;
 $encaiss_chq = $encaiss_esp = $encaiss_tie = $encaiss_car = array();
 $sql  = "SELECT f.datecons, f.fk_user, SUM(f.montant_cheque) as montant_cheque, SUM(f.montant_espece) as montant_espece, SUM(f.montant_tiers) as montant_tiers, SUM(f.montant_carte) as montant_carte";
 $sql.= " FROM ".MAIN_DB_PREFIX."cabinetmed_cons as f";
 $sql.= " WHERE 1 = 1";
-if ($search_sale) $sql.= " AND f.fk_user = ".$search_sale;
-if ($socid && empty($conf->global->MAIN_DISABLE_RESTRICTION_ON_THIRDPARTY_FOR_EXTERNAL)) $sql.= " AND f.fk_soc = ".$socid;
+if ($search_sale > 0) $sql.= " AND f.fk_user = ".((int) $search_sale);
+if ($socid > 0 && empty($conf->global->MAIN_DISABLE_RESTRICTION_ON_THIRDPARTY_FOR_EXTERNAL)) $sql.= " AND f.fk_soc = ".((int) $socid);
 $sql.= " GROUP BY f.datecons, f.fk_user";
 $sql.= " ORDER BY f.datecons";
 //print $sql;
