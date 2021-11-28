@@ -221,12 +221,12 @@ if ($search_nom)   $sql.= natural_search("s.nom", $search_nom);
 if ($search_ville) $sql.= natural_search("s.town", $search_ville);
 if ($search_code)  $sql.= natural_search("s.code_client", $search_code);
 // Insert sale filter
-if ($search_sale) {
-	$sql .= " AND c.fk_user = ".$db->escape($search_sale);
+if ($search_sale > 0) {
+	$sql .= " AND c.fk_user = ".((int) $search_sale);
 }
 // Insert categ filter
-if ($search_categ) {
-	$sql .= " AND cs.fk_categorie = ".$db->escape($search_categ);
+if ($search_categ > 0) {
+	$sql .= " AND cs.fk_categorie = ".((int) $search_categ);
 }
 if ($socname) {
 	$sql.= natural_search("s.nom", $socname);
@@ -296,8 +296,8 @@ if ($resql) {
 	if ($search_nom != '')          $param = "&search_nom=".urlencode($search_nom);
 	if ($search_code != '')         $param.= "&search_code=".urlencode($search_code);
 	if ($search_ville != '')        $param.= "&search_ville=".urlencode($search_ville);
-	if ($search_categ != '')        $param.= '&search_categ='.urlencode($search_categ);
-	if ($search_sale != '')	        $param.= '&search_sale='.urlencode($search_sale);
+	if ($search_categ > 0)          $param.= '&search_categ='.urlencode($search_categ);
+	if ($search_sale > 0)	        $param.= '&search_sale='.urlencode($search_sale);
 	if ($search_motifprinc != '')	$param.= '&search_motifprinc='.urlencode($search_motifprinc);
 	if ($search_diaglesprinc != '')	$param.= '&search_diaglesprinc='.urlencode($search_diaglesprinc);
 	if ($search_contactid != '')	$param.= '&search_contactid='.urlencode($search_contactid);
