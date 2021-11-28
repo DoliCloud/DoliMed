@@ -471,7 +471,7 @@ if ($resql) {
 		}
 
 		if (! empty($arrayfields['s.nom']['checked'])) {
-			print '<td>';
+			print '<td class="tdoverflowmax250" title="'.dol_escape_htmltag($obj->name).'">';
 			$thirdpartystatic->id=$obj->rowid;
 			$thirdpartystatic->name=$obj->name;
 			$thirdpartystatic->client=$obj->client;
@@ -481,7 +481,7 @@ if ($resql) {
 		}
 
 		if (! empty($arrayfields['s.code_client']['checked'])) {
-			print '<td>'.$obj->code_client.'</td>';
+			print '<td class="nowraponall">'.$obj->code_client.'</td>';
 		}
 
 		if (! empty($arrayfields['c.datecons']['checked'])) {
