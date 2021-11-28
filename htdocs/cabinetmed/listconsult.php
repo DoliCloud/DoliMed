@@ -97,7 +97,7 @@ $arrayfields=array(
 	's.nom'=>array('label'=>"Patient", 'checked'=>1, 'enabled'=>1),
 	's.code_client'=>array('label'=>"PatientCode", 'checked'=>1, 'enabled'=>1),
 	'c.datecons'=>array('label'=>"DateConsultationShort", 'checked'=>1, 'enabled'=>1),
-	'c.datec'=>array('label'=>"CreatedBy", 'checked'=>1, 'enabled'=>1),
+	'c.fk_user'=>array('label'=>"CreatedBy", 'checked'=>1, 'enabled'=>1),
 	'c.motifconsprinc'=>array('label'=>"MotifPrincipal", 'checked'=>1, 'enabled'=>1),
 	'c.diaglesprinc'=>array('label'=>"DiagLesPrincipal", 'checked'=>1, 'enabled'=>1),
 	'c.typepriseencharge'=>array('label'=>"Type prise en charge", 'checked'=>1, 'enabled'=>(empty($conf->global->CABINETMED_FRENCH_PRISEENCHARGE)?0:1)),
@@ -386,7 +386,7 @@ if ($resql) {
 		print $form->selectDate($datecons, 'cons', 0, 0, 1, '', 1, 0);
 		print '</td>';
 	}
-	if (! empty($arrayfields['c.datec']['checked'])) {
+	if (! empty($arrayfields['c.fk_user']['checked'])) {
 		print '<td class="liste_titre"></td>';
 	}
 	if (! empty($arrayfields['c.motifconsprinc']['checked'])) {
@@ -440,7 +440,7 @@ if ($resql) {
 	if (! empty($arrayfields['s.nom']['checked']))                      print_liste_field_titre($arrayfields['s.nom']['label'], $_SERVER["PHP_SELF"], "s.nom", "", $param, "", $sortfield, $sortorder);
 	if (! empty($arrayfields['s.code_client']['checked']))              print_liste_field_titre($arrayfields['s.code_client']['label'], $_SERVER["PHP_SELF"], "s.code_client", "", $param, "", $sortfield, $sortorder);
 	if (! empty($arrayfields['c.datecons']['checked']))                 print_liste_field_titre($arrayfields['c.datecons']['label'], $_SERVER["PHP_SELF"], "c.datecons,c.rowid", "", $param, 'align="center"', $sortfield, $sortorder);
-	if (! empty($arrayfields['c.datec']['checked']))                   	print_liste_field_titre($arrayfields['c.datec']['label'], $_SERVER["PHP_SELF"], "", "", $param, '', $sortfield, $sortorder);
+	if (! empty($arrayfields['c.fk_user']['checked']))                 	print_liste_field_titre($arrayfields['c.fk_user']['label'], $_SERVER["PHP_SELF"], "", "", $param, '', $sortfield, $sortorder);
 	if (! empty($arrayfields['c.motifconsprinc']['checked']))           print_liste_field_titre($arrayfields['c.motifconsprinc']['label'], $_SERVER["PHP_SELF"], "c.motifconsprinc", "", $param, '', $sortfield, $sortorder);
 	if (! empty($arrayfields['c.diaglesprinc']['checked']))             print_liste_field_titre($arrayfields['c.diaglesprinc']['label'], $_SERVER["PHP_SELF"], "c.diaglesprinc", "", $param, '', $sortfield, $sortorder);
 	if (! empty($arrayfields['c.typepriseencharge']['checked']))        print_liste_field_titre($arrayfields['c.typepriseencharge']['label'], $_SERVER['PHP_SELF'], 'c.typepriseencharge', '', $param, '', $sortfield, $sortorder);
@@ -471,7 +471,7 @@ if ($resql) {
 		}
 
 		if (! empty($arrayfields['s.nom']['checked'])) {
-			print '<td class="tdoverflowmax250" title="'.dol_escape_htmltag($obj->name).'">';
+			print '<td class="tdoverflowmax200" title="'.dol_escape_htmltag($obj->name).'">';
 			$thirdpartystatic->id=$obj->rowid;
 			$thirdpartystatic->name=$obj->name;
 			$thirdpartystatic->client=$obj->client;
@@ -488,7 +488,7 @@ if ($resql) {
 			print '<td class="center">'.dol_print_date($db->jdate($obj->datecons), 'day').'</td>';
 		}
 
-		if (! empty($arrayfields['c.datec']['checked'])) {
+		if (! empty($arrayfields['c.fk_user']['checked'])) {
 			print '<td class="nowraponall">';
 			$userstatic->fetch($obj->fk_user_creation);
 			print $userstatic->getNomUrl(1);
@@ -496,12 +496,12 @@ if ($resql) {
 		}
 
 		if (! empty($arrayfields['c.motifconsprinc']['checked'])) {
-			print '<td>'.$obj->motifconsprinc.'</td>';
+			print '<td class="tdoverflowmax200" title="'.dol_escape_htmltag($obj->motifconsprinc).'">'.$obj->motifconsprinc.'</td>';
 		}
 
 		if (! empty($arrayfields['c.diaglesprinc']['checked'])) {
-			print '<td>';
-			print dol_trunc($obj->diaglesprinc, 20);
+			print '<td class="tdoverflowmax150" title="'.dol_escape_htmltag($obj->diaglesprinc).'">';
+			print $obj->diaglesprinc;
 			print '</td>';
 		}
 
@@ -521,22 +521,22 @@ if ($resql) {
 			print '<td class="right">';
 			$foundamount=0;
 			if (price2num($obj->montant_cheque) > 0) {
-				if ($foundamount) print '+';
+				if ($foundamount) print '<span class="opacitymedium">+</span>';
 				print price($obj->montant_cheque);
 				$foundamount++;
 			}
 			if (price2num($obj->montant_espece) > 0) {
-				if ($foundamount) print '+';
+				if ($foundamount) print '<span class="opacitymedium">+</span>';
 				print price($obj->montant_espece);
 				$foundamount++;
 			}
 			if (price2num($obj->montant_carte) > 0) {
-				if ($foundamount) print '+';
+				if ($foundamount) print '<span class="opacitymedium">+</span>';
 				print price($obj->montant_carte);
 				$foundamount++;
 			}
 			if (price2num($obj->montant_tiers) > 0) {
-				if ($foundamount) print '+';
+				if ($foundamount) print '<span class="opacitymedium">+</span>';
 				print price($obj->montant_tiers);
 				$foundamount++;
 			}
