@@ -318,7 +318,7 @@ $reshook=$hookmanager->executeHooks('printFieldListWhere', $parameters);    // N
 $sql.=$hookmanager->resPrint;
 
 $sql.= " GROUP BY s.rowid, s.nom, s.client, s.zip, s.town, st.libelle, s.prefix_comm, s.code_client, s.phone, s.fax, s.datec, s.canvas, s.status";
-if ($search_sale) $sql .= ", sc.fk_soc, sc.fk_user";
+if ($search_sale > 0) $sql .= ", sc.fk_soc, sc.fk_user";
 // We'll need these fields in order to filter by categ
 if ($search_categ_cus > 0) $sql .= ", cc.fk_categorie, cc.fk_soc";
 if ($search_categ_sup > 0) $sql .= ", cs.fk_categorie, cs.fk_soc";
