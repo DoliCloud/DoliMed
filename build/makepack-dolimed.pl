@@ -35,7 +35,7 @@ $GROUP="ldestailleur";
 
 use vars qw/ $REVISION $VERSION /;
 $REVISION='1.0';
-$VERSION="3.5 (build $REVISION)";
+$VERSION="9.0.2 (build $REVISION)";
 
 
 
