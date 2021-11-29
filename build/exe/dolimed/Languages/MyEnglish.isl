@@ -12,9 +12,9 @@ AssocFileExtension=&Associate %1 with the %2 file extension
 AssocingFileExtension=Associating %1 with the %2 file extension...
 
 YouWillInstallDoliWamp=You will install or upgrade DoliMed (Apache+Mysql+PHP+Dolibarr+Medical module) on your computer.
-ThisAssistantInstallOrUpgrade=This assistant installs or upgrades Dolibarr ERP-CRM and all required third party softwares (Apache, Mysql and PHP) optimized for a Dolibarr usage.
-IfYouHaveTechnicalKnowledge=If you have technical knowledge and plan to share your Apache, Mysql and PHP with other projects than Dolibarr, you should not use this assistant and make a manual installation of Dolibarr on your existing Apache, Mysql and PHP installation.
-ButIfYouLook=But if you look for an automatic setup, you''re on the good way...
+ThisAssistantInstallOrUpgrade=WARNING: Using a software installed on a local computer can be dangerous: if your computer break down, you can lose all your data. Do this if you are ready to manage backup yourself seriously. If not, use an installation in Saas instead (see https://saas.dolibarr.org).
+IfYouHaveTechnicalKnowledge=Moreover, if you have technical knowledges and want to manage your Apache, Mysql and PHP yourself, you should not use this assistant and make a manual installation of Dolibarr on your existing server with Apache, Mysql and PHP.
+ButIfYouLook=But if you look for an automatic setup on your local computer, you''re on the good way...
 DoYouWantToStart=Do you want to start installation/upgrade process ?
 
 TechnicalParameters=Technical parameters
@@ -31,6 +31,8 @@ FailedToDeleteLock=Failed to delete the file %1/www/dolibarr/install.lock. You c
 PortAlreadyInUse=Port %1 seems to be already in use. You should cancel to go back and choose another value for %2 port. Cancel choice and choose another value ?
 
 FirefoxDetected=Firefox has been detected on your computer. Would you like to use it as the default browser for DoliMed ?
+ChromeDetected=Chrome has been detected on your computer. Would you like to use it as the default browser for Dolibarr ?
+MicrosoftEdgeDetected=Microsoft Edge has been detected on your computer. Would you like to use it as the default browser for Dolibarr ?
 ChooseDefaultBrowser=Please choose your default browser. If you are not sure, just click Open :
 
 LaunchNow=Launch DoliMed now
@@ -42,3 +44,5 @@ DoliWampWillStartApacheMysql=DoliMed installer will now start or restart Apache 
 OldVersionFoundAndMoveInNew=An old database version has been found and moved to be used by new DoliMed version
 OldVersionFoundButFailedToMoveInNew=An old database version has been found but could not be moved to be used with new DoliMed version
 
+DLLMissing=Your Windows installation is missing The "Micrsoft Visual C++ Redistributable for Visual Studio 2012" component. Please install the 32-bit version (vcredist_x86.exe) first (you can find it at https://www.microsoft.com/en-us/download/) and restart DoliWamp installation/upgrade after.
+ContinueAnyway=Continue anyway (install process may fails without this prerequisite)
