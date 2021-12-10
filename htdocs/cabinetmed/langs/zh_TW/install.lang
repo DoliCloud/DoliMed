@@ -1,3 +1,3 @@
 # Dolibarr language file - fr_FR - install
 CHARSET=UTF-8
-KeepDefaultValuesWamp=Comme vous utilisez l'assistant d'installation Dolibarr depuis DoliMed, les valeurs proposées aux paramètres sont déjà optimisées. Ne les modifier qu'en connaissance de cause.
+KeepDefaultValuesWamp=當您使用來自 DoliMed 的 Dolibarr 安裝精靈時，參數中建議的值已經優化。 僅限在充分了解的情況下修改它們。

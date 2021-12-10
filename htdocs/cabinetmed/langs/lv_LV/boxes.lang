@@ -1,14 +1,14 @@
 # Dolibarr language file - fr_FR - boxes
 CHARSET=UTF-8
 BoxLastPatients=Pēdējais labotais pacients
-BoxLastContacts=Lasts contacts
-BoxTotalUnpaidCustomerBills=Total of not payed consultations
-BoxTitleNbOfPatients=Number of patient
-BoxTitleLastPatients=Last %s recorded patiens
-BoxTitleLastModifiedPatients=Last %s modified patients
-BoxTitleTotalUnpaidCustomerBills=Unpayed consultations
-BoxTitleLastModifiedContacts=Last %s modified contacts
-NoRecordedPatients=No patient recorded
-NoRecordedContacts=No contact recorded
-NoRecordedInvoices=No consultation recorded
-NoUnpaidCustomerBills=No unpayed consultation
+BoxLastContacts=Tiek saglabāti kontakti
+BoxTotalUnpaidCustomerBills=Kopā nav samaksātas konsultācijas
+BoxTitleNbOfPatients=Pacientu skaits
+BoxTitleLastPatients=Pēdējie %s ierakstīja patiens
+BoxTitleLastModifiedPatients=Pēdējie %s modificētie pacienti
+BoxTitleTotalUnpaidCustomerBills=Neapmaksātas konsultācijas
+BoxTitleLastModifiedContacts=Pēdējie %s modificētie kontakti
+NoRecordedPatients=Nav reģistrēts neviens pacients
+NoRecordedContacts=Nav reģistrēts neviens kontakts
+NoRecordedInvoices=Notika apspriešanās
+NoUnpaidCustomerBills=Neapmaksātas konsultācijas

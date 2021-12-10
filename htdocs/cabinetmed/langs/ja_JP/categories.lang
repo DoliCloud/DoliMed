@@ -1,10 +1,10 @@
 # Dolibarr language file - en_US - categories
 CHARSET=UTF-8
-PatientsCategoriesArea=Categories of patient area
-PatientIsInCustomersCategories=This patient is inside following categories
-PatientsCategoryShort=Patients category
-PatientsCategoriesShort=Patients categories
-ThisCategoryHasNoCustomer=This category has no patient
-AssignedToPatients=Set a patient
-AssignedToThePatients=Set a patient
-CatCusListPatients=List of patients categories
+PatientsCategoriesArea=患者エリアのカテゴリー
+PatientIsInCustomersCategories=この患者は以下のカテゴリーに属する
+PatientsCategoryShort=患者カテゴリー
+PatientsCategoriesShort=患者のカテゴリー
+ThisCategoryHasNoCustomer=このカテゴリには患者がいません
+AssignedToPatients=患者を設定する
+AssignedToThePatients=患者を設定する
+CatCusListPatients=患者カテゴリーのリスト

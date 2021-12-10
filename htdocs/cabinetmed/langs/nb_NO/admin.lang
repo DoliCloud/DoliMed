@@ -9,7 +9,7 @@ ModuleFamilyCrm=Customer or Patient Relation Management (CRM)
 GenericMaskCodes2=<b>{cccc}</b> klient/pasientkode på n tegn<br><b>{cccc000}</b> klient/pasientkode på n tegn etterfølges av en teller dedikert til kunden. Denne telleren tilbakestilles samtidig med global teller. <br><b>{tttt}</b>Koden til tredjepartstype på n tegn (se ordbok-tredjepartstyper).<br>
 
 # Modules= undefined
-Module1Name= Tredjepart/Pasient
+Module1Name= Thirdparties/Patients
 Module1Desc= Manage patients and contacts
 Permission121= Consult patient
 Permission122= Create/modify patient (+consultations and exams)
@@ -30,8 +30,8 @@ ExamenConclusion=Exam Conclusion
 BankNameList=List of banks
 
 CompanySetup= Setup of Patient module
-CompanyCodeChecker= Model to generate and check patient code
-CashDeskThirdPartyForSell= Generic patient for sells
-CashDeskBankAccountForSell= Bank account to use for cash
-CashDeskBankAccountForCheque= Compte à utiliser pour l'encaissement en cheque
-CashDeskBankAccountForCB= Bank account to use for credit card
+CompanyCodeChecker=Model to generate and check patient code
+CashDeskThirdPartyForSell=Generic patient for sells
+CashDeskBankAccountForSell=Bank account to use for cash
+CashDeskBankAccountForCheque=Bank account to use for check deposits
+CashDeskBankAccountForCB=Bank account to use for credit card

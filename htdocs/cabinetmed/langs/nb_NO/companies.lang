@@ -67,5 +67,5 @@ UniquePatients=Totalt antall unike pasienter
 MonkeyNumRefModelDesc=Returnerer et ummer med maske %syymm-nnnn for pasientkode og %syymm-nnnn for leverandørkoder, der yy er år, mm er måned og nnnn er et løpenummer og ingen retur til 0.
 # Leopard
 LeopardNumRefModelDesc=Fri pasientkode uten kontroll. Kan endres når som helst.
-ThirdPartyCustomersStats=Tredjepart/Pasient
+ThirdPartyCustomersStats=Thirdparties/Patients
 AddPatient=Opprett pasient

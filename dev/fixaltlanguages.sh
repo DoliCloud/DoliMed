@@ -33,7 +33,7 @@ then
     do
     	dirshort=`basename $dir`
     	
-    	#echo $dirshort
+    	echo Process dir $dirshort
     	
 		export aa=`echo $dirshort | nawk -F"_" '{ print $1 }'`
         export bb=`echo $dirshort | nawk -F"_" '{ print $2 }'`
@@ -45,7 +45,7 @@ then
     	bblower=`echo $dirshort | nawk -F"_" '{ print tolower($2) }'`
     	if [ "$aa" != "$bblower" -a "$dirshort" != "en_US" ]
     	then
-    	    reflang="htdocs/langs/"$aa"_"$aaupper
+    	    reflang="htdocs/*/langs/"$aa"_"$aaupper
     	    if [ -d $reflang ]
     	    then
 		    	echo "***** Process language "$aa"_"$bb" - Search original into "$reflang

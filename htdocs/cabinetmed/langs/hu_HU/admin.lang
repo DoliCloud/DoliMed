@@ -1,6 +1,6 @@
 # Dolibarr language file - en_US - admin
 CHARSET=UTF-8
-ExtraFieldsThirdParties=Complementary attributes (thirdparty/patient)
+ExtraFieldsThirdParties=Kiegészítő attribútumok (harmadik fél / beteg)
 ExtraFieldsContacts=Complementary attributes (contacts)
 UseSearchToSelectCompany= Use a field with autcompletion to select a patient (instead of a combo list).
 ActivityStateToSelectCompany= Add a filtering option to hide/show patients that are or not followed
@@ -9,7 +9,7 @@ ModuleFamilyCrm=Customer or Patient Relation Management (CRM)
 GenericMaskCodes2=<b>{cccc}</b> the client/patient code on n characters<br><b>{cccc000}</b> the client/patient code on n characters is followed by a counter dedicated for customer. This counter dedicated to customer is reset at same time than global counter.<br><b>{tttt}</b> The code of third party type on n characters (see dictionary-thirdparty types).<br>
 
 # Modules= undefined
-Module1Name= Thirdparties/Patient
+Module1Name= Thirdparties/Patients
 Module1Desc= Manage patients and contacts
 Permission121= Consult patient
 Permission122= Create/modify patient (+consultations and exams)
@@ -30,8 +30,8 @@ ExamenConclusion=Exam Conclusion
 BankNameList=List of banks
 
 CompanySetup= Setup of Patient module
-CompanyCodeChecker= Model to generate and check patient code
-CashDeskThirdPartyForSell= Generic patient for sells
-CashDeskBankAccountForSell= Bank account to use for cash
-CashDeskBankAccountForCheque= Compte à utiliser pour l'encaissement en cheque
-CashDeskBankAccountForCB= Bank account to use for credit card
+CompanyCodeChecker=Model to generate and check patient code
+CashDeskThirdPartyForSell=Generic patient for sells
+CashDeskBankAccountForSell=Készpénzszámla
+CashDeskBankAccountForCheque=Bankszámla a csekkbefizetések számára
+CashDeskBankAccountForCB=Bankkártya hitelkártya használatához

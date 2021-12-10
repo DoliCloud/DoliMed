@@ -1,4 +1,4 @@
 # Dolibarr language file - fr_FR - interventions
 CHARSET=UTF-8
-CustomerDoesNotHavePrefix=Le tiers/patient n'a pas de préfixe de défini
-NameAndSignatureOfExternalContact=Nom et signature du tiers/patient :
+CustomerDoesNotHavePrefix=第三方/病患 沒有定義的前綴
+NameAndSignatureOfExternalContact=第三方/病患 的姓名與簽名

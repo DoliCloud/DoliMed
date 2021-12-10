@@ -1,11 +1,11 @@
 # Dolibarr language file - fr_FR - users
 CHARSET=UTF-8
-ContactCard=Fiche correspondant
-NoContactCard=Pas de fiche parmi les correspondants
-LinkToCompanyContact=Lien patient / correspondant
-LinkedToDolibarrThirdParty=Lien patient
-CreateDolibarrThirdParty=Créer un patient
-ConfirmCreateContact=Êtes-vous sûr de vouloir créer un compte Dolibarr pour ce correspondant ?
-ConfirmCreateLogin=Êtes-vous sûr de vouloir créer un compte Dolibarr pour cet adhérent ?
-ConfirmCreateThirdParty=Êtes-vous sûr de vouloir créer un patient pour cet adhérent ?
-NameToCreate=Nom du patient à créer
+ContactCard=連絡先記録
+NoContactCard=連絡先に記録がない
+LinkToCompanyContact=患者/連絡先をリンクする
+LinkedToDolibarrThirdParty=患者をリンクする
+CreateDolibarrThirdParty=患者を作成する
+ConfirmCreateContact=この連絡先のアカウントを作成してもよいか？
+ConfirmCreateLogin=このメンバーのアカウントを作成してもよいか？
+ConfirmCreateThirdParty=このメンバーの患者を作成してもよいか？
+NameToCreate=作成する患者の名前

@@ -1,9 +1,9 @@
 # Dolibarr language file - en_US - main
 CHARSET=UTF-8
-ContactsAddressesForCompany=Contacts/addresses for this patient or third party
-ActionsOnCompany=Events on this patient or thirdparty
-ByCompanies=By patient
-NbOfPatients=Number of patients
-PatientPreview=Patient preview
-ShowPatientPreview=Show patient preview
-RefPatient=Patient Ref.
+ContactsAddressesForCompany=病患或第三方的 聯繫方式/地址
+ActionsOnCompany=病患或第三方的事件
+ByCompanies=以病患
+NbOfPatients=病患人數
+PatientPreview=病患預覽
+ShowPatientPreview=顯示病患預覽
+RefPatient=病患 Ref.

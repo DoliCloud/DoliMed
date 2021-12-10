@@ -2,8 +2,8 @@
 CHARSET=UTF-8
 PaymentCustomerInvoice=Reglement consultatie patiënt 
 ListOfCustomerPayments=Reglementen lijst van patiënten
-CustomerAccountancyCode=Code compta patient
+CustomerAccountancyCode=Code compta patiënt
 ByPatients=Per patiënt
-ErrorWrongAccountancyCodeForCompany=Code compta patient incorrect pour %s
-COMPTA_ACCOUNT_CUSTOMER=Code comptable patient par défaut (si non défini sur fiche patient)
-COMPTA_ACCOUNT_SUPPLIER=Code comptable fournisseur par défaut (si non défini sur fiche patient)
+ErrorWrongAccountancyCodeForCompany=Onjuiste patiëntaccountcode voor %s
+COMPTA_ACCOUNT_CUSTOMER=Standaard patiëntboekhoudingscode (indien niet gedefinieerd in patiëntendossier)
+COMPTA_ACCOUNT_SUPPLIER=Standaard boekhoudcode leverancier (indien niet gedefinieerd in patiëntendossier)

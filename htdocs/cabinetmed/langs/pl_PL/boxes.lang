@@ -1,14 +1,14 @@
 # Dolibarr language file - fr_FR - boxes
 CHARSET=UTF-8
-BoxLastPatients=Last modified patients
-BoxLastContacts=Lasts contacts
-BoxTotalUnpaidCustomerBills=Total of not payed consultations
-BoxTitleNbOfPatients=Number of patient
-BoxTitleLastPatients=Last %s recorded patiens
-BoxTitleLastModifiedPatients=Last %s modified patients
-BoxTitleTotalUnpaidCustomerBills=Unpayed consultations
-BoxTitleLastModifiedContacts=Last %s modified contacts
-NoRecordedPatients=No patient recorded
-NoRecordedContacts=No contact recorded
-NoRecordedInvoices=No consultation recorded
-NoUnpaidCustomerBills=No unpayed consultation
+BoxLastPatients=Ostatnio zmodyfikowani pacjenci
+BoxLastContacts=Ostatnie kontakty
+BoxTotalUnpaidCustomerBills=Suma nieopłaconych konsultacji
+BoxTitleNbOfPatients=Liczba pacjentów
+BoxTitleLastPatients=Ostatni %s zarejestrowani pacjenci
+BoxTitleLastModifiedPatients=Ostatnio zmodyfikowani pacjenci %s
+BoxTitleTotalUnpaidCustomerBills=Nieopłacone konsultacje
+BoxTitleLastModifiedContacts=Ostatnie %s modyfikowanych kontaktów
+NoRecordedPatients=Żaden pacjent nie został zarejestrowany
+NoRecordedContacts=Brak zarejestrowanego kontaktu
+NoRecordedInvoices=Nie zarejestrowano konsultacji
+NoUnpaidCustomerBills=Brak niezapłaconych konsultacji

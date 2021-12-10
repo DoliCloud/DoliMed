@@ -1,37 +1,19 @@
-# Dolibarr language file - en_US - admin
-CHARSET=UTF-8
+# Dolibarr language file - Source file is en_US - admin
 ExtraFieldsThirdParties=Atributos complementarios (terceros/paciente)
-ExtraFieldsContacts=Atributos complementarios (contactos)
-UseSearchToSelectCompany= Usar un campo con autoterminación para seleccionar un paciente(en vez de una lista combo).
-ActivityStateToSelectCompany= Agregar una opción de filtrado para ocultar/mostrar pacientes que estan o no monitoreados.
-ViewFullDateActions= Ver fecha completa de acciónes en la tarjeta del paciente
-ModuleFamilyCrm=Gestión de relaciones con clientes o pacientes (CRM)
-GenericMaskCodes2=<b>{cccc}</b> the client/patient code on n characters<br><b>{cccc000}</b> the client/patient code on n characters is followed by a counter dedicated for customer. This counter dedicated to customer is reset at same time than global counter.<br><b>{tttt}</b> The code of third party type on n characters (see dictionary-thirdparty types).<br>
-
-# Modules= undefined
-Module1Name= Terceros/Paciente
-Module1Desc= Administrar pacientes y contactos
-Permission121= Examinar paciente
-Permission122= Crear/modificar paciente (+consultas y examenes)
-Permission125= Eliminar pacientes (+consultas y examenes)
-Permission126= Exportar pacientes
-Permission262= Extend access to all patients (Not only those linked to user).<br>Not effective for external users (always limited to themselves for proposals, orders, invoices, contracts, etc).<br>Not effective for projects (only rules on project permissions, visibility and assignement matters).
-Permission281= Consultar todos los contactos
-Permission282= Crear/modificar contactos
-Permission283= Eliminar contactos
-Permission286= Exportar contactos
-DictionaryCompanyType= Genero del paciente
-DictionaryCompanyJuridicalType= Tipo de actividad del paciente o estatus jurídico de terceros
-DictionaryTypeContact= Tipos de contactos
-MotifConsultation=Razón de la consulta
-DiagnostiqueLesionnel=Diagnostico de lesión
-Examens=Examenes
-ExamenConclusion=Conclusión de Examen
-BankNameList=Lista de bancos
-
-CompanySetup= Configurar módulo del Paciente
-CompanyCodeChecker= Forma  para generar y checar código del paciente
-CashDeskThirdPartyForSell= Paciente Genérico Para Venta
-CashDeskBankAccountForSell= Cuenta bancaria usar para efectivo
-CashDeskBankAccountForCheque= Compte à utiliser pour l'encaissement en cheque
-CashDeskBankAccountForCB= Cuenta bancaria usar para tarjeta de credito
+UseSearchToSelectCompany=Usar un campo con autoterminación para seleccionar un paciente(en vez de una lista combo).
+ActivityStateToSelectCompany=Agregar una opción de filtrado para ocultar/mostrar pacientes que estan o no monitoreados.
+ViewFullDateActions=Ver fecha completa de acciónes en la tarjeta del paciente
+Module1Desc=Administrar pacientes y contactos
+Permission121=Examinar paciente
+Permission122=Crear/modificar paciente (+consultas y examenes)
+Permission125=Eliminar pacientes (+consultas y examenes)
+Permission126=Exportar pacientes
+Permission281=Consultar todos los contactos
+Permission286=Exportar contactos
+DictionaryCompanyType=Genero del paciente
+DictionaryCompanyJuridicalType=Tipo de actividad del paciente o estatus jurídico de terceros
+CompanySetup=Configurar módulo del Paciente
+CompanyCodeChecker=Forma  para generar y checar código del paciente
+CashDeskThirdPartyForSell=Paciente Genérico Para Venta
+CashDeskBankAccountForSell=Cuenta bancaria usar para efectivo
+CashDeskBankAccountForCB=Cuenta bancaria usar para tarjeta de credito

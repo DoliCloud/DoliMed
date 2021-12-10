@@ -9,7 +9,7 @@ ModuleFamilyCrm=Customer or Patient Relation Management (CRM)
 GenericMaskCodes2=<b>{cccc}</b> the client/patient code on n characters<br><b>{cccc000}</b> the client/patient code on n characters is followed by a counter dedicated for customer. This counter dedicated to customer is reset at same time than global counter.<br><b>{tttt}</b> The code of third party type on n characters (see dictionary-thirdparty types).<br>
 
 # Modules= undefined
-Module1Name= Λίστα τρίτων/ασθενών
+Module1Name= Thirdparties/Patients
 Module1Desc= Διαχείριση ασθενών και επαφών
 Permission121= Γνωμάτευση ασθενούς
 Permission122= Δημιουργία/μεταβολή ασθενούς (+γνωματεύσεις και εξετάσεις)
@@ -30,8 +30,8 @@ ExamenConclusion=Γνωμάτευση εξέτασης
 BankNameList=Λίστα τραπεζών
 
 CompanySetup= Εγκατάσταση του αρθρώματος Ασθενής
-CompanyCodeChecker= Μοτίβο για δημιουργία και έλεγχο κωδικού ασθενούς
-CashDeskThirdPartyForSell= Generic patient for sells
-CashDeskBankAccountForSell= Τραπεζικός λογαριασμός που χρησιμοποιείται για μετρητά
-CashDeskBankAccountForCheque= Τραπεζικός λογαριασμός που χρησιμοποιείται για επιταγές
-CashDeskBankAccountForCB= Τραπεζικός λογαριασμός που χρησιμοποιείται για πιστωτική κάρτα
+CompanyCodeChecker=Μοτίβο για δημιουργία και έλεγχο κωδικού ασθενούς
+CashDeskThirdPartyForSell=Generic patient for sells
+CashDeskBankAccountForSell=Τραπεζικός λογαριασμός που χρησιμοποιείται για μετρητά
+CashDeskBankAccountForCheque=Bank account to use for check deposits
+CashDeskBankAccountForCB=Τραπεζικός λογαριασμός που χρησιμοποιείται για πιστωτική κάρτα

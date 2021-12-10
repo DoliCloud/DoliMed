@@ -1,14 +1,14 @@
 # Dolibarr language file - fr_FR - boxes
 CHARSET=UTF-8
-BoxLastPatients=Last modified patients
-BoxLastContacts=Lasts contacts
-BoxTotalUnpaidCustomerBills=Total of not payed consultations
-BoxTitleNbOfPatients=Number of patient
-BoxTitleLastPatients=Last %s recorded patiens
-BoxTitleLastModifiedPatients=Last %s modified patients
-BoxTitleTotalUnpaidCustomerBills=Unpayed consultations
-BoxTitleLastModifiedContacts=Last %s modified contacts
-NoRecordedPatients=No patient recorded
-NoRecordedContacts=No contact recorded
-NoRecordedInvoices=No consultation recorded
-NoUnpaidCustomerBills=No unpayed consultation
+BoxLastPatients=最新修改的病患
+BoxLastContacts=最新聯絡人
+BoxTotalUnpaidCustomerBills=未付費諮詢的總數量
+BoxTitleNbOfPatients=病患人數
+BoxTitleLastPatients=最新 %s 記錄的病患
+BoxTitleLastModifiedPatients=最新%s修改的病患
+BoxTitleTotalUnpaidCustomerBills=免費諮詢
+BoxTitleLastModifiedContacts=最新%s修改的聯絡人
+NoRecordedPatients=無病患記錄
+NoRecordedContacts=無聯絡人記錄
+NoRecordedInvoices=無諮詢記錄
+NoUnpaidCustomerBills=無免費的諮詢

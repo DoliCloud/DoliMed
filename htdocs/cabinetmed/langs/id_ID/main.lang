@@ -1,9 +1,9 @@
 # Dolibarr language file - en_US - main
 CHARSET=UTF-8
-ContactsAddressesForCompany=Contacts/addresses for this patient or third party
-ActionsOnCompany=Events on this patient or thirdparty
-ByCompanies=By patient
-NbOfPatients=Number of patients
-PatientPreview=Patient preview
-ShowPatientPreview=Show patient preview
-RefPatient=Patient Ref.
+ContactsAddressesForCompany=Kontak / alamat untuk pasien ini atau pihak ketiga
+ActionsOnCompany=Peristiwa pada pasien ini atau pihak ketiga
+ByCompanies=Oleh pasien
+NbOfPatients=Jumlah pasien
+PatientPreview=Pratinjau pasien
+ShowPatientPreview=Tampilkan pratinjau pasien
+RefPatient=Rujukan Pasien
