@@ -62,7 +62,7 @@ $endyear=$year;
 $mode=GETPOST("mode", 'alpha')?GETPOST("mode", 'alpha'):'customer';
 
 $sortfield = GETPOST("sortfield", 'alpha');
-$sortorder = GETPOST("sortorder", 'alpha');
+$sortorder = GETPOST('sortorder', 'aZ09comma');
 $page = GETPOSTISSET('pageplusone') ? (GETPOST('pageplusone') - 1) : GETPOST("page", 'int');
 if ($page == -1) {
 	$page = 0;
