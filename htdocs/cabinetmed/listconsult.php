@@ -302,6 +302,17 @@ if ($resql) {
 	if ($search_diaglesprinc != '')	$param.= '&search_diaglesprinc='.urlencode($search_diaglesprinc);
 	if ($search_contactid != '')	$param.= '&search_contactid='.urlencode($search_contactid);
 
+	if ((float) DOL_VERSION >= 9.0) {
+		$newcardbutton='';
+		if ($user->rights->cabinetmed->write && $contextpage != 'poslist') {
+			$label='NewConsultation';
+
+			$newcardbutton = '<a class="butActionNew" href="consultations.php?action=create&canvas=patient@cabinetmed">';
+			$newcardbutton.= '<span class="fa fa-plus-circle valignmiddle" title="'.dol_escape_htmltag($langs->trans($label)).'"></span>';
+			$newcardbutton.= '</a>';
+		}
+	}
+
 	print '<form method="POST" id="searchFormList" action="'.$_SERVER["PHP_SELF"].'" name="formfilter" autocomplete="off">'."\n";
 	if ($optioncss != '') print '<input type="hidden" name="optioncss" value="'.$optioncss.'">';
 	print '<input type="hidden" name="token" value="'.$_SESSION['newtoken'].'">';
