@@ -136,14 +136,14 @@ function cabinetmed_completesubstitutionarray(&$substitutionarray, $langs, $obje
 		$substitutionarray['TabAntecedentsShort']=$langs->trans("AntecedentsShort");
 		if ($object) {
 			$nbofnotes = 0;
-			if ($object->note_antemed) $nbofnotes++;
-			if ($object->note_antechirgen) $nbofnotes++;
-			if ($object->note_antechirortho) $nbofnotes++;
-			if ($object->note_anterhum) $nbofnotes++;
-			if ($object->note_traitallergie) $nbofnotes++;
-			if ($object->note_traitclass) $nbofnotes++;
-			if ($object->note_traitintol) $nbofnotes++;
-			if ($object->note_traitspec) $nbofnotes++;
+			if (!empty($object->note_antemed)) $nbofnotes++;
+			if (!empty($object->note_antechirgen)) $nbofnotes++;
+			if (!empty($object->note_antechirortho)) $nbofnotes++;
+			if (!empty($object->note_anterhum)) $nbofnotes++;
+			if (!empty($object->note_traitallergie)) $nbofnotes++;
+			if (!empty($object->note_traitclass)) $nbofnotes++;
+			if (!empty($object->note_traitintol)) $nbofnotes++;
+			if (!empty($object->note_traitspec)) $nbofnotes++;
 			if ($nbofnotes > 0) $substitutionarray['TabAntecedentsShort']=$langs->trans("AntecedentsShort").'<span class="badge marginleftonlyshort">'.$nbofnotes.'</span>';
 		}
 
@@ -161,20 +161,21 @@ function cabinetmed_completesubstitutionarray(&$substitutionarray, $langs, $obje
 	}
 
 	// Consultation + Exams
+	$isconsult = 0;
 	if (GETPOST('idconsult') > 0) {
 		$outcome=new CabinetmedCons($db);
-		$result1=$outcome->fetch(GETPOST('idconsult'));
+		$result1=$outcome->fetch(GETPOST('idconsult', 'int'));
 		$result1extra=$outcome->fetch_optionals();
-		$isconsult=1;
+		$isconsult = 1;
 	}
 	if (GETPOST('idbio') > 0) {
 		$exambio=new CabinetmedExamBio($db);
-		$result2=$exambio->fetch(GETPOST('idbio'));
+		$result2=$exambio->fetch(GETPOST('idbio', 'int'));
 		$isbio=1;
 	}
 	if (GETPOST('idradio') > 0) {
 		$examother=new CabinetmedExamOther($db);
-		$result3=$examother->fetch(GETPOST('idradio'));
+		$result3=$examother->fetch(GETPOST('idradio', 'int'));
 		$isother=1;
 	}
 
@@ -264,7 +265,7 @@ function cabinetmed_completesubstitutionarray(&$substitutionarray, $langs, $obje
 	//$patient=new Patient($db);
 	//var_dump($object);
 	//$patient->fetch($object->fk_soc);
-	if (is_object($object)) {
+	if (is_object($object) && ($object->element == 'societe' || $object->element == 'company')) {
 		$substitutionarray['patient_id']=$object->id;
 		$substitutionarray['patient_name']=$object->name;
 		$substitutionarray['patient_code']=$object->code_client;
