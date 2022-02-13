@@ -188,10 +188,11 @@ if ($socid > 0) {
 
 	$head = societe_prepare_head($societe);
 	if ((float) DOL_VERSION < 7) dol_fiche_head($head, 'tabexamautre', $langs->trans("Patient"), 0, 'patient@cabinetmed');
-	else dol_fiche_head($head, 'tabexamautre', $langs->trans("Patient"), -1, 'patient@cabinetmed');
+	elseif ((float) DOL_VERSION < 15) dol_fiche_head($head, 'tabexamautre', $langs->trans("Patient"), -1, 'patient@cabinetmed');
+	else dol_fiche_head($head, 'tabexamautre', $langs->trans("Patient"), -1, 'user-injured');
 
 	print "<form method=\"post\" action=\"".$_SERVER["PHP_SELF"]."\">";
-	print '<input type="hidden" name="token" value="'.$_SESSION['newtoken'].'">';
+	print '<input type="hidden" name="token" value="'.newToken().'">';
 
 	$linkback = '<a href="'.dol_buildpath('/cabinetmed/patients.php', 1).'">'.$langs->trans("BackToList").'</a>';
 	dol_banner_tab($object, 'socid', $linkback, ($user->societe_id?0:1), 'rowid', 'nom');

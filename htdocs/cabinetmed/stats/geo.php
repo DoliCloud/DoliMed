@@ -12,7 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
 /**
@@ -47,15 +47,15 @@ $mode=GETPOST('mode')?GETPOST('mode'):'';
 
 
 // Security check
-if ($user->societe_id > 0) {
+if ($user->socid > 0) {
 	$action = '';
-	$socid = $user->societe_id;
+	$socid = $user->socid;
 }
 
 if (empty($conf->cabinetmed->enabled)) accessforbidden();
 
 $year = strftime("%Y", time());
-$startyear=$year-2;
+$startyear = $year - (empty($conf->global->MAIN_STATS_GRAPHS_SHOW_N_YEARS) ? 2 : max(1, min(10, $conf->global->MAIN_STATS_GRAPHS_SHOW_N_YEARS)));
 $endyear=$year;
 
 
@@ -66,11 +66,16 @@ $endyear=$year;
 
 $langs->load("cabinetmed@cabinetmed");
 
-llxHeader('', '', '', '', 0, 0, array('http://www.google.com/jsapi'));
+$arrayjs = array('https://www.google.com/jsapi');
+if (!empty($conf->dol_use_jmobile)) {
+	$arrayjs = array();
+}
 
 $title=$langs->trans("Statistics");
 
-print_fiche_titre($title, $mesg);
+llxHeader('', $title, '', '', 0, 0, $arrayjs);
+
+print_fiche_titre($title, '');
 
 dol_mkdir($dir);
 
@@ -158,11 +163,13 @@ if ($mode) {
 				);
 			}
 			if ($mode == 'cabinetmedbytown') {
-				$data[]=array('label'=>(($obj->code && $langs->trans("Country".$obj->code)!="Country".$obj->code)?$langs->trans("Country".$obj->code):($obj->label?$obj->label:$langs->trans("Unknown"))),
-							'label_en'=>(($obj->code && $langsen->transnoentitiesnoconv("Country".$obj->code)!="Country".$obj->code)?$langsen->transnoentitiesnoconv("Country".$obj->code):($obj->label?$obj->label:$langs->trans("Unknown"))),
-							'label2'=>($obj->label2?$obj->label2:$langs->trans("Unknown")),
-							'nb'=>$obj->nb,
-							'lastdate'=>$db->jdate($obj->lastdate)
+				$data[]=array(
+					'label'=>(($obj->code && $langs->trans("Country".$obj->code) != "Country".$obj->code) ? img_picto('', DOL_URL_ROOT.'/theme/common/flags/'.strtolower($obj->code).'.png', '', 1).' '.$langs->trans("Country".$obj->code) : ($obj->label ? $obj->label : '<span class="opacitymedium">'.$langs->trans("Unknown").'</span>')),
+					'label_en'=>(($obj->code && $langsen->transnoentitiesnoconv("Country".$obj->code) != "Country".$obj->code) ? $langsen->transnoentitiesnoconv("Country".$obj->code) : ($obj->label ? $obj->label : '<span class="opacitymedium">'.$langs->trans("Unknown").'</span>')),
+					'label2'=>($obj->label2 ? $obj->label2 : '<span class="opacitymedium">'.$langs->trans("Unknown").'</span>'),
+					'code'=>$obj->code,
+					'nb'=>$obj->nb,
+					'lastdate'=>$db->jdate($obj->lastdate)
 				);
 			}
 
@@ -177,7 +184,7 @@ if ($mode) {
 
 $head = patient_stats_prepare_head(null);
 
-dol_fiche_head($head, $tab, $langs->trans("Consultations"), ((float) DOL_VERSION < 7.0 ? 0 : -1), 'generic');
+dol_fiche_head($head, $tab, '', ((float) DOL_VERSION < 7.0 ? 0 : -1), '');
 
 
 // Print title
@@ -217,14 +224,19 @@ if ($mode == 'cabinetmedbycountry') {
 	// loop and dump
 	$i=0;
 	foreach ($data as $val) {
-		//$valcountry=ucfirst($val['code']);
-		$valcountry=ucfirst($val['label_en']);
-		// fix case of uk
-		if ($valcountry == 'Great Britain') { $valcountry = 'United Kingdom'; }
+		$valcountry = strtoupper($val['code']); // Should be ISO-3166 code (faster)
+		if (empty($valcountry)) {
+			$valcountry=ucfirst($val['label_en']);
+		}
+		if ($valcountry == 'Great Britain') {
+			$valcountry = 'United Kingdom';
+		}    // fix case of uk (when we use labels)
 		print "\tdata.setValue(".$i.", 0, \"".$valcountry."\");\n";
 		print "\tdata.setValue(".$i.", 1, ".$val['nb'].");\n";
 		// Google's Geomap only supports up to 400 entries
-		if ($i >= 400) { break; }
+		if ($i >= 400) {
+			break;
+		}
 		$i++;
 	}
 
@@ -234,6 +246,7 @@ if ($mode == 'cabinetmedbycountry') {
 	//print "\toptions['zoomOutLabel'] = '".dol_escape_js($langs->transnoentitiesnoconv("Numbers"))."';\n";
 	print "\toptions['width'] = ".$graphwidth.";\n";
 	print "\toptions['height'] = ".$graphheight.";\n";
+	print "\toptions['colors'] = [0x".colorArrayToHex($theme_datacolor[1], 'BBBBBB').", 0x".colorArrayToHex($theme_datacolor[0], '444444')."];\n";
 	print "\tvar container = document.getElementById('".$mode."');\n";
 	print "\tvar geomap = new google.visualization.GeoMap(container);\n";
 	print "\tgeomap.draw(data, options);\n";
@@ -241,35 +254,39 @@ if ($mode == 'cabinetmedbycountry') {
 	print "</script>\n";
 
 	// print the div tag that will contain the map
-	print '<div align="center" id="'.$mode.'"></div>'."\n";
-	print '<br>';
+	print '<div class="center" id="'.$mode.'"></div>'."\n";
 }
 
 if ($mode) {
 	// Print array
-	print '<table class="noborder" width="100%">';
+	print '<div class="div-table-responsive">'; // You can use div-table-responsive-no-min if you dont need reserved height for your table
+	print '<table class="liste centpercent">';
 	print '<tr class="liste_titre">';
-	print '<td class="center">'.$label.'</td>';
-	if ($label2) print '<td class="center">'.$label2.'</td>';
-	print '<td align="right">'.$langs->trans("NbConsult").'</td>';
+	print '<td>'.$label.'</td>';
+	if (isset($label2)) {
+		print '<td class="center">'.$label2.'</td>';
+	}
+	print '<td class="right">'.$langs->trans("NbConsult").'</td>';
 	print '<td class="center">'.$langs->trans("LastConsultShort").'</td>';
 	print '</tr>';
 
-	$oldyear=0;
-	$var=true;
 	foreach ($data as $val) {
-		$year = $val['year'];
-		$var=!$var;
+		$year = isset($val['year']) ? $val['year'] : '';
 		print '<tr class="oddeven">';
-		print '<td class="center">'.$val['label'].'</td>';
+		print '<td>';
+		/*if ($val['code']) {
+			print picto_from_langcode($codelang);
+		}*/
+		print $val['label'];
+		print '</td>';
 		if ($label2) print '<td class="center">'.$val['label2'].'</td>';
 		print '<td align="right">'.$val['nb'].'</td>';
 		print '<td class="center">'.dol_print_date($val['lastdate'], 'dayhour').'</td>';
 		print '</tr>';
-		$oldyear=$year;
 	}
 
 	print '</table>';
+	print '</div>';
 }
 
 

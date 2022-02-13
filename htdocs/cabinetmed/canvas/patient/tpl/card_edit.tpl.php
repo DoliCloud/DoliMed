@@ -131,7 +131,7 @@ print_fiche_titre($langs->trans("EditPatient"));
 
 print '<form action="'.$_SERVER["PHP_SELF"].'?socid='.$object->id.'" method="post" name="formsoc" enctype="multipart/form-data">';
 print '<input type="hidden" name="action" value="update">';
-print '<input type="hidden" name="token" value="'.$_SESSION['newtoken'].'">';
+print '<input type="hidden" name="token" value="'.newToken().'">';
 print '<input type="hidden" name="socid" value="'.$object->id.'">';
 print '<input type="hidden" name="private" value="0">';
 print '<input type="hidden" name="status" value="'.$object->status.'">';

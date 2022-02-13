@@ -286,7 +286,7 @@ if ($resql) {
 	}
 
 	print '<form method="post" action="'.$_SERVER["PHP_SELF"].'" name="formfilter">';
-	print '<input type="hidden" name="token" value="'.$_SESSION['newtoken'].'">';
+	print '<input type="hidden" name="token" value="'.newToken().'">';
 
 
 	// Filter on categories

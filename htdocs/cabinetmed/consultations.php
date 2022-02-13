@@ -560,10 +560,11 @@ if (! ($socid > 0)) {
 	print '<input type="hidden" name="socid" value="'.$socid.'">';
 	print '<input type="hidden" name="id" value="'.$id.'">';
 	print '<input type="hidden" name="backtopage" value="'.GETPOST('backtopage', 'alpha').'">';
-	print '<input type="hidden" name="token" value="'.$_SESSION['newtoken'].'">';
+	print '<input type="hidden" name="token" value="'.newToken().'">';
 
 	if ((float) DOL_VERSION < 7) dol_fiche_head($head, 'tabconsultations', $langs->trans("Patient"), 0, 'patient@cabinetmed');
-	else dol_fiche_head($head, 'tabconsultations', $langs->trans("Patient"), -1, 'patient@cabinetmed');
+	elseif ((float) DOL_VERSION < 15) dol_fiche_head($head, 'tabconsultations', $langs->trans("Patient"), -1, 'patient@cabinetmed');
+	else dol_fiche_head($head, 'tabconsultations', $langs->trans("Patient"), -1, 'user-injured');
 
 	$linkback = '<a href="'.dol_buildpath('/cabinetmed/patients.php', 1).'">'.$langs->trans("BackToList").'</a>';
 	dol_banner_tab($soc, 'socid', $linkback, ($user->societe_id?0:1), 'rowid', 'nom');
@@ -786,7 +787,7 @@ if (! ($socid > 0)) {
 
 		if ($action=='edit' || $action=='update' || $fk_agenda) print '<table class="notopnoleftnoright" width="100%">';
 		if ($action=='edit' || $action=='update') {
-			print '<tr><td width="180px" class="paddingtopbottom"><span class="opacitymedium">'.$langs->trans('ConsultationNumero').':</span> <div class="refid inline-block"><strong>'.sprintf("%08d", $object->id).'</strong></div>';
+			print '<tr><td width="180px" class="paddingtopbottom">'.img_picto('', 'briefcase-medical').' <span class="opacitymedium">'.$langs->trans('ConsultationNumero').':</span> <div class="refid inline-block"><strong>'.sprintf("%08d", $object->id).'</strong></div>';
 			if ($object->fk_user > 0) {
 				$fuser->fetch($object->fk_user);
 				print '<span class="opacitymedium"> - '.$langs->trans("CreatedBy").': </span><strong>'.$fuser->getFullName($langs).'</strong>';
@@ -853,7 +854,7 @@ if (! ($socid > 0)) {
 		print '<div class="fichecenter"><div class="fichehalfleft">';
 
 		print '<table class="notopnoleftnoright" id="addmotifbox" width="100%">';
-		print '<tr><td class="tdtop titlefield">';
+		print '<tr><td class="titlefield">';
 		print $langs->trans("MotifConsultation").':';
 		print '</td><td>';
 		listmotifcons(1, $width);
@@ -865,7 +866,7 @@ if (! ($socid > 0)) {
 		print '</td><td>';
 		print '<input type="text" class="flat minwidth200" name="motifconsprinc" value="'.$object->motifconsprinc.'" id="motifconsprinc"><br>';
 		print '</td></tr>';
-		print '<tr><td class="tdtop">'.$langs->trans("MotifSecondaires").':';
+		print '<tr><td>'.$langs->trans("MotifSecondaires").':';
 		print '</td><td>';
 		print '<textarea class="flat centpercent" name="motifconssec" id="motifconssec" rows="'.ROWS_3.'">';
 		print $object->motifconssec;
@@ -885,7 +886,7 @@ if (! ($socid > 0)) {
 
 		print '<table class="notopnoleftnoright" id="adddiagbox" width="100%">';
 		//print '<tr><td><br></td></tr>';
-		print '<tr><td class="tdtop titlefield">';
+		print '<tr><td class="titlefield">';
 		print $langs->trans("DiagnostiqueLesionnel").':';
 		print '</td><td>';
 		//print '<input type="text" size="3" class="flat" name="searchdiagles" value="'.GETPOST("searchdiagles").'" id="searchdiagles">';
@@ -898,7 +899,7 @@ if (! ($socid > 0)) {
 		print '</td><td>';
 		print '<input type="text" class="flat minwidth200" name="diaglesprinc" value="'.$object->diaglesprinc.'" id="diaglesprinc"><br>';
 		print '</td></tr>';
-		print '<tr><td class="tdtop">'.$langs->trans("DiagLesSecondaires").':';
+		print '<tr><td>'.$langs->trans("DiagLesSecondaires").':';
 		print '</td><td>';
 		print '<textarea class="flat centpercent" name="diaglessec" id="diaglessec" rows="'.ROWS_3.'">';
 		print $object->diaglessec;
@@ -923,14 +924,14 @@ if (! ($socid > 0)) {
 
 		print '<table class="notopnoleftnoright" id="addexambox" width="100%">';
 
-		print '<tr><td class="tdtop titlefield">';
+		print '<tr><td class="titlefield">';
 		print $langs->trans("ExamensPrescrits").':';
 		print '</td><td>';
 		listexamen(1, $width, '', 0, 'examenprescrit');
 		print ' <input type="button" class="button" id="addexamenprescrit" name="addexamenprescrit" value="+">';
 		if ($user->admin) print ' '.info_admin($langs->trans("YouCanChangeValuesForThisListFromDictionarySetup"), 1);
 		print '</td></tr>';
-		print '<tr><td class="tdtop">';
+		print '<tr><td>';
 		print '</td><td>';
 		print '<textarea class="flat centpercent" name="examenprescrit" id="examenprescrit" rows="'.ROWS_4.'">';
 		print $object->examenprescrit;
@@ -962,11 +963,11 @@ if (! ($socid > 0)) {
 		print '<textarea name="infiltration" id="infiltration" class="flat centpercent" rows="'.ROWS_2.'">'.$object->infiltration.'</textarea><br>';
 
 		print '<br><b>'.$langs->trans("TypeVisite").'</b>: &nbsp; &nbsp; &nbsp; ';
-		print '<input type="radio" class="flat" name="typevisit" value="CS" id="cs"'.($object->typevisit=='CS'?' checked="checked"':'').'> '.$langs->trans("CS");
+		print '<input type="radio" class="flat" name="typevisit" value="CS" id="cs"'.($object->typevisit=='CS'?' checked="checked"':'').'> <label for="cs">'.$langs->trans("CS").'</label>';
 		print ' &nbsp; &nbsp; ';
-		print '<input type="radio" class="flat" name="typevisit" value="CS2" id="c2"'.($object->typevisit=='CS2'?' checked="checked"':'').'> '.$langs->trans("CS2");
+		print '<input type="radio" class="flat" name="typevisit" value="CS2" id="c2"'.($object->typevisit=='CS2'?' checked="checked"':'').'> <label for="c2">'.$langs->trans("CS2").'</label>';
 		print ' &nbsp; &nbsp; ';
-		print '<input type="radio" class="flat" name="typevisit" value="CCAM" id="ccam"'.($object->typevisit=='CCAM'?' checked="checked"':'').'> '.$langs->trans("CCAM");
+		print '<input type="radio" class="flat" name="typevisit" value="CCAM" id="ccam"'.($object->typevisit=='CCAM'?' checked="checked"':'').'> <label for="ccam">'.$langs->trans("CCAM").'</label>';
 		print '<br>';
 		print '<br>'.$langs->trans("CodageCCAM").': &nbsp; ';
 		print '<input type="text" class="flat" name="codageccam" id="idcodageccam" value="'.$object->codageccam.'" size="30">';	// name must differ from id
@@ -992,8 +993,8 @@ if (! ($socid > 0)) {
 		$sql="SELECT rowid, label, bank, courant";
 		$sql.= " FROM ".MAIN_DB_PREFIX."bank_account";
 		$sql.= " WHERE clos = 0";
-		$sql.= " AND entity = ".$conf->entity;
-		$sql.= " AND (proprio LIKE '%".$user->lastname."%' OR label LIKE '%".$user->lastname."%')";
+		$sql.= " AND entity = ".((int) $conf->entity);
+		$sql.= " AND (proprio LIKE '%".$db->escape($user->lastname)."%' OR label LIKE '%".$db->escape($user->lastname)."%')";
 		$sql.= " ORDER BY label";
 		//print $sql;
 		$resql=$db->query($sql);
@@ -1012,7 +1013,7 @@ if (! ($socid > 0)) {
 
 
 		// Payment area
-		print '<table class="notopnoleftnoright" id="paymentsbox" width="100%">';
+		print '<table class="notopnoleftnoright centpercent" id="paymentsbox">';
 
 		if (empty($conf->global->SOCIETE_DISABLE_CUSTOMERS) && ! empty($conf->global->CABINETMED_AUTOGENERATE_INVOICE)) {
 			print '<tr><td></td><td>';
@@ -1146,7 +1147,7 @@ if ($action == '' || $action == 'list' || $action == 'delete') {
 
 	print '<form method="POST" id="searchFormList" action="'.$_SERVER["PHP_SELF"].'" name="formfilter" autocomplete="off">'."\n";
 	if ($optioncss != '') print '<input type="hidden" name="optioncss" value="'.$optioncss.'">';
-	print '<input type="hidden" name="token" value="'.$_SESSION['newtoken'].'">';
+	print '<input type="hidden" name="token" value="'.newToken().'">';
 	print '<input type="hidden" name="formfilteraction" id="formfilteraction" value="list">';
 	print '<input type="hidden" name="action" value="list">';
 	print '<input type="hidden" name="sortfield" value="'.$sortfield.'">';
@@ -1236,12 +1237,14 @@ if ($action == '' || $action == 'list' || $action == 'delete') {
 	$sql.=$hookmanager->resPrint;
 	$sql.=$db->order($sortfield, $sortorder);
 
+	$consultstatic = new CabinetmedCons($db);
+
 	$resql=$db->query($sql);
 	if ($resql) {
 		$i = 0 ;
 		$num = $db->num_rows($resql);
 
-		$usertmp=new User($db);
+		$usertmp = new User($db);
 
 		while ($i < $num) {
 			$obj = $db->fetch_object($resql);
@@ -1253,7 +1256,9 @@ if ($action == '' || $action == 'list' || $action == 'delete') {
 
 			if (! empty($arrayfields['t.rowid']['checked'])) {
 				print '<td>';
-				print '<a href="'.$_SERVER["PHP_SELF"].'?socid='.$obj->fk_soc.'&id='.$obj->rowid.'&action=edit">'.sprintf("%08d", $obj->rowid).'</a>';
+				$consultstatic->id=$obj->rowid;
+				$consultstatic->fk_soc=$obj->fk_soc;
+				print $consultstatic->getNomUrl(1, '&backtopage='.urlencode($_SERVER["PHP_SELF"].'?socid='.$obj->fk_soc));
 				print '</td>';
 			}
 
@@ -1374,7 +1379,7 @@ if ($action == '' || $action == 'list' || $action == 'delete') {
 			print $hookmanager->resPrint;
 
 			print '<td class="nowraponall">';
-			print '<a href="'.$_SERVER["PHP_SELF"].'?socid='.$obj->fk_soc.'&id='.$obj->rowid.'&action=edit">'.img_edit().'</a>';
+			print '<a class="editfielda" href="'.$_SERVER["PHP_SELF"].'?socid='.$obj->fk_soc.'&id='.$obj->rowid.'&action=edit">'.img_edit().'</a>';
 			if ($user->rights->societe->supprimer) {
 				print ' &nbsp; ';
 				print '<a href="'.$_SERVER["PHP_SELF"].'?socid='.$obj->fk_soc.'&id='.$obj->rowid.'&action=delete">'.img_delete().'</a>';

@@ -90,7 +90,7 @@ $offset = $limit * $page;
 $pageprev = $page - 1;
 $pagenext = $page + 1;
 
-//$contextpage = 'patientlist';
+$contextpage = 'patientlist';
 
 // Initialize technical objects
 $object = new Societe($db);
@@ -454,7 +454,7 @@ if ((float) DOL_VERSION >= 9.0) {
 
 print '<form method="POST" id="searchFormList" action="'.$_SERVER["PHP_SELF"].'" name="formfilter" autocomplete="off">'."\n";
 if ($optioncss != '') print '<input type="hidden" name="optioncss" value="'.$optioncss.'">';
-print '<input type="hidden" name="token" value="'.$_SESSION['newtoken'].'">';
+print '<input type="hidden" name="token" value="'.newToken().'">';
 print '<input type="hidden" name="formfilteraction" id="formfilteraction" value="list">';
 print '<input type="hidden" name="action" value="list">';
 print '<input type="hidden" name="sortfield" value="'.$sortfield.'">';
@@ -462,7 +462,7 @@ print '<input type="hidden" name="sortorder" value="'.$sortorder.'">';
 print '<input type="hidden" name="page" value="'.$page.'">';
 print '<input type="hidden" name="contextpage" value="'.$contextpage.'">';
 
-print_barre_liste($title, $page, $_SERVER["PHP_SELF"], $param, $sortfield, $sortorder, $massactionbutton, $num, $nbtotalofrecords, 'title_companies', 0, $newcardbutton, '', $limit);
+print_barre_liste($title, $page, $_SERVER["PHP_SELF"], $param, $sortfield, $sortorder, $massactionbutton, $num, $nbtotalofrecords, 'user-injured', 0, $newcardbutton, '', $limit);
 
 $langs->load("other");
 $textprofid=array();
@@ -492,23 +492,22 @@ $moreforfilter='';
 if (! empty($conf->categorie->enabled)) {
 	require_once DOL_DOCUMENT_ROOT . '/categories/class/categorie.class.php';
 	$moreforfilter.='<div class="divsearchfield">';
-	$moreforfilter.=$langs->trans('Categories'). ': ';
-	$moreforfilter.=$formother->select_categories(2, $search_categ, 'search_categ');
+	$moreforfilter.=img_picto('', 'category', 'class="pictofixedwidth"').$formother->select_categories(2, $search_categ, 'search_categ', 1, $langs->trans('Categories'));
 	$moreforfilter.='</div>';
 }
 
 // If the user can view prospects other than his'
 if ($user->rights->societe->client->voir || $socid) {
 	$moreforfilter.='<div class="divsearchfield">';
-	$moreforfilter.=$langs->trans('SalesRepresentatives'). ': ';
-	$moreforfilter.=$formother->select_salesrepresentatives($search_sale, 'search_sale', $user, 0, 1, 'maxwidth300');
+	//$moreforfilter.=$langs->trans('SalesRepresentatives'). ': ';
+	$moreforfilter.=img_picto('', 'user', 'class="pictofixedwidth"').$formother->select_salesrepresentatives($search_sale, 'search_sale', $user, 0, $langs->trans('SalesRepresentatives'), 'maxwidth300');
 	$moreforfilter.='</div>';
 }
 // To add filter on contact
 $width="200";
 $moreforfilter.='<div class="divsearchfield">';
-$moreforfilter.=$langs->trans('Correspondants'). ': ';
-$moreforfilter.=$form->selectcontacts(0, $search_contactid, 'search_contactid', 1, '', '', 1);
+//$moreforfilter.=$langs->trans('Correspondants'). ': ';
+$moreforfilter.=img_picto('', 'user-md', 'class="pictofixedwidth"').$form->selectcontacts(0, $search_contactid, 'search_contactid', $langs->trans('Correspondants'), '', '', 1);
 $moreforfilter.='</div>';
 // To add filter on diagnostic
 $width="200";

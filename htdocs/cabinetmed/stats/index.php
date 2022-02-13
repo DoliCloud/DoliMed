@@ -78,7 +78,7 @@ llxHeader();
 $title=$langs->trans("Statistics");
 $dir=$conf->cabinetmed->dir_temp;
 
-print_fiche_titre($title, $mesg);
+print_fiche_titre($title, '');
 
 dol_mkdir($dir);
 
@@ -151,7 +151,7 @@ if (! $mesg) {
 
 $head = patient_stats_prepare_head(null);
 
-dol_fiche_head($head, 'statsconsultations', $langs->trans("Consultations"), ((float) DOL_VERSION < 7.0 ? 0 : -1), 'generic');
+dol_fiche_head($head, 'statsconsultations', '', ((float) DOL_VERSION < 7.0 ? 0 : -1), '');
 
 
 print '<div class="fichecenter"><div class="fichethirdleft">';

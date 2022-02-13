@@ -171,9 +171,9 @@ if ($socid > 0) {
 	if ($conf->notification->enabled) $langs->load("mails");
 
 	$head = societe_prepare_head($object);
-
 	if ((float) DOL_VERSION < 7) dol_fiche_head($head, 'tabantecedents', $langs->trans("Patient"), 0, 'patient@cabinetmed');
-	else dol_fiche_head($head, 'tabantecedents', $langs->trans("Patient"), -1, 'patient@cabinetmed');
+	elseif ((float) DOL_VERSION < 15) dol_fiche_head($head, 'tabantecedents', $langs->trans("Patient"), -1, 'patient@cabinetmed');
+	else dol_fiche_head($head, 'tabantecedents', $langs->trans("Patient"), -1, 'user-injured');
 
 
 	print '<script type="text/javascript">
@@ -193,7 +193,7 @@ if ($socid > 0) {
     </script>';
 
 	print "<form method=\"post\" action=\"".$_SERVER["PHP_SELF"]."\">";
-	print '<input type="hidden" name="token" value="'.$_SESSION['newtoken'].'">';
+	print '<input type="hidden" name="token" value="'.newToken().'">';
 	print '<input type="hidden" name="socid" value="'.$object->id.'">';
 	print '<input type="hidden" name="action" value="addupdate">';
 

@@ -604,7 +604,7 @@ class CabinetmedCons extends CommonObject
 		$lien.=(!empty($this->canvas)?'&amp;canvas='.$this->canvas:'').'">';
 		$lienfin='</a>';
 
-		if ($withpicto) $result.=($lien.img_object($langs->trans("ShowConsult").': '.sprintf('%08d', $this->id), 'generic').$lienfin);
+		if ($withpicto) $result.=($lien.img_object($langs->trans("ShowConsult").': '.sprintf('%08d', $this->id), 'briefcase-medical').$lienfin);
 		if ($withpicto && $withpicto != 2) $result.=' ';
 		$result.=$lien.sprintf('%08d', $this->id).$lienfin;
 
