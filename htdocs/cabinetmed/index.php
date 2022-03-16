@@ -73,7 +73,7 @@ print '<div class="fichecenter"><div class="fichethirdleft">';
 
 $rowspan=2;
 print '<form method="post" action="'.DOL_URL_ROOT.'/societe/list.php">';
-print '<input type="hidden" name="token" value="'.$_SESSION['newtoken'].'">';
+print '<input type="hidden" name="token" value="'.newToken().'">';
 print '<table class="noborder" width="100%">';
 print '<tr class="liste_titre">';
 print '<th colspan="3">'.$langs->trans("Search").'</th></tr>';

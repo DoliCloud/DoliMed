@@ -67,7 +67,7 @@ $mesgarray=array();
 // Load variable for pagination
 $limit = GETPOST('limit', 'int')?GETPOST('limit', 'int'):$conf->liste_limit;
 $sortfield = GETPOST("sortfield", 'alpha');
-$sortorder = GETPOST("sortorder", 'alpha');
+$sortorder = GETPOST('sortorder', 'aZ09comma');
 $page = GETPOSTISSET('pageplusone') ? (GETPOST('pageplusone') - 1) : GETPOST("page", 'int');
 if (empty($page) || $page == -1 || GETPOST('button_search', 'alpha') || GETPOST('button_removefilter', 'alpha') || (empty($toselect) && $massaction === '0')) { $page = 0; }     // If $page is not defined, or '' or -1 or if we click on clear filters or if we select empty mass action
 $offset = $limit * $page;
@@ -198,10 +198,11 @@ if ($socid > 0) {
 
 	$head = societe_prepare_head($societe);
 	if ((float) DOL_VERSION < 7) dol_fiche_head($head, 'tabexambio', $langs->trans("Patient"), 0, 'patient@cabinetmed');
-	else dol_fiche_head($head, 'tabexambio', $langs->trans("Patient"), -1, 'patient@cabinetmed');
+	elseif ((float) DOL_VERSION < 15) dol_fiche_head($head, 'tabexambio', $langs->trans("Patient"), -1, 'patient@cabinetmed');
+	else dol_fiche_head($head, 'tabexambio', $langs->trans("Patient"), -1, 'user-injured');
 
 	print "<form method=\"post\" action=\"".$_SERVER["PHP_SELF"]."\">";
-	print '<input type="hidden" name="token" value="'.$_SESSION['newtoken'].'">';
+	print '<input type="hidden" name="token" value="'.newToken().'">';
 
 	$linkback = '<a href="'.dol_buildpath('/cabinetmed/patients.php', 1).'">'.$langs->trans("BackToList").'</a>';
 	dol_banner_tab($object, 'socid', $linkback, ($user->societe_id?0:1), 'rowid', 'nom');

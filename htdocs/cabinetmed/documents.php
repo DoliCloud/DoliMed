@@ -199,13 +199,12 @@ if ($object->id)
     if ($conf->notification->enabled) $langs->load("mails");
 
     $head = societe_prepare_head($object);
+    if ((float) DOL_VERSION < 7) dol_fiche_head($head, 'tabdocument', $langs->trans("Patient"), 0, 'patient@cabinetmed');
+    elseif ((float) DOL_VERSION < 15) dol_fiche_head($head, 'tabdocument', $langs->trans("Patient"), -1, 'patient@cabinetmed');
+    else dol_fiche_head($head, 'tabdocument', $langs->trans("Patient"), -1, 'user-injured');
 
     print "<form method=\"post\" action=\"".$_SERVER["PHP_SELF"]."\">";
-    print '<input type="hidden" name="token" value="'.$_SESSION['newtoken'].'">';
-
-
-    if ((float) DOL_VERSION < 7) dol_fiche_head($head, 'tabdocument', $langs->trans("Patient"), -1, 'patient@cabinetmed');
-    else dol_fiche_head($head, 'tabdocument', $langs->trans("Patient"), -1, 'patient@cabinetmed');
+    print '<input type="hidden" name="token" value="'.newToken().'">';
 
     // Construit liste des fichiers
     $filearray=dol_dir_list($upload_dir,"files",0,'','(\.meta|_preview\.png)$',$sortfield,(strtolower($sortorder)=='desc'?SORT_DESC:SORT_ASC),1);
@@ -310,8 +309,9 @@ if ($object->id)
     $delallowed=$user->rights->societe->supprimer;
 
     $title=img_picto('','filenew').' '.$langs->trans("GenerateADocument");
+    $tooltipmessage = $langs->trans("EditOrAddTemplateFromSetupOfThirdPartyModule", $langs->trans("Module1Name"), $langs->trans("Home"), $langs->trans("Setup"), $langs->trans("Modules"));
 
-    print $formfile->showdocuments('company','','',$urlsource,$genallowed,$delallowed,'',0,0,0,64,0,'',$title,'',$object->default_lang,$hookmanager);
+    print $formfile->showdocuments('company','','',$urlsource,$genallowed,$delallowed,'',0,0,0,0,0,'',$title,'',$object->default_lang,'',$object, 0, 'remove_file', $tooltipmessage);
 
     // List of document
     print '<br><br>';
@@ -357,6 +357,7 @@ if ($object->id)
         $lesTypes = $object->liste_type_contact('external', 'libelle', 1);
 
         // List of contacts
+        $withtolist = array();
         foreach(array('external') as $source)
         {
             $tab = $object->liste_contact(-1,$source);

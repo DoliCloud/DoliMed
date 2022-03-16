@@ -69,7 +69,7 @@ $modesearch=GETPOST("mode_search");
 $search_type=trim(GETPOST('search_type'));
 
 $sortfield=GETPOST("sortfield", 'alpha');
-$sortorder=GETPOST("sortorder", 'alpha');
+$sortorder=GETPOST('sortorder', 'aZ09comma');
 $page = GETPOSTISSET('pageplusone') ? (GETPOST('pageplusone') - 1) : GETPOST("page", 'int');
 if (! $sortorder) $sortorder="ASC";
 if (! $sortfield) $sortfield="s.nom";
@@ -286,7 +286,7 @@ if ($resql) {
 	}
 
 	print '<form method="post" action="'.$_SERVER["PHP_SELF"].'" name="formfilter">';
-	print '<input type="hidden" name="token" value="'.$_SESSION['newtoken'].'">';
+	print '<input type="hidden" name="token" value="'.newToken().'">';
 
 
 	// Filter on categories

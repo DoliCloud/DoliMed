@@ -144,7 +144,8 @@ if ($id > 0 || ! empty($ref)) {
 
 	$head = societe_prepare_head($societe);
 	if ((float) DOL_VERSION < 7) dol_fiche_head($head, 'tabpatientcontacts', $langs->trans("Patient"), 0, 'patient@cabinetmed');
-	else dol_fiche_head($head, 'tabpatientcontacts', $langs->trans("Patient"), -1, 'patient@cabinetmed');
+	elseif ((float) DOL_VERSION < 15) dol_fiche_head($head, 'tabpatientcontacts', $langs->trans("Patient"), -1, 'patient@cabinetmed');
+	else dol_fiche_head($head, 'tabpatientcontacts', $langs->trans("Patient"), -1, 'user-injured');
 
 	$width=300;
 	print '
@@ -156,7 +157,7 @@ if ($id > 0 || ! empty($ref)) {
 	print ajax_combobox('contactid');
 
 	print "<form method=\"post\" action=\"".$_SERVER["PHP_SELF"]."\">";
-	print '<input type="hidden" name="token" value="'.$_SESSION['newtoken'].'">';
+	print '<input type="hidden" name="token" value="'.newToken().'">';
 
 	$linkback = '<a href="'.dol_buildpath('/cabinetmed/patients.php', 1).'">'.$langs->trans("BackToList").'</a>';
 	dol_banner_tab($object, 'socid', $linkback, ($user->societe_id?0:1), 'rowid', 'nom');
@@ -193,7 +194,7 @@ if ($id > 0 || ! empty($ref)) {
 	* Lines of contacts
 	*/
 	print '<form action="contact.php?socid='.$socid.'" method="post">';
-	print '<input type="hidden" name="token" value="'.$_SESSION['newtoken'].'">';
+	print '<input type="hidden" name="token" value="'.newToken().'">';
 	print '<input type="hidden" name="action" value="addcontact">';
 	print '<input type="hidden" name="source" value="external">';
 	print '<input type="hidden" name="socid" value="'.$socid.'">';

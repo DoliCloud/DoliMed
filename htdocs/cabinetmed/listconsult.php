@@ -62,8 +62,8 @@ if (!$user->rights->cabinetmed->read) accessforbidden();
 
 // Load variable for pagination
 $limit = GETPOST('limit', 'int')?GETPOST('limit', 'int'):$conf->liste_limit;
-$sortfield = GETPOST('sortfield', 'alpha');
-$sortorder = GETPOST('sortorder', 'alpha');
+$sortfield = GETPOST('sortfield', 'aZ09comma');
+$sortorder = GETPOST('sortorder', 'aZ09comma');
 $page = GETPOST('page', 'int');
 if (empty($page) || $page == -1 || GETPOST('button_search', 'alpha') || GETPOST('button_removefilter', 'alpha') || (empty($toselect) && $massaction === '0')) { $page = 0; }     // If $page is not defined, or '' or -1 or if we click on clear filters or if we select empty mass action
 $offset = $limit * $page;
@@ -302,9 +302,20 @@ if ($resql) {
 	if ($search_diaglesprinc != '')	$param.= '&search_diaglesprinc='.urlencode($search_diaglesprinc);
 	if ($search_contactid != '')	$param.= '&search_contactid='.urlencode($search_contactid);
 
+	if ((float) DOL_VERSION >= 9.0) {
+		$newcardbutton='';
+		if ($user->rights->cabinetmed->write && $contextpage != 'poslist') {
+			$label='NewConsultation';
+
+			$newcardbutton = '<a class="butActionNew" href="consultations.php?action=create&canvas=patient@cabinetmed">';
+			$newcardbutton.= '<span class="fa fa-plus-circle valignmiddle" title="'.dol_escape_htmltag($langs->trans($label)).'"></span>';
+			$newcardbutton.= '</a>';
+		}
+	}
+
 	print '<form method="POST" id="searchFormList" action="'.$_SERVER["PHP_SELF"].'" name="formfilter" autocomplete="off">'."\n";
 	if ($optioncss != '') print '<input type="hidden" name="optioncss" value="'.$optioncss.'">';
-	print '<input type="hidden" name="token" value="'.$_SESSION['newtoken'].'">';
+	print '<input type="hidden" name="token" value="'.newToken().'">';
 	print '<input type="hidden" name="formfilteraction" id="formfilteraction" value="list">';
 	print '<input type="hidden" name="action" value="list">';
 	print '<input type="hidden" name="sortfield" value="'.$sortfield.'">';
@@ -312,7 +323,7 @@ if ($resql) {
 	print '<input type="hidden" name="page" value="'.$page.'">';
 	print '<input type="hidden" name="contextpage" value="'.$contextpage.'">';
 
-	print_barre_liste($title, $page, $_SERVER["PHP_SELF"], $param, $sortfield, $sortorder, $massactionbutton, $num, $nbtotalofrecords, 'title_companies', 0, $newcardbutton, '', $limit);
+	print_barre_liste($title, $page, $_SERVER["PHP_SELF"], $param, $sortfield, $sortorder, $massactionbutton, $num, $nbtotalofrecords, 'user-injured', 0, $newcardbutton, '', $limit);
 
 	$i = 0;
 

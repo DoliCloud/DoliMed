@@ -125,7 +125,7 @@ print '<input type="hidden" name="action" value="update">';
 dol_fiche_head($head, 'tabsetup', '', ((float) DOL_VERSION < 7.0 ? 0 : -1));
 
 
-print '<table class="noborder" width="100%">';
+print '<table class="noborder centpercent">';
 print '<tr class="liste_titre">';
 print '<td>'.$langs->trans("Parameter").'</td>';
 print '<td>'.$langs->trans("Value").'</td>';

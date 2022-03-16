@@ -265,6 +265,7 @@ class modCabinetMed extends DolibarrModules
 		// Left Menu entry:
 		$this->menu[$r]=array(   'fk_menu'=>'fk_mainmenu=patients',
 								  'type'=>'left',         // This is a Left menu entry
+									'prefix'=>img_picto('', 'user-injured', 'class="paddingright pictofixedwidth valignmiddle"'),
 								  'titre'=>'Patients',
 								  'mainmenu'=>'patients',
 								  'leftmenu'=>'patients',
@@ -303,6 +304,7 @@ class modCabinetMed extends DolibarrModules
 		$this->menu[$r]=array(   'fk_menu'=>'fk_mainmenu=patients',
 							'type'=>'left',         // This is a Left menu entry
 							'titre'=>'Consultations',
+							'prefix'=>img_picto('', 'briefcase-medical', 'class="paddingright pictofixedwidth valignmiddle"'),
 							'mainmenu'=>'patients',
 							'leftmenu'=>'consultations',
 							'url'=>'/cabinetmed/index.php?leftmenu=thirdparties',
@@ -381,6 +383,7 @@ class modCabinetMed extends DolibarrModules
 		$this->menu[$r]=array(   'fk_menu'=>'fk_mainmenu=contacts',
 		'type'=>'left',         // This is a Left menu entry
 		'titre'=>'Correspondants',
+		'prefix'=>img_picto('', 'user-md', 'class="paddingright pictofixedwidth valignmiddle"'),
 		'mainmenu'=>'contacts',
 		'leftmenu'=>'contacts',
 		'url'=>'/contact/list.php',

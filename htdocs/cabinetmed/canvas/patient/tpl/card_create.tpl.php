@@ -122,7 +122,7 @@ $object->forme_juridique_code=$_POST['forme_juridique_code'];
 
 <!-- BEGIN PHP TEMPLATE -->
 <?php
-print_fiche_titre($langs->trans("NewPatient"));
+print_fiche_titre($langs->trans("NewPatient"), '', 'user-injured');
 
 dol_htmloutput_errors($GOBALS['error'], $GLOBALS['errors']);
 
@@ -140,7 +140,7 @@ dol_htmloutput_errors($GOBALS['error'], $GLOBALS['errors']);
 
 <input type="hidden" name="canvas" value="<?php echo $GLOBALS['canvas'] ?>">
 <input type="hidden" name="action" value="add">
-<input type="hidden" name="token" value="<?php echo $_SESSION['newtoken']; ?>">
+<input type="hidden" name="token" value="<?php echo newToken(); ?>">
 <input type="hidden" name="private" value="0">
 <input type="hidden" name="status" value="1">
 <input type="hidden" name="client" value="<?php echo $object->client; ?>">
@@ -150,7 +150,7 @@ dol_fiche_head('');
 
 ?>
 
-<table class="border" style="width: 100%;">
+<table class="border centpercent">
 
 <tr>
 	<td class="titlefield"><span class="fieldrequired"><?php echo $langs->trans('PatientName'); ?></span></td>

@@ -52,9 +52,10 @@ $now=dol_now();
 	var_dump($val);
 }*/
 
-//dol_fiche_head($head, 'tabpatientcard', $langs->trans("Patient"),0,'company');
 if ((float) DOL_VERSION < 7) dol_fiche_head($head, 'card', $langs->trans("Patient"), 0, 'patient@cabinetmed');
-else dol_fiche_head($head, 'card', $langs->trans("Patient"), -1, 'patient@cabinetmed');
+elseif ((float) DOL_VERSION < 15) dol_fiche_head($head, 'card', $langs->trans("Patient"), -1, 'patient@cabinetmed');
+else dol_fiche_head($head, 'card', $langs->trans("Patient"), -1, 'user-injured');
+
 
 dol_htmloutput_errors($error, $errors);
 
