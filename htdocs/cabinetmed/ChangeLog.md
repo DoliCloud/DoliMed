@@ -9,7 +9,7 @@
 ## 9.0.1
 
 - Compatibility of export with PHP 7.4
-- Can set SOCIETE_DISABLE_PARENTCOMPANY to enabled use of parent company.
+- Can set SOCIETE_DISABLE_PARENTCOMPANY to enable use of parent company.
 - Add extrafields of consultation into export of patient and consultations.
 - Show hours on date of last consultation.
 - Add option CABINETMED_ACCOUNTANCY_CODE_FOR_CONSULTATION (need Dolibarr v13)
