@@ -4,10 +4,11 @@
 -- New action type
 insert into llx_c_actioncomm (id, code, type, libelle, module, position) values (100700, 'AC_CABMED', 'module', 'Send document by email', 'cabinetmed', 100);
 
--- Type de tiers -> Sexe
+-- Type de tiers -> Sexe / Gender
 --update llx_c_typent set module = 'cabinetmed' where id > 100;
 insert into llx_c_typent (id,code,libelle,active,module) values (101,'TE_HOMME', 'Homme',            1,'cabinetmed');
 insert into llx_c_typent (id,code,libelle,active,module) values (102,'TE_FEMME', 'Femme',            1,'cabinetmed');
+insert into llx_c_typent (id,code,libelle,active,module) values (103,'TE_OTHER', 'Other',            1,'cabinetmed');
 update llx_c_typent set active=0 where module != 'cabinetmed' and code != 'TE_UNKNOWN';
 
 
