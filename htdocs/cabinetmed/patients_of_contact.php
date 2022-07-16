@@ -54,7 +54,7 @@ $langs->load("cabinetmed@cabinetmed");
 
 // Security check
 $socid = GETPOST('socid', 'int');
-if ($user->societe_id) $socid=$user->societe_id;
+if ($user->socid) $socid=$user->socid;
 $result = restrictedArea($user, 'societe', $socid);
 
 if (!$user->rights->cabinetmed->read) accessforbidden();
@@ -75,7 +75,7 @@ if (! $sortorder) $sortorder='ASC';
 $limit = GETPOST('limit', 'int')?GETPOST('limit', 'int'):$conf->liste_limit;
 
 // Security check
-if ($user->societe_id) $socid=$user->societe_id;
+if ($user->socid) $socid=$user->socid;
 $result = restrictedArea($user, 'contact', $id, 'socpeople&societe');
 $object = new Contact($db);
 

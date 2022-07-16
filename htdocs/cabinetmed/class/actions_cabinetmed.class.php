@@ -93,8 +93,11 @@ class ActionsCabinetmed
 		if ((isset($parameters['id']) || isset($parameters['socid'])) && isset($parameters['currentcontext'])
 			&& in_array($parameters['currentcontext'], array('agendathirdparty','categorycard','commcard','thirdpartycomm','projectthirdparty','infothirdparty','thirdpartybancard','consumptionthirdparty','thirdpartynotification','thirdpartymargins','thirdpartycustomerprice','thirdpartyticket')) && (empty($action) || $action == 'view')) {
 			$thirdparty=new Societe($db);
-			$thirdparty->fetch($parameters['id'] ? $parameters['id'] : $parameters['socid']);
-			if ($thirdparty->canvas == 'patient@cabinetmed') $cabinetmedcontext++;
+			$idthirdparty = empty($parameters['id']) ? (empty($parameters['socid']) ? 0 : $parameters['socid']) : $parameters['id'];
+			if ($idthirdparty > 0) {
+				$thirdparty->fetch($idthirdparty);
+				if ($thirdparty->canvas == 'patient@cabinetmed') $cabinetmedcontext++;
+			}
 		}
 
 		if (GETPOST('canvas') == 'patient@cabinetmed') $cabinetmedcontext++;

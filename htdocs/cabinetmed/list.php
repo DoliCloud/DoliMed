@@ -48,7 +48,7 @@ $langs->load("suppliers");
 
 // Security check
 $socid = GETPOST('socid', 'int');
-if ($user->societe_id) $socid=$user->societe_id;
+if ($user->socid) $socid=$user->socid;
 $result = restrictedArea($user, 'societe', $socid, '');
 
 $search_all=trim(GETPOSTISSET('search_all')?GETPOST('search_all', 'alpha'):GETPOST('sall', 'alpha'));

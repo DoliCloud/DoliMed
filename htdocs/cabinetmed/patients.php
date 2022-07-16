@@ -45,25 +45,58 @@ require_once DOL_DOCUMENT_ROOT.'/societe/class/client.class.php';
 require_once DOL_DOCUMENT_ROOT.'/core/lib/company.lib.php';
 require_once "./lib/cabinetmed.lib.php";
 
-$langs->load("companies");
-$langs->load("customers");
-$langs->load("suppliers");
-$langs->load("commercial");
-$langs->load("other");
-$langs->load("cabinetmed@cabinetmed");
+$langs->loadLangs(array("companies", "commercial", "customers", "suppliers", "bills", "compta", "categories", "cashdesk", "other", "cabinetmed@cabinetmed"));
+
+$action = GETPOST('action', 'aZ09');
+$massaction = GETPOST('massaction', 'alpha');
+$toselect = GETPOST('toselect', 'array');
 
 // Security check
 $socid = GETPOST('socid', 'int');
-if ($user->societe_id) $socid=$user->societe_id;
+if ($user->socid) $socid=$user->socid;
 $result = restrictedArea($user, 'societe', $socid, '');
 
 $search_all=trim(GETPOSTISSET('search_all')?GETPOST('search_all', 'alphanohtml'):GETPOST('sall', 'alphanohtml'));
+$sall=$search_all;
 $search_cti=preg_replace('/^0+/', '', preg_replace('/[^0-9]/', '', GETPOST('search_cti', 'alphanohtml')));	// Phone number without any special chars
 
 $search_id=trim(GETPOST("search_id", "int"));
 $search_nom=GETPOST("search_nom", "alpha");
+$search_alias = trim(GETPOST("search_alias", 'restricthtml'));
+
 $search_ville=GETPOST("search_ville", "alpha");
 $search_code=GETPOST("search_code", "alpha");
+
+$search_nom_only = trim(GETPOST("search_nom_only", 'restricthtml'));
+$search_barcode = trim(GETPOST("search_barcode", 'alpha'));
+$search_customer_code = trim(GETPOST('search_customer_code', 'alpha'));
+$search_supplier_code = trim(GETPOST('search_supplier_code', 'alpha'));
+$search_account_customer_code = trim(GETPOST('search_account_customer_code', 'alpha'));
+$search_account_supplier_code = trim(GETPOST('search_account_supplier_code', 'alpha'));
+$search_town = trim(GETPOST("search_town", 'alpha'));
+$search_zip = trim(GETPOST("search_zip", 'alpha'));
+$search_state = trim(GETPOST("search_state", 'alpha'));
+$search_region = trim(GETPOST("search_region", 'alpha'));
+$search_email = trim(GETPOST('search_email', 'alpha'));
+$search_phone = trim(GETPOST('search_phone', 'alpha'));
+$search_fax = trim(GETPOST('search_fax', 'alpha'));
+$search_url = trim(GETPOST('search_url', 'alpha'));
+$search_idprof1 = trim(GETPOST('search_idprof1', 'alpha'));
+$search_idprof2 = trim(GETPOST('search_idprof2', 'alpha'));
+$search_idprof3 = trim(GETPOST('search_idprof3', 'alpha'));
+$search_idprof4 = trim(GETPOST('search_idprof4', 'alpha'));
+$search_idprof5 = trim(GETPOST('search_idprof5', 'alpha'));
+$search_idprof6 = trim(GETPOST('search_idprof6', 'alpha'));
+$search_vat = trim(GETPOST('search_vat', 'alpha'));
+$search_sale = GETPOST("search_sale", 'int');
+$search_categ_cus = GETPOST("search_categ_cus", 'int');
+$search_categ_sup = GETPOST("search_categ_sup", 'int');
+$search_country = GETPOST("search_country", 'intcomma');
+$search_type_thirdparty = GETPOST("search_type_thirdparty", 'int');
+$search_status = GETPOST("search_status", 'int');
+$search_type = GETPOST('search_type', 'alpha');
+$search_stcomm = GETPOST('search_stcomm', 'int');
+$search_import_key  = trim(GETPOST("search_import_key", "alpha"));
 
 // Load sale and categ filters
 $search_sale = GETPOST("search_sale", "int");
@@ -82,10 +115,17 @@ $diroutputmassaction=$conf->societe->dir_output . '/temp/massgeneration/'.$user-
 $limit = GETPOST('limit', 'int')?GETPOST('limit', 'int'):$conf->liste_limit;
 $sortfield = GETPOST('sortfield', 'aZ09comma');
 $sortorder = GETPOST('sortorder', 'aZ09comma');
-$page = GETPOST('page', 'int');
-if (! $sortorder) $sortorder="ASC";
-if (! $sortfield) $sortfield="s.nom";
-if (empty($page) || $page == -1 || !empty($search_btn) || !empty($search_remove_btn) || (empty($toselect) && $massaction === '0')) { $page = 0; }
+$page = GETPOSTISSET('pageplusone') ? (GETPOST('pageplusone') - 1) : GETPOST("page", 'int');
+if (!$sortorder) {
+	$sortorder = "ASC";
+}
+if (!$sortfield) {
+	$sortfield = "s.nom";
+}
+if (empty($page) || $page < 0 || GETPOST('button_search', 'alpha') || GETPOST('button_removefilter', 'alpha')) {
+	$page = 0;
+}     // If $page is not defined, or '' or -1 or if we click on clear filters or if we select empty mass action
+
 $offset = $limit * $page;
 $pageprev = $page - 1;
 $pagenext = $page + 1;
@@ -109,14 +149,33 @@ $fieldstosearchall = array(
 	's.name_alias'=>"AliasNameShort",
 	's.code_client'=>"CustomerCode",
 	's.code_compta'=>"CustomerAccountancyCodeShort",
+	's.zip'=>"Zip",
+	's.town'=>"Town",
 	's.email'=>"EMail",
+	's.url'=>"URL",
 	's.tva_intra'=>"PatientVATIntra",
+	's.siren'=>"ProfId1",
+	's.siret'=>"ProfId2",
+	's.ape'=>"ProfId3",
 	's.phone'=>"Phone",
 	's.fax'=>"Fax",
 );
-if (!empty($conf->barcode->enabled)) $fieldstosearchall['s.barcode']='Gencod';
+if (($tmp = $langs->transnoentities("ProfId4".$mysoc->country_code)) && $tmp != "ProfId4".$mysoc->country_code && $tmp != '-') {
+	$fieldstosearchall['s.idprof4'] = 'ProfId4';
+}
+if (($tmp = $langs->transnoentities("ProfId5".$mysoc->country_code)) && $tmp != "ProfId5".$mysoc->country_code && $tmp != '-') {
+	$fieldstosearchall['s.idprof5'] = 'ProfId5';
+}
+if (($tmp = $langs->transnoentities("ProfId6".$mysoc->country_code)) && $tmp != "ProfId6".$mysoc->country_code && $tmp != '-') {
+	$fieldstosearchall['s.idprof6'] = 'ProfId6';
+}
+if (!empty($conf->barcode->enabled)) {
+	$fieldstosearchall['s.barcode'] = 'Gencod';
+}
 // Personalized search criterias. Example: $conf->global->THIRDPARTY_QUICKSEARCH_ON_FIELDS = 's.nom=ThirdPartyName;s.name_alias=AliasNameShort;s.code_client=CustomerCode'
-if (! empty($conf->global->THIRDPARTY_QUICKSEARCH_ON_FIELDS)) $fieldstosearchall=dolExplodeIntoArray($conf->global->THIRDPARTY_QUICKSEARCH_ON_FIELDS);
+if (!empty($conf->global->THIRDPARTY_QUICKSEARCH_ON_FIELDS)) {
+	$fieldstosearchall = dolExplodeIntoArray($conf->global->THIRDPARTY_QUICKSEARCH_ON_FIELDS);
+}
 
 
 $arrayfields=array(
@@ -153,14 +212,10 @@ $arrayfields=array(
 's.status'=>array('label'=>"Status", 'checked'=>1, 'position'=>1000),
 's.import_key'=>array('label'=>"ImportId", 'checked'=>0, 'position'=>1100),
 );
+
 // Extra fields
-//if (is_array($extrafields->attributes[$object->table_element]['label']) && count($extrafields->attributes[$object->table_element]['label']) > 0) // v9+
-if (is_array($extrafields->attributes[$object->table_element]['label']) && count($extrafields->attributes[$object->table_element]['label']) > 0) {
-	foreach ($extrafields->attributes[$object->table_element]['label'] as $key => $val) {
-		if (! empty($extrafields->attributes[$object->table_element]['list'][$key]))
-			$arrayfields["ef.".$key]=array('label'=>$extrafields->attributes[$object->table_element]['label'][$key], 'checked'=>(($extrafields->attributes[$object->table_element]['list'][$key]<0)?0:1), 'position'=>$extrafields->attributes[$object->table_element]['pos'][$key], 'enabled'=>(abs((int) $extrafields->attributes[$object->table_element]['list'][$key])!=3 && $extrafields->attributes[$object->table_element]['perms'][$key]));
-	}
-}
+include DOL_DOCUMENT_ROOT.'/core/tpl/extrafields_list_array_fields.tpl.php';
+
 $object->fields = dol_sort_array($object->fields, 'position');
 $arrayfields = dol_sort_array($arrayfields, 'position');
 
@@ -184,12 +239,15 @@ if (empty($reshook)) {
 	if (GETPOST('button_removefilter_x', 'alpha') || GETPOST('button_removefilter.x', 'alpha') || GETPOST('button_removefilter', 'alpha')) { // All tests are required to be compatible with all browsers
 		$search_id='';
 		$search_nom='';
+		$search_alias = '';
 		$search_categ='';
 		$search_sale='';
 		$search_code='';
 		$search_diagles='';
-		$socname="";
 		$search_ville="";
+		$search_town = "";
+		$search_zip = "";
+		$search_state = "";
 		$search_idprof1='';
 		$search_idprof2='';
 		$search_idprof3='';
@@ -199,7 +257,7 @@ if (empty($reshook)) {
 		$search_birthday='';
 		$search_birthmonth='';
 		$search_birthyear='';
-		$toselect='';
+		$toselect = array();
 		$search_array_options=array();
 	}
 
@@ -208,6 +266,7 @@ if (empty($reshook)) {
 	$objectlabel='ThirdParty';
 	$permissiontoread = $user->rights->societe->lire;
 	$permissiontodelete = $user->rights->societe->supprimer;
+	$permissiontoadd = $user->rights->societe->creer;
 	$uploaddir = $conf->societe->dir_output;
 	include DOL_DOCUMENT_ROOT.'/core/actions_massactions.inc.php';
 
@@ -216,13 +275,17 @@ if (empty($reshook)) {
 		$result=$object->fetch(GETPOST('stcommsocid'));
 		$object->stcomm_id=dol_getIdFromCode($db, GETPOST('stcomm', 'alpha'), 'c_stcomm');
 		$result=$object->update($object->id, $user);
-		if ($result < 0) setEventMessages($object->error, $object->errors, 'errors');
+		if ($result < 0) {
+			setEventMessages($object->error, $object->errors, 'errors');
+		}
 
 		$action='';
 	}
 }
 
-if ($search_status=='') $search_status=1; // always display active thirdparty first
+if ($search_status=='') {
+	$search_status=1; // always display active thirdparty first
+}
 
 
 
@@ -253,71 +316,112 @@ $now=dol_now();
 $help_url='';
 $title = $langs->trans("ListOfPatients");
 
-$sql = "SELECT s.rowid, s.nom as name, s.client, s.zip, s.town, st.libelle as stcomm, s.prefix_comm, s.code_client,";
-$sql.= " s.phone, s.fax,";
-$sql.= " s.datec, s.canvas, s.status as status,";
-$sql.= " MAX(c.datecons) as lastcons, COUNT(c.rowid) as nb";
+$sql = "SELECT s.rowid, s.nom as name, s.name_alias, s.barcode, s.address, s.town, s.zip, s.datec, s.code_client, s.code_fournisseur, s.logo,";
+$sql .= " s.entity,";
+$sql .= " s.client, s.fournisseur,";
+$sql .= " s.email, s.phone, s.fax, s.url, s.siren as idprof1, s.siret as idprof2, s.ape as idprof3, s.idprof4 as idprof4, s.idprof5 as idprof5, s.idprof6 as idprof6, s.tva_intra, s.fk_pays,";
+$sql .= " s.tms as date_update, s.datec, s.import_key,";
+$sql .= " s.code_compta, s.code_compta_fournisseur, s.parent as fk_parent, s.price_level,";
+$sql .= " s.canvas, s.status as status,";
+$sql .= " country.code as country_code, country.label as country_label,";
+$sql .= " MAX(c.datecons) as lastcons, COUNT(c.rowid) as nb";
 // We'll need these fields in order to filter by sale (including the case where the user can only see his prospects)
-if ($search_sale > 0) $sql .= ", sc.fk_soc, sc.fk_user";
-// We'll need these fields in order to filter by categ
-if ($search_categ_cus > 0) $sql .= ", cc.fk_categorie, cc.fk_soc";
-if ($search_categ_sup > 0) $sql .= ", cs.fk_categorie, cs.fk_soc";
+if ($search_sale && $search_sale != '-1') {
+	$sql .= ", sc.fk_soc, sc.fk_user";
+}// We'll need these fields in order to filter by categ
+if ($search_categ_cus && $search_categ_cus != -1) {
+	$sql .= ", cc.fk_categorie, cc.fk_soc";
+}
+if ($search_categ_sup && $search_categ_sup != -1) {
+	$sql .= ", cs.fk_categorie, cs.fk_soc";
+}
 // Add fields from extrafields
 if (! empty($extrafields->attributes[$object->table_element]['label'])) {
-	foreach ($extrafields->attributes[$object->table_element]['label'] as $key => $val) $sql.=($extrafields->attributes[$object->table_element]['type'][$key] != 'separate' ? ", ef.".$key." as options_".$key : '');
+	foreach ($extrafields->attributes[$object->table_element]['label'] as $key => $val) {
+		$sql .= ($extrafields->attributes[$object->table_element]['type'][$key] != 'separate' ? ", ef.".$key." as options_".$key : '');
+	}
 }
 // Add fields from hooks
 $parameters=array();
-$reshook=$hookmanager->executeHooks('printFieldListSelect', $parameters);    // Note that $action and $object may have been modified by hook
-$sql.=$hookmanager->resPrint;
-$sql.= " FROM ".MAIN_DB_PREFIX."c_stcomm as st";
+$reshook = $hookmanager->executeHooks('printFieldListSelect', $parameters, $object, $action);    // Note that $action and $object may have been modified by hook
+$sql .= $hookmanager->resPrint;
+$sql .= " FROM ".MAIN_DB_PREFIX."c_stcomm as st";
 // We'll need this table joined to the select in order to filter by sale
 if ($search_sale > 0 || (!$user->rights->societe->client->voir && !$socid)) $sql.= ", ".MAIN_DB_PREFIX."societe_commerciaux as sc";
 // We'll need this table joined to the select in order to filter by categ
 if ($search_categ > 0) $sql.= ", ".MAIN_DB_PREFIX."categorie_societe as cs";
-$sql.= ", ".MAIN_DB_PREFIX."societe as s";
-$sql.= " LEFT JOIN ".MAIN_DB_PREFIX."cabinetmed_cons as c ON c.fk_soc = s.rowid";
-$sql.= " LEFT JOIN ".MAIN_DB_PREFIX."societe_extrafields as ef ON ef.fk_object = s.rowid";
-$sql.= ' WHERE s.entity IN ('.getEntity('societe', 1).')';
-$sql.= " AND s.canvas='patient@cabinetmed'";
-$sql.= " AND s.fk_stcomm = st.id";
-$sql.= " AND s.client IN (1, 3)";
+$sql .= ", ".MAIN_DB_PREFIX."societe as s";
+$sql .= " LEFT JOIN ".MAIN_DB_PREFIX."c_country as country on (country.rowid = s.fk_pays)";
+$sql .= " LEFT JOIN ".MAIN_DB_PREFIX."cabinetmed_cons as c ON c.fk_soc = s.rowid";
+$sql .= " LEFT JOIN ".MAIN_DB_PREFIX."societe_extrafields as ef ON ef.fk_object = s.rowid";
+$sql .= ' WHERE s.entity IN ('.getEntity('societe', 1).')';
+$sql .= " AND s.canvas='patient@cabinetmed'";
+$sql .= " AND s.fk_stcomm = st.id";
+$sql .= " AND s.client IN (1, 3)";
+
+if ($search_sale && $search_sale != '-1' && $search_sale != '-2') {
+	$sql .= " AND s.rowid = sc.fk_soc"; // Join for the needed table to filter by sale
+}
+if ($search_sale == -2) {
+	$sql .= " AND sc.fk_user IS NULL";
+} elseif ($search_sale > 0) {
+	$sql .= " AND sc.fk_user = ".((int) $search_sale);
+}
+
+if ($search_all) {
+	$sql .= natural_search(array_keys($fieldstosearchall), $search_all);
+}
+if (strlen($search_cti)) {
+	$sql .= natural_search('s.phone', $search_cti);
+}
+
+if ($search_id > 0) {
+	$sql .= natural_search("s.rowid", $search_id, 1);
+}
+if ($search_nom) {
+	$sql .= natural_search("s.nom", $search_nom);
+}
+if ($search_alias) {
+	$sql .= natural_search("s.name_alias", $search_alias);
+}
+if ($search_nom_only) {
+	$sql .= natural_search("s.nom", $search_nom_only);
+}
 if ($search_diagles) {
-	$label= dol_getIdFromCode($db, $search_diagles, 'cabinetmed_diaglec', 'code', 'label');
-	$sql.= natural_search("c.diaglesprinc", $label);
+	$label = dol_getIdFromCode($db, $search_diagles, 'cabinetmed_diaglec', 'code', 'label');
+	$sql .= natural_search("c.diaglesprinc", $label);
 }
 if (! $user->rights->societe->client->voir && ! $socid)	$sql.= " AND s.rowid = sc.fk_soc AND sc.fk_user = " .$user->id;
 if ($socid && empty($conf->global->MAIN_DISABLE_RESTRICTION_ON_THIRDPARTY_FOR_EXTERNAL)) $sql.= " AND s.rowid = ".$socid;
 if ($search_sale > 0)  $sql.= " AND s.rowid = sc.fk_soc";		// Join for the needed table to filter by sale
 if ($search_categ > 0) $sql.= " AND s.rowid = cs.fk_soc";	// Join for the needed table to filter by categ
-if ($search_nom)   $sql.= natural_search("s.nom", $search_nom);
 if ($search_ville) $sql.= natural_search("s.town", $search_ville);
 if ($search_code)  $sql.= natural_search("s.code_client", $search_code);
-if ($search_all)   $sql.= natural_search(array_keys($fieldstosearchall), $search_all);
-// Insert sale filter
-if ($search_sale > 0) {
-	$sql .= " AND sc.fk_user = ".((int) $search_sale);
-}
 // Insert categ filter
 if ($search_categ > 0) {
 	$sql .= " AND cs.fk_categorie = ".((int) $search_categ);
 }
-if ($socname) {
-	$sql.= natural_search("s.nom", $socname);
-	$sortfield = "s.nom";
-	$sortorder = "ASC";
-}
-if ($search_contactid) {
+if ($search_contactid > 0) {
 	$sql .= " AND s.rowid IN (SELECT ec.element_id FROM ".MAIN_DB_PREFIX."element_contact as ec, ".MAIN_DB_PREFIX."c_type_contact as tc WHERE ec.fk_socpeople = ".$search_contactid." AND ec.fk_c_type_contact = tc.rowid AND tc.element='societe')";
 }
+
 // Add where from extra fields
 include DOL_DOCUMENT_ROOT.'/core/tpl/extrafields_list_search_sql.tpl.php';
-// Add where from hooks
-$parameters=array();
-$reshook=$hookmanager->executeHooks('printFieldListWhere', $parameters);    // Note that $action and $object may have been modified by hook
-$sql.=$hookmanager->resPrint;
+// Add fields from hooks
+$parameters = array('socid' => $socid);
+$reshook = $hookmanager->executeHooks('printFieldListWhere', $parameters, $object, $action); // Note that $action and $object may have been modified by hook
+if (empty($reshook)) {
+	if ($socid) {
+		$sql .= " AND s.rowid = ".((int) $socid);
+	}
+}
+$sql .= $hookmanager->resPrint;
 
-$sql.= " GROUP BY s.rowid, s.nom, s.client, s.zip, s.town, st.libelle, s.prefix_comm, s.code_client, s.phone, s.fax, s.datec, s.canvas, s.status";
+$sql .= " GROUP BY s.rowid, s.nom, s.client, s.zip, s.town, st.libelle, s.prefix_comm, s.code_client, s.phone, s.fax, s.datec, s.canvas, s.status,";
+$sql .= " s.client, s.fournisseur,";
+$sql .= " s.name_alias, s.barcode, s.address, s.code_fournisseur, s.logo, s.entity, s.email, s.url, s.siren, s.siret, s.ape, s.idprof4, s.idprof5, s.idprof6, s.tva_intra,";
+$sql .= " s.fk_pays, s.tms, s.import_key, s.code_compta, s.code_compta_fournisseur, s.parent, s.price_level,";
+$sql .= " country.code, country.label";
 if ($search_sale > 0) $sql .= ", sc.fk_soc, sc.fk_user";
 // We'll need these fields in order to filter by categ
 if ($search_categ_cus > 0) $sql .= ", cc.fk_categorie, cc.fk_soc";
@@ -326,10 +430,11 @@ if ($search_categ_sup > 0) $sql .= ", cs.fk_categorie, cs.fk_soc";
 if (! empty($extrafields->attributes[$object->table_element]['label'])) {
 	foreach ($extrafields->attributes[$object->table_element]['label'] as $key => $val) $sql.=($extrafields->attributes[$object->table_element]['type'][$key] != 'separate' ? ", ef.".$key : '');
 }
-// Add fields from hooks
-$parameters=array();
-$reshook=$hookmanager->executeHooks('printFieldListSelect', $parameters);    // Note that $action and $object may have been modified by hook
-$sql.=$hookmanager->resPrint;
+// Add GroupBy from hooks
+$parameters = array('fieldstosearchall' => $fieldstosearchall);
+$reshook = $hookmanager->executeHooks('printFieldListGroupBy', $parameters, $object, $action); // Note that $action and $object may have been modified by hook
+$sql .= $hookmanager->resPrint;
+
 
 $sql.= $db->order($sortfield, $sortorder);
 
@@ -363,7 +468,7 @@ if (is_numeric($nbtotalofrecords) && $limit > $nbtotalofrecords) {
 $arrayofselected=is_array($toselect)?$toselect:array();
 
 // Direct jump if only one record found
-if ($num == 1 && ! empty($conf->global->MAIN_SEARCH_DIRECT_OPEN_IF_ONLY_ONE) && ($search_all != '' || $search_cti != '') && $action != 'list' && ! $page) {
+if ($num == 1 && !empty($conf->global->MAIN_SEARCH_DIRECT_OPEN_IF_ONLY_ONE) && ($search_all != '' || $search_cti != '') && $action != 'list' && ! $page) {
 	$obj = $db->fetch_object($resql);
 	$id = $obj->rowid;
 
@@ -412,8 +517,8 @@ if ($search_type != '')    $param.='&search_type='.urlencode($search_type);
 if ($optioncss != '')      $param.='&optioncss='.urlencode($optioncss);
 if ($search_status != '')  $param.='&search_status='.urlencode($search_status);
 if ($search_stcomm != '')  $param.='&search_stcomm='.urlencode($search_stcomm);
-if ($search_level_from != '') $param.='&search_level_from='.urlencode($search_level_from);
-if ($search_level_to != '')   $param.='&search_level_to='.urlencode($search_level_to);
+//if ($search_level_from != '') $param.='&search_level_from='.urlencode($search_level_from);
+//if ($search_level_to != '')   $param.='&search_level_to='.urlencode($search_level_to);
 if ($search_import_key != '') $param.='&search_import_key='.urlencode($search_import_key);
 if ($search_diagles != '')    $param.='&search_diagles='.urlencode($search_diagles);
 if ($type != '') $param.='&type='.urlencode($type);
@@ -453,7 +558,9 @@ if ((float) DOL_VERSION >= 9.0) {
 }
 
 print '<form method="POST" id="searchFormList" action="'.$_SERVER["PHP_SELF"].'" name="formfilter" autocomplete="off">'."\n";
-if ($optioncss != '') print '<input type="hidden" name="optioncss" value="'.$optioncss.'">';
+if ($optioncss != '') {
+	print '<input type="hidden" name="optioncss" value="'.$optioncss.'">';
+}
 print '<input type="hidden" name="token" value="'.newToken().'">';
 print '<input type="hidden" name="formfilteraction" id="formfilteraction" value="list">';
 print '<input type="hidden" name="action" value="list">';
@@ -462,7 +569,7 @@ print '<input type="hidden" name="sortorder" value="'.$sortorder.'">';
 print '<input type="hidden" name="page" value="'.$page.'">';
 print '<input type="hidden" name="contextpage" value="'.$contextpage.'">';
 
-print_barre_liste($title, $page, $_SERVER["PHP_SELF"], $param, $sortfield, $sortorder, $massactionbutton, $num, $nbtotalofrecords, 'user-injured', 0, $newcardbutton, '', $limit);
+print_barre_liste($title, $page, $_SERVER["PHP_SELF"], $param, $sortfield, $sortorder, $massactionbutton, $num, $nbtotalofrecords, 'user-injured', 0, $newcardbutton, '', $limit, 0, 0, 1);
 
 $langs->load("other");
 $textprofid=array();
@@ -470,7 +577,9 @@ foreach (array(1,2,3,4,5,6) as $key) {
 	$label=$langs->transnoentities("ProfId".$key.$mysoc->country_code);
 	$textprofid[$key]='';
 	if ($label != "ProfId".$key.$mysoc->country_code) {	// Get only text between ()
-		if (preg_match('/\((.*)\)/i', $label, $reg)) $label=$reg[1];
+		if (preg_match('/\((.*)\)/i', $label, $reg)) {
+			$label = $reg[1];
+		}
 		$textprofid[$key]=$langs->trans("ProfIdShortDesc", $key, $mysoc->country_code, $label);
 	}
 }
@@ -483,13 +592,15 @@ $trackid='thi'.$object->id;
 include DOL_DOCUMENT_ROOT.'/core/tpl/massactions_pre.tpl.php';
 
 if ($search_all) {
-	foreach ($fieldstosearchall as $key => $val) $fieldstosearchall[$key]=$langs->trans($val);
+	foreach ($fieldstosearchall as $key => $val) {
+		$fieldstosearchall[$key] = $langs->trans($val);
+	}
 	print '<div class="divsearchfieldfilter">'.$langs->trans("FilterOnInto", $search_all) . join(', ', $fieldstosearchall).'</div>';
 }
 
 // Filter on categories
 $moreforfilter='';
-if (! empty($conf->categorie->enabled)) {
+if (!empty($conf->categorie->enabled)) {
 	require_once DOL_DOCUMENT_ROOT . '/categories/class/categorie.class.php';
 	$moreforfilter.='<div class="divsearchfield">';
 	$moreforfilter.=img_picto('', 'category', 'class="pictofixedwidth"').$formother->select_categories(2, $search_categ, 'search_categ', 1, $langs->trans('Categories'));
@@ -529,22 +640,34 @@ if (! empty($moreforfilter)) {
 
 $varpage=empty($contextpage)?$_SERVER["PHP_SELF"]:$contextpage;
 $selectedfields=$form->multiSelectArrayWithCheckbox('selectedfields', $arrayfields, $varpage);	// This also change content of $arrayfields
-$selectedfields.=(count($arrayofmassactions) ? $form->showCheckAddButtons('checkforselect', 1) : '');
+// Show the massaction checkboxes only when this page is not opend from the Extended POS
+if ($massactionbutton && $contextpage != 'poslist') {
+	$selectedfields .= $form->showCheckAddButtons('checkforselect', 1);
+}
 
-if (empty($arrayfields['customerorsupplier']['checked'])) print '<input type="hidden" name="type" value="'.$type.'">';
+if (empty($arrayfields['customerorsupplier']['checked'])) {
+	print '<input type="hidden" name="type" value="'.$type.'">';
+}
 
 print '<div class="div-table-responsive">';
 print '<table class="tagtable liste'.($moreforfilter?" listwithfilterbefore":"").'">'."\n";
 
 // Fields title search
 print '<tr class="liste_titre_filter">';		// You can use div-table-responsive-no-min if you dont need reserved height for your table
+if (!empty($conf->global->MAIN_CHECKBOX_LEFT_COLUMN)) {
+	// Action column
+	print '<td class="liste_titre center actioncolumn">';
+	$searchpicto = $form->showFilterButtons('left');
+	print $searchpicto;
+	print '</td>';
+}
 if (! empty($arrayfields['s.rowid']['checked'])) {
-	print '<td class="liste_titre">';
+	print '<td class="liste_titre" data-key="id">';
 	print '<input class="flat searchstring" type="text" name="search_id" size="1" value="'.dol_escape_htmltag($search_id).'">';
 	print '</td>';
 }
 if (! empty($arrayfields['s.nom']['checked'])) {
-	print '<td class="liste_titre">';
+	print '<td class="liste_titre" data-key="ref">';
 	if (! empty($search_nom_only) && empty($search_nom)) $search_nom=$search_nom_only;
 	print '<input class="flat searchstring maxwidth75imp" type="text" name="search_nom" value="'.dol_escape_htmltag($search_nom).'">';
 	print '</td>';
@@ -584,16 +707,16 @@ if (! empty($arrayfields['s.code_compta_fournisseur']['checked'])) {
 	print '<input class="flat maxwidth75imp" type="text" name="search_account_supplier_code" value="'.dol_escape_htmltag($search_account_supplier_code).'">';
 	print '</td>';
 }
-// Town
-if (! empty($arrayfields['s.town']['checked'])) {
-	print '<td class="liste_titre">';
-	print '<input class="flat searchstring maxwidth50imp" type="text" name="search_town" value="'.dol_escape_htmltag($search_town).'">';
-	print '</td>';
-}
 // Zip
 if (! empty($arrayfields['s.zip']['checked'])) {
 	print '<td class="liste_titre">';
 	print '<input class="flat searchstring maxwidth50imp" type="text" name="search_zip" value="'.dol_escape_htmltag($search_zip).'">';
+	print '</td>';
+}
+// Town
+if (! empty($arrayfields['s.town']['checked'])) {
+	print '<td class="liste_titre">';
+	print '<input class="flat searchstring maxwidth50imp" type="text" name="search_town" value="'.dol_escape_htmltag($search_town).'">';
 	print '</td>';
 }
 // State
@@ -617,7 +740,8 @@ if (! empty($arrayfields['country.code_iso']['checked'])) {
 // Company type
 if (! empty($arrayfields['typent.code']['checked'])) {
 	print '<td class="liste_titre maxwidthonsmartphone center">';
-	print $form->selectarray("search_type_thirdparty", $formcompany->typent_array(0), $search_type_thirdparty, 0, 0, 0, '', 0, 0, 0, (empty($conf->global->SOCIETE_SORT_ON_TYPEENT)?'ASC':$conf->global->SOCIETE_SORT_ON_TYPEENT));
+	// We use showempty=0 here because there is already an unknown value into dictionary.
+	print $form->selectarray("search_type_thirdparty", $formcompany->typent_array(0), $search_type_thirdparty, 1, 0, 0, '', 0, 0, 0, (empty($conf->global->SOCIETE_SORT_ON_TYPEENT) ? 'ASC' : $conf->global->SOCIETE_SORT_ON_TYPEENT), 'minwidth50 maxwidth125', 1);
 	print '</td>';
 }
 if (! empty($arrayfields['s.email']['checked'])) {
@@ -835,7 +959,8 @@ print '</tr>'."\n";
 // Loop on record
 // --------------------------------------------------------------------
 $i = 0;
-$totalarray=array();
+$totalarray = array();
+$totalarray['nbfield'] = 0;
 while ($i < min($num, $limit)) {
 	$obj = $db->fetch_object($resql);
 	if (empty($obj)) break;		// Should not happen
@@ -856,7 +981,7 @@ while ($i < min($num, $limit)) {
 	$companystatic->code_compta_client=$obj->code_compta;
 	$companystatic->code_compta_fournisseur=$obj->code_compta_fournisseur;
 
-	$companystatic->fk_prospectlevel=$obj->fk_prospectlevel;
+	//$companystatic->fk_prospectlevel=$obj->fk_prospectlevel;
 
 	print '<tr class="oddeven">';
 	if (! empty($arrayfields['s.rowid']['checked'])) {
@@ -1008,7 +1133,9 @@ while ($i < min($num, $limit)) {
 		}
 		print $s;
 		print '</td>';
-		if (! $i) $totalarray['nbfield']++;
+		if (! $i) {
+			$totalarray['nbfield']++;
+		}
 	}
 
 	if (! empty($arrayfields['s.fk_prospectlevel']['checked'])) {
@@ -1016,12 +1143,14 @@ while ($i < min($num, $limit)) {
 		print '<td class="center">';
 		print $companystatic->getLibProspLevel();
 		print "</td>";
-		if (! $i) $totalarray['nbfield']++;
+		if (!$i) {
+			$totalarray['nbfield']++;
+		}
 	}
 
 	if (! empty($arrayfields['s.fk_stcomm']['checked'])) {
 		// Prospect status
-		print '<td align="center" class="nowrap"><div class="nowrap">';
+		print '<td class="center nowrap"><div class="nowrap">';
 		print '<div class="inline-block">'.$companystatic->LibProspCommStatut($obj->stcomm_id, 2, $prospectstatic->cacheprospectstatus[$obj->stcomm_id]['label']);
 		print '</div> - <div class="inline-block">';
 		foreach ($prospectstatic->cacheprospectstatus as $key => $val) {
@@ -1046,51 +1175,66 @@ while ($i < min($num, $limit)) {
 	print '</td>';
 	// Date creation
 	if (! empty($arrayfields['s.datec']['checked'])) {
-		print '<td align="center" class="nowrap">';
+		print '<td align="center" class="nowraponall">';
 		print dol_print_date($db->jdate($obj->date_creation), 'dayhour', 'tzuser');
 		print '</td>';
 		if (! $i) $totalarray['nbfield']++;
 	}
 	// Date modification
 	if (! empty($arrayfields['s.tms']['checked'])) {
-		print '<td align="center" class="nowrap">';
+		print '<td align="center" class="nowraponall">';
 		print dol_print_date($db->jdate($obj->date_update), 'dayhour', 'tzuser');
 		print '</td>';
 		if (! $i) $totalarray['nbfield']++;
 	}
 	// Status
 	if (! empty($arrayfields['s.status']['checked'])) {
-		print '<td align="center" class="nowrap">'.$companystatic->getLibStatut(3).'</td>';
+		print '<td align="center" class="nowraponall">'.$companystatic->getLibStatut(3).'</td>';
 		if (! $i) $totalarray['nbfield']++;
 	}
 	if (! empty($arrayfields['s.import_key']['checked'])) {
 		print '<td class="tdoverflowmax100">';
 		print $obj->import_key;
 		print "</td>\n";
-		if (! $i) $totalarray['nbfield']++;
+		if (!$i) {
+			$totalarray['nbfield']++;
+		}
 	}
 
-	// Action column
-	print '<td class="nowrap" align="center">';
-	if ($massactionbutton || $massaction) {   // If we are in select mode (massactionbutton defined) or if we have already selected and sent an action ($massaction) defined
-		$selected=0;
-		if (in_array($obj->rowid, $arrayofselected)) $selected=1;
-		print '<input id="cb'.$obj->rowid.'" class="flat checkforselect" type="checkbox" name="toselect[]" value="'.$obj->rowid.'"'.($selected?' checked="checked"':'').'>';
+	// Action column (Show the massaction button only when this page is not opend from the Extended POS)
+	if (empty($conf->global->MAIN_CHECKBOX_LEFT_COLUMN)) {
+		print '<td class="nowrap center actioncolumn">';
+		if ($massactionbutton || $massaction) {   // If we are in select mode (massactionbutton defined) or if we have already selected and sent an action ($massaction) defined
+			$selected=0;
+			if (in_array($obj->rowid, $arrayofselected)) $selected=1;
+			print '<input id="cb'.$obj->rowid.'" class="flat checkforselect" type="checkbox" name="toselect[]" value="'.$obj->rowid.'"'.($selected?' checked="checked"':'').'>';
+		}
+		print '</td>';
 	}
-	print '</td>';
-	if (! $i) $totalarray['nbfield']++;
+	if (!$i) {
+		$totalarray['nbfield']++;
+	}
 
 	print '</tr>'."\n";
-
-
 	$i++;
 }
+
+// If no record found
+if ($num == 0) {
+	$colspan = 1;
+	foreach ($arrayfields as $key => $val) {
+		if (!empty($val['checked'])) {
+			$colspan++;
+		}
+	}
+	print '<tr><td colspan="'.$colspan.'" class="opacitymedium">'.$langs->trans("NoRecordFound").'</td></tr>';
+}
+
+$db->free($resql);
 
 $parameters=array('arrayfields'=>$arrayfields, 'sql'=>$sql);
 $reshook=$hookmanager->executeHooks('printFieldListFooter', $parameters);    // Note that $action and $object may have been modified by hook
 print $hookmanager->resPrint;
-
-$db->free($resql);
 
 print "</table>\n";
 print "</div>";

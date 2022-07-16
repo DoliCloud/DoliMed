@@ -68,7 +68,7 @@ $backtopage = GETPOST('backtopage', 'alpha');
 $confirm	= GETPOST('confirm', 'alpha');
 
 $socid		= GETPOST('socid', 'int')?GETPOST('socid', 'int'):GETPOST('id', 'int');
-if ($user->societe_id) $socid=$user->societe_id;
+if ($user->socid) $socid=$user->socid;
 if (empty($socid) && $action == 'view') $action='create';
 
 $object = new Societe($db);

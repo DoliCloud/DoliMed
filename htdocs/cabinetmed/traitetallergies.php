@@ -51,7 +51,7 @@ if (empty($action)) $action='edit';
 
 // Security check
 $socid = GETPOST('socid', 'int');
-if ($user->societe_id) $socid=$user->societe_id;
+if ($user->socid) $socid=$user->socid;
 $result = restrictedArea($user, 'societe', $socid);
 
 if (!$user->rights->cabinetmed->read) accessforbidden();
@@ -154,7 +154,7 @@ if ($socid > 0) {
 
 	print '<tr><td width="25%">'.$langs->trans('ThirdPartyName').'</td>';
 	print '<td colspan="3">';
-	print $form->showrefnav($object, 'socid', '', ($user->societe_id?0:1), 'rowid', 'nom');
+	print $form->showrefnav($object, 'socid', '', ($user->socid?0:1), 'rowid', 'nom');
 	print '</td></tr>';
 
 	if ($object->client) {

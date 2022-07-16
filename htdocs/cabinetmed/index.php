@@ -44,7 +44,7 @@ dol_include_once('/cabinetmed/class/patient.class.php');
 $langs->load("companies");
 
 $socid = GETPOST('socid', 'int');
-if ($user->societe_id) $socid=$user->societe_id;
+if ($user->socid) $socid=$user->socid;
 
 // Security check
 $result=restrictedArea($user, 'societe', 0, '', '', '', '');
@@ -108,16 +108,23 @@ $resql = $db->query($sql);
 if ($resql) {
 	while ($objp = $db->fetch_object($resql)) {
 		$found=0;
-		if ($conf->cabinetmed->enabled) { $found=1; $third['patient']++; }
+		if (!empty($conf->cabinetmed->enabled)) {
+			$found=1;
+			if (empty($third['patient'])) {
+				$third['patient'] = 0;
+			}
+			$third['patient']++;
+		}
 		if ($found) $total++;
 	}
 } else dol_print_error($db);
 
 print '<table class="noborder" width="100%">';
 print '<tr class="liste_titre"><th colspan="2">'.$langs->trans("Statistics").'</th></tr>';
-if ($conf->cabinetmed->enabled) {
+$statstring = '';
+if (!empty($conf->cabinetmed->enabled)) {
 	$statstring.= '<tr class="oddeven">';
-	$statstring.= '<td><a href="'.dol_buildpath('/cabinetmed/patients.php', 1).'">'.$langs->trans("Patients").'</a></td><td align="right">'.round($third['patient']).'</td>';
+	$statstring.= '<td><a href="'.dol_buildpath('/cabinetmed/patients.php', 1).'">'.$langs->trans("Patients").'</a></td><td align="right">'.(isset($third['patient']) ? round($third['patient']) : 0).'</td>';
 	$statstring.= "</tr>";
 }
 print $statstring;

@@ -50,9 +50,9 @@ $HEIGHT=200;
 $userid=GETPOST('userid', 'int'); if ($userid < 0) $userid=0;
 $socid=GETPOST('socid', 'int'); if ($socid < 0) $socid=0;
 // Security check
-if ($user->societe_id > 0) {
+if ($user->socid > 0) {
 	$action = '';
-	$socid = $user->societe_id;
+	$socid = $user->socid;
 }
 
 $year = strftime("%Y", time());

@@ -23,6 +23,15 @@ if (empty($conf) || ! is_object($conf)) {
 	exit;
 }
 
+if (!isset($socid)) {
+	$socid = GETPOST('socid', 'int');
+}
+if (empty($error)) {
+	$error = 0;
+}
+if (empty($errors)) {
+	$errors = array();
+}
 
 $object=$GLOBALS['object'];
 
@@ -67,7 +76,7 @@ if ($action == 'delete' || ($conf->use_javascript_ajax && empty($conf->dol_use_j
 
 
 $linkback = '<a href="'.dol_buildpath('/cabinetmed/patients.php', 1).'">'.$langs->trans("BackToList").'</a>';
-dol_banner_tab($object, 'socid', $linkback, ($user->societe_id?0:1), 'rowid', 'nom');
+dol_banner_tab($object, 'socid', $linkback, ($user->socid ? 0 : 1), 'rowid', 'nom');
 
 print '<div class="fichecenter">';
 print '<div class="fichehalfleft">';
