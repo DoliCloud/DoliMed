@@ -897,20 +897,21 @@ if (! empty($arrayfields['s.import_key']['checked'])) {
 	print '<input class="flat searchstring maxwidth50" type="text" name="search_import_key" value="'.dol_escape_htmltag($search_import_key).'">';
 	print '</td>';
 }
-// Fields from hook
-$parameters=array('arrayfields'=>$arrayfields);
-$reshook=$hookmanager->executeHooks('printFieldListOption', $parameters, $object);    // Note that $action and $object may have been modified by hook
-print $hookmanager->resPrint;
-// Action column
-print '<td class="liste_titre maxwidthsearch">';
-$searchpicto=$form->showFilterButtons();
-print $searchpicto;
-print '</td>';
+if (empty($conf->global->MAIN_CHECKBOX_LEFT_COLUMN)) {
+	// Action column
+	print '<td class="liste_titre maxwidthsearch">';
+	$searchpicto=$form->showFilterButtons();
+	print $searchpicto;
+	print '</td>';
+}
 print '</tr>'."\n";
 
 // Fields title label
 // --------------------------------------------------------------------
 print '<tr class="liste_titre">';
+if (!empty($conf->global->MAIN_CHECKBOX_LEFT_COLUMN)) {
+	print_liste_field_titre($selectedfields, $_SERVER["PHP_SELF"], "", '', '', '', $sortfield, $sortorder, 'center maxwidthsearch actioncolumn ');
+}
 if (! empty($arrayfields['s.rowid']['checked']))                   print_liste_field_titre($arrayfields['s.rowid']['label'], $_SERVER["PHP_SELF"], "s.rowid", "", $param, "", $sortfield, $sortorder);
 if (! empty($arrayfields['s.nom']['checked']))                     print_liste_field_titre($arrayfields['s.nom']['label'], $_SERVER["PHP_SELF"], "s.nom", "", $param, "", $sortfield, $sortorder);
 if (! empty($arrayfields['s.name_alias']['checked']))              print_liste_field_titre($arrayfields['s.name_alias']['label'], $_SERVER["PHP_SELF"], "s.name_alias", "", $param, "", $sortfield, $sortorder);
@@ -952,7 +953,9 @@ if (! empty($arrayfields['s.tms']['checked']))        print_liste_field_titre($a
 if (! empty($arrayfields['s.status']['checked']))     print_liste_field_titre($arrayfields['s.status']['label'], $_SERVER["PHP_SELF"], "s.status", "", $param, 'align="center"', $sortfield, $sortorder);
 if (! empty($arrayfields['s.import_key']['checked'])) print_liste_field_titre($arrayfields['s.import_key']['label'], $_SERVER["PHP_SELF"], "s.import_key", "", $param, 'align="center"', $sortfield, $sortorder);
 // Action column
-print_liste_field_titre($selectedfields, $_SERVER["PHP_SELF"], "", '', $param, 'align="center"', $sortfield, $sortorder, 'maxwidthsearch ');
+if (empty($conf->global->MAIN_CHECKBOX_LEFT_COLUMN)) {
+	print_liste_field_titre($selectedfields, $_SERVER["PHP_SELF"], "", '', $param, 'align="center"', $sortfield, $sortorder, 'maxwidthsearch ');
+}
 print '</tr>'."\n";
 
 
@@ -992,47 +995,57 @@ while ($i < min($num, $limit)) {
 	}
 	if (! empty($arrayfields['s.nom']['checked'])) {
 		$savalias = $obj->name_alias;
-		if (! empty($arrayfields['s.name_alias']['checked'])) $companystatic->name_alias='';
-		print '<td class="tdoverflowmax200">';
-		print $companystatic->getNomUrl(1, '', 100, 0, 1);
+		if (!empty($arrayfields['s.name_alias']['checked'])) {
+			$companystatic->name_alias = '';
+		}
+		print '<td'.(empty($conf->global->MAIN_SOCIETE_SHOW_COMPLETE_NAME) ? ' class="tdoverflowmax200"' : '').' data-key="ref">';
+		if ($contextpage == 'poslist') {
+			print $obj->name;
+		} else {
+			print $companystatic->getNomUrl(1, '', 100, 0, 1);
+		}
 		print "</td>\n";
 		$companystatic->name_alias = $savalias;
-		if (! $i) $totalarray['nbfield']++;
+		if (!$i) {
+			$totalarray['nbfield']++;
+		}
 	}
 	if (! empty($arrayfields['s.name_alias']['checked'])) {
 		print '<td class="tdoverflowmax200">';
-		print $companystatic->name_alias;
+		print dol_escape_htmltag($companystatic->name_alias);
 		print "</td>\n";
-		if (! $i) $totalarray['nbfield']++;
+		if (!$i) {
+			$totalarray['nbfield']++;
+		}
 	}
 	// Barcode
 	if (! empty($arrayfields['s.barcode']['checked'])) {
-		print '<td>'.$obj->barcode.'</td>';
+		print '<td>'.dol_escape_htmltag($obj->barcode).'</td>';
 		if (! $i) $totalarray['nbfield']++;
 	}
 	// Customer code
 	if (! empty($arrayfields['s.code_client']['checked'])) {
-		print '<td>'.$obj->code_client.'</td>';
+		print '<td class="nowraponall">'.dol_escape_htmltag($obj->code_client).'</td>';
 		if (! $i) $totalarray['nbfield']++;
 	}
 	// Supplier code
 	if (! empty($arrayfields['s.code_fournisseur']['checked'])) {
-		print '<td>'.$obj->code_fournisseur.'</td>';
+		print '<td class="nowraponall">'.dol_escape_htmltag($obj->code_fournisseur).'</td>';
 		if (! $i) $totalarray['nbfield']++;
 	}
 	// Account customer code
 	if (! empty($arrayfields['s.code_compta']['checked'])) {
-		print '<td>'.$obj->code_compta.'</td>';
+		print '<td>'.dol_escape_htmltag($obj->code_compta).'</td>';
 		if (! $i) $totalarray['nbfield']++;
 	}
 	// Account supplier code
 	if (! empty($arrayfields['s.code_compta_fournisseur']['checked'])) {
-		print '<td>'.$obj->code_compta_fournisseur.'</td>';
+		print '<td>'.dol_escape_htmltag($obj->code_compta_fournisseur).'</td>';
 		if (! $i) $totalarray['nbfield']++;
 	}
 	// Town
 	if (! empty($arrayfields['s.town']['checked'])) {
-		print "<td>".$obj->town."</td>\n";
+		print "<td>".dol_escape_htmltag($obj->town)."</td>\n";
 		if (! $i) $totalarray['nbfield']++;
 	}
 	// Zip

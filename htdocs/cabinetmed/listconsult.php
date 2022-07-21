@@ -323,7 +323,9 @@ if ($resql) {
 	print '<input type="hidden" name="page" value="'.$page.'">';
 	print '<input type="hidden" name="contextpage" value="'.$contextpage.'">';
 
-	print_barre_liste($title, $page, $_SERVER["PHP_SELF"], $param, $sortfield, $sortorder, $massactionbutton, $num, $nbtotalofrecords, 'user-injured', 0, $newcardbutton, '', $limit);
+	$massactionbutton = '';
+
+	print_barre_liste($title, $page, $_SERVER["PHP_SELF"], $param, $sortfield, $sortorder, $massactionbutton, $num, $nbtotalofrecords, 'briefcase-medical', 0, $newcardbutton, '', $limit);
 
 	$i = 0;
 
