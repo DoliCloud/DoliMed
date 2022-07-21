@@ -231,6 +231,7 @@ class modCabinetMed extends DolibarrModules
 		$this->menu[$r]=array(  'fk_menu'=>0,           // Put 0 if this is a top menu
 									'type'=>'top',          // This is a Top menu entry
 									'titre'=>'PatientsAndConsultations',
+									'prefix'=>img_picto('', 'user-injured'),
 									'mainmenu'=>'patients',
 									'url'=>'/cabinetmed/index.php',
 									'langs'=>'cabinetmed@cabinetmed',    // Lang file to use (without .lang) by module. File must be in langs/code_CODE/ directory.
@@ -242,6 +243,7 @@ class modCabinetMed extends DolibarrModules
 		$this->menu[$r]=array(  'fk_menu'=>0,           // Put 0 if this is a top menu
 									'type'=>'top',          // This is a Top menu entry
 									'titre'=>'Correspondants',
+									'prefix'=>img_picto('', 'user-injured'),
 									'mainmenu'=>'contacts',
 									'url'=>'/contact/list.php',
 									'langs'=>'cabinetmed@cabinetmed',    // Lang file to use (without .lang) by module. File must be in langs/code_CODE/ directory.
@@ -263,21 +265,21 @@ class modCabinetMed extends DolibarrModules
 		$r++;
 		*/
 		// Left Menu entry:
-		$this->menu[$r]=array(   'fk_menu'=>'fk_mainmenu=patients',
-								  'type'=>'left',         // This is a Left menu entry
-									'prefix'=>img_picto('', 'user-injured', 'class="paddingright pictofixedwidth valignmiddle"'),
-								  'titre'=>'Patients',
-								  'mainmenu'=>'patients',
-								  'leftmenu'=>'patients',
-								  'url'=>'/cabinetmed/index.php?leftmenu=thirdparties',
-								  'langs'=>'cabinetmed@cabinetmed',  // Lang file to use (without .lang) by module. File must be in langs/code_CODE/ directory.
-								  'position'=>100,
-								  'enabled'=>'$conf->cabinetmed->enabled',         // Define condition to show or hide menu entry. Use '$conf->voyage->enabled' if entry must be visible if module is enabled.
-								  'perms'=>'1',           // Use 'perms'=>'$user->rights->voyage->level1->level2' if you want your menu with a permission rules
-								  'target'=>'',
-								  'user'=>2);             // 0=Menu for internal users, 1=external users, 2=both
+		$this->menu[$r]=array(  'fk_menu'=>'fk_mainmenu=patients',
+								'type'=>'left',         // This is a Left menu entry
+								'prefix'=>img_picto('', 'user-injured', 'class="paddingright pictofixedwidth valignmiddle"'),
+								'titre'=>'Patients',
+								'mainmenu'=>'patients',
+								'leftmenu'=>'patients',
+								'url'=>'/cabinetmed/index.php?leftmenu=thirdparties',
+								'langs'=>'cabinetmed@cabinetmed',  // Lang file to use (without .lang) by module. File must be in langs/code_CODE/ directory.
+								'position'=>100,
+								'enabled'=>'$conf->cabinetmed->enabled',         // Define condition to show or hide menu entry. Use '$conf->voyage->enabled' if entry must be visible if module is enabled.
+								'perms'=>'1',           // Use 'perms'=>'$user->rights->voyage->level1->level2' if you want your menu with a permission rules
+								'target'=>'',
+								'user'=>2);             // 0=Menu for internal users, 1=external users, 2=both
 		$r++;
-		$this->menu[$r]=array(   'fk_menu'=>'fk_mainmenu=patients,fk_leftmenu=patients',
+		$this->menu[$r]=array(  'fk_menu'=>'fk_mainmenu=patients,fk_leftmenu=patients',
 								'type'=>'left',         // This is a Left menu entry
 								'titre'=>'MenuNewPatient',
 								'mainmenu'=>'patients',
@@ -289,7 +291,7 @@ class modCabinetMed extends DolibarrModules
 								'perms'=>'$user->rights->societe->creer',           // Use 'perms'=>'$user->rights->voyage->level1->level2' if you want your menu with a permission rules
 								'user'=>2);             // 0=Menu for internal users, 1=external users, 2=both
 		$r++;
-		$this->menu[$r]=array(   'fk_menu'=>'fk_mainmenu=patients,fk_leftmenu=patients',
+		$this->menu[$r]=array(  'fk_menu'=>'fk_mainmenu=patients,fk_leftmenu=patients',
 								'type'=>'left',         // This is a Left menu entry
 								'titre'=>'ListPatient',
 								'mainmenu'=>'patients',
@@ -541,8 +543,17 @@ class modCabinetMed extends DolibarrModules
 		require_once DOL_DOCUMENT_ROOT.'/core/lib/files.lib.php';
 		$dirodt=DOL_DATA_ROOT.'/doctemplates/thirdparties';
 		dol_mkdir($dirodt);
-		$src=dol_buildpath('/cabinetmed/install/doctemplates/thirdparties/template_courrier_consult.odt');
-		$dest=$dirodt.'/template_courrier_consult.odt';
+		$src=dol_buildpath('/cabinetmed/install/doctemplates/thirdparties/template_consultation.odt');
+		$dest=$dirodt.'/template_consultation.odt';
+		$result=dol_copy($src, $dest, 0, 0);
+		if ($result < 0) {
+			$langs->load("errors");
+			$this->error=$langs->trans('ErrorFailToCopyFile', $src, $dest);
+			return 0;
+		}
+
+		$src=dol_buildpath('/cabinetmed/install/doctemplates/thirdparties/template_prescription.odt');
+		$dest=$dirodt.'/template_prescription.odt';
 		$result=dol_copy($src, $dest, 0, 0);
 		if ($result < 0) {
 			$langs->load("errors");
