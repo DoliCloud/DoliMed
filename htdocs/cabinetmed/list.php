@@ -68,15 +68,21 @@ $mode=GETPOST("mode");
 $modesearch=GETPOST("mode_search");
 $search_type=trim(GETPOST('search_type'));
 
-$sortfield=GETPOST("sortfield", 'alpha');
-$sortorder=GETPOST('sortorder', 'aZ09comma');
+// Load variable for pagination
+$limit = GETPOST('limit', 'int') ? GETPOST('limit', 'int') : $conf->liste_limit;
+$sortfield = GETPOST('sortfield', 'aZ09comma');
+$sortorder = GETPOST('sortorder', 'aZ09comma');
 $page = GETPOSTISSET('pageplusone') ? (GETPOST('pageplusone') - 1) : GETPOST("page", 'int');
-if (! $sortorder) $sortorder="ASC";
-if (! $sortfield) $sortfield="s.nom";
-if ($page == -1) { $page = 0 ; }
-$offset = $conf->liste_limit * $page ;
+if (empty($page) || $page < 0 || GETPOST('button_search', 'alpha') || GETPOST('button_removefilter', 'alpha')) {
+	// If $page is not defined, or '' or -1 or if we click on clear filters
+	$page = 0;
+}
+$offset = $limit * $page;
 $pageprev = $page - 1;
 $pagenext = $page + 1;
+
+if (! $sortorder) $sortorder="ASC";
+if (! $sortfield) $sortfield="s.nom";
 
 // List of fields to search into when doing a "search in all"
 $fieldstosearchall = array(

@@ -61,18 +61,21 @@ if (!$user->rights->cabinetmed->read) accessforbidden();
 
 $mesgarray=array();
 
-$sortfield = GETPOST("sortfield", 'alpha');
+// Load variable for pagination
+$limit = GETPOST('limit', 'int') ? GETPOST('limit', 'int') : $conf->liste_limit;
+$sortfield = GETPOST('sortfield', 'aZ09comma');
 $sortorder = GETPOST('sortorder', 'aZ09comma');
 $page = GETPOSTISSET('pageplusone') ? (GETPOST('pageplusone') - 1) : GETPOST("page", 'int');
-if ($page == -1) {
+if (empty($page) || $page < 0 || GETPOST('button_search', 'alpha') || GETPOST('button_removefilter', 'alpha')) {
+	// If $page is not defined, or '' or -1 or if we click on clear filters
 	$page = 0;
 }
-$offset = $conf->liste_limit * $page;
+$offset = $limit * $page;
 $pageprev = $page - 1;
 $pagenext = $page + 1;
-if (! $sortfield) $sortfield='s.nom';
-if (! $sortorder) $sortorder='ASC';
-$limit = GETPOST('limit', 'int')?GETPOST('limit', 'int'):$conf->liste_limit;
+
+if (! $sortorder) $sortorder="ASC";
+if (! $sortfield) $sortfield="s.nom";
 
 // Security check
 if ($user->socid) $socid=$user->socid;
