@@ -82,11 +82,12 @@ class FormFileCabinetmed extends FormFile
 	 *  @param  string  $sortorder          Sort order ('ASC' or 'DESC')
 	 *  @param  int     $disablemove        1=Disable move button, 0=Position move is possible.
 	 *  @param	int	    $addfilterfields	Add line with filters
-	 *  @param	 int	$disablecrop		Disable crop feature on images (-1 = auto, prefer to set it explicitely to 0 or 1)
+	 *  @param	int		$disablecrop		Disable crop feature on images (-1 = auto, prefer to set it explicitely to 0 or 1)
+	 *  @param	string	$moreattrondiv		More attributes on the div for responsive. Example 'style="height:280px; overflow: auto;"'
 	 *  @return int                 		<0 if KO, nb of files shown if OK
 	 *  @see list_of_autoecmfiles()
 	 */
-	public function list_of_documents($filearray, $object, $modulepart, $param = '', $forcedownload = 0, $relativepath = '', $permonobject = 1, $useinecm = 0, $textifempty = '', $maxlength = 0, $title = '', $url = '', $showrelpart = 0, $permtoeditline = -1, $upload_dir = '', $sortfield = '', $sortorder = 'ASC', $disablemove = 1, $addfilterfields = 0, $disablecrop = -1)
+	public function list_of_documents($filearray, $object, $modulepart, $param = '', $forcedownload = 0, $relativepath = '', $permonobject = 1, $useinecm = 0, $textifempty = '', $maxlength = 0, $title = '', $url = '', $showrelpart = 0, $permtoeditline = -1, $upload_dir = '', $sortfield = '', $sortorder = 'ASC', $disablemove = 1, $addfilterfields = 0, $disablecrop = -1, $moreattrondiv = '')
 	{
         // phpcs:enable
 		global $user, $conf, $langs, $hookmanager;
@@ -95,7 +96,9 @@ class FormFileCabinetmed extends FormFile
 		global $form;
 
 		$disablecrop=1;
-		if (in_array($modulepart, array('bom','expensereport','holiday','member','project','product','produit','service','societe','tax','ticket','user'))) $disablecrop=0;
+		if (in_array($modulepart, array('bom','expensereport','holiday','member','project','product','produit','service','societe','tax','ticket','user'))) {
+			$disablecrop=0;
+		}
 
 		// Define relative path used to store the file
 		if (empty($relativepath)) {
@@ -131,8 +134,7 @@ class FormFileCabinetmed extends FormFile
 			'url' => $url
 		);
 		$reshook=$hookmanager->executeHooks('showFilesList', $parameters, $object);
-
-		if (isset($reshook) && $reshook != '') { // null or '' for bypass
+		if (!isset($reshook) || $reshook === '') { // null or '' for bypass
 			return $reshook;
 		} else {
 			if (! is_object($form)) {

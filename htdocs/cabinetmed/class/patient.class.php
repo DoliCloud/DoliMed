@@ -351,12 +351,12 @@ class Patient extends Societe
 
 		if (empty($rowid) && empty($ref) && empty($ref_ext)) return -1;
 
-		$sql = 'SELECT s.rowid, s.nom as name, s.entity, s.ref_ext, s.address, s.datec as dc, s.prefix_comm';
+		$sql = 'SELECT s.rowid, s.nom as name, s.entity, s.ref_ext, s.address, s.datec, s.prefix_comm';
 		$sql .= ', s.status';
 		$sql .= ', s.price_level';
 		$sql .= ', s.tms as date_update';
 		$sql .= ', s.phone, s.fax, s.email, s.url, s.zip as zip, s.town as town, s.note_public, s.note_private, s.client, s.fournisseur';
-		$sql .= ', s.siren, s.siret, s.ape, s.idprof4';
+		$sql .= ', s.siren as idprof1, s.siret as idprof2, s.ape as idprof3, s.idprof4, s.idprof5, s.idprof6';
 		$sql .= ', s.capital, s.tva_intra';
 		$sql .= ', s.fk_typent as typent_id';
 		$sql .= ', s.fk_effectif as effectif_id';
@@ -365,6 +365,7 @@ class Patient extends Societe
 		$sql .= ', s.fk_departement as state_id, s.fk_pays, s.fk_stcomm, s.remise_client, s.mode_reglement, s.cond_reglement, s.tva_assuj';
 		$sql .= ', s.mode_reglement_supplier, s.cond_reglement_supplier, s.localtax1_assuj, s.localtax1_value, s.localtax2_assuj, s.localtax2_value, s.fk_prospectlevel, s.default_lang, s.logo';
 		$sql .= ', s.outstanding_limit, s.import_key, s.canvas';
+		$sql .= ', s.model_pdf';
 		$sql .= ', fj.libelle as forme_juridique';
 		$sql .= ', e.libelle as effectif';
 		$sql .= ', p.code as country_code, p.label as country';
@@ -452,6 +453,8 @@ class Patient extends Societe
 				$this->idprof2		= $obj->idprof2;
 				$this->idprof3		= $obj->idprof3;
 				$this->idprof4		= $obj->idprof4;
+				$this->idprof5		= $obj->idprof5;
+				$this->idprof6		= $obj->idprof6;
 
 				$this->capital   = $obj->capital;
 

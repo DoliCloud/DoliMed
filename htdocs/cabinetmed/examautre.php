@@ -46,6 +46,8 @@ include_once "./class/cabinetmedcons.class.php";
 include_once "./class/cabinetmedexamother.class.php";
 
 $action = GETPOST("action");
+$optioncss = GETPOST('optioncss');
+
 $id=GETPOST('id', 'int');  // Id consultation
 
 $langs->load("companies");
@@ -460,13 +462,19 @@ if ($action == '' || $action == 'delete') {
 
 	$param='&socid='.$socid;
 
+	$totalarray = array();
+	$totalarray['nbfield'] = 0;
+
 	print "\n";
-	print '<table class="noborder" width="100%">';
+	print '<table class="noborder centpercent">';
 	print '<tr class="liste_titre">';
 	//print_liste_field_titre($langs->trans('Num'),$_SERVER['PHP_SELF'],'t.rowid','',$param,'',$sortfield,$sortorder);
 	print_liste_field_titre($langs->trans('Date'), $_SERVER['PHP_SELF'], 't.dateexam', '', $param, '', $sortfield, $sortorder);
+	$totalarray['nbfield']++;
 	print_liste_field_titre($langs->trans('Examen'), $_SERVER['PHP_SELF'], 't.examprinc', '', $param, '', $sortfield, $sortorder);
+	$totalarray['nbfield']++;
 	print_liste_field_titre($langs->trans('Conclusion'), $_SERVER['PHP_SELF'], 't.examsec', '', $param, '', $sortfield, $sortorder);
+	$totalarray['nbfield']++;
 	print '<td>&nbsp;</td>';
 	print '</tr>';
 
@@ -516,6 +524,10 @@ if ($action == '' || $action == 'delete') {
 			print '</td>';
 			print '</tr>';
 			$i++;
+		}
+
+		if ($num == 0) {
+			print '<tr><td colspan="'.($totalarray['nbfield']).'"><span class="opacitymedium">'.$langs->trans("None").'</span><td></tr>';
 		}
 	} else {
 		dol_print_error($db);

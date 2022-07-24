@@ -315,8 +315,8 @@ class CabinetmedCons extends CommonObject
 		$this->bank=array();
 
 		// Search if there is some bank lines
-		$bid=0;
-		$sql.= "SELECT b.rowid, b.rappro, b.fk_account, b.fk_type, b.num_chq FROM ".MAIN_DB_PREFIX."bank_url as bu, ".MAIN_DB_PREFIX."bank as b";
+
+		$sql = "SELECT b.rowid, b.rappro, b.fk_account, b.fk_type, b.num_chq FROM ".MAIN_DB_PREFIX."bank_url as bu, ".MAIN_DB_PREFIX."bank as b";
 		$sql.= " WHERE bu.url_id = ".$this->id." AND bu.type = 'consultation'";
 		$sql.= " AND bu.fk_bank = b.rowid";
 		dol_syslog(get_class($this)."::fetch_bankid", LOG_DEBUG);

@@ -50,7 +50,7 @@ function cabinetmed_completesubstitutionarray(&$substitutionarray, $langs, $obje
 
 	if (empty($parameters['mode'])) {	// For exemple when called by FormMail::getAvailableSubstitKey()
 		// If $object is Societe and not extended Patient, we reload object Patient to have all information specific to patient.
-		if ($object && get_class($object) == 'Societe' && $object->canvas == 'patient@cabinetmed') {
+		if (!empty($object) && get_class($object) == 'Societe' && $object->canvas == 'patient@cabinetmed') {
 			$patientobj=new Patient($db);
 			$patientobj->fetch($object->id);
 			$object = $patientobj;
@@ -265,7 +265,7 @@ function cabinetmed_completesubstitutionarray(&$substitutionarray, $langs, $obje
 	//$patient=new Patient($db);
 	//var_dump($object);
 	//$patient->fetch($object->fk_soc);
-	if (is_object($object) && ($object->element == 'societe' || $object->element == 'company')) {
+	if (!empty($object) && is_object($object) && ($object->element == 'societe' || $object->element == 'company')) {
 		$substitutionarray['patient_id']=$object->id;
 		$substitutionarray['patient_name']=$object->name;
 		$substitutionarray['patient_code']=$object->code_client;
@@ -276,12 +276,15 @@ function cabinetmed_completesubstitutionarray(&$substitutionarray, $langs, $obje
 		$substitutionarray['patient_country']=$object->country;
 		$substitutionarray['patient_email']=$object->email;
 
-		$substitutionarray['patient_size']=$object->array_options['options_size'];
-		$substitutionarray['patient_weight']=$object->array_options['options_weight'];
+		$substitutionarray['patient_size']=(isset($object->array_options['options_size']) ? $object->array_options['options_size'] : '');	// old var
+		$substitutionarray['patient_height']=(isset($object->array_options['options_height']) ? $object->array_options['options_height'] : '');
+		$substitutionarray['patient_weight']=(isset($object->array_options['options_weight'])? $object->array_options['options_weight'] : '');
 		if (is_numeric($object->array_options['options_birthdate'])) {
 			$substitutionarray['patient_birthdate']=dol_print_date($object->array_options['options_birthdate'], 'day', '', $langs);
-		} else {
+		} elseif (!empty($object->array_options['options_birthdate'])) {
 			$substitutionarray['patient_birthdate']=dol_print_date(dol_stringtotime($object->array_options['options_birthdate'].' 00:00:00'), 'day', '', $langs);
+		} else {
+			$substitutionarray['patient_birthdate']='';
 		}
 		$substitutionarray['patient_profession']=$object->array_options['options_prof'];
 
@@ -305,7 +308,7 @@ function cabinetmed_completesubstitutionarray(&$substitutionarray, $langs, $obje
 	$substitutionarray['contact_address']='';
 	$substitutionarray['contact_email']='';
 
-	if (is_object($object) && method_exists($object, 'liste_contact')) {
+	if (!empty($object) && is_object($object) && method_exists($object, 'liste_contact')) {
 		$tab = $object->liste_contact(-1, 'external');
 		foreach ($tab as $key => $tmparray) {
 			if ($tmparray['code'] == 'GENERALREF' && $tmparray['id'] > 0) {

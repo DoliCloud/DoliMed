@@ -1141,7 +1141,7 @@ if ($action == '' || $action == 'list' || $action == 'delete') {
 
 	// Confirm delete consultation
 	if (GETPOST("action") == 'delete') {
-		$ret=$form->form_confirm($_SERVER["PHP_SELF"]."?socid=".$socid.'&id='.GETPOST('id', 'int'), $langs->trans("DeleteAConsultation"), $langs->trans("ConfirmDeleteConsultation"), "confirm_delete", '', 0, 1);
+		$ret=$form->formconfirm($_SERVER["PHP_SELF"]."?socid=".$socid.'&id='.GETPOST('id', 'int'), $langs->trans("DeleteAConsultation"), $langs->trans("ConfirmDeleteConsultation"), "confirm_delete", '', 0, 1);
 		if ($ret == 'html') print '<br>';
 	}
 
@@ -1169,18 +1169,48 @@ if ($action == '' || $action == 'list' || $action == 'delete') {
 
 	print "\n";
 
+	$totalarray = array();
+	$totalarray['nbfield'] = 0;
+
 	print '<div class="div-table-responsive">';
 	print '<table class="noborder" width="100%">';
 	print '<tr class="liste_titre">';
-	if (! empty($arrayfields['t.rowid']['checked']))                    print_liste_field_titre($langs->trans('Num'), $_SERVER['PHP_SELF'], 't.rowid', '', $param, '', $sortfield, $sortorder);
-	if (! empty($arrayfields['t.datecons']['checked']))                 print_liste_field_titre($arrayfields['t.datecons']['label'], $_SERVER["PHP_SELF"], "t.datecons,t.rowid", "", $param, 'align="center"', $sortfield, $sortorder);
-	if (! empty($arrayfields['t.fk_user']['checked']))                  print_liste_field_titre($langs->trans('CreatedBy'), $_SERVER['PHP_SELF'], 't.fk_user', '', $param, '', $sortfield, $sortorder);
-	if (! empty($arrayfields['t.motifconsprinc']['checked']))           print_liste_field_titre($langs->trans("MotifPrincipal"), $_SERVER["PHP_SELF"], "t.motifconsprinc", "", $param, '', $sortfield, $sortorder);
-	if (! empty($arrayfields['t.diaglesprinc']['checked']))             print_liste_field_titre($langs->trans('DiagLesPrincipal'), $_SERVER['PHP_SELF'], 't.diaglesprinc', '', $param, '', $sortfield, $sortorder);
-	if (! empty($arrayfields['t.typepriseencharge']['checked']))        print_liste_field_titre($langs->trans('Priseencharge'), $_SERVER['PHP_SELF'], 't.typepriseencharge', '', $param, '', $sortfield, $sortorder);
-	if (! empty($arrayfields['t.typevisit']['checked']))                print_liste_field_titre($langs->trans('ConsultActe'), $_SERVER['PHP_SELF'], 't.typevisit', '', $param, '', $sortfield, $sortorder);
-	if (! empty($arrayfields['amountpayment']['checked']))              print_liste_field_titre($langs->trans('MontantPaiement'), $_SERVER['PHP_SELF'], '', '', $param, 'align="right"', $sortfield, $sortorder);
-	if (! empty($arrayfields['typepayment']['checked']))                print_liste_field_titre($langs->trans('TypePaiement'), $_SERVER['PHP_SELF'], '', '', $param, '', $sortfield, $sortorder);
+	if (! empty($arrayfields['t.rowid']['checked'])) {
+		print_liste_field_titre($langs->trans('Num'), $_SERVER['PHP_SELF'], 't.rowid', '', $param, '', $sortfield, $sortorder);
+		$totalarray['nbfield']++;
+	}
+	if (! empty($arrayfields['t.datecons']['checked'])) {
+		print_liste_field_titre($arrayfields['t.datecons']['label'], $_SERVER["PHP_SELF"], "t.datecons,t.rowid", "", $param, 'align="center"', $sortfield, $sortorder);
+		$totalarray['nbfield']++;
+	}
+	if (! empty($arrayfields['t.fk_user']['checked'])) {
+		print_liste_field_titre($langs->trans('CreatedBy'), $_SERVER['PHP_SELF'], 't.fk_user', '', $param, '', $sortfield, $sortorder);
+		$totalarray['nbfield']++;
+	}
+	if (! empty($arrayfields['t.motifconsprinc']['checked'])) {
+		print_liste_field_titre($langs->trans("MotifPrincipal"), $_SERVER["PHP_SELF"], "t.motifconsprinc", "", $param, '', $sortfield, $sortorder);
+		$totalarray['nbfield']++;
+	}
+	if (! empty($arrayfields['t.diaglesprinc']['checked'])) {
+		print_liste_field_titre($langs->trans('DiagLesPrincipal'), $_SERVER['PHP_SELF'], 't.diaglesprinc', '', $param, '', $sortfield, $sortorder);
+		$totalarray['nbfield']++;
+	}
+	if (! empty($arrayfields['t.typepriseencharge']['checked'])) {
+		print_liste_field_titre($langs->trans('Priseencharge'), $_SERVER['PHP_SELF'], 't.typepriseencharge', '', $param, '', $sortfield, $sortorder);
+		$totalarray['nbfield']++;
+	}
+	if (! empty($arrayfields['t.typevisit']['checked'])) {
+		print_liste_field_titre($langs->trans('ConsultActe'), $_SERVER['PHP_SELF'], 't.typevisit', '', $param, '', $sortfield, $sortorder);
+		$totalarray['nbfield']++;
+	}
+	if (! empty($arrayfields['amountpayment']['checked'])) {
+		print_liste_field_titre($langs->trans('MontantPaiement'), $_SERVER['PHP_SELF'], '', '', $param, 'align="right"', $sortfield, $sortorder);
+		$totalarray['nbfield']++;
+	}
+	if (! empty($arrayfields['typepayment']['checked'])) {
+		print_liste_field_titre($langs->trans('TypePaiement'), $_SERVER['PHP_SELF'], '', '', $param, '', $sortfield, $sortorder);
+		$totalarray['nbfield']++;
+	}
 	// Extra fields
 	include DOL_DOCUMENT_ROOT.'/core/tpl/extrafields_list_search_title.tpl.php';
 	// Hook fields
@@ -1190,7 +1220,6 @@ if ($action == '' || $action == 'list' || $action == 'delete') {
 	// Action column
 	print_liste_field_titre($selectedfields, $_SERVER["PHP_SELF"], "", '', $param, 'align="center"', $sortfield, $sortorder, 'maxwidthsearch ');
 	print '</tr>';
-
 
 	// List des consult
 	$sql = "SELECT";
@@ -1247,6 +1276,8 @@ if ($action == '' || $action == 'list' || $action == 'delete') {
 		$usertmp = new User($db);
 
 		while ($i < $num) {
+			$totalarray['nbfield'] = 0;
+
 			$obj = $db->fetch_object($resql);
 
 			$object->id=$obj->rowid;
@@ -1260,12 +1291,14 @@ if ($action == '' || $action == 'list' || $action == 'delete') {
 				$consultstatic->fk_soc=$obj->fk_soc;
 				print $consultstatic->getNomUrl(1, '&backtopage='.urlencode($_SERVER["PHP_SELF"].'?socid='.$obj->fk_soc));
 				print '</td>';
+				$totalarray['nbfield']++;
 			}
 
 			if (! empty($arrayfields['t.datecons']['checked'])) {
 				print '<td class="center">';
 				print dol_print_date($db->jdate($obj->datecons), 'day');
 				print '</td>';
+				$totalarray['nbfield']++;
 			}
 
 			if (! empty($arrayfields['t.fk_user']['checked'])) {
@@ -1275,28 +1308,33 @@ if ($action == '' || $action == 'list' || $action == 'delete') {
 					print $usertmp->getNomUrl(1);
 				}
 				print '</td>';
+				$totalarray['nbfield']++;
 			}
 
 			if (! empty($arrayfields['t.motifconsprinc']['checked'])) {
 				print '<td>'.dol_trunc($obj->motifconsprinc, 32).'</td>';
+				$totalarray['nbfield']++;
 			}
 
 			if (! empty($arrayfields['t.diaglesprinc']['checked'])) {
 				print '<td>';
 				print dol_trunc($obj->diaglesprinc, 32);
 				print '</td>';
+				$totalarray['nbfield']++;
 			}
 
 			if (! empty($arrayfields['t.typepriseencharge']['checked'])) {
 				print '<td>';
 				print $obj->typepriseencharge;
 				print '</td>';
+				$totalarray['nbfield']++;
 			}
 
 			if (! empty($arrayfields['t.typevisit']['checked'])) {
 				print '<td>';
 				print $langs->trans($obj->typevisit);
 				print '</td>';
+				$totalarray['nbfield']++;
 			}
 
 			if (! empty($arrayfields['amountpayment']['checked'])) {
@@ -1323,6 +1361,7 @@ if ($action == '' || $action == 'list' || $action == 'delete') {
 					$foundamount++;
 				}
 				print '</td>';
+				$totalarray['nbfield']++;
 			}
 
 			if (! empty($arrayfields['typepayment']['checked'])) {
@@ -1369,6 +1408,7 @@ if ($action == '' || $action == 'list' || $action == 'delete') {
 					$foundamount++;
 				}
 				print '</td>';
+				$totalarray['nbfield']++;
 			}
 
 			// Extra fields
@@ -1380,13 +1420,17 @@ if ($action == '' || $action == 'list' || $action == 'delete') {
 
 			print '<td class="nowraponall">';
 			print '<a class="editfielda" href="'.$_SERVER["PHP_SELF"].'?socid='.$obj->fk_soc.'&id='.$obj->rowid.'&action=edit">'.img_edit().'</a>';
-			if ($user->rights->societe->supprimer) {
+			if (!empty($user->rights->societe->supprimer)) {
 				print ' &nbsp; ';
 				print '<a href="'.$_SERVER["PHP_SELF"].'?socid='.$obj->fk_soc.'&id='.$obj->rowid.'&action=delete">'.img_delete().'</a>';
 			}
 			print '</td>';
 			print '</tr>';
 			$i++;
+		}
+
+		if ($num == 0) {
+			print '<tr><td colspan="'.($totalarray['nbfield']).'"><span class="opacitymedium">'.$langs->trans("None").'</span><td></tr>';
 		}
 	} else {
 		dol_print_error($db);

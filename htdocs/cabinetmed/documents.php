@@ -49,14 +49,16 @@ include_once("./class/cabinetmedcons.class.php");
 include_once("./class/html.formfilecabinetmed.class.php");
 
 $action=GETPOST("action");
-$idconsult=GETPOST('idconsult','int')?GETPOST('idconsult','int'):GETPOST('idconsult','int');  // Id consultation
 $confirm=GETPOST('confirm');
+
+$idconsult=GETPOST('idconsult','int')?GETPOST('idconsult','int'):GETPOST('idconsult','int');  // Id consultation
+$ref = GETPOST('ref');
 $mesg=GETPOST('mesg');
 
 $langs->loadLangs(array("companies", "bills", "banks", "other", "cabinetmed@cabinetmed"));
 
 // Security check
-$id=(GETPOST('socid','int') ? GETPOST('socid','int') : GETPOST('id','int'));
+$id = (GETPOST('socid','int') ? GETPOST('socid','int') : GETPOST('id','int'));
 $socid=$id;
 if ($user->socid) $socid=$user->socid;
 $result = restrictedArea($user, 'societe', $socid);
@@ -88,12 +90,13 @@ if ($id > 0 || ! empty($ref))
 {
 	$result = $object->fetch($id, $ref);
 
-	$upload_dir = $conf->societe->multidir_output[$object->entity] . "/" . $object->id ;
-	$courrier_dir = $conf->societe->multidir_output[$object->entity] . "/courrier/" . get_exdir($object->id,0,0,0,$object,'thirdparty');
+	$entity = $object->entity;
+
+	$upload_dir = $conf->societe->multidir_output[$entity] . "/" . $object->id ;
 }
 
 // Initialize technical object to manage hooks of page. Note that conf->hooks_modules contains array array
-include_once(DOL_DOCUMENT_ROOT.'/core/class/hookmanager.class.php');
+include_once DOL_DOCUMENT_ROOT.'/core/class/hookmanager.class.php';
 $hookmanager=new HookManager($db);
 $hookmanager->initHooks(array('documentcabinetmed'));
 
@@ -182,10 +185,8 @@ $width="242";
 
 llxHeader('',$langs->trans("Courriers"));
 
-if ($object->id)
-{
-    if ($idconsult && ! $consult->id)
-    {
+if ($object->id) {
+    if ($idconsult && ! $consult->id) {
         $result=$consult->fetch($idconsult);
         if ($result < 0) dol_print_error($db,$consult->error);
 
@@ -193,9 +194,8 @@ if ($object->id)
         if ($result < 0) dol_print_error($db,$consult->error);
     }
 
-    /*
-     * Affichage onglets
-     */
+    // Show tabs
+
     if ($conf->notification->enabled) $langs->load("mails");
 
     $head = societe_prepare_head($object);
