@@ -421,7 +421,7 @@ if ($action == '') {
 	print '<div class="tabsAction">';
 
 	if ($user->rights->societe->creer) {
-		print '<a class="butAction" href="'.$_SERVER["PHP_SELF"].'?socid='.$object->id.'&amp;action=edit">'.$langs->trans("Modify").'</a>';
+		print '<a class="butAction" href="'.$_SERVER["PHP_SELF"].'?socid='.$object->id.'&action=edit&token='.newToken().'">'.$langs->trans("Modify").'</a>';
 	}
 
 	print '</div>';

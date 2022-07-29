@@ -598,7 +598,7 @@ class CabinetmedCons extends CommonObject
 		$result='';
 		$lien=$lienfin='';
 
-		$lien = '<a href="'.dol_buildpath('/cabinetmed/consultations.php', 1).'?socid='.$this->fk_soc.'&amp;id='.$this->id.'&amp;action=edit';
+		$lien = '<a href="'.dol_buildpath('/cabinetmed/consultations.php', 1).'?socid='.$this->fk_soc.'&id='.$this->id.'&action=edit&token='.newToken();
 		if ($more) $lien.=$more;
 		// Add type of canvas
 		$lien.=(!empty($this->canvas)?'&amp;canvas='.$this->canvas:'').'">';

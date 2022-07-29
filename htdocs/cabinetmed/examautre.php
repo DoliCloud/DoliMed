@@ -364,8 +364,8 @@ if ($socid > 0) {
 		listexamen(1, $width, "RADIO','OTHER','AUTRE", 0, 'exam');
 		/*print ' '.img_picto('Ajouter motif principal','edit_add_p.png@cabinetmed');
 		print ' '.img_picto('Ajouter motif secondaire','edit_add_s.png@cabinetmed');*/
-		print ' <input type="button" class="button" id="addexamprinc" name="addexamprinc" value="+P">';
-		print ' <input type="button" class="button" id="addexamsec" name="addexamsec" value="+S">';
+		print ' <input type="button" class="button small" id="addexamprinc" name="addexamprinc" value="+P">';
+		print ' <input type="button" class="button small" id="addexamsec" name="addexamsec" value="+S">';
 		if ($user->admin) print ' '.info_admin($langs->trans("YouCanChangeValuesForThisListFromDictionarySetup"), 1);
 		print '</td></tr>';
 		print '<tr><td class="fieldrequired">'.$langs->trans("Principal").':';
@@ -387,8 +387,8 @@ if ($socid > 0) {
 		print '</td><td nowrap="nowrap">';
 		//print '<input type="text" size="3" class="flat" name="searchdiagles" value="'.GETPOST("searchdiagles").'" id="searchdiagles">';
 		listexamconclusion(1, $width, 'examconc');
-		print ' <input type="button" class="button" id="addexamconcprinc" name="addexamconcprinc" value="+P">';
-		print ' <input type="button" class="button" id="addexamconcsec" name="addexamconcsec" value="+S">';
+		print ' <input type="button" class="button small" id="addexamconcprinc" name="addexamconcprinc" value="+P">';
+		print ' <input type="button" class="button small" id="addexamconcsec" name="addexamconcsec" value="+S">';
 		if ($user->admin) print ' '.info_admin($langs->trans("YouCanChangeValuesForThisListFromDictionarySetup"), 1);
 		print '</td></tr>';
 		print '<tr><td class="fieldrequired">'.$langs->trans("Principal").':';
@@ -505,10 +505,10 @@ if ($action == '' || $action == 'delete') {
 			$var=!$var;
 			print '<tr class="oddeven">';
 			//print '<td>';
-			//print '<a href="'.$_SERVER["PHP_SELF"].'?socid='.$obj->fk_soc.'&id='.$obj->rowid.'&action=edit">'.sprintf("%08d",$obj->rowid).'</a>';
+			//print '<a href="'.$_SERVER["PHP_SELF"].'?socid='.$obj->fk_soc.'&id='.$obj->rowid.'&action=edit&token='.newToken().'">'.sprintf("%08d",$obj->rowid).'</a>';
 			//print '</td>';
 			print '<td>';
-			print '<a href="'.$_SERVER["PHP_SELF"].'?socid='.$obj->fk_soc.'&id='.$obj->rowid.'&action=edit">';
+			print '<a href="'.$_SERVER["PHP_SELF"].'?socid='.$obj->fk_soc.'&id='.$obj->rowid.'&action=edit&token='.newToken().'">';
 			print dol_print_date($db->jdate($obj->dateexam), 'day');
 			print '</a>';
 			print '</td><td>';
@@ -517,10 +517,10 @@ if ($action == '' || $action == 'delete') {
 			print $obj->concprinc;
 			print '</td>';
 			print '<td align="right">';
-			print '<a href="'.$_SERVER["PHP_SELF"].'?socid='.$obj->fk_soc.'&id='.$obj->rowid.'&action=edit">'.img_edit().'</a>';
+			print '<a class="reposition editfielda" href="'.$_SERVER["PHP_SELF"].'?socid='.$obj->fk_soc.'&id='.$obj->rowid.'&action=edit&token='.newToken().'">'.img_edit().'</a>';
 			if ($user->rights->societe->supprimer) {
 				print ' &nbsp; ';
-				print '<a href="'.$_SERVER["PHP_SELF"].'?socid='.$obj->fk_soc.'&id='.$obj->rowid.'&action=delete">'.img_delete().'</a>';
+				print '<a href="'.$_SERVER["PHP_SELF"].'?socid='.$obj->fk_soc.'&id='.$obj->rowid.'&action=delete&token='.newToken().'">'.img_delete().'</a>';
 			}
 			print '</td>';
 			print '</tr>';

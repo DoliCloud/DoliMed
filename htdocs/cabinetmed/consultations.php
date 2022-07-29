@@ -406,7 +406,7 @@ if (empty($reshook)) {
 										$object->error=$bankaccount->error;
 									}
 									if (! $error) {
-										$result1=$bankaccount->add_url_line($lineid, $object->id, dol_buildpath('/cabinetmed/consultations.php', 1).'?action=edit&socid='.$object->fk_soc.'&id=', 'Consultation', 'consultation');
+										$result1=$bankaccount->add_url_line($lineid, $object->id, dol_buildpath('/cabinetmed/consultations.php', 1).'?action=edit&token='.newToken().'&socid='.$object->fk_soc.'&id=', 'Consultation', 'consultation');
 										$result2=$bankaccount->add_url_line($lineid, $object->fk_soc, '', $soc->name, 'company');
 										if ($result1 <= 0 || $result2 <= 0) {
 											$error++;
@@ -471,7 +471,7 @@ if (empty($reshook)) {
 									if ($result < 0) dol_print_error($db, $bankaccount->error);
 									if ($key == 'CHQ') $lineid=$bankaccount->addline($object->datecons, $key, $langs->trans("CustomerInvoicePayment"), $amount[$key], $object->num_cheque, '', $user, $soc->name, $object->banque);
 									else $lineid=$bankaccount->addline($object->datecons, $key, $langs->trans("CustomerInvoicePayment"), $amount[$key], '', '', $user, $soc->name, '');
-									$result1=$bankaccount->add_url_line($lineid, $object->id, dol_buildpath('/cabinetmed/consultations.php', 1).'?action=edit&socid='.$object->fk_soc.'&id=', 'Consultation', 'consultation');
+									$result1=$bankaccount->add_url_line($lineid, $object->id, dol_buildpath('/cabinetmed/consultations.php', 1).'?action=edit&token='.newToken().'&socid='.$object->fk_soc.'&id=', 'Consultation', 'consultation');
 									$result2=$bankaccount->add_url_line($lineid, $object->fk_soc, '', $soc->name, 'company');
 									if ($lineid <= 0 || $result1 <= 0 || $result2 <= 0) {
 										$error++;
@@ -858,8 +858,8 @@ if (! ($socid > 0)) {
 		print $langs->trans("MotifConsultation").':';
 		print '</td><td>';
 		listmotifcons(1, $width);
-		print ' <input type="button" class="button" id="addmotifprinc" name="addmotifprinc" value="+P" title="'.dol_escape_htmltag($langs->trans("ClickHereToSetPrimaryReason")).'">';
-		print ' <input type="button" class="button" id="addmotifsec" name="addmotifsec" value="+S" title="'.dol_escape_htmltag($langs->trans("ClickHereToSetSecondaryReason")).'">';
+		print ' <input type="button" class="button small" id="addmotifprinc" name="addmotifprinc" value="+P" title="'.dol_escape_htmltag($langs->trans("ClickHereToSetPrimaryReason")).'">';
+		print ' <input type="button" class="button small" id="addmotifsec" name="addmotifsec" value="+S" title="'.dol_escape_htmltag($langs->trans("ClickHereToSetSecondaryReason")).'">';
 		if ($user->admin) print ' '.info_admin($langs->trans("YouCanChangeValuesForThisListFromDictionarySetup"), 1);
 		print '</td></tr>';
 		print '<tr><td class="fieldrequired">'.$langs->trans("MotifPrincipal").':';
@@ -891,8 +891,8 @@ if (! ($socid > 0)) {
 		print '</td><td>';
 		//print '<input type="text" size="3" class="flat" name="searchdiagles" value="'.GETPOST("searchdiagles").'" id="searchdiagles">';
 		print listdiagles(1, $width);
-		print ' <input type="button" class="button" id="adddiaglesprinc" name="adddiaglesprinc" value="+P" title="'.dol_escape_htmltag($langs->trans("ClickHereToSetPrimaryDiagnostic")).'">';
-		print ' <input type="button" class="button" id="adddiaglessec" name="adddiaglessec" value="+S" title="'.dol_escape_htmltag($langs->trans("ClickHereToSetSecondaryDiagnostic")).'">';
+		print ' <input type="button" class="button small" id="adddiaglesprinc" name="adddiaglesprinc" value="+P" title="'.dol_escape_htmltag($langs->trans("ClickHereToSetPrimaryDiagnostic")).'">';
+		print ' <input type="button" class="button small" id="adddiaglessec" name="adddiaglessec" value="+S" title="'.dol_escape_htmltag($langs->trans("ClickHereToSetSecondaryDiagnostic")).'">';
 		if ($user->admin) print ' '.info_admin($langs->trans("YouCanChangeValuesForThisListFromDictionarySetup"), 1);
 		print '</td></tr>';
 		print '<tr><td class="'.(empty($conf->global->DIAGNOSTIC_IS_NOT_MANDATORY)?'fieldrequired':'').'">'.$langs->trans("DiagLesPrincipal").':';
@@ -928,7 +928,7 @@ if (! ($socid > 0)) {
 		print $langs->trans("ExamensPrescrits").':';
 		print '</td><td>';
 		listexamen(1, $width, '', 0, 'examenprescrit');
-		print ' <input type="button" class="button" id="addexamenprescrit" name="addexamenprescrit" value="+">';
+		print ' <input type="button" class="button small" id="addexamenprescrit" name="addexamenprescrit" value="+">';
 		if ($user->admin) print ' '.info_admin($langs->trans("YouCanChangeValuesForThisListFromDictionarySetup"), 1);
 		print '</td></tr>';
 		print '<tr><td>';
@@ -1419,10 +1419,10 @@ if ($action == '' || $action == 'list' || $action == 'delete') {
 			print $hookmanager->resPrint;
 
 			print '<td class="nowraponall">';
-			print '<a class="editfielda" href="'.$_SERVER["PHP_SELF"].'?socid='.$obj->fk_soc.'&id='.$obj->rowid.'&action=edit">'.img_edit().'</a>';
+			print '<a class="reposition editfielda" href="'.$_SERVER["PHP_SELF"].'?socid='.$obj->fk_soc.'&id='.$obj->rowid.'&action=edit&token='.newToken().'">'.img_edit().'</a>';
 			if (!empty($user->rights->societe->supprimer)) {
 				print ' &nbsp; ';
-				print '<a href="'.$_SERVER["PHP_SELF"].'?socid='.$obj->fk_soc.'&id='.$obj->rowid.'&action=delete">'.img_delete().'</a>';
+				print '<a href="'.$_SERVER["PHP_SELF"].'?socid='.$obj->fk_soc.'&id='.$obj->rowid.'&action=delete&token='.newToken().'">'.img_delete().'</a>';
 			}
 			print '</td>';
 			print '</tr>';

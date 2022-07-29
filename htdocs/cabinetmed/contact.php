@@ -321,7 +321,7 @@ if ($id > 0 || ! empty($ref)) {
 			print '<td align="center" nowrap>';
 			if ($societe->statut < 5 && $user->rights->societe->creer) {
 				print '&nbsp;';
-				print '<a href="contact.php?socid='.$societe->id.'&amp;action=deleteline&amp;lineid='.$tab[$i]['rowid'].'">';
+				print '<a href="contact.php?socid='.$societe->id.'&action=deleteline&lineid='.$tab[$i]['rowid'].'&token='.newToken().'">';
 				print img_delete();
 				print '</a>';
 			}
