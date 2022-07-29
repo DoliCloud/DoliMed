@@ -192,7 +192,7 @@ if ($socid > 0) {
      });
     </script>';
 
-	print "<form method=\"post\" action=\"".$_SERVER["PHP_SELF"]."\">";
+	print '<form method="post" action="'.$_SERVER["PHP_SELF"].'">';
 	print '<input type="hidden" name="token" value="'.newToken().'">';
 	print '<input type="hidden" name="socid" value="'.$object->id.'">';
 	print '<input type="hidden" name="action" value="addupdate">';

@@ -156,7 +156,7 @@ if ($id > 0 || ! empty($ref)) {
 
 	print ajax_combobox('contactid');
 
-	print "<form method=\"post\" action=\"".$_SERVER["PHP_SELF"]."\">";
+	print '<form method="post" action="'.$_SERVER["PHP_SELF"].'">';
 	print '<input type="hidden" name="token" value="'.newToken().'">';
 
 	$linkback = '<a href="'.dol_buildpath('/cabinetmed/patients.php', 1).'">'.$langs->trans("BackToList").'</a>';

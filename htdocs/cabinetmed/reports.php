@@ -160,6 +160,7 @@ if ($result) {
 	//print '<div class="error">PAGE EN DEVELOPPEMENT ...</div><br>';
 
 	print '<form method="get" action="'.$_SERVER["PHP_SELF"].'">'."\n";
+	print '<input type="hidden" name="token" value="'.newToken().'">';
 
 	// Filter on categories
 	$moreforfilter='';

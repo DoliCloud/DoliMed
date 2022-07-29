@@ -58,6 +58,7 @@ $result = restrictedArea($user, 'societe', $socid, '&societe');
 $object = new Patient($db);
 if ($socid > 0) $object->fetch($socid);
 
+
 /*
  * Actions
  */
@@ -73,11 +74,11 @@ if ($action == 'add' && ! GETPOST('cancel', 'alpha')) {
 		$errors[]=$object->errors;
 	}
 
-	$alert_note=($_POST["alert_note"]?'1':'0');
+	$alert_note = (GETPOST("alert_note") ? '1' : '0');
 	$result=addAlert($db, 'alert_note', $socid, $alert_note);
 
 	if ($result == '') {
-		 $object->alert_note=$alert_note;
+		 $object->alert_note = $alert_note;
 		 $mesgs[]=$langs->trans("RecordModifiedSuccessfully");
 	} else {
 		$error++;
@@ -163,7 +164,7 @@ if ($socid > 0) {
 	}
 
 	print '<tr><td class="tdtop titlefield">'.$langs->trans("Note");
-	print '<br><input type="checkbox" id="alert_note" name="alert_note"'.((isset($_POST['alert_note'])?GETPOST('alert_note'):$object->alert_note)?' checked="checked"':'').'"> '.$langs->trans("Alert");
+	print '<br><input type="checkbox" id="alert_note" name="alert_note"'.((isset($_POST['alert_note'])?GETPOST('alert_note'):$object->alert_note)?' checked="checked"':'').'"> <label for="alert_note">'.$langs->trans("Alert").'</label>';
 	print '</td>';
 	print '<td class="tdtop">';
 	$note=($object->note_private?$object->note_private:$object->note);

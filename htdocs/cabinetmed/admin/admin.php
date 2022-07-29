@@ -120,6 +120,7 @@ $head[$h][2] = 'tababout';
 $h++;
 
 print '<form name="cabinetmed" action="'.$_SERVER["PHP_SELF"].'" method="POST">';
+print '<input type="hidden" name="token" value="'.newToken().'">';
 print '<input type="hidden" name="action" value="update">';
 
 dol_fiche_head($head, 'tabsetup', '', ((float) DOL_VERSION < 7.0 ? 0 : -1));

@@ -203,7 +203,7 @@ if ($object->id) {
     elseif ((float) DOL_VERSION < 15) dol_fiche_head($head, 'tabdocument', $langs->trans("Patient"), -1, 'patient@cabinetmed');
     else dol_fiche_head($head, 'tabdocument', $langs->trans("Patient"), -1, 'user-injured');
 
-    print "<form method=\"post\" action=\"".$_SERVER["PHP_SELF"]."\">";
+    print '<form method="post" action="'.$_SERVER["PHP_SELF"].'">';
     print '<input type="hidden" name="token" value="'.newToken().'">';
 
     // Construit liste des fichiers

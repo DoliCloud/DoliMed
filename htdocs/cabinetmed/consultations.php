@@ -555,12 +555,12 @@ if (! ($socid > 0)) {
 
 	// General
 	print '<form method="post" action="'.$_SERVER["PHP_SELF"].'">';
+	print '<input type="hidden" name="token" value="'.newToken().'">';
 	if ($action=='create') print '<input type="hidden" name="action" value="add">';
 	if ($action=='edit')   print '<input type="hidden" name="action" value="update">';
 	print '<input type="hidden" name="socid" value="'.$socid.'">';
 	print '<input type="hidden" name="id" value="'.$id.'">';
 	print '<input type="hidden" name="backtopage" value="'.GETPOST('backtopage', 'alpha').'">';
-	print '<input type="hidden" name="token" value="'.newToken().'">';
 
 	if ((float) DOL_VERSION < 7) dol_fiche_head($head, 'tabconsultations', $langs->trans("Patient"), 0, 'patient@cabinetmed');
 	elseif ((float) DOL_VERSION < 15) dol_fiche_head($head, 'tabconsultations', $langs->trans("Patient"), -1, 'patient@cabinetmed');

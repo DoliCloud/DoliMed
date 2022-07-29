@@ -203,7 +203,7 @@ if ($socid > 0) {
 	elseif ((float) DOL_VERSION < 15) dol_fiche_head($head, 'tabexambio', $langs->trans("Patient"), -1, 'patient@cabinetmed');
 	else dol_fiche_head($head, 'tabexambio', $langs->trans("Patient"), -1, 'user-injured');
 
-	print "<form method=\"post\" action=\"".$_SERVER["PHP_SELF"]."\">";
+	print '<form method="post" action="'.$_SERVER["PHP_SELF"].'">';
 	print '<input type="hidden" name="token" value="'.newToken().'">';
 
 	$linkback = '<a href="'.dol_buildpath('/cabinetmed/patients.php', 1).'">'.$langs->trans("BackToList").'</a>';
@@ -397,6 +397,7 @@ if ($socid > 0) {
 
 		// General
 		print '<form method="post" action="'.$_SERVER["PHP_SELF"].'">';
+		print '<input type="hidden" name="token" value="'.newToken().'">';
 		if ($action=='create') print '<input type="hidden" name="action" value="add">';
 		if ($action=='edit')   print '<input type="hidden" name="action" value="update">';
 		print '<input type="hidden" name="socid" value="'.$socid.'">';
