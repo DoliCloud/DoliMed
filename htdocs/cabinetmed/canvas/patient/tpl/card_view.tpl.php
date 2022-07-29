@@ -171,10 +171,10 @@ print '</tr>';
 print '</table>';
 print '</div>';
 
-print '<div class="fichehalfright"><div class="ficheaddleft">';
+print '<div class="fichehalfright">';
 
 print '<div class="underbanner clearboth"></div>';
-print '<table class="border tableforfield" width="100%">';
+print '<table class="border tableforfield centpercent">';
 
 // Tags / categories
 if (! empty($conf->categorie->enabled)  && ! empty($user->rights->categorie->lire)) {
@@ -300,7 +300,7 @@ if (!empty($conf->syncsupplierwebservices->enabled)) {
 print '</table>';
 print '</div>';
 
-print '</div></div>';
+print '</div>';
 print '<div style="clear:both"></div>';
 
 dol_fiche_end();
