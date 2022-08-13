@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #------------------------------------------------------
 # Script to push language files to Transifex
 #
@@ -7,10 +7,10 @@
 # Usage: txpush.sh (source|xx_XX) [-r dolimed.file] [-f]
 #------------------------------------------------------
 
-
-#echo TX_TOKEN=$TX_TOKEN
-
 export project='dolimed'
+
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+cd $DIR/../..
 
 # Syntax
 if [ "x$1" = "x" ]
