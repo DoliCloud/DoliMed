@@ -453,9 +453,8 @@ if ($action == '' || $action == 'delete') {
 if ($action == '' || $action == 'delete') {
 	// Confirm delete exam
 	if (GETPOST("action") == 'delete') {
-		$html = new Form($db);
-		$ret=$html->form_confirm($_SERVER["PHP_SELF"]."?socid=".$socid.'&id='.GETPOST('id', 'int'), $langs->trans("DeleteAnExam"), $langs->trans("ConfirmDeleteExam"), "confirm_delete", '', 0, 1);
-		if ($ret == 'html') print '<br>';
+		$formconfirm = $form->formconfirm($_SERVER["PHP_SELF"]."?socid=".$socid.'&id='.GETPOST('id', 'int'), $langs->trans("DeleteAnExam"), $langs->trans("ConfirmDeleteExam"), "confirm_delete", '', 0, 1);
+		print $formconfirm;
 	}
 
 

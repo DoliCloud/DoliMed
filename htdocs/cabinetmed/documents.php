@@ -220,7 +220,7 @@ if ($object->id) {
     print '<div class="fichecenter">';
 
     print '<div class="underbanner clearboth"></div>';
-    print '<table class="border tableforfield" width="100%">';
+    print '<table class="border tableforfield centpercent">';
 
     // Prefix
 	if (! empty($conf->global->SOCIETE_USEPREFIX))  // Old not used prefix field
@@ -277,7 +277,7 @@ if ($object->id) {
     if ($action == 'delete')
     {
 		$langs->load("companies");	// Need for string DeleteFile+ConfirmDeleteFiles
-		$ret = $form->form_confirm(
+		$formconfirm = $form->formconfirm(
 				$_SERVER["PHP_SELF"] . '?id=' . $object->id . '&urlfile=' . urlencode(GETPOST("urlfile")) . '&linkid=' . GETPOST('linkid', 'int') . (empty($param)?'':$param),
 				$langs->trans('DeleteFile'),
 				$langs->trans('ConfirmDeleteFile'),
@@ -286,7 +286,7 @@ if ($object->id) {
 				0,
 				1
 		);
-		if ($ret == 'html') print '<br>';
+		print $formconfirm;
     }
 
 

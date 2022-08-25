@@ -1120,7 +1120,7 @@ if ($action == '' || $action == 'list' || $action == 'delete') {
 	print '<div class="tabsAction">';
 
 	if ($user->rights->societe->creer) {
-		print '<a class="butAction" href="'.$_SERVER["PHP_SELF"].'?socid='.$soc->id.'&amp;action=create">'.$langs->trans("NewConsult").'</a>';
+		print '<a class="butAction" href="'.$_SERVER["PHP_SELF"].'?socid='.$soc->id.'&action=create">'.$langs->trans("NewConsult").'</a>';
 	}
 
 	print '</div>';
@@ -1141,8 +1141,8 @@ if ($action == '' || $action == 'list' || $action == 'delete') {
 
 	// Confirm delete consultation
 	if (GETPOST("action") == 'delete') {
-		$ret=$form->formconfirm($_SERVER["PHP_SELF"]."?socid=".$socid.'&id='.GETPOST('id', 'int'), $langs->trans("DeleteAConsultation"), $langs->trans("ConfirmDeleteConsultation"), "confirm_delete", '', 0, 1);
-		if ($ret == 'html') print '<br>';
+		$formconfirm = $form->formconfirm($_SERVER["PHP_SELF"]."?socid=".$socid.'&id='.GETPOST('id', 'int'), $langs->trans("DeleteAConsultation"), $langs->trans("ConfirmDeleteConsultation"), "confirm_delete", '', 0, 1);
+		print $formconfirm;
 	}
 
 	print '<form method="POST" id="searchFormList" action="'.$_SERVER["PHP_SELF"].'" name="formfilter" autocomplete="off">'."\n";
