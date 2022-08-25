@@ -477,7 +477,7 @@ if ($resql) {
 		print '<tr class="oddeven">';
 
 		if (! empty($arrayfields['c.rowid']['checked'])) {
-			print '<td>';
+			print '<td class="nowraponall">';
 			$consultstatic->id=$obj->cid;
 			$consultstatic->fk_soc=$obj->rowid;
 			print $consultstatic->getNomUrl(1, '&amp;backtopage='.urlencode($_SERVER["PHP_SELF"]));
@@ -485,7 +485,7 @@ if ($resql) {
 		}
 
 		if (! empty($arrayfields['s.nom']['checked'])) {
-			print '<td class="tdoverflowmax200" title="'.dol_escape_htmltag($obj->name).'">';
+			print '<td class="tdoverflowmax150" title="'.dol_escape_htmltag($obj->name).'">';
 			$thirdpartystatic->id=$obj->rowid;
 			$thirdpartystatic->name=$obj->name;
 			$thirdpartystatic->client=$obj->client;
@@ -503,7 +503,7 @@ if ($resql) {
 		}
 
 		if (! empty($arrayfields['c.fk_user']['checked'])) {
-			print '<td class="nowraponall">';
+			print '<td class="nowraponall tdoverflowmax125">';
 			$userstatic->fetch($obj->fk_user_creation);
 			print $userstatic->getNomUrl(1);
 			print '</td>';
@@ -520,13 +520,13 @@ if ($resql) {
 		}
 
 		if (! empty($arrayfields['c.typepriseencharge']['checked'])) {
-			print '<td>';
+			print '<td class="tdoverflowmax100">';
 			print $obj->typepriseencharge;
 			print '</td>';
 		}
 
 		if (! empty($arrayfields['c.typevisit']['checked'])) {
-			print '<td>';
+			print '<td class="tdoverflowmax125" title="'.dol_escape_htmltag($langs->trans($obj->typevisit)).'">';
 			print $langs->trans($obj->typevisit);
 			print '</td>';
 		}
@@ -560,48 +560,50 @@ if ($resql) {
 		$bankid = array();
 
 		if (! empty($arrayfields['typepayment']['checked'])) {
-			print '<td>';
 			$foundamount=0;
+			$s = '';
 			if (price2num($obj->montant_cheque) > 0) {
-				if ($foundamount) print ' + ';
-				print $langs->trans("Cheque");
+				if ($foundamount) $s .= ' + ';
+				$s .= $langs->trans("Cheque");
 				if ($conf->banque->enabled && $bankid['CHQ']['account_id']) {
 					$bank=new Account($db);
 					$bank->fetch($bankid['CHQ']['account_id']);
-					print '&nbsp;('.$bank->getNomUrl(0, 'transactions').')';
+					$s .= '&nbsp;('.$bank->getNomUrl(0, 'transactions').')';
 				}
 				$foundamount++;
 			}
 			if (price2num($obj->montant_espece) > 0) {
-				if ($foundamount) print ' + ';
-				print $langs->trans("Cash");
+				if ($foundamount) $s .= ' + ';
+				$s .= $langs->trans("Cash");
 				if ($conf->banque->enabled && $bankid['LIQ']['account_id']) {
 					$bank=new Account($db);
 					$bank->fetch($bankid['LIQ']['account_id']);
-					print '&nbsp;('.$bank->getNomUrl(0, 'transactions').')';
+					$s .= '&nbsp;('.$bank->getNomUrl(0, 'transactions').')';
 				}
 				$foundamount++;
 			}
 			if (price2num($obj->montant_carte) > 0) {
-				if ($foundamount) print ' + ';
-				print $langs->trans("CreditCard");
+				if ($foundamount) $s .= ' + ';
+				$s .= $langs->trans("CreditCard");
 				if ($conf->banque->enabled && $bankid['CB']['account_id']) {
 					$bank=new Account($db);
 					$bank->fetch($bankid['CB']['account_id']);
-					print '&nbsp;('.$bank->getNomUrl(0, 'transactions').')';
+					$s .= '&nbsp;('.$bank->getNomUrl(0, 'transactions').')';
 				}
 				$foundamount++;
 			}
 			if (price2num($obj->montant_tiers) > 0) {
-				if ($foundamount) print ' + ';
-				print $langs->trans("PaymentTypeThirdParty");
+				if ($foundamount) $s .= ' + ';
+				$s .= $langs->trans("PaymentTypeThirdParty");
 				if ($conf->banque->enabled && $bankid['OTH']['account_id']) {
 					$bank=new Account($db);
 					$bank->fetch($bankid['OTH']['account_id']);
-					print '&nbsp;('.$bank->getNomUrl(0, 'transactions').')';
+					$s .= '&nbsp;('.$bank->getNomUrl(0, 'transactions').')';
 				}
 				$foundamount++;
 			}
+			print '<td class="tdoverflowmax125" title="'.dol_escape_htmltag($s).'">';
+			print dol_escape_htmltag($s);
 			print '</td>';
 		}
 
