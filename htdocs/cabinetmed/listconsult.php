@@ -340,23 +340,24 @@ if ($resql) {
 	$moreforfilter='';
 	if (! empty($conf->categorie->enabled)) {
 		$moreforfilter.='<div class="divsearchfield">';
-		$moreforfilter.=$langs->trans('Categories'). ': ';
-		$moreforfilter.=$formother->select_categories(2, $search_categ, 'search_categ');
+		$moreforfilter.=img_picto('', 'category', 'class="pictofixedwidth"').$formother->select_categories(2, $search_categ, 'search_categ', 1, $langs->trans('Categories'));
 		$moreforfilter.='</div>';
 	}
 
 	// If the user can view prospects other than his'
 	if ($user->rights->societe->client->voir || $socid) {
 		$moreforfilter.='<div class="divsearchfield">';
-		$moreforfilter.=$langs->trans('ConsultCreatedBy'). ': ';
-		$moreforfilter.=$formother->select_salesrepresentatives($search_sale, 'search_sale', $user, 0, 1, 'maxwidth300');
+		$moreforfilter.=img_picto('', 'user', 'class="pictofixedwidth"').$formother->select_salesrepresentatives($search_sale, 'search_sale', $user, 0, $langs->trans('ConsultCreatedBy'), 'maxwidth300');
 		$moreforfilter.='</div>';
 	}
 	// To add filter on contact
 	$width="200";
 	$moreforfilter.='<div class="divsearchfield">';
-	$moreforfilter.=$langs->trans('Correspondants'). ': ';
-	$moreforfilter.=$form->selectcontacts(0, $search_contactid, 'search_contactid', 1, '', '', 1);
+	if ((float) DOL_VERSION >= 16.0) {
+		$moreforfilter.=img_picto('', 'user-md', 'class="pictofixedwidth"').$form->selectcontacts(0, $search_contactid, 'search_contactid', $langs->trans('Correspondants'), '', '', 1);
+	} else {
+		$moreforfilter.=img_picto('', 'user-md', 'class="pictofixedwidth"').$form->selectcontacts(0, $search_contactid, 'search_contactid', 1, '', '', 1);
+	}
 	$moreforfilter.='</div>';
 
 	$parameters=array();
