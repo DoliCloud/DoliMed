@@ -618,7 +618,11 @@ if ($user->rights->societe->client->voir || $socid) {
 $width="200";
 $moreforfilter.='<div class="divsearchfield">';
 //$moreforfilter.=$langs->trans('Correspondants'). ': ';
-$moreforfilter.=img_picto('', 'user-md', 'class="pictofixedwidth"').$form->selectcontacts(0, $search_contactid, 'search_contactid', $langs->trans('Correspondants'), '', '', 1);
+if ((float) DOL_VERSION >= 16.0) {
+	$moreforfilter.=img_picto('', 'user-md', 'class="pictofixedwidth"').$form->selectcontacts(0, $search_contactid, 'search_contactid', $langs->trans('Correspondants'), '', '', 1);
+} else {
+	$moreforfilter.=img_picto('', 'user-md', 'class="pictofixedwidth"').$form->selectcontacts(0, $search_contactid, 'search_contactid', 1, '', '', 1);
+}
 $moreforfilter.='</div>';
 // To add filter on diagnostic
 $width="200";
