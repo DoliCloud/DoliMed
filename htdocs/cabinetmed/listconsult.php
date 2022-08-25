@@ -602,7 +602,7 @@ if ($resql) {
 				}
 				$foundamount++;
 			}
-			print '<td class="tdoverflowmax125" title="'.dol_escape_htmltag($s).'">';
+			print '<td class="tdoverflowmax80" title="'.dol_escape_htmltag($s).'">';
 			print dol_escape_htmltag($s);
 			print '</td>';
 		}
