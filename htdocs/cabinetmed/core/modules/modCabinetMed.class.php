@@ -256,7 +256,7 @@ class modCabinetMed extends DolibarrModules
 									'type'=>'top',          // This is a Top menu entry
 									'titre'=>'MenuFinancialMed',
 									'mainmenu'=>'accountancy2',
-									'url'=>'/cabinetmed/compta.php?mainmenu=accountancy2&amp;leftmenu=&search_sale=__USERID__',
+									'url'=>'/cabinetmed/compta.php?mainmenu=accountancy2&leftmenu=&search_sale=__USER_ID__',
 									'langs'=>'cabinetmed@cabinetmed',    // Lang file to use (without .lang) by module. File must be in langs/code_CODE/ directory.
 									'position'=>55,
 									'enabled'=>'$conf->cabinetmed->enabled',         // Define condition to show or hide menu entry. Use '$conf->voyage->enabled' if entry must be visible if module is enabled.
@@ -296,7 +296,7 @@ class modCabinetMed extends DolibarrModules
 								'titre'=>'ListPatient',
 								'mainmenu'=>'patients',
 								'leftmenu'=>'patients_list',
-								'url'=>'/cabinetmed/patients.php?leftmenu=customers&search_sale=__USERID__',
+								'url'=>'/cabinetmed/patients.php?leftmenu=customers&search_sale=__USER_ID__',
 								'langs'=>'cabinetmed@cabinetmed',  // Lang file to use (without .lang) by module. File must be in langs/code_CODE/ directory.
 								'position'=>110,
 								'enabled'=>'$conf->cabinetmed->enabled',         // Define condition to show or hide menu entry. Use '$conf->voyage->enabled' if entry must be visible if module is enabled.
@@ -334,7 +334,7 @@ class modCabinetMed extends DolibarrModules
 								'titre'=>'ListConsult',
 								'mainmenu'=>'patients',
 								'leftmenu'=>'consultations_list',
-								'url'=>'/cabinetmed/listconsult.php?leftmenu=customers&search_sale=__USERID__',
+								'url'=>'/cabinetmed/listconsult.php?leftmenu=customers&search_sale=__USER_ID__',
 								'langs'=>'cabinetmed@cabinetmed',  // Lang file to use (without .lang) by module. File must be in langs/code_CODE/ directory.
 								'position'=>122,
 								'enabled'=>'$conf->cabinetmed->enabled',         // Define condition to show or hide menu entry. Use '$conf->voyage->enabled' if entry must be visible if module is enabled.
@@ -346,7 +346,7 @@ class modCabinetMed extends DolibarrModules
 							'titre'=>'Statistics',
 							'mainmenu'=>'patients',
 							'leftmenu'=>'consultations_stats',
-							'url'=>'/cabinetmed/stats/index.php?leftmenu=customers&userid=__USERID__',
+							'url'=>'/cabinetmed/stats/index.php?leftmenu=customers&userid=__USER_ID__',
 							'langs'=>'cabinetmed@cabinetmed',  // Lang file to use (without .lang) by module. File must be in langs/code_CODE/ directory.
 							'position'=>123,
 							'enabled'=>'$conf->cabinetmed->enabled',         // Define condition to show or hide menu entry. Use '$conf->voyage->enabled' if entry must be visible if module is enabled.
@@ -358,7 +358,7 @@ class modCabinetMed extends DolibarrModules
 								'titre'=>'Revenues',
 								'mainmenu'=>'patients',
 								'leftmenu'=>'consultations_compta',
-								'url'=>'/cabinetmed/compta.php?mainmenu=patients&amp;leftmenu=&search_sale=__USERID__',
+								'url'=>'/cabinetmed/compta.php?mainmenu=patients&leftmenu=&search_sale=__USER_ID__',
 								'langs'=>'cabinetmed@cabinetmed',  // Lang file to use (without .lang) by module. File must be in langs/code_CODE/ directory.
 								'position'=>124,
 								'enabled'=>'$conf->cabinetmed->enabled',         // Define condition to show or hide menu entry. Use '$conf->voyage->enabled' if entry must be visible if module is enabled.
@@ -424,7 +424,7 @@ class modCabinetMed extends DolibarrModules
 		'titre'=>'Statistics',
 		'mainmenu'=>'contacts',
 		'leftmenu'=>'',
-		'url'=>'/cabinetmed/stats/index_contacts.php?leftmenu=customers&userid=__USERID__',
+		'url'=>'/cabinetmed/stats/index_contacts.php?leftmenu=customers&userid=__USER_ID__',
 		'langs'=>'',  // Lang file to use (without .lang) by module. File must be in langs/code_CODE/ directory.
 		'position'=>140,
 		'enabled'=>'$conf->cabinetmed->enabled',         // Define condition to show or hide menu entry. Use '$conf->voyage->enabled' if entry must be visible if module is enabled.
@@ -437,7 +437,7 @@ class modCabinetMed extends DolibarrModules
 		'titre'=>'ReportingsMed',
 		'mainmenu'=>'accountancy2',
 		'leftmenu'=>'',
-		'url'=>'/cabinetmed/compta.php?mainmenu=accountancy2&amp;leftmenu=&search_sale=__USERID__',
+		'url'=>'/cabinetmed/compta.php?mainmenu=accountancy2&leftmenu=&search_sale=__USER_ID__',
 		'langs'=>'',  // Lang file to use (without .lang) by module. File must be in langs/code_CODE/ directory.
 		'position'=>100,
 		'enabled'=>'$conf->cabinetmed->enabled',         // Define condition to show or hide menu entry. Use '$conf->voyage->enabled' if entry must be visible if module is enabled.
