@@ -54,7 +54,7 @@ if (! $year_start) {
 }
 
 // Define modecompta ('CREANCES-DETTES' or 'RECETTES-DEPENSES')
-$modecompta=GETPOST("modecompta", 'aZ09') ? GETPOST("modecompta", 'aZ09') : $conf->global->COMPTA_MODE;
+$modecompta= GETPOST("modecompta", 'aZ09') ? GETPOST("modecompta", 'aZ09') : getDolGlobalString('COMPTA_MODE');
 $search_sale=GETPOST('search_sale', 'int');
 
 
@@ -81,18 +81,18 @@ $htmlother=new FormOther($db);
 // Affiche en-tete du rapport
 $nom=$langs->trans("CabinetMedAnnualSummaryInputOutput");
 //$nom.='<br>('.$langs->trans("SeeReportInDueDebtMode",'<a href="'.$_SERVER["PHP_SELF"].'?year_start='.$year_start.'&modecompta=CREANCES-DETTES">','</a>').')';
-$period=$year_start." - ".$year_end;
+$period = $year_start." - ".$year_end;
 if ($user->rights->societe->client->voir || $socid) {
-	$period.='<br>';
-	$period.=$langs->trans('ConsultCreatedBy'). ': ';
-	$period.=$htmlother->select_salesrepresentatives($search_sale, 'search_sale', $user, 0, 1, 'maxwidth300');
+	$period .= '<br>';
+	$period .= $langs->trans('ConsultCreatedBy'). ': ';
+	$period .= $htmlother->select_salesrepresentatives($search_sale, 'search_sale', $user, 0, 1, 'maxwidth300');
 }
 $periodlink=($year_start?"<a href='".$_SERVER["PHP_SELF"]."?year_start=".($year_start-1).($search_sale > 0 ? "&search_sale=".((int) $search_sale) : '')."'>".img_previous()."</a> <a href='".$_SERVER["PHP_SELF"]."?year_start=".($year_start+1)."&search_sale=".$search_sale."'>".img_next()."</a>":"");
 $description=$langs->trans("CabinetMedRulesResultInOut");
 $builddate=dol_now();
 $exportlink='';
 
-report_header($nom, $nomlink, $period, $periodlink, $description, $builddate, $exportlink);
+report_header($nom, '', $period, $periodlink, $description, $builddate, $exportlink);
 
 
 /*
@@ -119,8 +119,19 @@ if ($result) {
 	$i = 0;
 	while ($i < $num) {
 		$row = $db->fetch_object($result);
+
 		$d=dol_print_date($db->jdate($row->datecons), '%Y-%m-%d');
 		$dm=dol_print_date($db->jdate($row->datecons), '%Y-%m');
+
+		if (empty($encaiss_chq[$dm])) $encaiss_chq[$dm] = 0;
+		if (empty($encaiss_esp[$dm])) $encaiss_esp[$dm] = 0;
+		if (empty($encaiss_tie[$dm])) $encaiss_tie[$dm] = 0;
+		if (empty($encaiss_car[$dm])) $encaiss_car[$dm] = 0;
+		if (empty($encaiss_chq[$d])) $encaiss_chq[$d] = 0;
+		if (empty($encaiss_esp[$d])) $encaiss_esp[$d] = 0;
+		if (empty($encaiss_tie[$d])) $encaiss_tie[$d] = 0;
+		if (empty($encaiss_car[$d])) $encaiss_car[$d] = 0;
+
 		$encaiss_chq[$dm] += $row->montant_cheque;
 		$encaiss_esp[$dm] += $row->montant_espece;
 		$encaiss_tie[$dm] += $row->montant_tiers;
@@ -201,7 +212,7 @@ for ($mois = 1+$nb_mois_decalage ; $mois <= 12+$nb_mois_decalage ; $mois++) {
 	print "</td>";
 	for ($annee = $year_start ; $annee <= $year_end ; $annee++) {
 		$annee_decalage=$annee;
-		if ($mois>12) {$annee_decalage=$annee+1;}
+		if ($mois > 12) { $annee_decalage = $annee+1; }
 		$case = strftime("%Y-%m", dol_mktime(12, 0, 0, $mois_modulo, 1, $annee_decalage));
 
 		/*print '<td align="right">&nbsp;';
@@ -213,42 +224,57 @@ for ($mois = 1+$nb_mois_decalage ; $mois <= 12+$nb_mois_decalage ; $mois++) {
 		print "</td>";*/
 
 		print '<td align="right">';
-		if ($encaiss_chq[$case] != 0) {
+		if (isset($encaiss_chq[$case]) && $encaiss_chq[$case] != 0) {
 			//print '<a href="clientfourn.php?year='.$annee_decalage.'&month='.$mois_modulo.'">';
 			print price($encaiss_chq[$case]);
 			//print '</a>';
-			$totentrees_chq[$annee]+=$encaiss_chq[$case];
+			if (!isset($totentrees_chq[$annee])) {
+				$totentrees_chq[$annee] = 0;
+			}
+			$totentrees_chq[$annee] += $encaiss_chq[$case];
 		}
 		print "</td>";
 		print '<td align="right">';
-		if ($encaiss_car[$case] != 0) {
+		if (isset($encaiss_car[$case]) && $encaiss_car[$case] != 0) {
 			//print '<a href="clientfourn.php?year='.$annee_decalage.'&month='.$mois_modulo.'">';
 			print price($encaiss_car[$case]);
 			//print '</a>';
-			$totentrees_car[$annee]+=$encaiss_car[$case];
+			if (!isset($totentrees_car[$annee])) {
+				$totentrees_car[$annee] = 0;
+			}
+			$totentrees_car[$annee] += $encaiss_car[$case];
 		}
 		print "</td>";
 		print '<td align="right">';
-		if ($encaiss_esp[$case] != 0) {
+		if (isset($encaiss_esp[$case]) && $encaiss_esp[$case] != 0) {
 			//print '<a href="clientfourn.php?year='.$annee_decalage.'&month='.$mois_modulo.'">';
 			print price($encaiss_esp[$case]);
 			//print '</a>';
-			$totentrees_esp[$annee]+=$encaiss_esp[$case];
+			if (!isset($totentrees_esp[$annee])) {
+				$totentrees_esp[$annee] = 0;
+			}
+			$totentrees_esp[$annee] += $encaiss_esp[$case];
 		}
 		print "</td>";
 		print '<td align="right">';
-		if ($encaiss_tie[$case] != 0) {
+		if (isset($encaiss_tie[$case]) && $encaiss_tie[$case] != 0) {
 			//print '<a href="clientfourn.php?year='.$annee_decalage.'&month='.$mois_modulo.'">';
 			print price($encaiss_tie[$case]);
 			//print '</a>';
-			$totentrees_tie[$annee]+=$encaiss_tie[$case];
+			if (!isset($totentrees_tie[$annee])) {
+				$totentrees_tie[$annee] = 0;
+			}
+			$totentrees_tie[$annee] += $encaiss_tie[$case];
 		}
 		print "</td>";
 		print '<td class="liste_total right nowraponall"><strong>';
 		//print '<a href="clientfourn.php?year='.$annee_decalage.'&month='.$mois_modulo.'">';
-		print price($encaiss_chq[$case]+$encaiss_esp[$case]+$encaiss_car[$case]+$encaiss_tie[$case]);
+		print price((isset($encaiss_chq[$case])?$encaiss_chq[$case]:0)+(isset($encaiss_esp[$case])?$encaiss_esp[$case]:0)+(isset($encaiss_car[$case])?$encaiss_car[$case]:0)+(isset($encaiss_tie[$case])?$encaiss_tie[$case]:0));
 		//print '</a>';
-		$totentrees[$annee]+=$encaiss_tie[$case];
+		if (!isset($totentrees[$annee])) {
+			$totentrees[$annee] = 0;
+		}
+		$totentrees[$annee] += (isset($encaiss_chq[$case])?$encaiss_chq[$case]:0)+(isset($encaiss_esp[$case])?$encaiss_esp[$case]:0)+(isset($encaiss_car[$case])?$encaiss_car[$case]:0)+(isset($encaiss_tie[$case])?$encaiss_tie[$case]:0);
 		print "</strong></td>";
 		print '<td style="border-right: 1px solid #BBBBBB;"></td>';
 	}
@@ -273,7 +299,7 @@ for ($mois = 1+$nb_mois_decalage ; $mois <= 12+$nb_mois_decalage ; $mois++) {
 			$case2 = strftime("%Y-%m-%d", dol_mktime(12, 0, 0, $mois_modulo, $day, $annee_decalage2));
 
 			print '<td align="right">';
-			if ($encaiss_chq[$case2] != 0) {
+			if (isset($encaiss_chq[$case2]) && $encaiss_chq[$case2] != 0) {
 				//print '<a href="clientfourn.php?year='.$annee_decalage.'&month='.$mois_modulo.'">';
 				print price($encaiss_chq[$case2]);
 				//print '</a>';
@@ -281,7 +307,7 @@ for ($mois = 1+$nb_mois_decalage ; $mois <= 12+$nb_mois_decalage ; $mois++) {
 			}
 			print "</td>";
 			print '<td align="right">';
-			if ($encaiss_car[$case2] != 0) {
+			if (isset($encaiss_car[$case2]) && $encaiss_car[$case2] != 0) {
 				//print '<a href="clientfourn.php?year='.$annee_decalage.'&month='.$mois_modulo.'">';
 				print price($encaiss_car[$case2]);
 				//print '</a>';
@@ -289,7 +315,7 @@ for ($mois = 1+$nb_mois_decalage ; $mois <= 12+$nb_mois_decalage ; $mois++) {
 			}
 			print "</td>";
 			print '<td align="right">';
-			if ($encaiss_esp[$case2] != 0) {
+			if (isset($encaiss_esp[$case2]) && $encaiss_esp[$case2] != 0) {
 				//print '<a href="clientfourn.php?year='.$annee_decalage.'&month='.$mois_modulo.'">';
 				print price($encaiss_esp[$case2]);
 				//print '</a>';
@@ -297,7 +323,7 @@ for ($mois = 1+$nb_mois_decalage ; $mois <= 12+$nb_mois_decalage ; $mois++) {
 			}
 			print "</td>";
 			print '<td align="right">';
-			if ($encaiss_tie[$case2] != 0) {
+			if (isset($encaiss_tie[$case2]) && $encaiss_tie[$case2] != 0) {
 				//print '<a href="clientfourn.php?year='.$annee_decalage.'&month='.$mois_modulo.'">';
 				print price($encaiss_tie[$case2]);
 				//print '</a>';
@@ -306,7 +332,7 @@ for ($mois = 1+$nb_mois_decalage ; $mois <= 12+$nb_mois_decalage ; $mois++) {
 			print "</td>";
 			print '<td class="liste_total right nowraponall"><strong>';
 			//print '<a href="clientfourn.php?year='.$annee_decalage.'&month='.$mois_modulo.'">';
-			print price($encaiss_chq[$case2]+$encaiss_esp[$case2]+$encaiss_car[$case2]+$encaiss_tie[$case2]);
+			print price((isset($encaiss_chq[$case2])?$encaiss_chq[$case2]:0)+(isset($encaiss_esp[$case2])?$encaiss_esp[$case2]:0)+(isset($encaiss_car[$case2])?$encaiss_car[$case2]:0)+(isset($encaiss_tie[$case2])?$encaiss_tie[$case2]:0));
 			//print '</a>';
 			//$totentrees[$annee]+=$encaiss_tie[$case2];
 			print "</strong></td>";
@@ -328,7 +354,7 @@ for ($annee = $year_start ; $annee <= $year_end ; $annee++) {
 	print '<td class="liste_total" align="right">'.(isset($totentrees_car[$annee])?price($totentrees_car[$annee]):'&nbsp;').'</td>';
 	print '<td class="liste_total" align="right">'.(isset($totentrees_esp[$annee])?price($totentrees_esp[$annee]):'&nbsp;').'</td>';
 	print '<td class="liste_total" align="right">'.(isset($totentrees_tie[$annee])?price($totentrees_tie[$annee]):'&nbsp;').'</td>';
-	print '<td class="liste_total" align="right"><strong>'.price($totentrees_chq[$annee]+$totentrees_esp[$annee]+$totentrees_car[$annee]+$totentrees_tie[$annee]).'</strong></td>';
+	print '<td class="liste_total" align="right"><strong>'.price((isset($totentrees_chq[$annee])?$totentrees_chq[$annee]:0)+(isset($totentrees_esp[$annee])?$totentrees_esp[$annee]:0)+(isset($totentrees_car[$annee])?$totentrees_car[$annee]:0)+(isset($totentrees_tie[$annee])?$totentrees_tie[$annee]:0)).'</strong></td>';
 	print '<td style="border-right: 1px solid #BBBBBB;"></td>';
 }
 print "</tr>\n";
