@@ -161,7 +161,8 @@ print '<div class="fichecenter"><div class="fichethirdleft">';
 print '<form name="stats" method="POST" action="'.$_SERVER["PHP_SELF"].'">';
 print '<input type="hidden" name="token" value="'.newToken().'">';
 
-print '<table class="noborder" width="100%">';
+print '<div class="div-table-responsive-no-min">';
+print '<table class="noborder centpercent">';
 print '<tr class="liste_titre"><td class="liste_titre" colspan="2">'.$langs->trans("Filter").'</td></tr>';
 /*print '<tr><td>'.$langs->trans("ThirdParty").'</td><td>';
 if ($mode == 'customer') $filter='s.client in (1,2,3)';
@@ -182,6 +183,8 @@ print $form->selectarray('typevisit', $arraytype, GETPOST('typevisit'));
 print '</td></tr>';
 print '<tr><td align="center" colspan="2"><input type="submit" name="submit" class="button" value="'.$langs->trans("Refresh").'"></td></tr>';
 print '</table>';
+print '</div>';
+
 print '</form>';
 
 print '<br><br>';
@@ -230,7 +233,9 @@ print '</div><div class="fichetwothirdright"><div class="ficheaddleft">';
 
 // Show graphs
 print '<table class="border" width="100%"><tr class="pair nohover"><td align="center">';
-if ($mesg) { print $mesg; } else {
+if ($mesg) {
+	print $mesg;
+} else {
 	print $px1->show();
 	print "<br>\n";
 	print $px2->show();
