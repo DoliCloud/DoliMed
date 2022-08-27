@@ -132,7 +132,7 @@ class Patient extends Societe
 	 *
 	 *  @param		DoliDB		$db      Database handler
 	 */
-	function Patient($db)
+	function __construct($db)
 	{
 		global $conf;
 

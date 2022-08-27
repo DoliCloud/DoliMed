@@ -192,11 +192,11 @@ if ($mode && ! count($data)) {
 	print $langs->trans("NoRecordFound").'<br>';
 	print '<br>';
 } else {
-	if ($mode == 'cabinetmedbycountry') print $langs->trans("ConsultsByCountryDesc").'<br>';
-	elseif ($mode == 'cabinetmedbystate') print $langs->trans("ConsultsByStateDesc").'<br>';
-	elseif ($mode == 'cabinetmedbytown') print $langs->trans("ConsultsByTownDesc").'<br>';
+	if ($mode == 'cabinetmedbycountry') print '<span class="opacitymedium">'.$langs->trans("ConsultsByCountryDesc").'</span><br>';
+	elseif ($mode == 'cabinetmedbystate') print '<span class="opacitymedium">'.$langs->trans("ConsultsByStateDesc").'</span><br>';
+	elseif ($mode == 'cabinetmedbytown') print '<span class="opacitymedium">'.$langs->trans("ConsultsByTownDesc").'</span><br>';
 	else {
-		print $langs->trans("ConsultsStatisticsDesc").'<br>';
+		print '<span class="opacitymedium">'.$langs->trans("ConsultsStatisticsDesc").'</span><br>';
 		print '<br>';
 		print '<a href="'.$_SERVER["PHP_SELF"].'?mode=cabinetmedbycountry">'.$langs->trans("ConsultsStatisticsByCountries").'</a><br>';
 		print '<br>';

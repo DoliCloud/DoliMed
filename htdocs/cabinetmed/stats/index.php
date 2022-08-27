@@ -83,7 +83,8 @@ print_fiche_titre($title, '');
 dol_mkdir($dir);
 
 $morefilter=($codageccam?" AND codageccam LIKE '".$db->escape(preg_replace('/\*/', '%', $codageccam))."'":'');
-if (! empty($typevisit) && $typevisit != '-1') $morefilter.=" AND typevisit = '".$typevisit."'";
+if (! empty($typevisit) && $typevisit != '-1') $morefilter.=" AND typevisit = '".$db->escape($typevisit)."'";
+
 $stats = new CabinetMedStats($db, $socid, $mode, ($userid>0?$userid:0), $morefilter);
 
 // Build graphic number of object
@@ -191,9 +192,9 @@ $data = $stats->getAllByYear();
 print '<table class="noborder" width="100%">';
 print '<tr class="liste_titre" height="24">';
 print '<td class="center">'.$langs->trans("Year").'</td>';
-print '<td class="center">'.$langs->trans("Number").'</td>';
-print '<td class="center">'.$langs->trans("AmountTotal").'</td>';
-print '<td class="center">'.$langs->trans("AmountAverage").'</td>';
+print '<td class="right">'.$langs->trans("Number").'</td>';
+print '<td class="right">'.$langs->trans("AmountTotal").'</td>';
+print '<td class="right">'.$langs->trans("AmountAverage").'</td>';
 print '</tr>';
 
 $oldyear=0;
@@ -204,7 +205,7 @@ foreach ($data as $val) {
 		print '<tr height="24">';
 		print '<td class="center">'.$oldyear.'</td>';
 		print '<td align="right">0</td>';
-		print '<td align="right">0</td>';
+		print '<td align="right"><span class="amount">0</span></td>';
 		print '<td align="right">0</td>';
 		print '</tr>';
 	}
@@ -215,7 +216,7 @@ foreach ($data as $val) {
 	//print '</a>';
 	print '</td>';
 	print '<td align="right">'.$val['nb'].'</td>';
-	print '<td align="right">'.price(price2num($val['total'], 'MT'), 1).'</td>';
+	print '<td align="right"><span class="amount">'.price(price2num($val['total'], 'MT'), 1).'</span></td>';
 	print '<td align="right">'.price(price2num($val['avg'], 'MT'), 1).'</td>';
 	print '</tr>';
 	$oldyear=$year;

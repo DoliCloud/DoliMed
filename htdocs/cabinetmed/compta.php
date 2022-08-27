@@ -185,14 +185,13 @@ for ($annee = $year_start ; $annee <= $year_end ; $annee++) {
 }
 print '</tr>';
 
-$var=true;
 
 // Loop on each month
 $nb_mois_decalage = $conf->global->SOCIETE_FISCAL_MONTH_START?($conf->global->SOCIETE_FISCAL_MONTH_START-1):0;
 for ($mois = 1+$nb_mois_decalage ; $mois <= 12+$nb_mois_decalage ; $mois++) {
 	$mois_modulo = $mois;
 	if ($mois>12) {$mois_modulo = $mois-12;}
-	$var=!$var;
+
 	print '<tr class="oddeven">';
 	print "<td>";
 	print '<table class="nobordernopadding"><tr valign="middle"><td width="24px">';
@@ -262,10 +261,8 @@ for ($mois = 1+$nb_mois_decalage ; $mois <= 12+$nb_mois_decalage ; $mois++) {
 	if ($dayendmonth <= 28) $dayendmonth=29;
 	if ($dayendmonth > 31) $dayendmonth=31;
 
-	$var2=$var;
 	for ($day=1; $day <= $dayendmonth; $day++) {
-		$var2=!$var2;
-		print '<tr class="starthidden month_'.$mois_modulo.($var2?' pair':' impair').'">';
+		print '<tr class="starthidden month_'.$mois_modulo.'">';
 		print "<td> &nbsp; &nbsp; &nbsp; &nbsp; ".dol_print_date(dol_mktime(12, 0, 0, $mois_modulo, $day, $annee), "%d");
 		//print ' '.dol_print_date(dol_mktime(12,0,0,$mois_modulo,$day,$annee),"%m");
 		print "</td>";
@@ -322,7 +319,6 @@ for ($mois = 1+$nb_mois_decalage ; $mois <= 12+$nb_mois_decalage ; $mois++) {
 }
 
 // Total
-$var=!$var;
 $nbcols=0;
 print '<tr class="liste_total"><td>'.$langs->trans("TotalTTC").'</td>';
 for ($annee = $year_start ; $annee <= $year_end ; $annee++) {

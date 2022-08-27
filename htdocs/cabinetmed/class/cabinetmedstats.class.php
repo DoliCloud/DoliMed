@@ -34,15 +34,15 @@ include_once DOL_DOCUMENT_ROOT . "/core/lib/date.lib.php";
  */
 class CabinetMedStats extends Stats
 {
-	var $db;
+	public $db;
 
-	var $socid;
-	var $userid;
+	public $socid;
+	public $userid;
 
-	var $table_element;
-	var $from;
-	var $field;
-	var $where;
+	public $table_element;
+	public $from;
+	public $field;
+	public $where;
 
 
 	/**
@@ -53,9 +53,8 @@ class CabinetMedStats extends Stats
 	 * @param 	int			$mode	   	Option
 	 * @param   int			$userid    	Id user for filter
 	 * @param	string		$morefilter	Add filters
-	 * @return 	CabinetMedStats
 	 */
-	function CabinetMedStats($db, $socid, $mode, $userid = 0, $morefilter = '')
+	function __construct($db, $socid, $mode, $userid = 0, $morefilter = '')
 	{
 		global $conf;
 
