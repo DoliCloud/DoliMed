@@ -1,4 +1,4 @@
 # Dolibarr language file - fr_FR - interventions
 CHARSET=UTF-8
-CustomerDoesNotHavePrefix=Der Dritte/Patient hat kein Präfix von definierten
+CustomerDoesNotHavePrefix=Für den Geschäftspartner/Patienten ist kein Präfix definiert
 NameAndSignatureOfExternalContact=Name und Unterschrift des Patienten:

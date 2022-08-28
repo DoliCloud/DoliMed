@@ -1,22 +1,22 @@
 # Dolibarr language file - en_US - admin
 CHARSET=UTF-8
-ExtraFieldsThirdParties=Complementary attributes (thirdparty/patient)
-ExtraFieldsContacts=Complementary attributes (contacts)
+ExtraFieldsThirdParties=Συμπληρωματικά χαρακτηριστικά (τρίτος/ασθενής)
+ExtraFieldsContacts=Συμπληρωματικά χαρακτηριστικά (επαφές)
 UseSearchToSelectCompany= Χρησιμοποιείστε ένα πεδίο με αυτόματη συμπλήρωση για την επιλογή ενός ασθενούς (σε αντίθεση με πλαίσιο λίστας)
 ActivityStateToSelectCompany= Προσθήκη επιλογής φίλτρου για εμφάνιση/απόκρυψη ασθενών που πληρούν τα κριτήρια ή όχι
-ViewFullDateActions= Εμφάνιση πλήρους ημερομηνίας 
-ModuleFamilyCrm=Customer or Patient Relation Management (CRM)
-GenericMaskCodes2=<b>{cccc}</b> the client/patient code on n characters<br><b>{cccc000}</b> the client/patient code on n characters is followed by a counter dedicated for customer. This counter dedicated to customer is reset at same time than global counter.<br><b>{tttt}</b> The code of third party type on n characters (see dictionary-thirdparty types).<br>
+ViewFullDateActions= Δείτε την πλήρη ημερομηνία των ενεργειών στην κάρτα ασθενούς
+ModuleFamilyCrm=Διαχείριση σχέσεων με πελάτες ή ασθενείς (CRM)
+GenericMaskCodes2= <b> {cccc} </b> ο κωδικός πελάτη/ασθενούς σε n χαρακτήρες <br> <b>  ο κωδικός πελάτη/ασθενούς σε n χαρακτήρες ακολουθείται από έναν μετρητή αποκλειστικά για τον πελάτη. Αυτός ο μετρητής που είναι αφιερωμένος στον πελάτη επαναφέρεται ταυτόχρονα με τον καθολικό μετρητή. <br> <b> {tttt} </b> Ο κωδικός τύπου τρίτου μέρους σε n χαρακτήρες (δείτε λεξικό-τύποι τρίτων μερών). <br>
 
 # Modules= undefined
-Module1Name= Thirdparties/Patients
+Module1Name= Τρίτοι/Ασθενείς
 Module1Desc= Διαχείριση ασθενών και επαφών
 Permission121= Γνωμάτευση ασθενούς
 Permission122= Δημιουργία/μεταβολή ασθενούς (+γνωματεύσεις και εξετάσεις)
 Permission125= Διαγραφή ασθενών (+γνωματεύσεις και εξετάσεις)
 Permission126= Εξαγωγή ασθενών
-Permission262= Extend access to all patients (Not only those linked to user).<br>Not effective for external users (always limited to themselves for proposals, orders, invoices, contracts, etc).<br>Not effective for projects (only rules on project permissions, visibility and assignement matters).
-Permission281= Consult all contacts
+Permission262= Επέκταση της πρόσβασης σε όλους τους ασθενείς (όχι μόνο αυτούς που συνδέονται με τον χρήστη). <br> Δεν είναι αποτελεσματικό για εξωτερικούς χρήστες (περιορίζονται πάντα στους εαυτούς τους για προτάσεις, παραγγελίες, τιμολόγια, συμβάσεις κ.λπ.). <br> Δεν ισχύει για έργα (μόνο κανόνες για άδειες έργου, ορατότητα και θέματα ανάθεσης).
+Permission281= Γνωμάτευση σε ολους
 Permission282= Δημιουργία/μεταβολή επαφών
 Permission283= Διαγραφή επαφών
 Permission286= Εξαγωγή επαφών
@@ -33,5 +33,5 @@ CompanySetup= Εγκατάσταση του αρθρώματος Ασθενής
 CompanyCodeChecker=Μοτίβο για δημιουργία και έλεγχο κωδικού ασθενούς
 CashDeskThirdPartyForSell=Generic patient for sells
 CashDeskBankAccountForSell=Τραπεζικός λογαριασμός που χρησιμοποιείται για μετρητά
-CashDeskBankAccountForCheque=Bank account to use for check deposits
+CashDeskBankAccountForCheque=Τραπεζικός λογαριασμός που χρησιμοποιείται για καταθέσεις επιταγών
 CashDeskBankAccountForCB=Τραπεζικός λογαριασμός που χρησιμοποιείται για πιστωτική κάρτα

@@ -1,7 +1,7 @@
 # Dolibarr language file - en_US - errors
 CHARSET=UTF-8
 ErrorThisContactIsAlreadyDefinedAsThisType=Dieser Korrespondent ist bereits als Korrespondent für diesen Typ definiert
-ErrorBadPatientName=falscher Patientenname
+ErrorBadPatientName=Ungültiger Patientenname
 ErrorBadCustomerCodeSyntax=Die Syntax für den Patientencode ist nicht korrekt
-ErrorCustomerCodeRequired=Patientencode manuell
+ErrorCustomerCodeRequired=Patientencode obligatorisch
 ErrorCustomerCodeAlreadyUsed=Patientencode bereits verwendet

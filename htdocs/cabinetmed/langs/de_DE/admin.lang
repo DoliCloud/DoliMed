@@ -1,15 +1,15 @@
 # Dolibarr language file - en_US - admin
 CHARSET=UTF-8
-ExtraFieldsThirdParties=ergänzende Attribute (Partner/Patient)
-ExtraFieldsContacts=ergänzende Attribute (Kontakte)
-UseSearchToSelectCompany= Verwenden Sie ein Feld mit automatischer Vervollständigung, um einen Patienten auszuwählen (anstelle einer Kombinationsliste).
-ActivityStateToSelectCompany= Füge eine Filteroption hinzu, um Patienten aus- / oder einzublenden, denen gefolgt wird oder nicht
+ExtraFieldsThirdParties=Ergänzende Attribute (Geschäftspartner/Patient)
+ExtraFieldsContacts=Ergänzende Attribute (Kontakte)
+UseSearchToSelectCompany= Verwenden Sie ein Feld mit automatischer Vervollständigung, um einen Patienten auszuwählen (anstelle einer Combo-Liste).
+ActivityStateToSelectCompany= Füge eine Filteroption hinzu, um Patienten aus- oder einzublenden, denen gefolgt wird oder nicht
 ViewFullDateActions= Zeige vollständige Daten der Aktionen auf der Patientenkarte an
 ModuleFamilyCrm=Kontakt-/Patientenverwaltung
 GenericMaskCodes2= <b> {cccc} </b> der Client / Patienten-Code für n Zeichen <br> <b> {cccc000} </b> dem Kunden-/Patientencode auf n Zeichen folgt ein für den Kunden bestimmter Zähler. Dieser dem Kunden zugewiesene Zähler wird gleichzeitig mit dem globalen Zähler zurückgesetzt. <br> <b> {tttt} </b> Der Code des Drittanbieter-Typs für n Zeichen (siehe Wörterbuch-Drittanbieter-Typen). <br>
 
 # Modules= undefined
-Module1Name= Partner / Patienten
+Module1Name= Geschäftspartner/Patienten
 Module1Desc= Verwalte Patienten & Kontakte
 Permission121= Ansicht jeweiliges Patienten der Benutzer
 Permission122= Erstelle / Ändere Patient  (+ Berichte)

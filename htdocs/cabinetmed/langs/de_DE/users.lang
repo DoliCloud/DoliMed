@@ -1,11 +1,11 @@
 # Dolibarr language file - fr_FR - users
 CHARSET=UTF-8
 ContactCard=Kontaktdatensatz
-NoContactCard=Keine Aufzeichnung unter Kontakten
-LinkToCompanyContact=Patienten / Kontakt verknüpfen
+NoContactCard=Keine Datensatz in Kontakten
+LinkToCompanyContact=Patienten/Kontakt verknüpfen
 LinkedToDolibarrThirdParty=Patienten verknüpfen
 CreateDolibarrThirdParty=Erstellen Sie einen Patientendatensatz
-ConfirmCreateContact=Möchten Sie wirklich ein Konto für diesen Kontakt erstellen?
-ConfirmCreateLogin=Möchten Sie wirklich ein Konto für dieses Mitglied erstellen?
+ConfirmCreateContact=Möchten Sie wirklich ein Benutzerkonto für diesen Kontakt erstellen?
+ConfirmCreateLogin=Möchten Sie wirklich ein Benutzerkonto für dieses Mitglied erstellen?
 ConfirmCreateThirdParty=Möchten Sie wirklich einen Patientendatensatz für dieses Mitglied erstellen?
 NameToCreate=Name des zu erstellenden Patienten

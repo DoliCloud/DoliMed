@@ -1,5 +1,5 @@
 # Dolibarr language file - fr_FR - agenda
 CHARSET=UTF-8
-NewCompanyToDolibarr=Patient créé
-AgendaShowBirthdayEvents=Afficher anniversaires correspondants
-AgendaHideBirthdayEvents=Cacher anniversaires correspondants
+NewCompanyToDolibarr=Створити пацієнта
+AgendaShowBirthdayEvents=Показати відповідні дні народження
+AgendaHideBirthdayEvents=Сховати відповідні дні народження
