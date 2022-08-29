@@ -187,3 +187,5 @@ SendConsultationRef=Message about the consultation %s
 DiagnosticIsMandatoryOnConsultation=Diagnostic is mandatory on consultations
 FeatureForCustomerdisabled=Features to manage customers is hidden so feature to generate independant invoice document is disabled. Only amount of consultation will be saved in consultation (no accounting invoice document generated).
 EditOrAddTemplateFromSetupOfThirdPartyModule=You can edit or add more template from the setup page of the module %s (Menu %s - %s - %s) 
+ConvertIntoPatient=Convert into Patient
+ConvertIntoPatientDesc=The common thirdparty will also be a patient so you can create consultation on it

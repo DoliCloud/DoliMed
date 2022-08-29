@@ -325,11 +325,17 @@ class ActionsCabinetmed
 	{
 		global $langs, $user, $conf;
 
-		if (! empty($object->societe->id) && $object->societe->id > 0 && ! empty($object->societe->canvas) && $object->societe->canvas == 'patient@cabinetmed') {
+		if ($parameters['currentcontext'] == 'xxx' && !empty($object) && !empty($object->societe->id) && $object->societe->id > 0 && ! empty($object->societe->canvas)) {
+			if ($object->societe->canvas == 'patient@cabinetmed') {
+				if ($action != 'edit') {
+					print dolGetButtonAction($langs->trans('NewConsult'), $langs->trans('NewConsult'), 'default', dol_buildpath('/cabinetmed/consultations.php', 1).'?socid='.$object->societe->id.'&action=create&fk_agenda='.$object->id, '', $user->hasRight('societe', 'creer'));
+				}
+			}
+		}
+
+		if ($parameters['currentcontext'] == 'thirdpartycard' && !empty($object) && $object->canvas != 'patient@cabinetmed') {
 			if ($action != 'edit') {
-				print '<div class="inline-block divButAction"><a class="butAction" href="'.dol_buildpath('/cabinetmed/consultations.php?socid='.$object->societe->id.'&action=create&fk_agenda='.$object->id, 1).'">';
-				print $langs->trans("NewConsult");
-				print '</a></div>';
+				print dolGetButtonAction($langs->transnoentitiesnoconv('ConvertIntoPatientDesc'), $langs->transnoentities('ConvertIntoPatient'), 'default', dol_buildpath('/societe/card.php', 1).'?socid='.$object->id.'&action=convertintopatient&token='.newToken(), '', $user->hasRight('societe', 'creer'));
 			}
 		}
 	}
