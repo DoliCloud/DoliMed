@@ -1,5 +1,5 @@
 <?php
-/* Copyright (C) 2011 Laurent Destailleur  <eldy@users.sourceforge.net>
+/* Copyright (C) 2011-2022 Laurent Destailleur  <eldy@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -60,9 +60,9 @@ class ActionsCabinetmed
 		$search_boxvalue = $parameters['search_boxvalue'];
 
 		if ((float) DOL_VERSION < 8) {
-			$this->results['searchintoapatient']=array('position'=>5, 'img'=>'object_patient@cabinetmed', 'label'=>$langs->trans("SearchIntoPatients", $search_boxvalue), 'text'=>img_picto('', 'object_patient@cabinetmed').' '.$langs->trans("Patients", $search_boxvalue), 'url'=>dol_buildpath('/cabinetmed/patients.php', 1).'?search_all='.urlencode($search_boxvalue));
+			$this->results['searchintoapatient']=array('position'=>5, 'img'=>'object_patient@cabinetmed', 'label'=>$langs->trans("SearchIntoPatients", $search_boxvalue), 'text'=>img_picto('', 'user-injured').' '.$langs->trans("Patients", $search_boxvalue), 'url'=>dol_buildpath('/cabinetmed/patients.php', 1).'?search_all='.urlencode($search_boxvalue));
 		} else {
-			$this->results['searchintoapatient']=array('position'=>5, 'img'=>'object_patient@cabinetmed', 'label'=>$langs->trans("SearchIntoPatients", $search_boxvalue), 'text'=>img_picto('', 'object_patient@cabinetmed').' '.$langs->trans("Patients", $search_boxvalue), 'url'=>dol_buildpath('/cabinetmed/patients.php', 1));
+			$this->results['searchintoapatient']=array('position'=>5, 'img'=>'object_patient@cabinetmed', 'label'=>$langs->trans("SearchIntoPatients", $search_boxvalue), 'text'=>img_picto('', 'user-injured').' '.$langs->trans("Patients", $search_boxvalue), 'url'=>dol_buildpath('/cabinetmed/patients.php', 1));
 		}
 
 		return 0;
@@ -91,16 +91,20 @@ class ActionsCabinetmed
 		// Define cabinetmed context
 		$cabinetmedcontext=0;
 		if ((isset($parameters['id']) || isset($parameters['socid'])) && isset($parameters['currentcontext'])
-			&& in_array($parameters['currentcontext'], array('agendathirdparty','categorycard','commcard','thirdpartycomm','projectthirdparty','infothirdparty','thirdpartybancard','consumptionthirdparty','thirdpartynotification','thirdpartymargins','thirdpartycustomerprice','thirdpartyticket')) && (empty($action) || $action == 'view')) {
+			&& in_array($parameters['currentcontext'], array('agendathirdparty','categorycard','commcard','thirdpartycard','thirdpartycomm','thirdpartysupplier','projectthirdparty','thirdpartypartnership','infothirdparty','thirdpartybancard','consumptionthirdparty','thirdpartynotification','thirdpartymargins','thirdpartycustomerprice','thirdpartyticket')) && (empty($action) || $action == 'view')) {
 			$thirdparty=new Societe($db);
 			$idthirdparty = empty($parameters['id']) ? (empty($parameters['socid']) ? 0 : $parameters['socid']) : $parameters['id'];
 			if ($idthirdparty > 0) {
 				$thirdparty->fetch($idthirdparty);
-				if ($thirdparty->canvas == 'patient@cabinetmed') $cabinetmedcontext++;
+				if ($thirdparty->canvas == 'patient@cabinetmed') {
+					$cabinetmedcontext++;
+				}
 			}
 		}
 
-		if (GETPOST('canvas') == 'patient@cabinetmed') $cabinetmedcontext++;
+		if (GETPOST('canvas') == 'patient@cabinetmed') {
+			$cabinetmedcontext++;
+		}
 
 		if ($cabinetmedcontext) {
 			$langs->tab_translate["ThirdParty"]=$langs->transnoentitiesnoconv("Patient");
@@ -112,6 +116,21 @@ class ActionsCabinetmed
 
 		require_once DOL_DOCUMENT_ROOT."/core/lib/date.lib.php";
 		require_once dol_buildpath('/cabinetmed/lib/cabinetmed.lib.php', 0);
+
+		// Hook called when asking to add a new record
+		if ($action == 'convertintopatient' && !empty($object) && in_array($object->element, array('societe', 'thirdparty'))) {
+			$sql = 'UPDATE '.MAIN_DB_PREFIX."societe as s SET canvas = 'patient@cabinetmed' WHERE rowid = ".$object->id;
+
+			$resql = $db->query($sql);
+			if ($resql) {
+				header("Location: ".DOL_URL_ROOT.'/societe/card.php?socid='.$object->id);
+				exit;
+			} else {
+				$langs->load("errors");
+				$this->errors[] = $langs->trans("Error").' '.$db->lasterror();
+				$ret=-1;
+			}
+		}
 
 		// Hook called when asking to add a new record
 		if ($action == 'add') {
@@ -127,14 +146,14 @@ class ActionsCabinetmed
 			$birthdate=dol_mktime(0, 0, 0, $month, $day, $year, true, true);
 			if (GETPOST('options_birthdate') && (empty($birthdatearray['tm_year']) || (empty($birthdate) && $birthdate != '0') || ($day > 31) || ($month > 12) || ($year >( $arraytmp['year']+1)))) {
 				$langs->load("errors");
-				$this->errors[]=$langs->trans("ErrorBadDateFormat", $date);
+				$this->errors[] = $langs->trans("ErrorBadDateFormat", $date);
 				$ret=-1;
 			}
 
 			// Check duplicate
 			if (! $ret) {
 				$sql = 'SELECT s.rowid, s.nom, s.entity, s.ape FROM '.MAIN_DB_PREFIX.'societe as s';
-				$sql.= ' WHERE s.entity = '.$conf->entity;
+				$sql.= ' WHERE s.entity = '.((int) $conf->entity);
 				$sql.= " AND s.nom = '".trim($this->db->escape($nametocheck))."'";
 				if (! empty($date)) {
 					$sql.= " AND (s.ape IS NULL OR s.ape = '' OR s.ape = '".trim($this->db->escape($date))."')";
@@ -290,7 +309,7 @@ class ActionsCabinetmed
 		{
 			$langs->load("companies");
 			$langs->load("cabinetmed@cabinetmed");
-			$searchform=printSearchForm(dol_buildpath('/cabinetmed/patients.php',1), dol_buildpath('/cabinetmed/patients.php',1), img_picto('','object_patient@cabinetmed').' '.$langs->trans("Patients"), '', 'search_nom');
+			$searchform=printSearchForm(dol_buildpath('/cabinetmed/patients.php',1), dol_buildpath('/cabinetmed/patients.php',1), img_picto('','user-injured').' '.$langs->trans("Patients"), '', 'search_nom');
 		}
 		$this->resprints = $searchform;
 
@@ -335,7 +354,7 @@ class ActionsCabinetmed
 
 		if ($parameters['currentcontext'] == 'thirdpartycard' && !empty($object) && $object->canvas != 'patient@cabinetmed') {
 			if ($action != 'edit') {
-				print dolGetButtonAction($langs->transnoentitiesnoconv('ConvertIntoPatientDesc'), $langs->transnoentities('ConvertIntoPatient'), 'default', dol_buildpath('/societe/card.php', 1).'?socid='.$object->id.'&action=convertintopatient&token='.newToken(), '', $user->hasRight('societe', 'creer'));
+				print dolGetButtonAction($langs->transnoentitiesnoconv('ConvertIntoPatientDesc'), img_picto('', 'user-injured', 'class="pictofixedwidth"').$langs->trans('ConvertIntoPatient'), 'default', dol_buildpath('/societe/card.php', 1).'?socid='.$object->id.'&action=convertintopatient&token='.newToken(), '', $user->hasRight('societe', 'creer'));
 			}
 		}
 	}
