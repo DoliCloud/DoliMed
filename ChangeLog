@@ -3,9 +3,16 @@ English Dolibarr ChangeLog
 --------------------------------------------------------------
 
 
+Unreleased
+----------
+
+- Compatibility Dolibarr v16
+- NEW Add button Convert into Patient on any standad thirdparties
+
+
 
 9.0.2 
--------
+-----
 
-Compatibility Dolibarr v14 and v15
+- Compatibility Dolibarr v14 and v15
 
