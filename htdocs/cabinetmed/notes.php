@@ -88,10 +88,10 @@ if (empty($reshook)) {
 
 		if ($result == '') {
 			 $object->alert_note = $alert_note;
-			 $mesgs[]=$langs->trans("RecordModifiedSuccessfully");
+			 setEventMessages($langs->trans("RecordModifiedSuccessfully"));
 		} else {
 			$error++;
-			$errmesgs[]=$result;
+			setEventMessages($result, null, 'errors');
 		}
 
 		if (! $error) $db->commit();
@@ -109,6 +109,8 @@ if (getDolGlobalString('MAIN_DIRECTEDITMODE') && $user->rights->societe->creer) 
 }
 
 $form = new Form($db);
+
+help_url  = '';
 
 llxHeader('', $langs->trans("Patient").' - '.$langs->trans("Notes"), $help_url);
 
@@ -205,9 +207,6 @@ if ($socid > 0) {
 
 	dol_fiche_end();
 }
-
-dol_htmloutput_mesg('', $mesgs);
-dol_htmloutput_errors('', $errmesgs);
 
 
 llxFooter();
