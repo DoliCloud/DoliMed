@@ -54,61 +54,72 @@ $langs->load("companies");
 
 $action = GETPOST('action');
 
+// Initialize technical object to manage hooks of page. Note that conf->hooks_modules contains array array
+$hookmanager->initHooks(array('thirdpartycard','globalcard'));
+
 // Security check
 $socid = GETPOST('socid', 'int');
 if ($user->socid) $socid=$user->socid;
 $result = restrictedArea($user, 'societe', $socid);
+
+$object = new Patient($db);
 
 
 /*
  * Add new contact
  */
 
-if ($action == 'addcontact' && $user->rights->societe->creer) {
-	if (GETPOST("contactid", "int") && GETPOST("type")) {
-		$result = 0;
-		$societe = new Societe($db);
-		$result = $societe->fetch($socid);
+$parameters=array('id'=>$socid);
+$reshook=$hookmanager->executeHooks('doActions', $parameters, $object, $action);    // Note that $action and $object may have been modified by some hooks
+if ($reshook < 0) setEventMessages($hookmanager->error, $hookmanager->errors, 'errors');
 
-		if ($result > 0 && $socid > 0) {
-			$result = $societe->add_contact(GETPOST("contactid", 'int'), GETPOST("type"), GETPOST("source"));
+if (empty($reshook)) {
+	if ($action == 'addcontact' && $user->rights->societe->creer) {
+		if (GETPOST("contactid", "int") && GETPOST("type")) {
+			$result = 0;
+			$societe = new Societe($db);
+			$result = $societe->fetch($socid);
+
+			if ($result > 0 && $socid > 0) {
+				$result = $societe->add_contact(GETPOST("contactid", 'int'), GETPOST("type"), GETPOST("source"));
+			}
+
+			if ($result >= 0) {
+				Header("Location: contact.php?socid=".$societe->id);
+				exit;
+			} else {
+				if ($societe->error == 'DB_ERROR_RECORD_ALREADY_EXISTS') {
+					$langs->load("errors");
+					$mesg = '<div class="error">'.$langs->trans("ErrorThisContactIsAlreadyDefinedAsThisType").'</div>';
+				} else {
+					$mesg = '<div class="error">'.$societe->error.'</div>';
+				}
+			}
 		}
+	}
+
+	// bascule du statut d'un contact
+	if ($action == 'swapstatut' && $user->rights->societe->creer) {
+		$object = new Societe($db);
+		if ($object->fetch(GETPOST('facid', 'int'))) {
+			$result=$object->swapContactStatus(GETPOST('ligne', 'int'));
+		} else {
+			dol_print_error($db);
+		}
+	}
+
+	// Efface un contact
+	if ($action == 'deleteline' && $user->rights->societe->creer) {
+		$societe = new Societe($db);
+		$societe->fetch($socid);
+		$result = $societe->delete_contact(GETPOST("lineid", 'int'));
 
 		if ($result >= 0) {
 			Header("Location: contact.php?socid=".$societe->id);
 			exit;
 		} else {
-			if ($societe->error == 'DB_ERROR_RECORD_ALREADY_EXISTS') {
-				$langs->load("errors");
-				$mesg = '<div class="error">'.$langs->trans("ErrorThisContactIsAlreadyDefinedAsThisType").'</div>';
-			} else {
-				$mesg = '<div class="error">'.$societe->error.'</div>';
-			}
+			dol_print_error($db);
 		}
-	}
-}
-
-// bascule du statut d'un contact
-if ($action == 'swapstatut' && $user->rights->societe->creer) {
-	$object = new Societe($db);
-	if ($object->fetch(GETPOST('facid', 'int'))) {
-		$result=$object->swapContactStatus(GETPOST('ligne', 'int'));
-	} else {
-		dol_print_error($db);
-	}
-}
-
-// Efface un contact
-if ($action == 'deleteline' && $user->rights->societe->creer) {
-	$societe = new Societe($db);
-	$societe->fetch($socid);
-	$result = $societe->delete_contact(GETPOST("lineid", 'int'));
-
-	if ($result >= 0) {
-		Header("Location: contact.php?socid=".$societe->id);
-		exit;
-	} else {
-		dol_print_error($db);
 	}
 }
 

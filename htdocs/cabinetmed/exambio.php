@@ -79,6 +79,7 @@ if (! $sortfield) $sortfield='t.dateexam';
 if (! $sortorder) $sortorder='DESC';
 
 $exambio = new CabinetmedExamBio($db);
+$object = $exambio;
 
 // Initialize technical object to manage hooks of page. Note that conf->hooks_modules contains array array
 $hookmanager->initHooks(array('thirdpartycard','exambiocard','globalcard'));
@@ -88,89 +89,94 @@ $hookmanager->initHooks(array('thirdpartycard','exambiocard','globalcard'));
  * Actions
  */
 
-// Delete exam
-if (GETPOST("action") == 'confirm_delete' && GETPOST("confirm") == 'yes' && $user->rights->societe->supprimer) {
-	$exambio->fetch($id);
-	$result = $exambio->delete($user);
-	if ($result >= 0) {
-		Header("Location: ".$_SERVER["PHP_SELF"].'?socid='.$socid);
-		exit;
-	} else {
-		$langs->load("errors");
-		$mesg=$langs->trans($exambio->error);
-		$action='';
-	}
-}
+$parameters=array('id'=>$socid, 'objcanvas'=>$objcanvas);
+$reshook=$hookmanager->executeHooks('doActions', $parameters, $object, $action);    // Note that $action and $object may have been modified by some hooks
+if ($reshook < 0) setEventMessages($hookmanager->error, $hookmanager->errors, 'errors');
 
-// Add exam
-if ($action == 'add' || $action == 'update') {
-	if (! GETPOST('cancel', 'alpha')) {
-		$error=0;
-
-		$dateexam=dol_mktime(0, 0, 0, $_POST["exammonth"], $_POST["examday"], $_POST["examyear"]);
-
-		if ($action == 'update') {
-			$result=$exambio->fetch($id);
-			if ($result <= 0) {
-				dol_print_error($db, $exambio);
-				exit;
-			}
-		}
-
-		$exambio->fk_soc=$_POST["socid"];
-		$exambio->dateexam=$dateexam;
-		$exambio->resultat=trim($_POST["resultat"]);
-		$exambio->conclusion=trim($_POST["conclusion"]);
-		$exambio->comment=trim($_POST["comment"]);
-		$exambio->suivipr_ad=trim($_POST["suivipr_ad"]);
-		$exambio->suivipr_ag=trim($_POST["suivipr_ag"]);
-		$exambio->suivipr_vs=trim($_POST["suivipr_vs"]);
-		$exambio->suivipr_eva=trim($_POST["suivipr_eva"]);
-		$exambio->suivipr_err=trim($_POST["suivipr_err"]);
-		$exambio->suivipr_das28=trim($_POST["suivipr_das28"]);
-		$exambio->suivisa_fat=trim($_POST["suivisa_fat"]);
-		$exambio->suivisa_dax=trim($_POST["suivisa_dax"]);
-		$exambio->suivisa_dpe=trim($_POST["suivisa_dpe"]);
-		$exambio->suivisa_dpa=trim($_POST["suivisa_dpa"]);
-		$exambio->suivisa_rno=trim($_POST["suivisa_rno"]);
-		$exambio->suivisa_dma=trim($_POST["suivisa_dma"]);
-		$exambio->suivisa_basdai=trim($_POST["suivisa_basdai"]);
-
-		if (empty($dateexam)) {
-			$error++;
-			$mesgarray[]=$langs->trans("ErrorFieldRequired", $langs->transnoentities("Date"));
-		}
-
-		$db->begin();
-
-		if (! $error) {
-			if ($action == 'add') {
-				$result=$exambio->create($user);
-			}
-			if ($action == 'update') {
-				$result=$exambio->update($user);
-			}
-			if ($result < 0) {
-				$mesgarray[]=$exambio->error;
-				$error++;
-			}
-		}
-
-		if (! $error) {
-			$db->commit();
-			header("Location: ".$_SERVER["PHP_SELF"].'?socid='.$exambio->fk_soc);
-			exit(0);
+if (empty($reshook)) {
+	// Delete exam
+	if (GETPOST("action") == 'confirm_delete' && GETPOST("confirm") == 'yes' && $user->rights->societe->supprimer) {
+		$exambio->fetch($id);
+		$result = $exambio->delete($user);
+		if ($result >= 0) {
+			Header("Location: ".$_SERVER["PHP_SELF"].'?socid='.$socid);
+			exit;
 		} else {
-			$db->rollback();
-			$mesgarray[]=$exambio->error;
-			if ($action == 'add')    $action='create';
-			if ($action == 'update') $action='edit';
+			$langs->load("errors");
+			$mesg=$langs->trans($exambio->error);
+			$action='';
 		}
-	} else {
-		$action='';
+	}
+
+	// Add exam
+	if ($action == 'add' || $action == 'update') {
+		if (! GETPOST('cancel', 'alpha')) {
+			$error=0;
+
+			$dateexam=dol_mktime(0, 0, 0, $_POST["exammonth"], $_POST["examday"], $_POST["examyear"]);
+
+			if ($action == 'update') {
+				$result=$exambio->fetch($id);
+				if ($result <= 0) {
+					dol_print_error($db, $exambio);
+					exit;
+				}
+			}
+
+			$exambio->fk_soc=$_POST["socid"];
+			$exambio->dateexam=$dateexam;
+			$exambio->resultat=trim($_POST["resultat"]);
+			$exambio->conclusion=trim($_POST["conclusion"]);
+			$exambio->comment=trim($_POST["comment"]);
+			$exambio->suivipr_ad=trim($_POST["suivipr_ad"]);
+			$exambio->suivipr_ag=trim($_POST["suivipr_ag"]);
+			$exambio->suivipr_vs=trim($_POST["suivipr_vs"]);
+			$exambio->suivipr_eva=trim($_POST["suivipr_eva"]);
+			$exambio->suivipr_err=trim($_POST["suivipr_err"]);
+			$exambio->suivipr_das28=trim($_POST["suivipr_das28"]);
+			$exambio->suivisa_fat=trim($_POST["suivisa_fat"]);
+			$exambio->suivisa_dax=trim($_POST["suivisa_dax"]);
+			$exambio->suivisa_dpe=trim($_POST["suivisa_dpe"]);
+			$exambio->suivisa_dpa=trim($_POST["suivisa_dpa"]);
+			$exambio->suivisa_rno=trim($_POST["suivisa_rno"]);
+			$exambio->suivisa_dma=trim($_POST["suivisa_dma"]);
+			$exambio->suivisa_basdai=trim($_POST["suivisa_basdai"]);
+
+			if (empty($dateexam)) {
+				$error++;
+				$mesgarray[]=$langs->trans("ErrorFieldRequired", $langs->transnoentities("Date"));
+			}
+
+			$db->begin();
+
+			if (! $error) {
+				if ($action == 'add') {
+					$result=$exambio->create($user);
+				}
+				if ($action == 'update') {
+					$result=$exambio->update($user);
+				}
+				if ($result < 0) {
+					$mesgarray[]=$exambio->error;
+					$error++;
+				}
+			}
+
+			if (! $error) {
+				$db->commit();
+				header("Location: ".$_SERVER["PHP_SELF"].'?socid='.$exambio->fk_soc);
+				exit(0);
+			} else {
+				$db->rollback();
+				$mesgarray[]=$exambio->error;
+				if ($action == 'add')    $action='create';
+				if ($action == 'update') $action='edit';
+			}
+		} else {
+			$action='';
+		}
 	}
 }
-
 
 
 /*

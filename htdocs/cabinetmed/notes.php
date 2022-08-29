@@ -46,9 +46,13 @@ include_once "./lib/cabinetmed.lib.php";
 $langs->load("companies");
 $langs->load("cabinetmed@cabinetmed");
 
-$action = isset($_GET["action"])?$_GET["action"]:$_POST["action"];
+$action = GETPOST('action', 'aZ09');
 
 $langs->load("companies");
+
+// Initialize technical object to manage hooks of page. Note that conf->hooks_modules contains array array
+$hookmanager->initHooks(array('thirdpartycard','globalcard'));
+
 
 // Security check
 $socid = GETPOST('socid', 'int');
@@ -63,30 +67,36 @@ if ($socid > 0) $object->fetch($socid);
  * Actions
  */
 
-if ($action == 'add' && ! GETPOST('cancel', 'alpha')) {
-	$error=0;
+$parameters=array('id'=>$socid);
+$reshook=$hookmanager->executeHooks('doActions', $parameters, $object, $action);    // Note that $action and $object may have been modified by some hooks
+if ($reshook < 0) setEventMessages($hookmanager->error, $hookmanager->errors, 'errors');
 
-	$db->begin();
+if (empty($reshook)) {
+	if ($action == 'add' && ! GETPOST('cancel', 'alpha')) {
+		$error=0;
 
-	$result=$object->update_note(dol_html_entity_decode(dol_htmlcleanlastbr(GETPOST('note_private', 'none')?GETPOST('note_private', 'none'):GETPOST('note', 'none')), ENT_QUOTES), '_private');
-	if ($result < 0) {
-		$error++;
-		$errors[]=$object->errors;
+		$db->begin();
+
+		$result=$object->update_note(dol_html_entity_decode(dol_htmlcleanlastbr(GETPOST('note_private', 'none')?GETPOST('note_private', 'none'):GETPOST('note', 'none')), ENT_QUOTES), '_private');
+		if ($result < 0) {
+			$error++;
+			$errors[]=$object->errors;
+		}
+
+		$alert_note = (GETPOST("alert_note") ? '1' : '0');
+		$result=addAlert($db, 'alert_note', $socid, $alert_note);
+
+		if ($result == '') {
+			 $object->alert_note = $alert_note;
+			 $mesgs[]=$langs->trans("RecordModifiedSuccessfully");
+		} else {
+			$error++;
+			$errmesgs[]=$result;
+		}
+
+		if (! $error) $db->commit();
+		else $db->rollback();
 	}
-
-	$alert_note = (GETPOST("alert_note") ? '1' : '0');
-	$result=addAlert($db, 'alert_note', $socid, $alert_note);
-
-	if ($result == '') {
-		 $object->alert_note = $alert_note;
-		 $mesgs[]=$langs->trans("RecordModifiedSuccessfully");
-	} else {
-		$error++;
-		$errmesgs[]=$result;
-	}
-
-	if (! $error) $db->commit();
-	else $db->rollback();
 }
 
 
@@ -94,7 +104,9 @@ if ($action == 'add' && ! GETPOST('cancel', 'alpha')) {
  *	View
  */
 
-if ($conf->global->MAIN_DIRECTEDITMODE && $user->rights->societe->creer) $action='edit';
+if (getDolGlobalString('MAIN_DIRECTEDITMODE') && $user->rights->societe->creer) {
+	$action='edit';
+}
 
 $form = new Form($db);
 

@@ -77,90 +77,99 @@ if (! $sortfield) $sortfield='t.dateexam';
 if (! $sortorder) $sortorder='DESC';
 
 $examother = new CabinetmedExamOther($db);
+$object = $examother;
+
+// Initialize technical object to manage hooks of page. Note that conf->hooks_modules contains array array
+$hookmanager->initHooks(array('thirdpartycard','examothercard','globalcard'));
 
 
 /*
  * Actions
  */
 
-// Delete exam
-if (GETPOST("action") == 'confirm_delete' && GETPOST("confirm") == 'yes' && $user->rights->societe->supprimer) {
-	$examother->fetch($id);
-	$result = $examother->delete($user);
-	if ($result >= 0) {
-		Header("Location: ".$_SERVER["PHP_SELF"].'?socid='.$socid);
-		exit;
-	} else {
-		$langs->load("errors");
-		$mesg=$langs->trans($examother->error);
-		$action='';
-	}
-}
+$parameters=array('id'=>$socid, 'objcanvas'=>$objcanvas);
+$reshook=$hookmanager->executeHooks('doActions', $parameters, $object, $action);    // Note that $action and $object may have been modified by some hooks
+if ($reshook < 0) setEventMessages($hookmanager->error, $hookmanager->errors, 'errors');
 
-
-if ($action == 'add' || $action == 'update') {
-	if (! GETPOST('cancel', 'alpha')) {
-		$error=0;
-
-		$dateexam=dol_mktime(0, 0, 0, $_POST["exammonth"], $_POST["examday"], $_POST["examyear"]);
-
-		if ($action == 'update') {
-			$result=$examother->fetch($id);
-			if ($result <= 0) {
-				dol_print_error($db, $examother);
-				exit;
-			}
-		}
-		$examother->fk_soc=$_POST["socid"];
-		$examother->dateexam=$dateexam;
-		$examother->examprinc=trim($_POST["examprinc"]);
-		$examother->examsec=trim($_POST["examsec"]);
-		$examother->concprinc=$_POST["examconcprinc"];
-		$examother->concsec=$_POST["examconcsec"];
-
-		if (empty($examother->examprinc)) {
-			$error++;
-			$mesgarray[]=$langs->trans("ErrorFieldRequired", $langs->transnoentities("ExamenPrescrit"));
-		}
-		if (empty($examother->concprinc)) {
-			$error++;
-			$mesgarray[]=$langs->trans("ErrorFieldRequired", $langs->transnoentities("ExamenResultat"));
-		}
-		if (empty($dateexam)) {
-			$error++;
-			$mesgarray[]=$langs->trans("ErrorFieldRequired", $langs->transnoentities("Date"));
-		}
-
-		$db->begin();
-
-		if (! $error) {
-			if ($action == 'add') {
-				$result=$examother->create($user);
-			}
-			if ($action == 'update') {
-				$result=$examother->update($user);
-			}
-			if ($result < 0) {
-				$mesgarray[]=$examother->error;
-				$error++;
-			}
-		}
-
-		if (! $error) {
-			$db->commit();
-			header("Location: ".$_SERVER["PHP_SELF"].'?socid='.$examother->fk_soc);
-			exit(0);
+if (empty($reshook)) {
+	// Delete exam
+	if (GETPOST("action") == 'confirm_delete' && GETPOST("confirm") == 'yes' && $user->rights->societe->supprimer) {
+		$examother->fetch($id);
+		$result = $examother->delete($user);
+		if ($result >= 0) {
+			Header("Location: ".$_SERVER["PHP_SELF"].'?socid='.$socid);
+			exit;
 		} else {
-			$db->rollback();
-			$mesgarray[]=$examother->error;
-			if ($action == 'add')    $action='create';
-			if ($action == 'update') $action='edit';
+			$langs->load("errors");
+			$mesg=$langs->trans($examother->error);
+			$action='';
 		}
-	} else {
-		$action='';
+	}
+
+
+	if ($action == 'add' || $action == 'update') {
+		if (! GETPOST('cancel', 'alpha')) {
+			$error=0;
+
+			$dateexam=dol_mktime(0, 0, 0, $_POST["exammonth"], $_POST["examday"], $_POST["examyear"]);
+
+			if ($action == 'update') {
+				$result=$examother->fetch($id);
+				if ($result <= 0) {
+					dol_print_error($db, $examother);
+					exit;
+				}
+			}
+			$examother->fk_soc=$_POST["socid"];
+			$examother->dateexam=$dateexam;
+			$examother->examprinc=trim($_POST["examprinc"]);
+			$examother->examsec=trim($_POST["examsec"]);
+			$examother->concprinc=$_POST["examconcprinc"];
+			$examother->concsec=$_POST["examconcsec"];
+
+			if (empty($examother->examprinc)) {
+				$error++;
+				$mesgarray[]=$langs->trans("ErrorFieldRequired", $langs->transnoentities("ExamenPrescrit"));
+			}
+			if (empty($examother->concprinc)) {
+				$error++;
+				$mesgarray[]=$langs->trans("ErrorFieldRequired", $langs->transnoentities("ExamenResultat"));
+			}
+			if (empty($dateexam)) {
+				$error++;
+				$mesgarray[]=$langs->trans("ErrorFieldRequired", $langs->transnoentities("Date"));
+			}
+
+			$db->begin();
+
+			if (! $error) {
+				if ($action == 'add') {
+					$result=$examother->create($user);
+				}
+				if ($action == 'update') {
+					$result=$examother->update($user);
+				}
+				if ($result < 0) {
+					$mesgarray[]=$examother->error;
+					$error++;
+				}
+			}
+
+			if (! $error) {
+				$db->commit();
+				header("Location: ".$_SERVER["PHP_SELF"].'?socid='.$examother->fk_soc);
+				exit(0);
+			} else {
+				$db->rollback();
+				$mesgarray[]=$examother->error;
+				if ($action == 'add')    $action='create';
+				if ($action == 'update') $action='edit';
+			}
+		} else {
+			$action='';
+		}
 	}
 }
-
 
 
 /*

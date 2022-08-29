@@ -50,6 +50,9 @@ $langs->load("cabinetmed@cabinetmed");
 $action = GETPOST('action', 'aZ09');
 if (empty($action)) $action='edit';
 
+// Initialize technical object to manage hooks of page. Note that conf->hooks_modules contains array array
+$hookmanager->initHooks(array('thirdpartycard', 'antecedantcard', 'globalcard'));
+
 // Security check
 $socid = GETPOST('socid', 'int');
 if ($user->socid) $socid=$user->socid;
@@ -57,108 +60,115 @@ $result = restrictedArea($user, 'societe', $socid);
 
 if (!$user->rights->cabinetmed->read) accessforbidden();
 
+$object = new Patient($db);
+
 
 /*
  * Actions
  */
-if ($action == 'addupdate') {
-	$error=0;
 
-	$db->begin();
+$parameters=array('id'=>$socid);
+$reshook=$hookmanager->executeHooks('doActions', $parameters, $object, $action);    // Note that $action and $object may have been modified by some hooks
+if ($reshook < 0) setEventMessages($hookmanager->error, $hookmanager->errors, 'errors');
 
-	$sql = "INSERT INTO ".MAIN_DB_PREFIX."cabinetmed_patient(rowid, note_antemed, note_antechirgen, note_antechirortho, note_anterhum, note_other, note_traitallergie, note_traitclass, note_traitintol, note_traitspec)";
-	$sql.= " VALUES('".$_POST["socid"]."',";
-	$sql.= " '".addslashes($_POST["note_antemed"])."','".addslashes($_POST["note_antechirgen"])."',";
-	$sql.= " '".addslashes($_POST["note_antechirortho"])."','".addslashes($_POST["note_anterhum"])."','".addslashes($_POST["note_other"])."',";
-	$sql.= " '".addslashes($_POST["note_traitallergie"])."','".addslashes($_POST["note_traitclass"])."','".addslashes($_POST["note_traitintol"])."','".addslashes($_POST["note_traitspec"])."'";
-	$sql.= ")";
-	$result1 = $db->query($sql, 1);
-	//if (! $result) dol_print_error($db);
+if (empty($reshook)) {
+	if ($action == 'addupdate') {
+		$error=0;
 
-	$sql = "UPDATE ".MAIN_DB_PREFIX."cabinetmed_patient SET";
-	$sql.= " note_antemed='".addslashes($_POST["note_antemed"])."',";
-	$sql.= " note_antechirgen='".addslashes($_POST["note_antechirgen"])."',";
-	$sql.= " note_antechirortho='".addslashes($_POST["note_antechirortho"])."',";
-	$sql.= " note_anterhum='".addslashes($_POST["note_anterhum"])."',";
-	//$sql.= " note_other='".addslashes($_POST["note_other"])."',";
-	$sql.= " note_traitallergie='".addslashes($_POST["note_traitallergie"])."',";
-	$sql.= " note_traitclass='".addslashes($_POST["note_traitclass"])."',";
-	$sql.= " note_traitintol='".addslashes($_POST["note_traitintol"])."',";
-	$sql.= " note_traitspec='".addslashes($_POST["note_traitspec"])."'";
-	$sql.= " WHERE rowid=".$_POST["socid"];
-	$result2 = $db->query($sql);
+		$db->begin();
 
-	$alert=($_POST["alert_antemed"]?'1':'0');
-	$result3=addAlert($db, 'alert_antemed', $socid, $alert);
-	if ($result3) {
-		$error++; $mesg=$result3;
+		$sql = "INSERT INTO ".MAIN_DB_PREFIX."cabinetmed_patient(rowid, note_antemed, note_antechirgen, note_antechirortho, note_anterhum, note_other, note_traitallergie, note_traitclass, note_traitintol, note_traitspec)";
+		$sql.= " VALUES('".$_POST["socid"]."',";
+		$sql.= " '".addslashes($_POST["note_antemed"])."','".addslashes($_POST["note_antechirgen"])."',";
+		$sql.= " '".addslashes($_POST["note_antechirortho"])."','".addslashes($_POST["note_anterhum"])."','".addslashes($_POST["note_other"])."',";
+		$sql.= " '".addslashes($_POST["note_traitallergie"])."','".addslashes($_POST["note_traitclass"])."','".addslashes($_POST["note_traitintol"])."','".addslashes($_POST["note_traitspec"])."'";
+		$sql.= ")";
+		$result1 = $db->query($sql, 1);
+		//if (! $result) dol_print_error($db);
+
+		$sql = "UPDATE ".MAIN_DB_PREFIX."cabinetmed_patient SET";
+		$sql.= " note_antemed='".addslashes($_POST["note_antemed"])."',";
+		$sql.= " note_antechirgen='".addslashes($_POST["note_antechirgen"])."',";
+		$sql.= " note_antechirortho='".addslashes($_POST["note_antechirortho"])."',";
+		$sql.= " note_anterhum='".addslashes($_POST["note_anterhum"])."',";
+		//$sql.= " note_other='".addslashes($_POST["note_other"])."',";
+		$sql.= " note_traitallergie='".addslashes($_POST["note_traitallergie"])."',";
+		$sql.= " note_traitclass='".addslashes($_POST["note_traitclass"])."',";
+		$sql.= " note_traitintol='".addslashes($_POST["note_traitintol"])."',";
+		$sql.= " note_traitspec='".addslashes($_POST["note_traitspec"])."'";
+		$sql.= " WHERE rowid=".$_POST["socid"];
+		$result2 = $db->query($sql);
+
+		$alert=($_POST["alert_antemed"]?'1':'0');
+		$result3=addAlert($db, 'alert_antemed', $socid, $alert);
+		if ($result3) {
+			$error++; $mesg=$result3;
+		}
+
+		$alert=($_POST["alert_antechirgen"]?'1':'0');
+		$result4=addAlert($db, 'alert_antechirgen', $socid, $alert);
+		if ($result4) {
+			$error++; $mesg=$result4;
+		}
+
+		$alert=($_POST["alert_antechirortho"]?'1':'0');
+		$result5=addAlert($db, 'alert_antechirortho', $socid, $alert);
+		if ($result5) {
+			$error++; $mesg=$result5;
+		}
+
+		$alert=($_POST["alert_anterhum"]?'1':'0');
+		$result6=addAlert($db, 'alert_anterhum', $socid, $alert);
+		if ($result6) {
+			$error++; $mesg=$result6;
+		}
+
+		$alert=($_POST["alert_traitallergie"]?'1':'0');
+		$result7=addAlert($db, 'alert_traitallergie', $socid, $alert);
+		if ($result7) {
+			$error++; $mesg=$result7;
+		}
+
+		$alert=($_POST["alert_traitclass"]?'1':'0');
+		$result8=addAlert($db, 'alert_traitclass', $socid, $alert);
+		if ($result8) {
+			$error++; $mesg=$result8;
+		}
+
+		$alert=($_POST["alert_traitintol"]?'1':'0');
+		$result9=addAlert($db, 'alert_traitintol', $socid, $alert);
+		if ($result9) {
+			$error++; $mesg=$result9;
+		}
+
+		$alert=($_POST["alert_traitspec"]?'1':'0');
+		$result10=addAlert($db, 'alert_traitspec', $socid, $alert);
+		if ($result10) {
+			$error++; $mesg=$result10;
+		}
+
+		if ((! $result2) || $result3 || $result4 || $result5 || $result6 || $result7 || $result8 || $result9 || $result10) {
+			dol_print_error($db);
+			$db->rollback();
+		} else {
+			$db->commit();
+			$mesg=$langs->trans("RecordModifiedSuccessfully");
+		}
+
+		$action='edit';
 	}
-
-	$alert=($_POST["alert_antechirgen"]?'1':'0');
-	$result4=addAlert($db, 'alert_antechirgen', $socid, $alert);
-	if ($result4) {
-		$error++; $mesg=$result4;
-	}
-
-	$alert=($_POST["alert_antechirortho"]?'1':'0');
-	$result5=addAlert($db, 'alert_antechirortho', $socid, $alert);
-	if ($result5) {
-		$error++; $mesg=$result5;
-	}
-
-	$alert=($_POST["alert_anterhum"]?'1':'0');
-	$result6=addAlert($db, 'alert_anterhum', $socid, $alert);
-	if ($result6) {
-		$error++; $mesg=$result6;
-	}
-
-	$alert=($_POST["alert_traitallergie"]?'1':'0');
-	$result7=addAlert($db, 'alert_traitallergie', $socid, $alert);
-	if ($result7) {
-		$error++; $mesg=$result7;
-	}
-
-	$alert=($_POST["alert_traitclass"]?'1':'0');
-	$result8=addAlert($db, 'alert_traitclass', $socid, $alert);
-	if ($result8) {
-		$error++; $mesg=$result8;
-	}
-
-	$alert=($_POST["alert_traitintol"]?'1':'0');
-	$result9=addAlert($db, 'alert_traitintol', $socid, $alert);
-	if ($result9) {
-		$error++; $mesg=$result9;
-	}
-
-	$alert=($_POST["alert_traitspec"]?'1':'0');
-	$result10=addAlert($db, 'alert_traitspec', $socid, $alert);
-	if ($result10) {
-		$error++; $mesg=$result10;
-	}
-
-	if ((! $result2) || $result3 || $result4 || $result5 || $result6 || $result7 || $result8 || $result9 || $result10) {
-		dol_print_error($db);
-		$db->rollback();
-	} else {
-		$db->commit();
-		$mesg=$langs->trans("RecordModifiedSuccessfully");
-	}
-
-	$action='edit';
 }
 
 
 /*
  *	View
-*/
+ */
 
 $form = new Form($db);
 
 llxHeader('', $langs->trans("ATCD"));
 
-
 if ($socid > 0) {
-	$object = new Patient($db);
 	$res=$object->fetch($socid);
 	if ($res < 0) {
 		dol_print_error($db, $object->error);

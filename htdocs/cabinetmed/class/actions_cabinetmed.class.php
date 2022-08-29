@@ -87,13 +87,15 @@ class ActionsCabinetmed
 		dol_syslog(get_class($this).'::executeHooks action='.$action);
 
 		$arraytmp=dol_getdate(dol_now());
+		//var_dump($parameters);
 
 		// Define cabinetmed context
 		$cabinetmedcontext=0;
 		if ((isset($parameters['id']) || isset($parameters['socid'])) && isset($parameters['currentcontext'])
-			&& in_array($parameters['currentcontext'], array('agendathirdparty','categorycard','commcard','thirdpartycard','thirdpartycomm','thirdpartysupplier','projectthirdparty','thirdpartypartnership','infothirdparty','thirdpartybancard','consumptionthirdparty','thirdpartynotification','thirdpartymargins','thirdpartycustomerprice','thirdpartyticket')) && (empty($action) || $action == 'view')) {
+			&& in_array($parameters['currentcontext'], array('agendathirdparty','categorycard','commcard','thirdpartycard','thirdpartycontactcard','thirdpartycomm','thirdpartysupplier','projectthirdparty','thirdpartypartnership','infothirdparty','thirdpartybancard','consumptionthirdparty','thirdpartynotification','thirdpartymargins','thirdpartycustomerprice','thirdpartyticket')) && (empty($action) || $action == 'view' || $action == 'edit')) {
 			$thirdparty=new Societe($db);
 			$idthirdparty = empty($parameters['id']) ? (empty($parameters['socid']) ? 0 : $parameters['socid']) : $parameters['id'];
+
 			if ($idthirdparty > 0) {
 				$thirdparty->fetch($idthirdparty);
 				if ($thirdparty->canvas == 'patient@cabinetmed') {

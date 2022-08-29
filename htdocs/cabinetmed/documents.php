@@ -98,7 +98,7 @@ if ($id > 0 || ! empty($ref))
 // Initialize technical object to manage hooks of page. Note that conf->hooks_modules contains array array
 include_once DOL_DOCUMENT_ROOT.'/core/class/hookmanager.class.php';
 $hookmanager=new HookManager($db);
-$hookmanager->initHooks(array('documentcabinetmed'));
+$hookmanager->initHooks(array('thirdpartycard', 'documentcabinetmed'));
 
 $permissiontoadd = $user->rights->societe->creer;
 
@@ -110,58 +110,63 @@ if (! isset($permtoedit)) $permtoedit = $permissiontoadd;
  * Actions
  */
 
-$res=@include_once DOL_DOCUMENT_ROOT . '/core/actions_linkedfiles.inc.php';
-if (! $res) include_once DOL_DOCUMENT_ROOT . '/core/tpl/document_actions_pre_headers.tpl.php';
+$parameters=array('id'=>$socid, 'objcanvas'=>$objcanvas);
+$reshook=$hookmanager->executeHooks('doActions', $parameters, $object, $action);    // Note that $action and $object may have been modified by some hooks
+if ($reshook < 0) setEventMessages($hookmanager->error, $hookmanager->errors, 'errors');
 
+if (empty($reshook)) {
+	$res=@include_once DOL_DOCUMENT_ROOT . '/core/actions_linkedfiles.inc.php';
+	if (! $res) include_once DOL_DOCUMENT_ROOT . '/core/tpl/document_actions_pre_headers.tpl.php';
 
-// Actions to build doc
-/* avec 3.9
-$id = $socid;
-$upload_dir = $conf->societe->dir_output;
-$permissiontoadd=$user->rights->societe->creer;
-include DOL_DOCUMENT_ROOT.'/core/actions_builddoc.inc.php';
-*/
+	// Actions to build doc
+	/* avec 3.9
+	$id = $socid;
+	$upload_dir = $conf->societe->dir_output;
+	$permissiontoadd=$user->rights->societe->creer;
+	include DOL_DOCUMENT_ROOT.'/core/actions_builddoc.inc.php';
+	*/
 
-// Generate document
-if ($action == 'builddoc')  // En get ou en post
-{
-    if (! GETPOST('model'))
-    {
-        $errors[]=$langs->trans("WarningNoDocumentModelActivated");
-    }
-    else if (is_numeric(GETPOST('model')))
-    {
-        $errors[]=$langs->trans("ErrorFieldRequired",$langs->transnoentities("Model"));
-    }
-    else
-    {
-        require_once(DOL_DOCUMENT_ROOT.'/core/modules/societe/modules_societe.class.php');
+	// Generate document
+	if ($action == 'builddoc')  // En get ou en post
+	{
+	    if (! GETPOST('model'))
+	    {
+	        $errors[]=$langs->trans("WarningNoDocumentModelActivated");
+	    }
+	    else if (is_numeric(GETPOST('model')))
+	    {
+	        $errors[]=$langs->trans("ErrorFieldRequired",$langs->transnoentities("Model"));
+	    }
+	    else
+	    {
+	        require_once(DOL_DOCUMENT_ROOT.'/core/modules/societe/modules_societe.class.php');
 
-        // Save last template used to generate document
-        // Possible with 3.9 only
-        //if (GETPOST('model')) $object->setDocModel($user, GETPOST('model','alpha'));
+	        // Save last template used to generate document
+	        // Possible with 3.9 only
+	        //if (GETPOST('model')) $object->setDocModel($user, GETPOST('model','alpha'));
 
-        $consult = new CabinetmedCons($db);
-        $consult->fetch($idconsult);
+	        $consult = new CabinetmedCons($db);
+	        $consult->fetch($idconsult);
 
-        // Define output language
-        $outputlangs = $langs;
-        $newlang='';
-        if ($conf->global->MAIN_MULTILANGS && empty($newlang) && GETPOST('lang_id','aZ09')) $newlang=GETPOST('lang_id','aZ09');
-        //if ($conf->global->MAIN_MULTILANGS && empty($newlang)) $newlang=$fac->client->default_lang;
-        if (! empty($newlang))
-        {
-            $outputlangs = new Translate("",$conf);
-            $outputlangs->setDefaultLang($newlang);
-        }
+	        // Define output language
+	        $outputlangs = $langs;
+	        $newlang='';
+	        if ($conf->global->MAIN_MULTILANGS && empty($newlang) && GETPOST('lang_id','aZ09')) $newlang=GETPOST('lang_id','aZ09');
+	        //if ($conf->global->MAIN_MULTILANGS && empty($newlang)) $newlang=$fac->client->default_lang;
+	        if (! empty($newlang))
+	        {
+	            $outputlangs = new Translate("",$conf);
+	            $outputlangs->setDefaultLang($newlang);
+	        }
 
-        $object->generateDocument(GETPOST('model','alpha'), $outputlangs, 0, 0, 0);
-        if ($result <= 0)
-        {
-            dol_print_error($db,$result);
-            exit;
-        }
-    }
+	        $object->generateDocument(GETPOST('model','alpha'), $outputlangs, 0, 0, 0);
+	        if ($result <= 0)
+	        {
+	            dol_print_error($db,$result);
+	            exit;
+	        }
+	    }
+	}
 }
 
 
