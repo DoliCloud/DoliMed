@@ -3,14 +3,12 @@
 
 ## 9.0.3 - Unreleased
 
-- NEW Compatibility with v15
-
+- NEW Compatibility with v15. No more compatible with v11.
 
 ## 9.0.2
 
 - Fix call to undefined dol_cm_strptime()
 - Fix filters on list of patients, consultations and contacts
-
 
 ## 9.0.1
 
