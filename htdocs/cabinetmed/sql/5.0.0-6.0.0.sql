@@ -13,6 +13,10 @@
 -- To restrict request to Pgsql version x.y use -- VPGSQLx.y
 
 
+-- You can execut this script with URL:
+--
+-- /install/upgrade.php?dirmodule=cabinetmed&versionfrom=5.0.0&versionto=6.0.0
+
 
 ALTER TABLE llx_cabinetmed_cons ADD COLUMN fk_user_creation integer;
 

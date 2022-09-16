@@ -13,6 +13,11 @@
 -- To restrict request to Pgsql version x.y use -- VPGSQLx.y
 
 
+-- You can execut this script with URL:
+--
+-- /install/upgrade.php?dirmodule=cabinetmed&versionfrom=3.9.4&versionto=4.0.0
+
+
 create table llx_cabinetmed_cons_extrafields
 (
   rowid            integer AUTO_INCREMENT PRIMARY KEY,
