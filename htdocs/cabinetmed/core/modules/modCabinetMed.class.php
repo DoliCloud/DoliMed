@@ -61,7 +61,7 @@ class modCabinetMed extends DolibarrModules
 		// Module description, used if translation string 'ModuleXXXDesc' not found (where XXX is value of numeric property 'numero' of module)
 		$this->description = "Module DoliMed - Manage your patients and consultations";
 
-		$this->editor_name = 'NLTechno';
+		$this->editor_name = 'DoliCloud';
 		$this->editor_url = 'https://www.dolimed.com';
 
 		// Possible values for version are: 'development', 'experimental', 'dolibarr' or version
