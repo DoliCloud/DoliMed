@@ -110,7 +110,7 @@ if (getDolGlobalString('MAIN_DIRECTEDITMODE') && $user->rights->societe->creer) 
 
 $form = new Form($db);
 
-help_url  = '';
+$help_url = '';
 
 llxHeader('', $langs->trans("Patient").' - '.$langs->trans("Notes"), $help_url);
 
@@ -177,7 +177,7 @@ if ($socid > 0) {
 		print '</td></tr>';
 	}
 
-	print '<tr><td class="tdtop titlefield">'.$langs->trans("Note");
+	print '<tr><td class="tdtop titlefield">'.$langs->trans("NotePrivate");
 	print '<br><input type="checkbox" id="alert_note" name="alert_note"'.((isset($_POST['alert_note'])?GETPOST('alert_note'):$object->alert_note)?' checked="checked"':'').'"> <label for="alert_note">'.$langs->trans("Alert").'</label>';
 	print '</td>';
 	print '<td class="tdtop">';
@@ -190,6 +190,7 @@ if ($socid > 0) {
 		require_once DOL_DOCUMENT_ROOT."/core/class/doleditor.class.php";
 		$doleditor=new DolEditor('note', $note, '', 360, 'dolibarr_notes', 'In', true, false, $conf->global->FCKEDITOR_ENABLE_SOCIETE, 20, '90%');
 		$doleditor->Create(0, '.on( \'key\', function(e) { console.log("changed"); changed=true; }) ');  // Add on to detect changes with key pressed
+		print '<br>';
 	} else {
 		print dol_textishtml($note)?$note:dol_nl2br($note, 1, true);
 	}
