@@ -458,13 +458,24 @@ $sql .= $hookmanager->resPrint;
 // Count total nb of records with no order and no limits
 $nbtotalofrecords = '';
 if (empty($conf->global->MAIN_DISABLE_FULL_SCANLIST)) {
-	$resql = $db->query($sql);
+	/*$resql = $db->query($sql);
 	if ($resql) {
 		$nbtotalofrecords = $db->num_rows($resql);
 	} else {
 		dol_print_error($db);
+	}*/
+	/* The fast and low memory method to get and count full list converts the sql into a sql count */
+	$sqlforcount = preg_replace('/^SELECT[a-zA-Z0-9\._\s\(\),=<>\:\-\']+\sFROM/', 'SELECT COUNT(*) as nbtotalofrecords FROM', $sql);
+	$sqlforcount = preg_replace('/LEFT JOIN '.MAIN_DB_PREFIX.'cabinetmed_cons as c ON c.fk_soc = s.rowid/', '', $sqlforcount);
+	$sqlforcount = preg_replace('/GROUP BY .*/', '', $sqlforcount);
+	$resql = $db->query($sqlforcount);
+	if ($resql) {
+		$objforcount = $db->fetch_object($resql);
+		$nbtotalofrecords = $objforcount->nbtotalofrecords;
+	} else {
+		dol_print_error($db);
 	}
-	
+
 	if (($page * $limit) > $nbtotalofrecords) {	// if total resultset is smaller then paging size (filtering), goto and load page 0
 		$page = 0;
 		$offset = 0;
@@ -1013,7 +1024,7 @@ while ($i < min($num, $limit)) {
 	$companystatic->code_fournisseur=$obj->code_fournisseur;
 	$companystatic->tva_intra = $obj->tva_intra;
 	$companystatic->country_code = $obj->country_code;
-	
+
 	$companystatic->code_compta_client=$obj->code_compta;
 	$companystatic->code_compta_fournisseur=$obj->code_compta_fournisseur;
 
