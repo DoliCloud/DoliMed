@@ -4,6 +4,7 @@
 ## 9.0.3 - Unreleased
 
 - NEW Compatibility with v15. No more compatible with v11.
+- FIX Box of last patient was output on wrong page.
 
 ## 9.0.2
 
