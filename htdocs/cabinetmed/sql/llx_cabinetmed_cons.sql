@@ -18,6 +18,7 @@
 -- DROP TABLE llx_cabinetmed_cons
 CREATE TABLE llx_cabinetmed_cons (
   rowid              integer AUTO_INCREMENT PRIMARY KEY,
+  entity             integer DEFAULT 1 NOT NULL,
   fk_soc             integer,
   datecons           date NOT NULL,
   typepriseencharge  varchar(8),

@@ -72,8 +72,8 @@ $search_supplier_code = trim(GETPOST('search_supplier_code', 'alpha'));
 $search_account_customer_code = trim(GETPOST('search_account_customer_code', 'alpha'));
 $search_account_supplier_code = trim(GETPOST('search_account_supplier_code', 'alpha'));
 $search_address = trim(GETPOST('search_address', 'alpha'));
-$search_town = trim(GETPOST("search_town", 'alpha'));
 $search_zip = trim(GETPOST("search_zip", 'alpha'));
+$search_town = trim(GETPOST("search_town", 'alpha'));
 $search_state = trim(GETPOST("search_state", 'alpha'));
 $search_region = trim(GETPOST("search_region", 'alpha'));
 $search_email = trim(GETPOST('search_email', 'alpha'));
@@ -188,11 +188,11 @@ $arrayfields=array(
 's.code_compta'=>array('label'=>"CustomerAccountancyCodeShort", 'checked'=>0),
 's.code_compta_fournisseur'=>array('label'=>"SupplierAccountancyCodeShort", 'checked'=>0, 'enabled'=>(! empty($conf->fournisseur->enabled))),
 's.address'=>array('label'=>"Address", 'position'=>19, 'checked'=>0),
-'s.town'=>array('label'=>"Town", 'checked'=>1),
-'s.zip'=>array('label'=>"Zip", 'checked'=>1),
-'state.nom'=>array('label'=>"State", 'checked'=>0),
-'region.nom'=>array('label'=>"Region", 'checked'=>0),
-'country.code_iso'=>array('label'=>"Country", 'checked'=>0),
+'s.zip'=>array('label'=>"Zip", 'position'=>20, 'checked'=>1),
+'s.town'=>array('label'=>"Town", 'position'=>22, 'checked'=>1),
+'state.nom'=>array('label'=>"State", 'position'=>25, 'checked'=>0),
+'region.nom'=>array('label'=>"Region", 'position'=>26, 'checked'=>0),
+'country.code_iso'=>array('label'=>"Country", 'position'=>27, 'checked'=>0),
 's.email'=>array('label'=>"Email", 'checked'=>0),
 's.url'=>array('label'=>"Url", 'checked'=>0),
 's.phone'=>array('label'=>"Phone", 'checked'=>1),
@@ -250,8 +250,8 @@ if (empty($reshook)) {
 		$search_account_customer_code = '';
 		$search_account_supplier_code = '';
 		$search_address = '';
-		$search_town = "";
 		$search_zip = "";
+		$search_town = "";
 		$search_state = "";
 		$search_region = "";
 		$search_country = '';
@@ -415,6 +415,7 @@ if (! $user->rights->societe->client->voir && ! $socid)	$sql.= " AND s.rowid = s
 if ($socid && empty($conf->global->MAIN_DISABLE_RESTRICTION_ON_THIRDPARTY_FOR_EXTERNAL)) $sql.= " AND s.rowid = ".$socid;
 if ($search_sale > 0)  $sql.= " AND s.rowid = sc.fk_soc";		// Join for the needed table to filter by sale
 if ($search_categ > 0) $sql.= " AND s.rowid = cs.fk_soc";	// Join for the needed table to filter by categ
+if ($search_zip) $sql.= natural_search("s.zip", $search_zip);
 if ($search_town) $sql.= natural_search("s.town", $search_town);
 if ($search_code)  $sql.= natural_search("s.code_client", $search_code);
 // Insert categ filter
@@ -530,8 +531,8 @@ if ($search_alias != '')   $param.= "&search_alias=".urlencode($search_alias);
 if ($search_address != '') {
 	$param .= '&search_address='.urlencode($search_address);
 }
-if ($search_town != '')    $param.= "&search_town=".urlencode($search_town);
 if ($search_zip != '')     $param.= "&search_zip=".urlencode($search_zip);
+if ($search_town != '')    $param.= "&search_town=".urlencode($search_town);
 if ($search_phone != '')   $param.= "&search_phone=".urlencode($search_phone);
 if ($search_fax != '')     $param.= "&search_fax=".urlencode($search_fax);
 if ($search_email != '')   $param.= "&search_email=".urlencode($search_email);
@@ -962,8 +963,8 @@ if (! empty($arrayfields['s.code_client']['checked']))             print_liste_f
 if (! empty($arrayfields['s.code_fournisseur']['checked']))        print_liste_field_titre($arrayfields['s.code_fournisseur']['label'], $_SERVER["PHP_SELF"], "s.code_fournisseur", "", $param, '', $sortfield, $sortorder);
 if (! empty($arrayfields['s.code_compta']['checked']))             print_liste_field_titre($arrayfields['s.code_compta']['label'], $_SERVER["PHP_SELF"], "s.code_compta", "", $param, '', $sortfield, $sortorder);
 if (! empty($arrayfields['s.code_compta_fournisseur']['checked'])) print_liste_field_titre($arrayfields['s.code_compta_fournisseur']['label'], $_SERVER["PHP_SELF"], "s.code_compta_fournisseur", "", $param, '', $sortfield, $sortorder);
-if (! empty($arrayfields['s.town']['checked']))           print_liste_field_titre($arrayfields['s.town']['label'], $_SERVER["PHP_SELF"], "s.town", "", $param, '', $sortfield, $sortorder);
 if (! empty($arrayfields['s.zip']['checked']))            print_liste_field_titre($arrayfields['s.zip']['label'], $_SERVER["PHP_SELF"], "s.zip", "", $param, '', $sortfield, $sortorder);
+if (! empty($arrayfields['s.town']['checked']))           print_liste_field_titre($arrayfields['s.town']['label'], $_SERVER["PHP_SELF"], "s.town", "", $param, '', $sortfield, $sortorder);
 if (! empty($arrayfields['state.nom']['checked']))        print_liste_field_titre($arrayfields['state.nom']['label'], $_SERVER["PHP_SELF"], "state.nom", "", $param, '', $sortfield, $sortorder);
 if (! empty($arrayfields['region.nom']['checked']))       print_liste_field_titre($arrayfields['region.nom']['label'], $_SERVER["PHP_SELF"], "region.nom", "", $param, '', $sortfield, $sortorder);
 if (! empty($arrayfields['country.code_iso']['checked'])) print_liste_field_titre($arrayfields['country.code_iso']['label'], $_SERVER["PHP_SELF"], "country.code_iso", "", $param, 'align="center"', $sortfield, $sortorder);
@@ -1084,14 +1085,14 @@ while ($i < min($num, $limit)) {
 		print '<td>'.dol_escape_htmltag($obj->code_compta_fournisseur).'</td>';
 		if (! $i) $totalarray['nbfield']++;
 	}
-	// Town
-	if (! empty($arrayfields['s.town']['checked'])) {
-		print "<td>".dol_escape_htmltag($obj->town)."</td>\n";
-		if (! $i) $totalarray['nbfield']++;
-	}
 	// Zip
 	if (! empty($arrayfields['s.zip']['checked'])) {
 		print "<td>".$obj->zip."</td>\n";
+		if (! $i) $totalarray['nbfield']++;
+	}
+	// Town
+	if (! empty($arrayfields['s.town']['checked'])) {
+		print "<td>".dol_escape_htmltag($obj->town)."</td>\n";
 		if (! $i) $totalarray['nbfield']++;
 	}
 	// State
@@ -1206,7 +1207,7 @@ while ($i < min($num, $limit)) {
 	// Nb
 	print '<td align="right">'.$obj->nb.'</td>';
 	// Last consultation
-	print '<td class="center">';
+	print '<td class="center nowraponall">';
 	print dol_print_date($db->jdate($obj->lastcons), 'dayhour');
 	print '</td>';
 	// Date creation

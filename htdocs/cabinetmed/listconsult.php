@@ -199,8 +199,7 @@ $sql.= ", ".MAIN_DB_PREFIX."c_stcomm as st";
 // We'll need this table joined to the select in order to filter by categ
 if ($search_categ) $sql.= ", ".MAIN_DB_PREFIX."categorie_societe as cs";
 $sql.= " WHERE s.fk_stcomm = st.id AND c.fk_soc = s.rowid";
-$sql.= " AND s.client IN (1, 3)";
-$sql.= ' AND s.entity IN ('.getEntity('societe', 1).')';
+$sql.= ' AND c.entity IN ('.getEntity('societe', 1).')';
 if ($datecons > 0) $sql.=" AND c.datecons = '".$db->idate($datecons)."'";
 //if ($datecons > 0) $sql.= dolSqlDateFilter("c.datecons", GETPOST('consday', 'int'), GETPOST('consmonth', 'int'), GETPOST('consyear', 'int'));
 
@@ -212,9 +211,9 @@ if ($search_diaglesprinc) {
 	$label= dol_getIdFromCode($db, $search_diaglesprinc, 'cabinetmed_diaglec', 'code', 'label');
 	$sql.= " AND c.diaglesprinc LIKE '%".$db->escape($label)."%'";
 }
-if (!$user->rights->societe->client->voir && ! $socid) $sql.= " AND s.rowid = sc.fk_soc AND sc.fk_user = " .$user->id;
-if ($socid && empty($conf->global->MAIN_DISABLE_RESTRICTION_ON_THIRDPARTY_FOR_EXTERNAL)) $sql.= " AND s.rowid = ".$socid;
-if ($search_ref)   $sql.= " AND c.rowid = ".$db->escape($search_ref);
+if (!$user->rights->societe->client->voir && ! $socid) $sql.= " AND s.rowid = sc.fk_soc AND sc.fk_user = ".((int) $user->id);
+if ($socid && empty($conf->global->MAIN_DISABLE_RESTRICTION_ON_THIRDPARTY_FOR_EXTERNAL)) $sql.= " AND s.rowid = ".((int) $socid);
+if ($search_ref)   $sql.= " AND c.rowid = ".((int) $db->escape($search_ref));
 if ($search_categ) $sql.= " AND s.rowid = cs.fk_soc";	// Join for the needed table to filter by categ
 if ($search_nom)   $sql.= natural_search("s.nom", $search_nom);
 if ($search_ville) $sql.= natural_search("s.town", $search_ville);

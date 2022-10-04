@@ -1,7 +1,11 @@
 # ChangeLog
 
 
-## 9.0.3 - Unreleased
+## 10.0.0
+
+- NEW Add entity column on consultations
+
+## 9.0.3
 
 - NEW Compatibility with v15. No more compatible with v11.
 - FIX Box of last patient was output on wrong page.
