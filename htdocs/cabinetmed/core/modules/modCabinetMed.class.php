@@ -243,7 +243,7 @@ class modCabinetMed extends DolibarrModules
 		$this->menu[$r]=array(  'fk_menu'=>0,           // Put 0 if this is a top menu
 									'type'=>'top',          // This is a Top menu entry
 									'titre'=>'Correspondants',
-									'prefix'=>img_picto('', 'user-injured', 'class="pictofixedwidth"', 'class="pictofixedwidth"'),
+									'prefix'=>img_picto('', 'user-injured', 'class="pictofixedwidth"'),
 									'mainmenu'=>'contacts',
 									'url'=>'/contact/list.php',
 									'langs'=>'cabinetmed@cabinetmed',    // Lang file to use (without .lang) by module. File must be in langs/code_CODE/ directory.
