@@ -43,8 +43,8 @@ require_once DOL_DOCUMENT_ROOT."/core/lib/report.lib.php";
 require_once DOL_DOCUMENT_ROOT."/core/lib/date.lib.php";
 
 
-$year_start=GETPOST("year_start");
-$year_current = strftime("%Y", time());
+$year_start = GETPOST("year_start");
+$year_current = dol_print_date(dol_now(), '%Y');
 $nbofyear=3;
 if (! $year_start) {
 	$year_start = $year_current - ($nbofyear-1);
@@ -213,7 +213,8 @@ for ($mois = 1+$nb_mois_decalage ; $mois <= 12+$nb_mois_decalage ; $mois++) {
 	for ($annee = $year_start ; $annee <= $year_end ; $annee++) {
 		$annee_decalage=$annee;
 		if ($mois > 12) { $annee_decalage = $annee+1; }
-		$case = strftime("%Y-%m", dol_mktime(12, 0, 0, $mois_modulo, 1, $annee_decalage));
+
+		$case = dol_print_date(dol_mktime(12, 0, 0, $mois_modulo, 1, $annee_decalage), "%Y-%m");
 
 		/*print '<td align="right">&nbsp;';
 		if ($decaiss_ttc[$case] != 0)
@@ -296,7 +297,7 @@ for ($mois = 1+$nb_mois_decalage ; $mois <= 12+$nb_mois_decalage ; $mois++) {
 		for ($annee2 = $year_start ; $annee2 <= $year_end ; $annee2++) {
 			$annee_decalage2=$annee2;
 			if ($mois>12) {$annee_decalage2=$annee2+1;}
-			$case2 = strftime("%Y-%m-%d", dol_mktime(12, 0, 0, $mois_modulo, $day, $annee_decalage2));
+			$case2 = dol_print_date(dol_mktime(12, 0, 0, $mois_modulo, $day, $annee_decalage2), "%Y-%m-%d");
 
 			print '<td align="right">';
 			if (isset($encaiss_chq[$case2]) && $encaiss_chq[$case2] != 0) {

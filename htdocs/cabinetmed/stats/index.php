@@ -54,9 +54,9 @@ if ($user->socid > 0) {
 	$socid = $user->socid;
 }
 
-$year = strftime("%Y", time());
-$startyear=$year-2;
-$endyear=$year;
+$year = dol_print_date(dol_now(), '%Y');
+$startyear = $year - 2;
+$endyear = $year;
 
 $mode=GETPOST("mode")?GETPOST("mode"):'customer';
 $codageccam=GETPOST('codageccam');
