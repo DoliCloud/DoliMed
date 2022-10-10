@@ -54,44 +54,44 @@ if (! empty($conf->global->SOCIETE_DISABLE_CUSTOMERS) && empty($conf->global->SO
 if (! empty($conf->global->SOCIETE_DISABLE_CUSTOMERS) && ! empty($conf->global->SOCIETE_DISABLE_PROSPECTS)) $object->client=3;
 if (! empty($conf->global->THIRDPARTY_CUSTOMERPROSPECT_BY_DEFAULT)) { $object->client=3; }
 
-$object->name=$_POST["name"];
-$object->lastname=$_POST["name"];
-$object->firstname=$_POST["firstname"];
+$object->name=GETPOST("name");
+$object->lastname=GETPOST("name");
+$object->firstname=GETPOST("firstname");
 $object->particulier=0;
-$object->prefix_comm=$_POST["prefix_comm"];
-$object->client=$_POST["client"]?$_POST["client"]:$object->client;
-$object->code_client=$_POST["code_client"];
-$object->fournisseur=$_POST["fournisseur"]?$_POST["fournisseur"]:$object->fournisseur;
-$object->code_fournisseur=$_POST["code_fournisseur"];
-$object->adresse=$_POST["address"]; // TODO obsolete
-$object->address=$_POST["address"];
-$object->zip=$_POST["zipcode"];
-$object->town=$_POST["town"];
-$object->state_id=$_POST["departement_id"];
-$object->phone=$_POST["phone"];
-$object->fax=$_POST["fax"];
-$object->email=$_POST["email"];
-$object->url=$_POST["url"];
-$object->capital=$_POST["capital"];
-$object->barcode=$_POST["barcode"];
-$object->idprof1=$_POST["idprof1"];
-$object->idprof2=$_POST["idprof2"];
-$object->idprof3=$_POST["idprof3"];
-$object->idprof4=$_POST["idprof4"];
-$object->typent_id=$_POST["typent_id"];
-$object->effectif_id=$_POST["effectif_id"];
+$object->prefix_comm=GETPOST("prefix_comm");
+$object->client=GETPOSTISSET("client")?GETPOST("client"):$object->client;
+$object->code_client=GETPOST("code_client");
+$object->fournisseur=GETPOST("fournisseur")?GETPOST("fournisseur"):$object->fournisseur;
+$object->code_fournisseur=GETPOST("code_fournisseur");
+$object->adresse=GETPOST("address"); // TODO obsolete
+$object->address=GETPOST("address");
+$object->zip=GETPOST("zipcode");
+$object->town=GETPOST("town");
+$object->state_id=GETPOST("departement_id");
+$object->phone=GETPOST("phone");
+$object->fax=GETPOST("fax");
+$object->email=GETPOST("email");
+$object->url=GETPOST("url");
+$object->capital=GETPOST("capital");
+$object->barcode=GETPOST("barcode");
+$object->idprof1=GETPOST("idprof1");
+$object->idprof2=GETPOST("idprof2");
+$object->idprof3=GETPOST("idprof3");
+$object->idprof4=GETPOST("idprof4");
+$object->typent_id=GETPOST("typent_id");
+$object->effectif_id=GETPOST("effectif_id");
 
-$object->tva_assuj = $_POST["assujtva_value"];
-$object->status= $_POST["status"];
+$object->tva_assuj = GETPOST("assujtva_value");
+$object->status= GETPOST("status");
 
 //Local Taxes
-$object->localtax1_assuj       = $_POST["localtax1assuj_value"];
-$object->localtax2_assuj       = $_POST["localtax2assuj_value"];
+$object->localtax1_assuj       = GETPOST("localtax1assuj_value");
+$object->localtax2_assuj       = GETPOST("localtax2assuj_value");
 
-$object->tva_intra=$_POST["tva_intra"];
+$object->tva_intra=GETPOST("tva_intra");
 
-$object->commercial_id=$_POST["commercial_id"];
-$object->default_lang=$_POST["default_lang"];
+$object->commercial_id=GETPOST("commercial_id");
+$object->default_lang=GETPOST("default_lang");
 
 $countrytable="c_pays";
 $fieldlabel='libelle';
@@ -102,7 +102,7 @@ if (versioncompare(versiondolibarrarray(), array(3,7,-3)) >= 0) {
 }
 
 // We set country_id, country_code and label for the selected country
-$object->country_id=$_POST["country_id"]?$_POST["country_id"]:$mysoc->country_id;
+$object->country_id = (GETPOSTISSET("country_id") ? GETPOST("country_id") : $mysoc->country_id);
 if ($object->country_id) {
 	$sql = "SELECT code, ".$fieldlabel." as label";
 	$sql.= " FROM ".MAIN_DB_PREFIX.$countrytable;
@@ -116,7 +116,7 @@ if ($object->country_id) {
 	$object->country_code=$obj->code;
 	$object->country=$obj->label;
 }
-$object->forme_juridique_code=$_POST['forme_juridique_code'];
+$object->forme_juridique_code=GETPOST('forme_juridique_code');
 
 ?>
 
@@ -124,7 +124,7 @@ $object->forme_juridique_code=$_POST['forme_juridique_code'];
 <?php
 print_fiche_titre($langs->trans("NewPatient"), '', 'user-injured');
 
-dol_htmloutput_errors($GOBALS['error'], $GLOBALS['errors']);
+dol_htmloutput_errors($GLOBALS['error'], $GLOBALS['errors']);
 
 ?>
 
@@ -178,7 +178,7 @@ if (! empty($conf->global->SOCIETE_DISABLE_CUSTOMERS) && ! empty($conf->global->
 } else {
 	print '<tr><td class="titlefieldcreate">'.fieldLabel('ProspectCustomer', 'customerprospect', 1).'</td>';
 	print '<td class="maxwidthonsmartphone">';
-	$selected=isset($_POST['client'])?GETPOST('client'):$object->client;
+	$selected = (GETPOSTISSET('client') ? GETPOST('client') : $object->client);
 	print '<select class="flat" name="client" id="customerprospect">';
 	if (GETPOST("type") == '') print '<option value="-1"></option>';
 	if (empty($conf->global->SOCIETE_DISABLE_PROSPECTS)) print '<option value="2"'.($selected==2?' selected':'').'>'.$langs->trans('Prospect').'</option>';
@@ -223,7 +223,7 @@ if (empty($conf->global->SOCIETE_DISABLE_STATE)) {
 </tr>
 
 <tr>
-	<td><?php echo $langs->trans('EMail').($conf->global->SOCIETE_EMAIL_MANDATORY?'*':''); ?></td>
+	<td><?php echo $langs->trans('EMail').(getDolGlobalString('SOCIETE_EMAIL_MANDATORY') ? '*' : ''); ?></td>
 	<td colspan="3"><input type="text" name="email" size="32" value="<?php echo $object->email; ?>"></td>
 </tr>
 
@@ -295,46 +295,46 @@ while ($i <= 6) {
 		// Legal Form
 		print '<tr><td>'.$langs->trans('ActivityBranch').'</td>';
 		print '<td colspan="3">';
-if ($GLOBALS['mysoc']->country_id) {
-	print $formcompany->select_juridicalstatus($object->forme_juridique_code, $GLOBALS['mysoc']->country_code, "AND (f.module = 'cabinetmed' OR f.code > '100000')");	// > 100000 is the only way i found to not see other entries
-} else {
-	print $GLOBALS['countrynotdefined'];
-}
+		if ($GLOBALS['mysoc']->country_id) {
+			print $formcompany->select_juridicalstatus($object->forme_juridique_code, $GLOBALS['mysoc']->country_code, "AND (f.module = 'cabinetmed' OR f.code > '100000')");	// > 100000 is the only way i found to not see other entries
+		} else {
+			print $GLOBALS['countrynotdefined'];
+		}
 		print '</td>';
 		print '</tr>';
 
-if ($conf->global->MAIN_MULTILANGS) {
-	print '<tr><td>'.$langs->trans("DefaultLang").'</td><td colspan="3">'."\n";
-	print $formadmin->select_language(($object->default_lang?$object->default_lang:$conf->global->MAIN_LANG_DEFAULT), 'default_lang', 0, 0, 1);
-	print '</td>';
-	print '</tr>';
-}
+		if ($conf->global->MAIN_MULTILANGS) {
+			print '<tr><td>'.$langs->trans("DefaultLang").'</td><td colspan="3">'."\n";
+			print $formadmin->select_language(($object->default_lang?$object->default_lang:$conf->global->MAIN_LANG_DEFAULT), 'default_lang', 0, 0, 1);
+			print '</td>';
+			print '</tr>';
+		}
 
 		// Categories
-if (! empty($conf->categorie->enabled)  && ! empty($user->rights->categorie->lire)) {
-	$langs->load('categories');
+		if (! empty($conf->categorie->enabled)  && ! empty($user->rights->categorie->lire)) {
+			$langs->load('categories');
 
-	// Customer
-	if ($object->prospect || $object->client) {
-		print '<tr><td class="toptd">' . fieldLabel('CustomersCategoriesShort', 'custcats') . '</td><td colspan="3">';
-		$cate_arbo = $form->select_all_categories(Categorie::TYPE_CUSTOMER, null, 'parent', null, null, 1);
-		print $form->multiselectarray('custcats', $cate_arbo, GETPOST('custcats', 'array'), null, null, null,
-			null, "90%");
-		print "</td></tr>";
-	}
+			// Customer
+			if ($object->prospect || $object->client) {
+				print '<tr><td class="toptd">' . fieldLabel('CustomersCategoriesShort', 'custcats') . '</td><td colspan="3">';
+				$cate_arbo = $form->select_all_categories(Categorie::TYPE_CUSTOMER, null, 'parent', null, null, 1);
+				print $form->multiselectarray('custcats', $cate_arbo, GETPOST('custcats', 'array'), null, null, null,
+					null, "90%");
+				print "</td></tr>";
+			}
 
-	// Supplier
-	if ($object->fournisseur) {
-		print '<tr><td class="toptd">' . fieldLabel('SuppliersCategoriesShort', 'suppcats') . '</td><td colspan="3">';
-		$cate_arbo = $form->select_all_categories(Categorie::TYPE_SUPPLIER, null, 'parent', null, null, 1);
-		print $form->multiselectarray('suppcats', $cate_arbo, GETPOST('suppcats', 'array'), null, null, null,
-			null, "90%");
-		print "</td></tr>";
-	}
-}
+			// Supplier
+			if ($object->fournisseur) {
+				print '<tr><td class="toptd">' . fieldLabel('SuppliersCategoriesShort', 'suppcats') . '</td><td colspan="3">';
+				$cate_arbo = $form->select_all_categories(Categorie::TYPE_SUPPLIER, null, 'parent', null, null, 1);
+				print $form->multiselectarray('suppcats', $cate_arbo, GETPOST('suppcats', 'array'), null, null, null,
+					null, "90%");
+				print "</td></tr>";
+			}
+		}
 
 		// Other attributes
-		$parameters = array('socid'=>$socid, 'colspan' => ' colspan="3"', 'colspanvalue' => '3');
+		$parameters = array('socid'=>(empty($socid) ? 0 : $socid), 'colspan' => ' colspan="3"', 'colspanvalue' => '3');
 		include DOL_DOCUMENT_ROOT.'/core/tpl/extrafields_add.tpl.php';
 
 		// Assign a sale representative

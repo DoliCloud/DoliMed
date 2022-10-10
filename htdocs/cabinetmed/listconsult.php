@@ -50,6 +50,7 @@ $langs->load("suppliers");
 $langs->load("commercial");
 $langs->load("cabinetmed@cabinetmed");
 
+$optioncss = GETPOST('optioncss', 'az09');
 $contextpage= GETPOST('contextpage', 'aZ')?GETPOST('contextpage', 'aZ'):'consultationlist';   // To manage different context of search
 
 // Load variable for pagination
@@ -181,11 +182,10 @@ $sql.= " c.montant_espece,";
 $sql.= " c.montant_carte,";
 $sql.= " c.montant_tiers,";
 $sql.= " c.banque,";
-// We'll need these fields in order to filter by categ
-if ($search_categ) $sql .= " cs.fk_categorie, cs.fk_soc,";
 // Add fields from extrafields
-if (! empty($extrafields->attributes[$object->table_element]['label']))
+if (! empty($extrafields->attributes[$object->table_element]['label'])) {
 	foreach ($extrafields->attributes[$object->table_element]['label'] as $key => $val) $sql.=($extrafields->attributes[$object->table_element]['type'][$key] != 'separate' ? "ef.".$key." as options_".$key.', ' : '');
+}
 // Add fields from hooks
 $parameters=array();
 $reshook=$hookmanager->executeHooks('printFieldListSelect', $parameters);    // Note that $action and $object may have been modified by hook
@@ -196,8 +196,6 @@ $sql.= " FROM ".MAIN_DB_PREFIX."societe as s,";
 $sql.= " ".MAIN_DB_PREFIX."cabinetmed_cons as c";
 $sql.= " LEFT JOIN ".MAIN_DB_PREFIX."cabinetmed_cons_extrafields as ef ON ef.fk_object = c.rowid";
 $sql.= ", ".MAIN_DB_PREFIX."c_stcomm as st";
-// We'll need this table joined to the select in order to filter by categ
-if ($search_categ) $sql.= ", ".MAIN_DB_PREFIX."categorie_societe as cs";
 $sql.= " WHERE s.fk_stcomm = st.id AND c.fk_soc = s.rowid";
 $sql.= ' AND c.entity IN ('.getEntity('societe', 1).')';
 if ($datecons > 0) $sql.=" AND c.datecons = '".$db->idate($datecons)."'";
@@ -214,7 +212,6 @@ if ($search_diaglesprinc) {
 if (!$user->rights->societe->client->voir && ! $socid) $sql.= " AND s.rowid = sc.fk_soc AND sc.fk_user = ".((int) $user->id);
 if ($socid && empty($conf->global->MAIN_DISABLE_RESTRICTION_ON_THIRDPARTY_FOR_EXTERNAL)) $sql.= " AND s.rowid = ".((int) $socid);
 if ($search_ref)   $sql.= " AND c.rowid = ".((int) $db->escape($search_ref));
-if ($search_categ) $sql.= " AND s.rowid = cs.fk_soc";	// Join for the needed table to filter by categ
 if ($search_nom)   $sql.= natural_search("s.nom", $search_nom);
 if ($search_ville) $sql.= natural_search("s.town", $search_ville);
 if ($search_code)  $sql.= natural_search("s.code_client", $search_code);
@@ -223,18 +220,23 @@ if ($search_sale > 0) {
 	$sql .= " AND c.fk_user = ".((int) $search_sale);
 }
 // Insert categ filter
-if ($search_categ > 0) {
-	$sql .= " AND cs.fk_categorie = ".((int) $search_categ);
+if ($search_categ) {
+	if ($search_categ == '-2') {
+		$sql .= " AND NOT EXISTS (select cs.fk_categorie FROM ".MAIN_DB_PREFIX."categorie_societe as cs WHERE cs.fk_soc = s.rowid)";
+	}
+	if ($search_categ > 0) {
+		$sql .= " AND EXISTS (select cs.fk_categorie FROM ".MAIN_DB_PREFIX."categorie_societe as cs WHERE cs.fk_soc = s.rowid AND cs.fk_categorie = ".((int) $search_categ).")";
+	}
 }
-if ($socname) {
+if (isset($socname) && $socname != '') {
 	$sql.= natural_search("s.nom", $socname);
 	$sortfield = "s.nom";
 	$sortorder = "ASC";
 }
 //if ($search_contactid) $sql.=", ".MAIN_DB_PREFIX."element_contact as ec, ".MAIN_DB_PREFIX."c_type_contact as tc";
 //if ($search_contactid) $sql.= " AND ec.element_id = s.rowid AND ec.fk_socpeople = ".$search_contactid." AND ec.fk_c_type_contact = tc.rowid AND tc.element='societe'";
-if ($search_contactid) {
-	$sql .= " AND s.rowid IN (SELECT ec.element_id FROM ".MAIN_DB_PREFIX."element_contact as ec, ".MAIN_DB_PREFIX."c_type_contact as tc WHERE ec.fk_socpeople = ".$search_contactid." AND ec.fk_c_type_contact = tc.rowid AND tc.element='societe')";
+if ($search_contactid > 0) {
+	$sql .= " AND s.rowid IN (SELECT ec.element_id FROM ".MAIN_DB_PREFIX."element_contact as ec, ".MAIN_DB_PREFIX."c_type_contact as tc WHERE ec.fk_socpeople = ".((int) $search_contactid)." AND ec.fk_c_type_contact = tc.rowid AND tc.element='societe')";
 }
 // Add where from extra fields
 include DOL_DOCUMENT_ROOT.'/core/tpl/extrafields_list_search_sql.tpl.php';
@@ -250,7 +252,7 @@ if (empty($conf->global->MAIN_DISABLE_FULL_SCANLIST)) {
 	$nbtotalofrecords = $db->num_rows($resql);
 	*/
 	/* The fast and low memory method to get and count full list converts the sql into a sql count */
-	$sqlforcount = preg_replace('/^SELECT[a-zA-Z0-9\._\s\(\),=<>\:\-\']+\sFROM/', 'SELECT COUNT(*) as nbtotalofrecords FROM', $sql);
+	$sqlforcount = preg_replace('/^SELECT[a-zA-Z0-9\._\s\(\),=<>\:\-\']+\sFROM/Ui', 'SELECT COUNT(*) as nbtotalofrecords FROM', $sql);
 	$resql = $db->query($sqlforcount);
 	if ($resql) {
 		$objforcount = $db->fetch_object($resql);
@@ -281,7 +283,7 @@ if (! $resql) {
 
 $num = $db->num_rows($resql);
 
-$arrayofselected=is_array($toselect)?$toselect:array();
+$arrayofselected = (empty($toselect) ? array() : $toselect);
 
 // List of mass actions available
 $arrayofmassactions = array(
@@ -573,7 +575,7 @@ while ($i < min($num, $limit)) {
 		if (price2num($obj->montant_cheque) > 0) {
 			if ($foundamount) $s .= ' + ';
 			$s .= $langs->trans("Cheque");
-			if ($conf->banque->enabled && $bankid['CHQ']['account_id']) {
+			if ($conf->banque->enabled && !empty($bankid['CHQ']['account_id'])) {
 				$bank=new Account($db);
 				$bank->fetch($bankid['CHQ']['account_id']);
 				$s .= '&nbsp;('.$bank->getNomUrl(0, 'transactions').')';
@@ -583,7 +585,7 @@ while ($i < min($num, $limit)) {
 		if (price2num($obj->montant_espece) > 0) {
 			if ($foundamount) $s .= ' + ';
 			$s .= $langs->trans("Cash");
-			if ($conf->banque->enabled && $bankid['LIQ']['account_id']) {
+			if ($conf->banque->enabled && !empty($bankid['LIQ']['account_id'])) {
 				$bank=new Account($db);
 				$bank->fetch($bankid['LIQ']['account_id']);
 				$s .= '&nbsp;('.$bank->getNomUrl(0, 'transactions').')';
@@ -593,7 +595,7 @@ while ($i < min($num, $limit)) {
 		if (price2num($obj->montant_carte) > 0) {
 			if ($foundamount) $s .= ' + ';
 			$s .= $langs->trans("CreditCard");
-			if ($conf->banque->enabled && $bankid['CB']['account_id']) {
+			if ($conf->banque->enabled && !empty($bankid['CB']['account_id'])) {
 				$bank=new Account($db);
 				$bank->fetch($bankid['CB']['account_id']);
 				$s .= '&nbsp;('.$bank->getNomUrl(0, 'transactions').')';
@@ -603,7 +605,7 @@ while ($i < min($num, $limit)) {
 		if (price2num($obj->montant_tiers) > 0) {
 			if ($foundamount) $s .= ' + ';
 			$s .= $langs->trans("PaymentTypeThirdParty");
-			if ($conf->banque->enabled && $bankid['OTH']['account_id']) {
+			if ($conf->banque->enabled && !empty($bankid['OTH']['account_id'])) {
 				$bank=new Account($db);
 				$bank->fetch($bankid['OTH']['account_id']);
 				$s .= '&nbsp;('.$bank->getNomUrl(0, 'transactions').')';

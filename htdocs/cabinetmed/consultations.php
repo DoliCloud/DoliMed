@@ -122,7 +122,7 @@ $arrayofmassactions = array();
  * Actions
  */
 
-$parameters=array('id'=>$socid, 'objcanvas'=>$objcanvas);
+$parameters=array('id'=>$socid, 'objcanvas'=>(empty($objcanvas) ? null : $objcanvas));
 $reshook=$hookmanager->executeHooks('doActions', $parameters, $object, $action);    // Note that $action and $object may have been modified by some hooks
 if ($reshook < 0) setEventMessages($hookmanager->error, $hookmanager->errors, 'errors');
 
