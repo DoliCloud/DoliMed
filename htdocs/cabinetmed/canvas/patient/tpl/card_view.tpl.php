@@ -159,7 +159,7 @@ print '</tr>';
 
 // Type + Staff => Genre
 $arr = $formcompany->typent_array(1);
-$object->typent= $arr[$object->typent_code];
+$object->typent = (empty($arr[$object->typent_code]) ? '' : $arr[$object->typent_code]);
 print '<tr><td>'.$langs->trans("Gender").'</td><td colspan="3">'.$object->typent.'</td>';
 //print '<td>'.$langs->trans("Staff").'</td><td>'.$object->effectif.'</td>';
 print '</tr>';
