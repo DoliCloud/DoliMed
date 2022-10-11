@@ -88,7 +88,7 @@ if (empty($reshook)) {
 
 		if ($result == '') {
 			 $object->alert_note = $alert_note;
-			 setEventMessages($langs->trans("RecordModifiedSuccessfully"));
+			 setEventMessages($langs->trans("RecordModifiedSuccessfully"), null);
 		} else {
 			$error++;
 			setEventMessages($result, null, 'errors');
