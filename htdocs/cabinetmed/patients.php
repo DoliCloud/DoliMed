@@ -177,7 +177,7 @@ if (!empty($conf->global->THIRDPARTY_QUICKSEARCH_ON_FIELDS)) {
 
 
 $arrayfields=array(
-'s.rowid'=>array('label'=>"TechnicalID", 'checked'=>($conf->global->MAIN_SHOW_TECHNICAL_ID?1:0), 'enabled'=>($conf->global->MAIN_SHOW_TECHNICAL_ID?1:0)),
+'s.rowid'=>array('label'=>"TechnicalID", 'checked'=>(getDolGlobalInt('MAIN_SHOW_TECHNICAL_ID')?1:0), 'enabled'=>(getDolGlobalInt('MAIN_SHOW_TECHNICAL_ID')?1:0)),
 's.nom'=>array('label'=>"Patient", 'checked'=>1),
 's.name_alias'=>array('label'=>"AliasNameShort", 'checked'=>0),
 's.barcode'=>array('label'=>"Gencod", 'checked'=>0, 'enabled'=>(! empty($conf->barcode->enabled))),
@@ -660,7 +660,7 @@ $newcardbutton='';
 if ($user->rights->societe->creer && $contextpage != 'poslist') {
 	$typefilter='';
 	$label='MenuNewPatient';
-	
+
 	if (! empty($type)) {
 		$typefilter = '&type='.$type;
 		if ($type == 'p') $label='MenuNewProspect';
@@ -1112,7 +1112,7 @@ while ($i < min($num, $limit)) {
 	//$companystatic->fk_prospectlevel=$obj->fk_prospectlevel;
 
 	print '<tr class="oddeven">';
-	
+
 	// Action column (Show the massaction button only when this page is not opend from the Extended POS)
 	if (!empty($conf->global->MAIN_CHECKBOX_LEFT_COLUMN)) {
 		print '<td class="nowrap center actioncolumn">';
@@ -1128,7 +1128,7 @@ while ($i < min($num, $limit)) {
 			$totalarray['nbfield']++;
 		}
 	}
-	
+
 	if (! empty($arrayfields['s.rowid']['checked'])) {
 		print '<td class="tdoverflowmax50" data-key="id">';
 		print $obj->rowid;
