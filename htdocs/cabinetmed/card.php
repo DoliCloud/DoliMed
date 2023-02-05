@@ -362,7 +362,6 @@ if (empty($reshook)) {
 			$object->town					= GETPOST('town', 'alpha');
 			$object->country_id				= GETPOST('country_id', 'int');
 			$object->state_id				= GETPOST('state_id', 'int');
-			$object->skype					= GETPOST('skype', 'alpha');
 			$object->phone					= GETPOST('phone', 'alpha');
 			$object->fax					= GETPOST('fax', 'alpha');
 			$object->email					= trim(GETPOST('email', 'custom', 0, FILTER_SANITIZE_EMAIL));
