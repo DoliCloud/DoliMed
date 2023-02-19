@@ -244,7 +244,7 @@ print '</td></tr></table>';
 
 
 print '</div></div></div>';
-print '<div style="clear:both"></div>';
+print '<div class="clearboth"></div>';
 
 
 dol_fiche_end();

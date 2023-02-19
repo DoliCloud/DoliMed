@@ -301,7 +301,7 @@ print '</table>';
 print '</div>';
 
 print '</div>';
-print '<div style="clear:both"></div>';
+print '<div class="clearboth"></div>';
 
 dol_fiche_end();
 
