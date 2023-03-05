@@ -20,5 +20,6 @@ CREATE TABLE llx_cabinetmed_motifcons (
   code              varchar(8) NOT NULL,
   label             varchar(64) NOT NULL,
   position          integer DEFAULT 10,  
+  lang				varchar(12) NULL,
   active            smallint DEFAULT 1  NOT NULL
 ) ENGINE=innodb;

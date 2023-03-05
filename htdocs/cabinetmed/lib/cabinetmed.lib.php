@@ -63,16 +63,21 @@ function addAlert($db, $type, $id, $value)
 */
 function listmotifcons($nboflines, $newwidth = '', $htmlname = 'motifcons', $selected = '')
 {
-	global $conf,$db,$width;
+	global $conf,$db,$width,$langs;
 
 	if (empty($newwidth)) $newwidth=$width;
 
 	$out = '<select class="flat valignmiddle maxwidth200onsmartphone" id="list'.$htmlname.'" name="'.$htmlname.'" '.(empty($conf->dol_use_jmobile)?' style="width: '.$newwidth.'px" ':'').'size="'.$nboflines.'"'.($nboflines > 1?' multiple':'').'>';
-	$out.= '<option value="0"></option>';
+	$out .= '<option value="0">&nbsp;</option>';
+
 	$sql = 'SELECT s.rowid, s.code, s.label';
-	$sql.= ' FROM '.MAIN_DB_PREFIX.'cabinetmed_motifcons as s';
-	$sql.= ' WHERE active = 1';
-	$sql.= ' ORDER BY position, label';
+	$sql .= ' FROM '.MAIN_DB_PREFIX.'cabinetmed_motifcons as s';
+	$sql .= ' WHERE active = 1';
+	if (!getDolGlobalInt('CABINETMED_IGNORE_LANG_FOR_COMBOLIST')) {
+		$sql .= " AND (lang LIKE '".$langs->shortlang."%' OR lang IS NULL OR lang = '')";
+	}
+	$sql .= ' ORDER BY position, label';
+
 	$resql=$db->query($sql);
 	dol_syslog("listmotifcons sql=".$sql);
 	if ($resql) {
@@ -106,16 +111,21 @@ function listmotifcons($nboflines, $newwidth = '', $htmlname = 'motifcons', $sel
 */
 function listdiagles($nboflines, $newwidth = 0, $htmlname = 'diagles', $selected = '')
 {
-	global $conf,$db,$width;
+	global $conf,$db,$width,$langs;
 
 	if (empty($newwidth)) $newwidth=$width;
 
-	$out= '<select class="flat valignmiddle maxwidth200onsmartphone" id="list'.$htmlname.'" name="'.$htmlname.'" '.(empty($conf->dol_use_jmobile)?' style="width: '.$newwidth.'px" ':'').'size="'.$nboflines.'"'.($nboflines > 1?' multiple':'').'>';
-	$out.= '<option value="0">&nbsp;</option>';
+	$out = '<select class="flat valignmiddle maxwidth200onsmartphone" id="list'.$htmlname.'" name="'.$htmlname.'" '.(empty($conf->dol_use_jmobile)?' style="width: '.$newwidth.'px" ':'').'size="'.$nboflines.'"'.($nboflines > 1?' multiple':'').'>';
+	$out .= '<option value="0">&nbsp;</option>';
+
 	$sql = 'SELECT s.rowid, s.code, s.label';
-	$sql.= ' FROM '.MAIN_DB_PREFIX.'cabinetmed_diaglec as s';
-	$sql.= ' WHERE active = 1';
-	$sql.= ' ORDER BY position, label';
+	$sql .= ' FROM '.MAIN_DB_PREFIX.'cabinetmed_diaglec as s';
+	$sql .= ' WHERE active = 1';
+	if (!getDolGlobalInt('CABINETMED_IGNORE_LANG_FOR_COMBOLIST')) {
+		$sql .= " AND (lang LIKE '".$langs->shortlang."%' OR lang IS NULL OR lang = '')";
+	}
+	$sql .= ' ORDER BY position, label';
+
 	$resql=$db->query($sql);
 	dol_syslog("consutlations sql=".$sql);
 	if ($resql) {
@@ -154,11 +164,15 @@ function listexamen($nboflines, $newwidth = 0, $type = '', $showtype = 0, $htmln
 	if (empty($newwidth)) $newwidth=$width;
 
 	print '<select class="flat valignmiddle maxwidth200onsmartphone" id="list'.$htmlname.'" name="list'.$htmlname.'" '.(empty($conf->dol_use_jmobile)?' style="width: '.$newwidth.'px" ':'').'size="'.$nboflines.'"'.($nboflines > 1?' multiple':'').'>';
-	print '<option value="0"></option>';
+	print '<option value="0">&nbsp;</option>';
+
 	$sql = 'SELECT s.rowid, s.code, s.label, s.biorad as type';
 	$sql.= ' FROM '.MAIN_DB_PREFIX.'cabinetmed_examenprescrit as s';
 	$sql.= ' WHERE active = 1';
-	if ($type) $sql.=" AND s.biorad in ('".$type."')";
+	if ($type) $sql.=" AND s.biorad in ('".$db->escape($type)."')";
+	if (!getDolGlobalInt('CABINETMED_IGNORE_LANG_FOR_COMBOLIST')) {
+		$sql .= " AND (lang LIKE '".$langs->shortlang."%' OR lang IS NULL OR lang = '')";
+	}
 	$sql.= ' ORDER BY position, label';
 	$resql=$db->query($sql);
 	dol_syslog("consutlations sql=".$sql);
@@ -191,11 +205,16 @@ function listexamconclusion($nboflines, $newwidth = 0, $htmlname = 'examconc')
 	if (empty($newwidth)) $newwidth=$width;
 
 	print '<select class="flat valignmiddle maxwidth200onsmartphone" id="list'.$htmlname.'" name="list'.$htmlname.'" '.(empty($conf->dol_use_jmobile)?' style="width: '.$newwidth.'px" ':'').'size="'.$nboflines.'"'.($nboflines > 1?' multiple':'').'>';
-	print '<option value="0"></option>';
+	print '<option value="0">&nbsp;</option>';
+
 	$sql = 'SELECT s.rowid, s.code, s.label';
 	$sql.= ' FROM '.MAIN_DB_PREFIX.'cabinetmed_c_examconclusion as s';
 	$sql.= ' WHERE active = 1';
+	if (!getDolGlobalInt('CABINETMED_IGNORE_LANG_FOR_COMBOLIST')) {
+		$sql .= " AND (lang LIKE '".$langs->shortlang."%' OR lang IS NULL OR lang = '')";
+	}
 	$sql.= ' ORDER BY position, label';
+
 	$resql=$db->query($sql);
 	dol_syslog("consutlations sql=".$sql);
 	if ($resql) {
@@ -227,7 +246,8 @@ function listebanques($nboflines, $newwidth = 0, $defaultvalue = '', $htmlname =
 	if (empty($newwidth)) $newwidth=$width;
 
 	print '<select class="flat valignmiddle maxwidth200onsmartphone" id="'.$htmlname.'" name="'.$htmlname.'" '.(empty($conf->dol_use_jmobile)?' style="width: '.$newwidth.'px" ':'').'size="'.$nboflines.'"'.($nboflines > 1?' multiple':'').'>';
-	print '<option value=""></option>';
+	print '<option value="">&nbsp;</option>';
+
 	$sql = 'SELECT s.rowid, s.code, s.label';
 	$sql.= ' FROM '.MAIN_DB_PREFIX.'cabinetmed_c_banques as s';
 	$sql.= ' WHERE active = 1';
