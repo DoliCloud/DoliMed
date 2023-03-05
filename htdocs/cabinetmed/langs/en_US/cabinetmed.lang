@@ -189,3 +189,7 @@ FeatureForCustomerdisabled=Features to manage customers is hidden so feature to 
 EditOrAddTemplateFromSetupOfThirdPartyModule=You can edit or add more template from the setup page of the module %s (Menu %s - %s - %s) 
 ConvertIntoPatient=Convert into Patient
 ConvertIntoPatientDesc=The common thirdparty will also be a patient so you can create consultation on it
+
+LesionDiagnosticsCCA=Chondrocalcinotic Arthritis
+LesionDiagnosticsGOUTTE=Gouty Arthritis
+

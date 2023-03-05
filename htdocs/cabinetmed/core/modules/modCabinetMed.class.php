@@ -71,7 +71,7 @@ class modCabinetMed extends DolibarrModules
 		// Name of image file used for this module.
 		// If file is in theme/yourtheme/img directory under name object_pictovalue.png, use this->picto='pictovalue'
 		// If file is in module/img directory under name object_pictovalue.png, use this->picto='pictovalue@module'
-		$this->picto='stetho.png@cabinetmed';
+		$this->picto='object_stetho.png@cabinetmed';
 
 		// Data directories to create when module is enabled.
 		// Example: this->dirs = array("/cabinetmed/temp");
@@ -157,15 +157,15 @@ class modCabinetMed extends DolibarrModules
 		// Dictionnaries
 		if (! isset($conf->cabinetmed->enabled)) {
 			$conf->cabinetmed=new stdClass();
-			$conf->cabinetmed->enabled=0;
+			$conf->cabinetmed->enabled = 0;
 		}
 		$this->dictionnaries=array(
 			'langs'=>'cabinetmed@cabinetmed',
-			'tabname'=>array(MAIN_DB_PREFIX."cabinetmed_motifcons",
-							 MAIN_DB_PREFIX."cabinetmed_diaglec",
-							 MAIN_DB_PREFIX."cabinetmed_examenprescrit",
-							 MAIN_DB_PREFIX."cabinetmed_c_examconclusion",
-							 MAIN_DB_PREFIX."cabinetmed_c_banques"
+			'tabname'=>array("cabinetmed_motifcons",
+							 "cabinetmed_diaglec",
+							 "cabinetmed_examenprescrit",
+							 "cabinetmed_c_examconclusion",
+							 "cabinetmed_c_banques"
 							 ),
 			'tablib'=>array("MotifConsultation",
 							"DiagnostiqueLesionnel",
