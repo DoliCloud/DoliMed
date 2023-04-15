@@ -52,7 +52,9 @@ if ($user->socid > 0) {
 	$socid = $user->socid;
 }
 
-if (empty($conf->cabinetmed->enabled)) accessforbidden();
+if (!isModEnabled('cabinetmed')) {
+	accessforbidden();
+}
 
 $year = dol_print_date(dol_now(), '%Y');
 $startyear = $year - (empty($conf->global->MAIN_STATS_GRAPHS_SHOW_N_YEARS) ? 2 : max(1, min(10, $conf->global->MAIN_STATS_GRAPHS_SHOW_N_YEARS)));

@@ -155,7 +155,7 @@ if (empty($reshook)) {
 		|| GETPOST('button_search_x', 'alpha') || GETPOST('button_search.x', 'alpha') || GETPOST('button_search', 'alpha')) {
 		$massaction = ''; // Protection to avoid mass action if we force a new search during a mass action confirmation
 	}
-		
+
 	// Mass actions
 	$objectclass='Consultations';
 	$objectlabel='Consultations';
@@ -350,7 +350,7 @@ if ((float) DOL_VERSION >= 9.0) {
 	$newcardbutton='';
 	if ($user->rights->cabinetmed->write && $contextpage != 'poslist') {
 		$label='NewConsultation';
-		
+
 		$newcardbutton = '<a class="butActionNew" href="consultations.php?action=create&canvas=patient@cabinetmed">';
 		$newcardbutton.= '<span class="fa fa-plus-circle valignmiddle" title="'.dol_escape_htmltag($langs->trans($label)).'"></span>';
 		$newcardbutton.= '</a>';
@@ -370,7 +370,7 @@ include DOL_DOCUMENT_ROOT.'/core/tpl/massactions_pre.tpl.php';
 
 // Filter on categories
 $moreforfilter='';
-if (! empty($conf->categorie->enabled)) {
+if (isModEnabled("categorie")) {
 	$moreforfilter.='<div class="divsearchfield">';
 	$moreforfilter.=img_picto('', 'category', 'class="pictofixedwidth"').$formother->select_categories(2, $search_categ, 'search_categ', 1, $langs->trans('Categories'));
 	$moreforfilter.='</div>';
@@ -543,7 +543,7 @@ while ($i < $imaxinloop) {
 	if (empty($obj)) {
 		break; // Should not happen
 	}
-	
+
 	// Show here line of result
 	$j = 0;
 	print '<tr data-rowid="'.$object->id.'" class="oddeven">';
@@ -651,7 +651,7 @@ while ($i < $imaxinloop) {
 		if (price2num($obj->montant_cheque) > 0) {
 			if ($foundamount) $s .= ' + ';
 			$s .= $langs->trans("Cheque");
-			if ($conf->banque->enabled && !empty($bankid['CHQ']['account_id'])) {
+			if (isModEnabled("banque") && !empty($bankid['CHQ']['account_id'])) {
 				$bank=new Account($db);
 				$bank->fetch($bankid['CHQ']['account_id']);
 				$s .= '&nbsp;('.$bank->getNomUrl(0, 'transactions').')';
@@ -661,7 +661,7 @@ while ($i < $imaxinloop) {
 		if (price2num($obj->montant_espece) > 0) {
 			if ($foundamount) $s .= ' + ';
 			$s .= $langs->trans("Cash");
-			if ($conf->banque->enabled && !empty($bankid['LIQ']['account_id'])) {
+			if (isModEnabled("banque") && !empty($bankid['LIQ']['account_id'])) {
 				$bank=new Account($db);
 				$bank->fetch($bankid['LIQ']['account_id']);
 				$s .= '&nbsp;('.$bank->getNomUrl(0, 'transactions').')';
@@ -671,7 +671,7 @@ while ($i < $imaxinloop) {
 		if (price2num($obj->montant_carte) > 0) {
 			if ($foundamount) $s .= ' + ';
 			$s .= $langs->trans("CreditCard");
-			if ($conf->banque->enabled && !empty($bankid['CB']['account_id'])) {
+			if (isModEnabled("banque") && !empty($bankid['CB']['account_id'])) {
 				$bank=new Account($db);
 				$bank->fetch($bankid['CB']['account_id']);
 				$s .= '&nbsp;('.$bank->getNomUrl(0, 'transactions').')';
@@ -681,7 +681,7 @@ while ($i < $imaxinloop) {
 		if (price2num($obj->montant_tiers) > 0) {
 			if ($foundamount) $s .= ' + ';
 			$s .= $langs->trans("PaymentTypeThirdParty");
-			if ($conf->banque->enabled && !empty($bankid['OTH']['account_id'])) {
+			if (isModEnabled("banque") && !empty($bankid['OTH']['account_id'])) {
 				$bank=new Account($db);
 				$bank->fetch($bankid['OTH']['account_id']);
 				$s .= '&nbsp;('.$bank->getNomUrl(0, 'transactions').')';
@@ -715,9 +715,9 @@ while ($i < $imaxinloop) {
 			$totalarray['nbfield']++;
 		}
 	}
-	
+
 	print '</tr>'."\n";
-	
+
 	$i++;
 }
 

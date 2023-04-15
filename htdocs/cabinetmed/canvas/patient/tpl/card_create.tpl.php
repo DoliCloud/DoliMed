@@ -311,7 +311,7 @@ while ($i <= 6) {
 		}
 
 		// Categories
-		if (! empty($conf->categorie->enabled)  && ! empty($user->rights->categorie->lire)) {
+		if (isModEnabled('categorie') && $user->hasRight('categorie', 'lire')) {
 			$langs->load('categories');
 
 			// Customer

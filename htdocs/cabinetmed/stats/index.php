@@ -62,7 +62,9 @@ $mode=GETPOST("mode")?GETPOST("mode"):'customer';
 $codageccam=GETPOST('codageccam');
 $typevisit=GETPOST('typevisit');
 
-if (empty($conf->cabinetmed->enabled)) accessforbidden();
+if (!isModEnabled('cabinetmed')) {
+	accessforbidden();
+}
 
 
 /*

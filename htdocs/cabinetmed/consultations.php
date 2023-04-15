@@ -241,7 +241,7 @@ if (empty($reshook)) {
 				$mesgarray[]=$langs->trans("ErrorFieldRequired", $langs->transnoentities("Amount"));
 			}
 			// If bank module enabled, bank account is required.
-			if ($conf->banque->enabled) {
+			if (isModEnabled("banque")) {
 				if (! empty($_POST["montant_cheque"]) && (! GETPOST('bankchequeto') || GETPOST('bankchequeto') < 0)) { $error++; $mesgarray[]=$langs->trans("ErrorFieldRequired", $langs->transnoentities("RecBank")); }
 				if (! empty($_POST["montant_carte"])  && (! GETPOST('bankcarteto')  || GETPOST('bankcarteto') < 0)) { $error++; $mesgarray[]=$langs->trans("ErrorFieldRequired", $langs->transnoentities("RecBank")); }
 				if (! empty($_POST["montant_espece"]) && (! GETPOST('bankespeceto') || GETPOST('bankespeceto') < 0)) { $error++; $mesgarray[]=$langs->trans("ErrorFieldRequired", $langs->transnoentities("RecBank")); }
@@ -371,7 +371,7 @@ if (empty($reshook)) {
 
 										// Create entry into bank account for the payment
 										if (! $error) {
-											if ($conf->banque->enabled && isset($banque[$key]) && $banque[$key] > 0) {
+											if (isModEnabled("banque") && isset($banque[$key]) && $banque[$key] > 0) {
 												$label='(CustomerInvoicePayment)';
 												if ((float) DOL_VERSION >= 13) {
 													$accountancycode = empty($conf->global->CABINETMED_ACCOUNTANCY_CODE_FOR_CONSULTATION) ? '' : $conf->global->CABINETMED_ACCOUNTANCY_CODE_FOR_CONSULTATION;
@@ -394,7 +394,7 @@ if (empty($reshook)) {
 						} else {
 							// Create direct entry into bank account
 							foreach (array('CHQ','CB','LIQ','VIR') as $key) {
-								if ($conf->banque->enabled && isset($banque[$key]) && $banque[$key] > 0) {
+								if (isModEnabled("banque") && isset($banque[$key]) && $banque[$key] > 0) {
 									//var_dump($key.' '.$banque[$key].' '.$soc->name.' '.$object->banque);exit;
 									$bankaccount=new Account($db);
 									$result=$bankaccount->fetch($banque[$key]);
@@ -444,7 +444,7 @@ if (empty($reshook)) {
 							if ($key == 'VIR' &&
 							(price2num($oldconsult->montant_tiers, 'MT') != price2num($_POST["montant_tiers"], 'MT'))) $bankmodified=1;
 
-							if ($conf->banque->enabled && $bankmodified) {
+							if (isModEnabled("banque") && $bankmodified) {
 								// TODO Check if cheque is already into a receipt
 								if ($key == 'CHQ' && 1 == 1) {
 								}
@@ -465,7 +465,7 @@ if (empty($reshook)) {
 									$bankaccountline->delete($user);
 								}
 
-								if ($conf->banque->enabled && isset($banque[$key]) && $banque[$key] > 0) {
+								if (isModEnabled("banque") && isset($banque[$key]) && $banque[$key] > 0) {
 									$bankaccount=new Account($db);
 									$result=$bankaccount->fetch($banque[$key]);
 									if ($result < 0) dol_print_error($db, $bankaccount->error);
@@ -544,7 +544,7 @@ if (! ($socid > 0)) {
 	/*
 	 * Affichage onglets
 	 */
-	if ($conf->notification->enabled) $langs->load("mails");
+	if (isModEnabled("notification")) $langs->load("mails");
 
 	$savobject = $object;
 	$object = $soc;
@@ -1031,7 +1031,7 @@ if (! ($socid > 0)) {
 		print '<input type="text" class="flat" name="montant_cheque" id="idmontant_cheque" value="'.($object->montant_cheque!=''?price($object->montant_cheque):'').'" size="4"';
 		print ' placeholder="'.($conf->currency != $langs->getCurrencySymbol($conf->currency) ? $langs->getCurrencySymbol($conf->currency) : '').'"';
 		print '>';
-		if ($conf->banque->enabled) {
+		if (isModEnabled("banque")) {
 			print ' &nbsp; '.$langs->trans("RecBank").' ';
 			$form->select_comptes(GETPOST('bankchequeto')?GETPOST('bankchequeto'):($object->bank['CHQ']['account_id']?$object->bank['CHQ']['account_id']:$defaultbankaccountchq), 'bankchequeto', 2, 'courant = 1', 1);
 		}
@@ -1039,7 +1039,7 @@ if (! ($socid > 0)) {
 		print $langs->trans("ChequeBank").' ';
 		listebanques(1, 0, $object->banque);
 		if ($user->admin) print info_admin($langs->trans("YouCanChangeValuesForThisListFromDictionarySetup"), 1);
-		if ($conf->banque->enabled) {
+		if (isModEnabled("banque")) {
 			print ' &nbsp; '.$langs->trans("ChequeOrTransferNumber").' ';
 			print '<input type="text" class="flat" name="num_cheque" id="idnum_cheque" value="'.$object->num_cheque.'" size="6">';
 		}
@@ -1050,7 +1050,7 @@ if (! ($socid > 0)) {
 		print '<input type="text" class="flat" name="montant_carte" id="idmontant_carte" value="'.($object->montant_carte!=''?price($object->montant_carte):'').'" size="4"';
 		print ' placeholder="'.($conf->currency != $langs->getCurrencySymbol($conf->currency) ? $langs->getCurrencySymbol($conf->currency) : '').'"';
 		print '>';
-		if ($conf->banque->enabled) {
+		if (isModEnabled("banque")) {
 			print ' &nbsp; '.$langs->trans("RecBank").' ';
 			$form->select_comptes(GETPOST('bankcarteto')?GETPOST('bankcarteto'):($object->bank['CB']['account_id']?$object->bank['CB']['account_id']:$defaultbankaccountchq), 'bankcarteto', 2, 'courant = 1', 1);
 		}
@@ -1061,7 +1061,7 @@ if (! ($socid > 0)) {
 		print '<input type="text" class="flat" name="montant_espece" id="idmontant_espece" value="'.($object->montant_espece!=''?price($object->montant_espece):'').'" size="4"';
 		print ' placeholder="'.($conf->currency != $langs->getCurrencySymbol($conf->currency) ? $langs->getCurrencySymbol($conf->currency) : '').'"';
 		print '>';
-		if ($conf->banque->enabled) {
+		if (isModEnabled("banque")) {
 			print ' &nbsp; '.$langs->trans("RecBank").' ';
 			$form->select_comptes(GETPOST('bankespeceto')?GETPOST('bankespeceto'):($object->bank['LIQ']['account_id']?$object->bank['LIQ']['account_id']:$defaultbankaccountliq), 'bankespeceto', 2, 'courant = 2', 1);
 		}
@@ -1370,7 +1370,7 @@ if ($action == '' || $action == 'list' || $action == 'delete') {
 				if (price2num($obj->montant_cheque) > 0) {
 					if ($foundamount) print ' + ';
 					print $langs->trans("Cheque");
-					if ($conf->banque->enabled && $object->bank['CHQ']['account_id']) {
+					if (isModEnabled("banque") && $object->bank['CHQ']['account_id']) {
 						$bank=new Account($db);
 						$bank->fetch($object->bank['CHQ']['account_id']);
 						print '&nbsp;('.$bank->getNomUrl(0, 'transactions').')';
@@ -1380,7 +1380,7 @@ if ($action == '' || $action == 'list' || $action == 'delete') {
 				if (price2num($obj->montant_espece) > 0) {
 					if ($foundamount) print ' + ';
 					print $langs->trans("Cash");
-					if ($conf->banque->enabled && $object->bank['LIQ']['account_id']) {
+					if (isModEnabled("banque") && $object->bank['LIQ']['account_id']) {
 						$bank=new Account($db);
 						$bank->fetch($object->bank['LIQ']['account_id']);
 						print '&nbsp;('.$bank->getNomUrl(0, 'transactions').')';
@@ -1390,7 +1390,7 @@ if ($action == '' || $action == 'list' || $action == 'delete') {
 				if (price2num($obj->montant_carte) > 0) {
 					if ($foundamount) print ' + ';
 					print $langs->trans("CreditCard");
-					if ($conf->banque->enabled && $object->bank['CB']['account_id']) {
+					if (isModEnabled("banque") && $object->bank['CB']['account_id']) {
 						$bank=new Account($db);
 						$bank->fetch($object->bank['CB']['account_id']);
 						print '&nbsp;('.$bank->getNomUrl(0, 'transactions').')';
@@ -1400,7 +1400,7 @@ if ($action == '' || $action == 'list' || $action == 'delete') {
 				if (price2num($obj->montant_tiers) > 0) {
 					if ($foundamount) print ' + ';
 					print $langs->trans("PaymentTypeThirdParty");
-					if ($conf->banque->enabled && $object->bank['OTH']['account_id']) {
+					if (isModEnabled("banque") && $object->bank['OTH']['account_id']) {
 						$bank=new Account($db);
 						$bank->fetch($object->bank['OTH']['account_id']);
 						print '&nbsp;('.$bank->getNomUrl(0, 'transactions').')';

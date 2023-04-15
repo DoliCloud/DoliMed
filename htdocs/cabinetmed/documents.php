@@ -199,7 +199,7 @@ if ($object->id) {
 
     // Show tabs
 
-    if ($conf->notification->enabled) $langs->load("mails");
+    if (isModEnabled("notification")) $langs->load("mails");
 
     $head = societe_prepare_head($object);
     if ((float) DOL_VERSION < 7) dol_fiche_head($head, 'tabdocument', $langs->trans("Patient"), 0, 'patient@cabinetmed');

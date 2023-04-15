@@ -108,7 +108,7 @@ $resql = $db->query($sql);
 if ($resql) {
 	while ($objp = $db->fetch_object($resql)) {
 		$found=0;
-		if (!empty($conf->cabinetmed->enabled)) {
+		if (isModEnabled('cabinetmed')) {
 			$found=1;
 			if (empty($third['patient'])) {
 				$third['patient'] = 0;
@@ -122,7 +122,7 @@ if ($resql) {
 print '<table class="noborder" width="100%">';
 print '<tr class="liste_titre"><th colspan="2">'.$langs->trans("Statistics").'</th></tr>';
 $statstring = '';
-if (!empty($conf->cabinetmed->enabled)) {
+if (isModEnabled('cabinetmed')) {
 	$statstring.= '<tr class="oddeven">';
 	$statstring.= '<td><a href="'.dol_buildpath('/cabinetmed/patients.php', 1).'">'.$langs->trans("Patients").'</a></td><td align="right">'.(isset($third['patient']) ? round($third['patient']) : 0).'</td>';
 	$statstring.= "</tr>";

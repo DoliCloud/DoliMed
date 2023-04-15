@@ -40,7 +40,7 @@ global $db,$conf,$mysoc,$langs,$user,$hookmanager,$extrafields;
 require_once DOL_DOCUMENT_ROOT ."/core/class/html.formcompany.class.php";
 require_once DOL_DOCUMENT_ROOT ."/core/class/html.formfile.class.php";
 require_once DOL_DOCUMENT_ROOT ."/core/lib/date.lib.php";
-if (! empty($conf->adherent->enabled)) require_once DOL_DOCUMENT_ROOT.'/adherents/class/adherent.class.php';
+if (isModEnabled("adherent")) require_once DOL_DOCUMENT_ROOT.'/adherents/class/adherent.class.php';
 dol_include_once("/cabinetmed/lib/cabinetmed.lib.php");
 
 $form=new Form($GLOBALS['db']);
@@ -177,7 +177,7 @@ print '<div class="underbanner clearboth"></div>';
 print '<table class="border tableforfield centpercent">';
 
 // Tags / categories
-if (! empty($conf->categorie->enabled)  && ! empty($user->rights->categorie->lire)) {
+if (isModEnabled("categorie") && ! empty($user->rights->categorie->lire)) {
 	// Customer
 	if ($object->prospect || $object->client) {
 		print '<tr><td>' . $langs->trans("CustomersCategoriesShort") . '</td>';
@@ -271,11 +271,11 @@ if (empty($conf->global->SOCIETE_DISABLE_PARENTCOMPANY)) {
 	print '</tr>';
 }
 
-	// Sales representative
-	include DOL_DOCUMENT_ROOT.'/societe/tpl/linesalesrepresentative.tpl.php';
+// Sales representative
+include DOL_DOCUMENT_ROOT.'/societe/tpl/linesalesrepresentative.tpl.php';
 
-	// Module Adherent
-if (! empty($conf->adherent->enabled)) {
+// Module Adherent
+if (isModEnabled("adherent")) {
 	$langs->load("members");
 	print '<tr><td>'.$langs->trans("LinkedToDolibarrMember").'</td>';
 	print '<td colspan="3">';
@@ -292,7 +292,7 @@ if (! empty($conf->adherent->enabled)) {
 }
 
 	// Webservices url/key
-if (!empty($conf->syncsupplierwebservices->enabled)) {
+if (isModEnabled("syncsupplierwebservices")) {
 	print '<tr><td>'.$langs->trans("WebServiceURL").'</td><td>'.dol_print_url($object->webservices_url).'</td>';
 	print '<td class="nowrap">'.$langs->trans('WebServiceKey').'</td><td>'.$object->webservices_key.'</td></tr>';
 }

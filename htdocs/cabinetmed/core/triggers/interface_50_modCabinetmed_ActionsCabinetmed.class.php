@@ -116,7 +116,7 @@ class InterfaceActionsCabinetmed
 		// Actions
 		if ($action == 'CABINETMED_OUTCOME_CREATE') {
 			// object is consultation.class.php
-			if (empty($conf->agenda->enabled)) return 0;     // Module not active, we do nothing
+			if (!isModEnabled("agenda")) return 0;     // Module not active, we do nothing
 
 			dol_syslog("Trigger '".$this->name."' for action '$action' launched by ".__FILE__.". id=".$object->id);
 			$langs->load("agenda");
@@ -138,7 +138,7 @@ class InterfaceActionsCabinetmed
 		}
 		if ($action == 'CABINETMED_SENTBYMAIL') {
 			// object is societe.class.php
-			if (empty($conf->agenda->enabled)) return 0;     // Module not active, we do nothing
+			if (isModEnabled("agenda")) return 0;     // Module not active, we do nothing
 
 			dol_syslog("Trigger '".$this->name."' for action '$action' launched by ".__FILE__.". id=".$object->id);
 			$langs->load("agenda");
