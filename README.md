@@ -1,4 +1,4 @@
-# DOLIMED MODULE FOR DOLIBARR ERP/CRM
+# DOLIMED MODULE FOR [DOLIBARR ERP CRM](https://www.dolibarr.org)
 
 This repository contains the DoliMed module for Dolibarr. 
 Developed by DoliCloud Dolibarr Preferred Partner: https://www.dolicloud.com
