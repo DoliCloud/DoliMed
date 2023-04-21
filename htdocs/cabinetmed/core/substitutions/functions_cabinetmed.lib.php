@@ -316,7 +316,7 @@ function cabinetmed_completesubstitutionarray(&$substitutionarray, $langs, $obje
 				$contact=new Contact($db);
 				$result = $contact->fetch($tmparray['id'], $user);
 				if ($result > 0) {
-					$substitutionarray['contact_title']=$contact->civility_id;
+					$substitutionarray['contact_title']=$contact->civility;		// civility_code is code
 					$substitutionarray['contact_lastname']=$contact->lastname;
 					$substitutionarray['contact_firstname']=$contact->firstname;
 					$substitutionarray['contact_zip']=$contact->zip;

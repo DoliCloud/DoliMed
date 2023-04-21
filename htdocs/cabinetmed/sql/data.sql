@@ -77,39 +77,39 @@ INSERT INTO llx_cabinetmed_motifcons (rowid,code,label,active) VALUES (53,'DOUL_
 
 
 -- llx_cabinetmed_diaglec
-INSERT INTO llx_cabinetmed_diaglec (rowid,code,label,position,active) VALUES ( 1,'AUTRE','Autre',1,1);
-insert into llx_cabinetmed_diaglec (rowid,code,label,active) values ( 2,'LOMBL5D', 'Lombosciatique L5 droite',1);
-insert into llx_cabinetmed_diaglec (rowid,code,label,active) values ( 3,'LOMBL5G', 'Lombosciatique L5 gauche',1);
-insert into llx_cabinetmed_diaglec (rowid,code,label,active) values ( 4,'LOMBS1D', 'Lombosciatique S1 droite',1);
-insert into llx_cabinetmed_diaglec (rowid,code,label,active) values ( 5,'LOMBS1G', 'Lombosciatique S1 gauche',1);
-INSERT INTO llx_cabinetmed_diaglec (rowid,code,label,active) VALUES ( 6,'NCB','Névralgie cervico-brachiale',1);
-INSERT INTO llx_cabinetmed_diaglec (rowid,code,label,active) VALUES ( 7,'PR','Polyarthrite rhumatoide',1);
-INSERT INTO llx_cabinetmed_diaglec (rowid,code,label,active) VALUES ( 8,'SA','Spondylarthrite ankylosante',1);
-INSERT INTO llx_cabinetmed_diaglec (rowid,code,label,active) VALUES ( 9,'GFTI','Gonarthrose fémoro-tibaile interne',1);
-INSERT INTO llx_cabinetmed_diaglec (rowid,code,label,active) VALUES (10,'GFTE','Gonarthrose fémoro-tibiale externe',1);
-INSERT INTO llx_cabinetmed_diaglec (rowid,code,label,active) VALUES (11,'COX','Coxarthrose',1);
-INSERT INTO llx_cabinetmed_diaglec (rowid,code,label,active) VALUES (12,'CC','Canal Carpien',1);
-INSERT INTO llx_cabinetmed_diaglec (rowid,code,label,active) VALUES (16,'CLER','Canal Lombaire Etroit et/ou  Rétréci',1);
-INSERT INTO llx_cabinetmed_diaglec (rowid,code,label,active) VALUES (22,'RH_PSO','Rhumatisme Psoriasique',1);
-INSERT INTO llx_cabinetmed_diaglec (rowid,code,label,active) VALUES (23,'LEAD','Lupus',1);
-INSERT INTO llx_cabinetmed_diaglec (rowid,code,label,active) VALUES (24,'LBDISC','Lombalgie Discale',1);
-INSERT INTO llx_cabinetmed_diaglec (rowid,code,label,active) VALUES (25,'LBRADD','Lomboradiculalgie Discale',1);
-INSERT INTO llx_cabinetmed_diaglec (rowid,code,label,active) VALUES (26,'LBRADND','Lomboradiculalgie Non Discale',1);
-INSERT INTO llx_cabinetmed_diaglec (rowid,code,label,active) VALUES (27,'CH_ROT','Chondropathie Rotulienne',1);
-INSERT INTO llx_cabinetmed_diaglec (rowid,code,label,active) VALUES (28,'AFP','Arthrose FémoroPatellaire',1);
-INSERT INTO llx_cabinetmed_diaglec (rowid,code,label,active) VALUES (29,'PPR','Pseudo Polyarthrite Rhizomélique',1);
-INSERT INTO llx_cabinetmed_diaglec (rowid,code,label,active) VALUES (30,'SHARP','Maladie de Sharp',1);
-INSERT INTO llx_cabinetmed_diaglec (rowid,code,label,active) VALUES (31,'SAPHO','SAPHO',1);
-INSERT INTO llx_cabinetmed_diaglec (rowid,code,label,active) VALUES (32,'OMARTHC','Omarthrose Centrée',1);
-INSERT INTO llx_cabinetmed_diaglec (rowid,code,label,active) VALUES (33,'RH_CCA','Rhumatisme Chondro Calcinosique',1);
-INSERT INTO llx_cabinetmed_diaglec (rowid,code,label,active) VALUES (34,'GOUTTE','Arthrite Goutteuse',1);
-INSERT INTO llx_cabinetmed_diaglec (rowid,code,label,active) VALUES (35,'CCA','Arthrite Chondro Calcinosique',1);
-INSERT INTO llx_cabinetmed_diaglec (rowid,code,label,active) VALUES (36,'ARTH_MCR','Arthrite Microcristalline',1);
-INSERT INTO llx_cabinetmed_diaglec (rowid,code,label,active) VALUES (37,'CSA','Conflit Sous Acromial',1);
-INSERT INTO llx_cabinetmed_diaglec (rowid,code,label,active) VALUES (38,'TDCALCE','Tendinopathie Calcifiante d''Epaule',1);
-INSERT INTO llx_cabinetmed_diaglec (rowid,code,label,active) VALUES (39,'TDCALCH','Tendinopathie Calcifiante de Hanche',1);
-INSERT INTO llx_cabinetmed_diaglec (rowid,code,label,active) VALUES (40,'TBT','TendinoBursite Trochantérienne',1);
-INSERT INTO llx_cabinetmed_diaglec (rowid,code,label,active) VALUES (41,'OMARTHE','Omarthrose Excentrée',1);
+INSERT INTO llx_cabinetmed_diaglec (rowid,code,label,position,active, lang) VALUES ( 1, 'AUTRE', 'Autre', 1, 1, '');
+insert into llx_cabinetmed_diaglec (rowid,code,label,active,lang) values ( 2,'LOMBL5D', 'Lombosciatique L5 droite', 1, 'fr_FR');
+insert into llx_cabinetmed_diaglec (rowid,code,label,active,lang) values ( 3,'LOMBL5G', 'Lombosciatique L5 gauche',1, 'fr_FR');
+insert into llx_cabinetmed_diaglec (rowid,code,label,active,lang) values ( 4,'LOMBS1D', 'Lombosciatique S1 droite',1, 'fr_FR');
+insert into llx_cabinetmed_diaglec (rowid,code,label,active,lang) values ( 5,'LOMBS1G', 'Lombosciatique S1 gauche',1, 'fr_FR');
+INSERT INTO llx_cabinetmed_diaglec (rowid,code,label,active,lang) VALUES ( 6,'NCB','Névralgie cervico-brachiale',1, 'fr_FR');
+INSERT INTO llx_cabinetmed_diaglec (rowid,code,label,active,lang) VALUES ( 7,'PR','Polyarthrite rhumatoide',1, 'fr_FR');
+INSERT INTO llx_cabinetmed_diaglec (rowid,code,label,active,lang) VALUES ( 8,'SA','Spondylarthrite ankylosante',1, 'fr_FR');
+INSERT INTO llx_cabinetmed_diaglec (rowid,code,label,active,lang) VALUES ( 9,'GFTI','Gonarthrose fémoro-tibaile interne',1, 'fr_FR');
+INSERT INTO llx_cabinetmed_diaglec (rowid,code,label,active,lang) VALUES (10,'GFTE','Gonarthrose fémoro-tibiale externe',1, 'fr_FR');
+INSERT INTO llx_cabinetmed_diaglec (rowid,code,label,active,lang) VALUES (11,'COX','Coxarthrose',1, 'fr_FR');
+INSERT INTO llx_cabinetmed_diaglec (rowid,code,label,active,lang) VALUES (12,'CC','Canal Carpien',1, 'fr_FR');
+INSERT INTO llx_cabinetmed_diaglec (rowid,code,label,active,lang) VALUES (16,'CLER','Canal Lombaire Etroit et/ou  Rétréci',1, 'fr_FR');
+INSERT INTO llx_cabinetmed_diaglec (rowid,code,label,active,lang) VALUES (22,'RH_PSO','Rhumatisme Psoriasique',1, 'fr_FR');
+INSERT INTO llx_cabinetmed_diaglec (rowid,code,label,active,lang) VALUES (23,'LEAD','Lupus',1, 'fr_FR');
+INSERT INTO llx_cabinetmed_diaglec (rowid,code,label,active,lang) VALUES (24,'LBDISC','Lombalgie Discale',1, 'fr_FR');
+INSERT INTO llx_cabinetmed_diaglec (rowid,code,label,active,lang) VALUES (25,'LBRADD','Lomboradiculalgie Discale',1, 'fr_FR');
+INSERT INTO llx_cabinetmed_diaglec (rowid,code,label,active,lang) VALUES (26,'LBRADND','Lomboradiculalgie Non Discale',1, 'fr_FR');
+INSERT INTO llx_cabinetmed_diaglec (rowid,code,label,active,lang) VALUES (27,'CH_ROT','Chondropathie Rotulienne',1, 'fr_FR');
+INSERT INTO llx_cabinetmed_diaglec (rowid,code,label,active,lang) VALUES (28,'AFP','Arthrose FémoroPatellaire',1, 'fr_FR');
+INSERT INTO llx_cabinetmed_diaglec (rowid,code,label,active,lang) VALUES (29,'PPR','Pseudo Polyarthrite Rhizomélique',1, 'fr_FR');
+INSERT INTO llx_cabinetmed_diaglec (rowid,code,label,active,lang) VALUES (30,'SHARP','Maladie de Sharp',1, 'fr_FR');
+INSERT INTO llx_cabinetmed_diaglec (rowid,code,label,active,lang) VALUES (31,'SAPHO','SAPHO',1, 'fr_FR');
+INSERT INTO llx_cabinetmed_diaglec (rowid,code,label,active,lang) VALUES (32,'OMARTHC','Omarthrose Centrée',1, 'fr_FR');
+INSERT INTO llx_cabinetmed_diaglec (rowid,code,label,active,lang) VALUES (33,'RH_CCA','Rhumatisme Chondro Calcinosique',1, 'fr_FR');
+INSERT INTO llx_cabinetmed_diaglec (rowid,code,label,active,lang) VALUES (34,'GOUTTE','Arthrite Goutteuse',1, 'fr_FR');
+INSERT INTO llx_cabinetmed_diaglec (rowid,code,label,active,lang) VALUES (35,'CCA','Arthrite Chondro Calcinosique',1, 'fr_FR');
+INSERT INTO llx_cabinetmed_diaglec (rowid,code,label,active,lang) VALUES (36,'ARTH_MCR','Arthrite Microcristalline',1, 'fr_FR');
+INSERT INTO llx_cabinetmed_diaglec (rowid,code,label,active,lang) VALUES (37,'CSA','Conflit Sous Acromial',1, 'fr_FR');
+INSERT INTO llx_cabinetmed_diaglec (rowid,code,label,active,lang) VALUES (38,'TDCALCE','Tendinopathie Calcifiante d''Epaule',1, 'fr_FR');
+INSERT INTO llx_cabinetmed_diaglec (rowid,code,label,active,lang) VALUES (39,'TDCALCH','Tendinopathie Calcifiante de Hanche',1, 'fr_FR');
+INSERT INTO llx_cabinetmed_diaglec (rowid,code,label,active,lang) VALUES (40,'TBT','TendinoBursite Trochantérienne',1, 'fr_FR');
+INSERT INTO llx_cabinetmed_diaglec (rowid,code,label,active,lang) VALUES (41,'OMARTHE','Omarthrose Excentrée',1, 'fr_FR');
 
 
 -- llx_cabinetmed_examenprescrit

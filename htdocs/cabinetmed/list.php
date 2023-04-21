@@ -114,7 +114,7 @@ if ($mode == 'search') {
 	$sql.= " OR s.email LIKE '%".$db->escape($socname)."%'";
 	$sql.= " OR s.url LIKE '%".$db->escape($socname)."%'";
 
-	if (!empty($conf->barcode->enabled)) {
+	if (isModEnabled("barcode")) {
 		$sql.= "OR s.barcode LIKE '".$db->escape($socname)."'";
 	}
 
@@ -298,7 +298,7 @@ if ($resql) {
 	// Filter on categories
 	/* Not possible in this page because list is for ALL third parties type
 	$moreforfilter='';
-	if (! empty($conf->categorie->enabled))
+	if (isModEnabled("categorie"))
 	{
 		$moreforfilter.=$langs->trans('Categories'). ': ';
 		$moreforfilter.=$htmlother->select_categories(2,$search_categ,'search_categ');
@@ -408,7 +408,7 @@ if ($resql) {
 			$companystatic->name=$langs->trans("Prospect");
 			$s.=$companystatic->getNomUrl(0, 'prospect');
 		}
-		if (! empty($conf->fournisseur->enabled) && $obj->fournisseur) {
+		if (isModEnabled("fournisseur") && $obj->fournisseur) {
 			if ($s) $s.=" / ";
 			$companystatic->name=$langs->trans("Supplier");
 			$s.=$companystatic->getNomUrl(0, 'supplier');

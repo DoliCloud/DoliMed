@@ -180,11 +180,11 @@ $arrayfields=array(
 's.rowid'=>array('label'=>"TechnicalID", 'checked'=>(getDolGlobalInt('MAIN_SHOW_TECHNICAL_ID')?1:0), 'enabled'=>(getDolGlobalInt('MAIN_SHOW_TECHNICAL_ID')?1:0)),
 's.nom'=>array('label'=>"Patient", 'checked'=>1),
 's.name_alias'=>array('label'=>"AliasNameShort", 'checked'=>0),
-'s.barcode'=>array('label'=>"Gencod", 'checked'=>0, 'enabled'=>(! empty($conf->barcode->enabled))),
+'s.barcode'=>array('label'=>"Gencod", 'checked'=>0, 'enabled'=>isModEnabled("barcode")),
 's.code_client'=>array('label'=>"PatientCode", 'checked'=>1),
-'s.code_fournisseur'=>array('label'=>"SupplierCodeShort", 'checked'=>0, 'enabled'=>(! empty($conf->fournisseur->enabled))),
+'s.code_fournisseur'=>array('label'=>"SupplierCodeShort", 'checked'=>0, 'enabled'=>isModEnabled("fournisseur")),
 's.code_compta'=>array('label'=>"CustomerAccountancyCodeShort", 'checked'=>0),
-'s.code_compta_fournisseur'=>array('label'=>"SupplierAccountancyCodeShort", 'checked'=>0, 'enabled'=>(! empty($conf->fournisseur->enabled))),
+'s.code_compta_fournisseur'=>array('label'=>"SupplierAccountancyCodeShort", 'checked'=>0, 'enabled'=>isModEnabled("fournisseur")),
 's.address'=>array('label'=>"Address", 'position'=>19, 'checked'=>0),
 's.zip'=>array('label'=>"Zip", 'position'=>20, 'checked'=>1),
 's.town'=>array('label'=>"Town", 'position'=>22, 'checked'=>1),
@@ -716,7 +716,7 @@ if ($search_all) {
 
 // Filter on categories
 $moreforfilter='';
-if (!empty($conf->categorie->enabled)) {
+if (isModEnabled("categorie")) {
 	require_once DOL_DOCUMENT_ROOT . '/categories/class/categorie.class.php';
 	$moreforfilter.='<div class="divsearchfield">';
 	$moreforfilter.=img_picto('', 'category', 'class="pictofixedwidth"').$formother->select_categories(2, $search_categ, 'search_categ', 1, $langs->trans('Categories'));

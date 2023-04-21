@@ -52,13 +52,12 @@ require_once DOL_DOCUMENT_ROOT.'/core/class/html.formfile.class.php';
 require_once DOL_DOCUMENT_ROOT.'/core/class/extrafields.class.php';
 require_once DOL_DOCUMENT_ROOT.'/contact/class/contact.class.php';
 require_once DOL_DOCUMENT_ROOT.'/categories/class/categorie.class.php';
-if (! empty($conf->adherent->enabled)) require_once DOL_DOCUMENT_ROOT.'/adherents/class/adherent.class.php';
+if (isModEnabled("adherent")) require_once DOL_DOCUMENT_ROOT.'/adherents/class/adherent.class.php';
 
-$langs->load("cabinetmed@cabinetmed");
-$langs->loadLangs(array("companies","commercial","bills","banks","users","other"));
-if (! empty($conf->categorie->enabled)) $langs->load("categories");
-if (! empty($conf->incoterm->enabled)) $langs->load("incoterm");
-if (! empty($conf->notification->enabled)) $langs->load("mails");
+$langs->loadLangs(array("cabinetmed@cabinetmed", "companies","commercial","bills","banks","users","other"));
+if (isModEnabled("categorie")) $langs->load("categories");
+if (isModEnabled("incoterm")) $langs->load("incoterm");
+if (isModEnabled("notification")) $langs->load("mails");
 
 $mesg=''; $error=0; $errors=array();
 
@@ -408,13 +407,13 @@ if (empty($reshook)) {
 			$object->webservices_key		= GETPOST('webservices_key', 'san_alpha');
 
 			// Incoterms
-			if (!empty($conf->incoterm->enabled)) {
+			if (isModEnabled("incoterm")) {
 				$object->fk_incoterms		= GETPOST('incoterm_id', 'int');
 				$object->location_incoterms	= GETPOST('location_incoterms', 'alpha');
 			}
 
 			// Multicurrency
-			if (!empty($conf->multicurrency->enabled)) {
+			if (isModEnabled("multicurrency")) {
 				$object->multicurrency_code = GETPOST('multicurrency_code', 'alpha');
 			}
 
@@ -728,7 +727,7 @@ if (empty($reshook)) {
 	}
 
 	// Set incoterm
-	if ($action == 'set_incoterms' && !empty($conf->incoterm->enabled)) {
+	if ($action == 'set_incoterms' && isModEnabled("incoterm")) {
 		$object->fetch($socid);
 		$result = $object->setIncoterms(GETPOST('incoterm_id', 'int'), GETPOST('location_incoterms', 'alpha'));
 	}

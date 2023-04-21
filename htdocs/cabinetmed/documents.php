@@ -96,8 +96,6 @@ if ($id > 0 || ! empty($ref))
 }
 
 // Initialize technical object to manage hooks of page. Note that conf->hooks_modules contains array array
-include_once DOL_DOCUMENT_ROOT.'/core/class/hookmanager.class.php';
-$hookmanager=new HookManager($db);
 $hookmanager->initHooks(array('thirdpartycard', 'documentcabinetmed'));
 
 $permissiontoadd = $user->rights->societe->creer;
@@ -201,7 +199,7 @@ if ($object->id) {
 
     // Show tabs
 
-    if ($conf->notification->enabled) $langs->load("mails");
+    if (isModEnabled("notification")) $langs->load("mails");
 
     $head = societe_prepare_head($object);
     if ((float) DOL_VERSION < 7) dol_fiche_head($head, 'tabdocument', $langs->trans("Patient"), 0, 'patient@cabinetmed');

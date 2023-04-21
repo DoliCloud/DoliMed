@@ -71,7 +71,7 @@ class modCabinetMed extends DolibarrModules
 		// Name of image file used for this module.
 		// If file is in theme/yourtheme/img directory under name object_pictovalue.png, use this->picto='pictovalue'
 		// If file is in module/img directory under name object_pictovalue.png, use this->picto='pictovalue@module'
-		$this->picto='stetho.png@cabinetmed';
+		$this->picto='object_stetho.png@cabinetmed';
 
 		// Data directories to create when module is enabled.
 		// Example: this->dirs = array("/cabinetmed/temp");
@@ -157,15 +157,15 @@ class modCabinetMed extends DolibarrModules
 		// Dictionnaries
 		if (! isset($conf->cabinetmed->enabled)) {
 			$conf->cabinetmed=new stdClass();
-			$conf->cabinetmed->enabled=0;
+			$conf->cabinetmed->enabled = 0;
 		}
 		$this->dictionnaries=array(
 			'langs'=>'cabinetmed@cabinetmed',
-			'tabname'=>array(MAIN_DB_PREFIX."cabinetmed_motifcons",
-							 MAIN_DB_PREFIX."cabinetmed_diaglec",
-							 MAIN_DB_PREFIX."cabinetmed_examenprescrit",
-							 MAIN_DB_PREFIX."cabinetmed_c_examconclusion",
-							 MAIN_DB_PREFIX."cabinetmed_c_banques"
+			'tabname'=>array("cabinetmed_motifcons",
+							 "cabinetmed_diaglec",
+							 "cabinetmed_examenprescrit",
+							 "cabinetmed_c_examconclusion",
+							 "cabinetmed_c_banques"
 							 ),
 			'tablib'=>array("MotifConsultation",
 							"DiagnostiqueLesionnel",
@@ -175,17 +175,17 @@ class modCabinetMed extends DolibarrModules
 							 //,"ResultatExamBio","ResultatExamAutre"
 							 ),
 			'tabsql'=>array('SELECT f.rowid as rowid, f.code, f.label, f.active FROM '.MAIN_DB_PREFIX.'cabinetmed_motifcons as f',
-							'SELECT f.rowid as rowid, f.code, f.label, f.active, f.icd, f.lang FROM '.MAIN_DB_PREFIX.'cabinetmed_diaglec as f',
+							'SELECT f.rowid as rowid, f.code, f.label, f.active, f.lang FROM '.MAIN_DB_PREFIX.'cabinetmed_diaglec as f',
 							'SELECT f.rowid as rowid, f.code, f.label, f.biorad, f.active FROM '.MAIN_DB_PREFIX.'cabinetmed_examenprescrit as f',
 							'SELECT f.rowid as rowid, f.code, f.label, f.active FROM '.MAIN_DB_PREFIX.'cabinetmed_c_examconclusion as f',
 							'SELECT f.rowid as rowid, f.code, f.label, f.active FROM '.MAIN_DB_PREFIX.'cabinetmed_c_banques as f'
 							),
 			'tabsqlsort'=>array("label ASC", "label ASC","biorad ASC, label ASC","label ASC","label ASC"),
-			'tabfield'=>array("code,label","code,label,icd,lang","code,label,biorad","code,label","code,label"), // Nom des champs en resultat de select pour affichage du dictionnaire
-			'tabfieldvalue'=>array("code,label","code,label,icd,lang","code,label,biorad","code,label","code,label"),  // Nom des champs d'edition pour modification d'un enregistrement
-			'tabfieldinsert'=>array("code,label","code,label,icd,lang","code,label,biorad","code,label","code,label"),
+			'tabfield'=>array("code,label","code,label,lang","code,label,biorad","code,label","code,label"), // Nom des champs en resultat de select pour affichage du dictionnaire
+			'tabfieldvalue'=>array("code,label","code,label,lang","code,label,biorad","code,label","code,label"),  // Nom des champs d'edition pour modification d'un enregistrement
+			'tabfieldinsert'=>array("code,label","code,label,lang","code,label,biorad","code,label","code,label"),
 			'tabrowid'=>array("rowid","rowid","rowid","rowid","rowid"),
-			'tabcond'=>array($conf->cabinetmed->enabled,$conf->cabinetmed->enabled,$conf->cabinetmed->enabled,$conf->cabinetmed->enabled,$conf->cabinetmed->enabled),
+			'tabcond'=>array(isModEnabled('cabinetmed'),isModEnabled('cabinetmed'),isModEnabled('cabinetmed'),isModEnabled('cabinetmed'),isModEnabled('cabinetmed')),
 			'tabhelp'=>array("",array("icd"=>'http://en.wikipedia.org/wiki/International_Statistical_Classification_of_Diseases_and_Related_Health_Problems'),array("biorad"=>"RADIO|BIO|OTHER")),
 			'tabfieldcheck'=>array("","",array("biorad"=>"/(RADIO|BIO|AUTRE|OTHER)/"))
 		);
@@ -236,7 +236,7 @@ class modCabinetMed extends DolibarrModules
 									'url'=>'/cabinetmed/index.php',
 									'langs'=>'cabinetmed@cabinetmed',    // Lang file to use (without .lang) by module. File must be in langs/code_CODE/ directory.
 									'position'=>25,
-									'enabled'=>'$conf->cabinetmed->enabled',         // Define condition to show or hide menu entry. Use '$conf->voyage->enabled' if entry must be visible if module is enabled.
+									'enabled'=>'isModEnabled("cabinetmed")',         // Define condition to show or hide menu entry. Use '$conf->voyage->enabled' if entry must be visible if module is enabled.
 									'perms'=>'1',           // Use 'perms'=>'$user->rights->voyage->level1->level2' if you want your menu with a permission rules
 									'user'=>2);             // 0=Menu for internal users, 1=external users, 2=both
 		$r++;
@@ -248,7 +248,7 @@ class modCabinetMed extends DolibarrModules
 									'url'=>'/contact/list.php',
 									'langs'=>'cabinetmed@cabinetmed',    // Lang file to use (without .lang) by module. File must be in langs/code_CODE/ directory.
 									'position'=>26,
-									'enabled'=>'$conf->cabinetmed->enabled',         // Define condition to show or hide menu entry. Use '$conf->voyage->enabled' if entry must be visible if module is enabled.
+									'enabled'=>'isModEnabled("cabinetmed")',         // Define condition to show or hide menu entry. Use '$conf->voyage->enabled' if entry must be visible if module is enabled.
 									'perms'=>'1',           // Use 'perms'=>'$user->rights->voyage->level1->level2' if you want your menu with a permission rules
 									'user'=>2);             // 0=Menu for internal users, 1=external users, 2=both
 		$r++;
@@ -259,7 +259,7 @@ class modCabinetMed extends DolibarrModules
 									'url'=>'/cabinetmed/compta.php?mainmenu=accountancy2&leftmenu=&search_sale=__USER_ID__',
 									'langs'=>'cabinetmed@cabinetmed',    // Lang file to use (without .lang) by module. File must be in langs/code_CODE/ directory.
 									'position'=>55,
-									'enabled'=>'$conf->cabinetmed->enabled',         // Define condition to show or hide menu entry. Use '$conf->voyage->enabled' if entry must be visible if module is enabled.
+									'enabled'=>'isModEnabled("cabinetmed")',         // Define condition to show or hide menu entry. Use '$conf->voyage->enabled' if entry must be visible if module is enabled.
 									'perms'=>'1',           // Use 'perms'=>'$user->rights->voyage->level1->level2' if you want your menu with a permission rules
 									'user'=>2);             // 0=Menu for internal users, 1=external users, 2=both
 		$r++;
@@ -274,7 +274,7 @@ class modCabinetMed extends DolibarrModules
 								'url'=>'/cabinetmed/index.php?leftmenu=thirdparties',
 								'langs'=>'cabinetmed@cabinetmed',  // Lang file to use (without .lang) by module. File must be in langs/code_CODE/ directory.
 								'position'=>100,
-								'enabled'=>'$conf->cabinetmed->enabled',         // Define condition to show or hide menu entry. Use '$conf->voyage->enabled' if entry must be visible if module is enabled.
+								'enabled'=>'isModEnabled("cabinetmed")',         // Define condition to show or hide menu entry. Use '$conf->voyage->enabled' if entry must be visible if module is enabled.
 								'perms'=>'1',           // Use 'perms'=>'$user->rights->voyage->level1->level2' if you want your menu with a permission rules
 								'target'=>'',
 								'user'=>2);             // 0=Menu for internal users, 1=external users, 2=both
@@ -287,7 +287,7 @@ class modCabinetMed extends DolibarrModules
 								'url'=>'/cabinetmed/card.php?action=create&canvas=patient@cabinetmed',
 								'langs'=>'cabinetmed@cabinetmed',  // Lang file to use (without .lang) by module. File must be in langs/code_CODE/ directory.
 								'position'=>110,
-								'enabled'=>'$conf->cabinetmed->enabled',         // Define condition to show or hide menu entry. Use '$conf->voyage->enabled' if entry must be visible if module is enabled.
+								'enabled'=>'isModEnabled("cabinetmed")',         // Define condition to show or hide menu entry. Use '$conf->voyage->enabled' if entry must be visible if module is enabled.
 								'perms'=>'$user->rights->societe->creer',           // Use 'perms'=>'$user->rights->voyage->level1->level2' if you want your menu with a permission rules
 								'user'=>2);             // 0=Menu for internal users, 1=external users, 2=both
 		$r++;
@@ -299,7 +299,7 @@ class modCabinetMed extends DolibarrModules
 								'url'=>'/cabinetmed/patients.php?leftmenu=customers&search_sale=__USER_ID__',
 								'langs'=>'cabinetmed@cabinetmed',  // Lang file to use (without .lang) by module. File must be in langs/code_CODE/ directory.
 								'position'=>110,
-								'enabled'=>'$conf->cabinetmed->enabled',         // Define condition to show or hide menu entry. Use '$conf->voyage->enabled' if entry must be visible if module is enabled.
+								'enabled'=>'isModEnabled("cabinetmed")',         // Define condition to show or hide menu entry. Use '$conf->voyage->enabled' if entry must be visible if module is enabled.
 								'perms'=>'1',           // Use 'perms'=>'$user->rights->voyage->level1->level2' if you want your menu with a permission rules
 								'user'=>2);             // 0=Menu for internal users, 1=external users, 2=both
 		$r++;
@@ -312,7 +312,7 @@ class modCabinetMed extends DolibarrModules
 							'url'=>'/cabinetmed/index.php?leftmenu=thirdparties',
 							'langs'=>'cabinetmed@cabinetmed',  // Lang file to use (without .lang) by module. File must be in langs/code_CODE/ directory.
 							'position'=>120,
-							'enabled'=>'$conf->cabinetmed->enabled',         // Define condition to show or hide menu entry. Use '$conf->voyage->enabled' if entry must be visible if module is enabled.
+							'enabled'=>'isModEnabled("cabinetmed")',         // Define condition to show or hide menu entry. Use '$conf->voyage->enabled' if entry must be visible if module is enabled.
 							'perms'=>'1',           // Use 'perms'=>'$user->rights->voyage->level1->level2' if you want your menu with a permission rules
 							'target'=>'',
 							'user'=>2);             // 0=Menu for internal users, 1=external users, 2=both
@@ -325,7 +325,7 @@ class modCabinetMed extends DolibarrModules
 							'url'=>'/cabinetmed/consultations.php?action=create&canvas=patient@cabinetmed',
 							'langs'=>'cabinetmed@cabinetmed',  // Lang file to use (without .lang) by module. File must be in langs/code_CODE/ directory.
 							'position'=>121,
-							'enabled'=>'$conf->cabinetmed->enabled',         // Define condition to show or hide menu entry. Use '$conf->voyage->enabled' if entry must be visible if module is enabled.
+							'enabled'=>'isModEnabled("cabinetmed")',         // Define condition to show or hide menu entry. Use '$conf->voyage->enabled' if entry must be visible if module is enabled.
 							'perms'=>'$user->rights->societe->creer',           // Use 'perms'=>'$user->rights->voyage->level1->level2' if you want your menu with a permission rules
 							'user'=>2);             // 0=Menu for internal users, 1=external users, 2=both
 		$r++;
@@ -337,7 +337,7 @@ class modCabinetMed extends DolibarrModules
 								'url'=>'/cabinetmed/listconsult.php?leftmenu=customers&search_sale=__USER_ID__',
 								'langs'=>'cabinetmed@cabinetmed',  // Lang file to use (without .lang) by module. File must be in langs/code_CODE/ directory.
 								'position'=>122,
-								'enabled'=>'$conf->cabinetmed->enabled',         // Define condition to show or hide menu entry. Use '$conf->voyage->enabled' if entry must be visible if module is enabled.
+								'enabled'=>'isModEnabled("cabinetmed")',         // Define condition to show or hide menu entry. Use '$conf->voyage->enabled' if entry must be visible if module is enabled.
 								'perms'=>'1',           // Use 'perms'=>'$user->rights->voyage->level1->level2' if you want your menu with a permission rules
 								'user'=>2);             // 0=Menu for internal users, 1=external users, 2=both
 		$r++;
@@ -349,7 +349,7 @@ class modCabinetMed extends DolibarrModules
 							'url'=>'/cabinetmed/stats/index.php?leftmenu=customers&userid=__USER_ID__',
 							'langs'=>'cabinetmed@cabinetmed',  // Lang file to use (without .lang) by module. File must be in langs/code_CODE/ directory.
 							'position'=>123,
-							'enabled'=>'$conf->cabinetmed->enabled',         // Define condition to show or hide menu entry. Use '$conf->voyage->enabled' if entry must be visible if module is enabled.
+							'enabled'=>'isModEnabled("cabinetmed")',         // Define condition to show or hide menu entry. Use '$conf->voyage->enabled' if entry must be visible if module is enabled.
 							'perms'=>'1',           // Use 'perms'=>'$user->rights->voyage->level1->level2' if you want your menu with a permission rules
 							'user'=>2);             // 0=Menu for internal users, 1=external users, 2=both
 		$r++;
@@ -361,7 +361,7 @@ class modCabinetMed extends DolibarrModules
 								'url'=>'/cabinetmed/compta.php?mainmenu=patients&leftmenu=&search_sale=__USER_ID__',
 								'langs'=>'cabinetmed@cabinetmed',  // Lang file to use (without .lang) by module. File must be in langs/code_CODE/ directory.
 								'position'=>124,
-								'enabled'=>'$conf->cabinetmed->enabled',         // Define condition to show or hide menu entry. Use '$conf->voyage->enabled' if entry must be visible if module is enabled.
+								'enabled'=>'isModEnabled("cabinetmed")',         // Define condition to show or hide menu entry. Use '$conf->voyage->enabled' if entry must be visible if module is enabled.
 								'perms'=>'1',           // Use 'perms'=>'$user->rights->voyage->level1->level2' if you want your menu with a permission rules
 								'user'=>2);             // 0=Menu for internal users, 1=external users, 2=both
 
@@ -375,7 +375,7 @@ class modCabinetMed extends DolibarrModules
 								'url'=>'/categories/index.php?leftmenu=categorypatients&type=2',
 								'langs'=>'categories',  // Lang file to use (without .lang) by module. File must be in langs/code_CODE/ directory.
 								'position'=>151,
-								'enabled'=>'$conf->categorie->enabled',         // Define condition to show or hide menu entry. Use '$conf->voyage->enabled' if entry must be visible if module is enabled.
+								'enabled'=>'isModEnabled("categorie")',         // Define condition to show or hide menu entry. Use '$conf->voyage->enabled' if entry must be visible if module is enabled.
 								'perms'=>'$user->rights->categorie->lire',           // Use 'perms'=>'$user->rights->voyage->level1->level2' if you want your menu with a permission rules
 								'target'=>'',
 								'user'=>2);             // 0=Menu for internal users, 1=external users, 2=both
@@ -391,7 +391,7 @@ class modCabinetMed extends DolibarrModules
 		'url'=>'/contact/list.php',
 		'langs'=>'companies',  // Lang file to use (without .lang) by module. File must be in langs/code_CODE/ directory.
 		'position'=>110,
-		'enabled'=>'$conf->cabinetmed->enabled',         // Define condition to show or hide menu entry. Use '$conf->voyage->enabled' if entry must be visible if module is enabled.
+		'enabled'=>'isModEnabled("cabinetmed")',         // Define condition to show or hide menu entry. Use '$conf->voyage->enabled' if entry must be visible if module is enabled.
 		'perms'=>'$user->rights->societe->contact->lire',           // Use 'perms'=>'$user->rights->voyage->level1->level2' if you want your menu with a permission rules
 		'user'=>2);             // 0=Menu for internal users, 1=external users, 2=both
 		$r++;
@@ -403,7 +403,7 @@ class modCabinetMed extends DolibarrModules
 		'url'=>'/contact/card.php?leftmenu=contacts&amp;action=create',
 		'langs'=>'companies',  // Lang file to use (without .lang) by module. File must be in langs/code_CODE/ directory.
 		'position'=>120,
-		'enabled'=>'$user->rights->societe->contact->creer',         // Define condition to show or hide menu entry. Use '$conf->voyage->enabled' if entry must be visible if module is enabled.
+		'enabled'=>'isModEnabled("cabinetmed")',         // Define condition to show or hide menu entry. Use '$conf->voyage->enabled' if entry must be visible if module is enabled.
 		'perms'=>'1',           // Use 'perms'=>'$user->rights->voyage->level1->level2' if you want your menu with a permission rules
 		'user'=>2);             // 0=Menu for internal users, 1=external users, 2=both
 		$r++;
@@ -415,7 +415,7 @@ class modCabinetMed extends DolibarrModules
 		'url'=>'/contact/list.php',
 		'langs'=>'companies',  // Lang file to use (without .lang) by module. File must be in langs/code_CODE/ directory.
 		'position'=>130,
-		'enabled'=>'$conf->cabinetmed->enabled',         // Define condition to show or hide menu entry. Use '$conf->voyage->enabled' if entry must be visible if module is enabled.
+		'enabled'=>'isModEnabled("cabinetmed")',         // Define condition to show or hide menu entry. Use '$conf->voyage->enabled' if entry must be visible if module is enabled.
 		'perms'=>'$user->rights->societe->contact->lire',           // Use 'perms'=>'$user->rights->voyage->level1->level2' if you want your menu with a permission rules
 		'user'=>2);             // 0=Menu for internal users, 1=external users, 2=both
 		$r++;
@@ -427,7 +427,7 @@ class modCabinetMed extends DolibarrModules
 		'url'=>'/cabinetmed/stats/index_contacts.php?leftmenu=customers&userid=__USER_ID__',
 		'langs'=>'',  // Lang file to use (without .lang) by module. File must be in langs/code_CODE/ directory.
 		'position'=>140,
-		'enabled'=>'$conf->cabinetmed->enabled',         // Define condition to show or hide menu entry. Use '$conf->voyage->enabled' if entry must be visible if module is enabled.
+		'enabled'=>'isModEnabled("cabinetmed")',         // Define condition to show or hide menu entry. Use '$conf->voyage->enabled' if entry must be visible if module is enabled.
 		'perms'=>'$user->rights->societe->lire',           // Use 'perms'=>'$user->rights->voyage->level1->level2' if you want your menu with a permission rules
 		'user'=>2);             // 0=Menu for internal users, 1=external users, 2=both
 		$r++;
@@ -440,7 +440,7 @@ class modCabinetMed extends DolibarrModules
 		'url'=>'/cabinetmed/compta.php?mainmenu=accountancy2&leftmenu=&search_sale=__USER_ID__',
 		'langs'=>'',  // Lang file to use (without .lang) by module. File must be in langs/code_CODE/ directory.
 		'position'=>100,
-		'enabled'=>'$conf->cabinetmed->enabled',         // Define condition to show or hide menu entry. Use '$conf->voyage->enabled' if entry must be visible if module is enabled.
+		'enabled'=>'isModEnabled("cabinetmed")',         // Define condition to show or hide menu entry. Use '$conf->voyage->enabled' if entry must be visible if module is enabled.
 		'perms'=>'$user->rights->cabinetmed->read',           // Use 'perms'=>'$user->rights->voyage->level1->level2' if you want your menu with a permission rules
 		'user'=>2);             // 0=Menu for internal users, 1=external users, 2=both
 		$r++;

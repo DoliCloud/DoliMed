@@ -188,7 +188,7 @@ print '</td></tr></table>';
 print '</td></tr>';
 
 // Supplier
-if (! empty($conf->fournisseur->enabled) && ! empty($user->rights->fournisseur->lire)) {
+if (isModEnabled("fournisseur") && ! empty($user->rights->fournisseur->lire)) {
 	print '<tr>';
 	print '<td>'.fieldLabel('Supplier', 'fournisseur', 1).'</td><td class="maxwidthonsmartphone">';
 	print $form->selectyesno("fournisseur", $object->fournisseur, 1);
@@ -341,7 +341,7 @@ if (! empty($conf->global->MAIN_MULTILANGS)) {
 
 
 // Categories
-if (! empty($conf->categorie->enabled)  && ! empty($user->rights->categorie->lire)) {
+if (isModEnabled("categorie") && ! empty($user->rights->categorie->lire)) {
 	// Customer
 	if ($object->prospect || $object->client) {
 		print '<tr><td>' . fieldLabel('CustomersCategoriesShort', 'custcats') . '</td>';
@@ -376,7 +376,7 @@ $parameters = array('socid'=>$socid, 'colspan' => ' colspan="3"', 'colspanvalue'
 include DOL_DOCUMENT_ROOT.'/core/tpl/extrafields_edit.tpl.php';
 
 // Webservices url/key
-if (!empty($conf->syncsupplierwebservices->enabled)) {
+if (isModEnabled("syncsupplierwebservices")) {
 	print '<tr><td>'.fieldLabel('WebServiceURL', 'webservices_url').'</td>';
 	print '<td><input type="text" name="webservices_url" id="webservices_url" size="32" value="'.$object->webservices_url.'"></td>';
 	print '<td>'.fieldLabel('WebServiceKey', 'webservices_key').'</td>';

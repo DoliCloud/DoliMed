@@ -195,7 +195,7 @@ if ($socid > 0) {
 	/*
 	 * Affichage onglets
 	 */
-	if ($conf->notification->enabled) $langs->load("mails");
+	if (isModEnabled("notification")) $langs->load("mails");
 
 	$head = societe_prepare_head($societe);
 	if ((float) DOL_VERSION < 7) dol_fiche_head($head, 'tabexamautre', $langs->trans("Patient"), 0, 'patient@cabinetmed');

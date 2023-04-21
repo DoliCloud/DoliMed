@@ -1,123 +1,123 @@
 [main]
 host = https://www.transifex.com
 
-[dolimed.admin]
+[o:dolibarr-association:p:dolimed:r:admin]
 file_filter = htdocs/cabinetmed/langs/<lang>/admin.lang
 source_file = htdocs/cabinetmed/langs/en_US/admin.lang
 source_lang = en_US
-type = MOZILLAPROPERTIES
+type        = MOZILLAPROPERTIES
 
-[dolimed.agenda]
+[o:dolibarr-association:p:dolimed:r:agenda]
 file_filter = htdocs/cabinetmed/langs/<lang>/agenda.lang
 source_file = htdocs/cabinetmed/langs/en_US/agenda.lang
 source_lang = en_US
-type = MOZILLAPROPERTIES
+type        = MOZILLAPROPERTIES
 
-[dolimed.banks]
+[o:dolibarr-association:p:dolimed:r:banks]
 file_filter = htdocs/cabinetmed/langs/<lang>/banks.lang
 source_file = htdocs/cabinetmed/langs/en_US/banks.lang
 source_lang = en_US
-type = MOZILLAPROPERTIES
+type        = MOZILLAPROPERTIES
 
-[dolimed.boxes]
+[o:dolibarr-association:p:dolimed:r:boxes]
 file_filter = htdocs/cabinetmed/langs/<lang>/boxes.lang
 source_file = htdocs/cabinetmed/langs/en_US/boxes.lang
 source_lang = en_US
-type = MOZILLAPROPERTIES
+type        = MOZILLAPROPERTIES
 
-[dolimed.cabinetmed]
+[o:dolibarr-association:p:dolimed:r:cabinetmed]
 file_filter = htdocs/cabinetmed/langs/<lang>/cabinetmed.lang
 source_file = htdocs/cabinetmed/langs/en_US/cabinetmed.lang
 source_lang = en_US
-type = MOZILLAPROPERTIES
+type        = MOZILLAPROPERTIES
 
-[dolimed.cashdesk]
+[o:dolibarr-association:p:dolimed:r:cashdesk]
 file_filter = htdocs/cabinetmed/langs/<lang>/cashdesk.lang
 source_file = htdocs/cabinetmed/langs/en_US/cashdesk.lang
 source_lang = en_US
-type = MOZILLAPROPERTIES
+type        = MOZILLAPROPERTIES
 
-[dolimed.categories]
+[o:dolibarr-association:p:dolimed:r:categories]
 file_filter = htdocs/cabinetmed/langs/<lang>/categories.lang
 source_file = htdocs/cabinetmed/langs/en_US/categories.lang
 source_lang = en_US
-type = MOZILLAPROPERTIES
+type        = MOZILLAPROPERTIES
 
-[dolimed.commercial]
+[o:dolibarr-association:p:dolimed:r:commercial]
 file_filter = htdocs/cabinetmed/langs/<lang>/commercial.lang
 source_file = htdocs/cabinetmed/langs/en_US/commercial.lang
 source_lang = en_US
-type = MOZILLAPROPERTIES
+type        = MOZILLAPROPERTIES
 
-[dolimed.companies]
+[o:dolibarr-association:p:dolimed:r:companies]
 file_filter = htdocs/cabinetmed/langs/<lang>/companies.lang
 source_file = htdocs/cabinetmed/langs/en_US/companies.lang
 source_lang = en_US
-type = MOZILLAPROPERTIES
+type        = MOZILLAPROPERTIES
 
-[dolimed.compta]
+[o:dolibarr-association:p:dolimed:r:compta]
 file_filter = htdocs/cabinetmed/langs/<lang>/compta.lang
 source_file = htdocs/cabinetmed/langs/en_US/compta.lang
 source_lang = en_US
-type = MOZILLAPROPERTIES
+type        = MOZILLAPROPERTIES
 
-[dolimed.errors]
+[o:dolibarr-association:p:dolimed:r:errors]
 file_filter = htdocs/cabinetmed/langs/<lang>/errors.lang
 source_file = htdocs/cabinetmed/langs/en_US/errors.lang
 source_lang = en_US
-type = MOZILLAPROPERTIES
+type        = MOZILLAPROPERTIES
 
-[dolimed.install]
+[o:dolibarr-association:p:dolimed:r:install]
 file_filter = htdocs/cabinetmed/langs/<lang>/install.lang
 source_file = htdocs/cabinetmed/langs/en_US/install.lang
 source_lang = en_US
-type = MOZILLAPROPERTIES
+type        = MOZILLAPROPERTIES
 
-[dolimed.interventions]
+[o:dolibarr-association:p:dolimed:r:interventions]
 file_filter = htdocs/cabinetmed/langs/<lang>/interventions.lang
 source_file = htdocs/cabinetmed/langs/en_US/interventions.lang
 source_lang = en_US
-type = MOZILLAPROPERTIES
+type        = MOZILLAPROPERTIES
 
-[dolimed.mails]
+[o:dolibarr-association:p:dolimed:r:mails]
 file_filter = htdocs/cabinetmed/langs/<lang>/mails.lang
 source_file = htdocs/cabinetmed/langs/en_US/mails.lang
 source_lang = en_US
-type = MOZILLAPROPERTIES
+type        = MOZILLAPROPERTIES
 
-[dolimed.main]
+[o:dolibarr-association:p:dolimed:r:main]
 file_filter = htdocs/cabinetmed/langs/<lang>/main.lang
 source_file = htdocs/cabinetmed/langs/en_US/main.lang
 source_lang = en_US
-type = MOZILLAPROPERTIES
+type        = MOZILLAPROPERTIES
 
-[dolimed.members]
+[o:dolibarr-association:p:dolimed:r:members]
 file_filter = htdocs/cabinetmed/langs/<lang>/members.lang
 source_file = htdocs/cabinetmed/langs/en_US/members.lang
 source_lang = en_US
-type = MOZILLAPROPERTIES
+type        = MOZILLAPROPERTIES
 
-[dolimed.other]
+[o:dolibarr-association:p:dolimed:r:other]
 file_filter = htdocs/cabinetmed/langs/<lang>/other.lang
 source_file = htdocs/cabinetmed/langs/en_US/other.lang
 source_lang = en_US
-type = MOZILLAPROPERTIES
+type        = MOZILLAPROPERTIES
 
-[dolimed.projects]
+[o:dolibarr-association:p:dolimed:r:projects]
 file_filter = htdocs/cabinetmed/langs/<lang>/projects.lang
 source_file = htdocs/cabinetmed/langs/en_US/projects.lang
 source_lang = en_US
-type = MOZILLAPROPERTIES
+type        = MOZILLAPROPERTIES
 
-[dolimed.users]
+[o:dolibarr-association:p:dolimed:r:users]
 file_filter = htdocs/cabinetmed/langs/<lang>/users.lang
 source_file = htdocs/cabinetmed/langs/en_US/users.lang
 source_lang = en_US
-type = MOZILLAPROPERTIES
+type        = MOZILLAPROPERTIES
 
-[dolimed.withdrawals]
+[o:dolibarr-association:p:dolimed:r:withdrawals]
 file_filter = htdocs/cabinetmed/langs/<lang>/withdrawals.lang
 source_file = htdocs/cabinetmed/langs/en_US/withdrawals.lang
 source_lang = en_US
-type = MOZILLAPROPERTIES
+type        = MOZILLAPROPERTIES
 

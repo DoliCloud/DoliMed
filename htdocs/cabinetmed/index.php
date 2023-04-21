@@ -77,10 +77,10 @@ print '<input type="hidden" name="token" value="'.newToken().'">';
 print '<table class="noborder" width="100%">';
 print '<tr class="liste_titre">';
 print '<th colspan="3">'.$langs->trans("Search").'</th></tr>';
-print '<tr class="pair nohover"><td>';
-print $langs->trans("Name").':</td><td><input class="flat" type="text" size="14" name="search_nom_only"></td>';
-print '<td rowspan="'.$rowspan.'" class="pair nohover nobottom"><input type="submit" class="button" value="'.$langs->trans("Search").'"></td></tr>';
-print '<tr class="pair nohover"><td>';
+print '<tr class="oddeven nohover"><td>';
+print $langs->trans("Name").':</td><td class="oddeven"><input class="flat" type="text" size="14" name="search_nom_only"></td>';
+print '<td rowspan="'.$rowspan.'" class="oddeven nohover"><input type="submit" class="button" value="'.$langs->trans("Search").'"></td></tr>';
+print '<tr class="oddeven nohover"><td>';
 print $langs->trans("Other").':</td><td><input class="flat" type="text" size="14" name="search_all"></td>';
 //print '<td><input type="submit" class="button" value="'.$langs->trans("Search").'"></td>';
 print '</tr>';
@@ -108,7 +108,7 @@ $resql = $db->query($sql);
 if ($resql) {
 	while ($objp = $db->fetch_object($resql)) {
 		$found=0;
-		if (!empty($conf->cabinetmed->enabled)) {
+		if (isModEnabled('cabinetmed')) {
 			$found=1;
 			if (empty($third['patient'])) {
 				$third['patient'] = 0;
@@ -122,7 +122,7 @@ if ($resql) {
 print '<table class="noborder" width="100%">';
 print '<tr class="liste_titre"><th colspan="2">'.$langs->trans("Statistics").'</th></tr>';
 $statstring = '';
-if (!empty($conf->cabinetmed->enabled)) {
+if (isModEnabled('cabinetmed')) {
 	$statstring.= '<tr class="oddeven">';
 	$statstring.= '<td><a href="'.dol_buildpath('/cabinetmed/patients.php', 1).'">'.$langs->trans("Patients").'</a></td><td align="right">'.(isset($third['patient']) ? round($third['patient']) : 0).'</td>';
 	$statstring.= "</tr>";
