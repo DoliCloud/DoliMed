@@ -1,4 +1,4 @@
-# DOLIMED MODULE FOR <a href="https://www.dolibarr.org">DOLIBARR ERP CRM</a>
+# DOLIMED MODULE FOR [DOLIBARR ERP CRM](https://www.dolibarr.org)
 
 ## Features
 
