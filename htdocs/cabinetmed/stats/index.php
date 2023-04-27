@@ -166,12 +166,6 @@ print '<input type="hidden" name="token" value="'.newToken().'">';
 print '<div class="div-table-responsive-no-min">';
 print '<table class="noborder centpercent">';
 print '<tr class="liste_titre"><td class="liste_titre" colspan="2">'.$langs->trans("Filter").'</td></tr>';
-/*print '<tr><td>'.$langs->trans("ThirdParty").'</td><td>';
-if ($mode == 'customer') $filter='s.client in (1,2,3)';
-if ($mode == 'supplier') $filter='s.fournisseur = 1';
-print $form->select_company($socid,'socid',$filter,1,0,0,array(),0,'','style="width: 95%"');
-print '</td></tr>';
-*/
 print '<tr><td>'.$langs->trans("User").'</td><td>';
 print $form->select_dolusers($userid ? $userid : -1, 'userid', 1, '', 0, '', '', 0, 0, 0, '', 0, '', 'maxwidth300');
 print '</td></tr>';
