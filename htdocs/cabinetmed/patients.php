@@ -522,7 +522,7 @@ $sql .= $hookmanager->resPrint;
 
 // Count total nb of records with no order and no limits
 $nbtotalofrecords = '';
-if (empty($conf->global->MAIN_DISABLE_FULL_SCANLIST)) {
+if (!getDolGlobalInt('MAIN_DISABLE_FULL_SCANLIST')) {
 	/* The fast and low memory method to get and count full list converts the sql into a sql count */
 	$sqlforcount = preg_replace('/^SELECT[a-zA-Z0-9\._\s\(\),=<>\:\-\']+\sFROM/Ui', 'SELECT COUNT(*) as nbtotalofrecords FROM', $sql);
 	$sqlforcount = preg_replace('/LEFT JOIN '.MAIN_DB_PREFIX.'cabinetmed_cons as c ON c.fk_soc = s.rowid/', '', $sqlforcount);
