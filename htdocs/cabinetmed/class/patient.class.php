@@ -547,7 +547,7 @@ class Patient extends Societe
 		}
 
 		// Use first price level if level not defined for third party
-		if ($conf->global->PRODUIT_MULTIPRICES && empty($this->price_level)) $this->price_level=1;
+		if (getDolGlobalString('PRODUIT_MULTIPRICES') && empty($this->price_level)) $this->price_level=1;
 
 		return $result;
 	}

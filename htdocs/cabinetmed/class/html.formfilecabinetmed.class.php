@@ -180,11 +180,10 @@ class FormFileCabinetmed extends FormFile
 
 			$i=0; $nboflines = 0; $lastrowid=0;
 			foreach ($filearray as $key => $file) {      // filearray must be only files here
-				if ($file['name'] != '.'
-						&& $file['name'] != '..'
-						&& $file['name'] != 'CVS'
-						&& ! preg_match('/\.meta$/i', $file['name'])) {
-					if ($filearray[$key]['rowid'] > 0) $lastrowid = $filearray[$key]['rowid'];
+				if ($file['name'] != '.' && $file['name'] != '..' && $file['name'] != 'CVS' && ! preg_match('/\.meta$/i', $file['name'])) {
+					if (!empty($filearray[$key]['rowid']) && $filearray[$key]['rowid'] > 0) {
+						$lastrowid = $filearray[$key]['rowid'];
+					}
 					$filepath=$relativepath.$file['name'];
 
 					// Define relative path used to store the file
@@ -195,7 +194,7 @@ class FormFileCabinetmed extends FormFile
 					print '<!-- Line list_of_documents '.$key.' relativepath = '.$relativepath.' -->'."\n";
 					// Do we have entry into database ?
 					print '<!-- In database: position='.$filearray[$key]['position'].' -->'."\n";
-					print '<tr class="oddeven" id="row-'.($filearray[$key]['rowid']>0?$filearray[$key]['rowid']:'AFTER'.$lastrowid.'POS'.($i+1)).'">';
+					print '<tr class="oddeven" id="row-'.((!empty($filearray[$key]['rowid']) && $filearray[$key]['rowid'] > 0) ? $filearray[$key]['rowid'] : 'AFTER'.$lastrowid.'POS'.($i+1)).'">';
 
 					// Date
 					print '<td class="left" style="width: 140px">'.dol_print_date($file['date'], "dayhour", "tzuser").'</td>';	// 140px = width for date with PM format
@@ -274,7 +273,7 @@ class FormFileCabinetmed extends FormFile
 
 					// Hash of file (only if we are in a mode where a scan of dir were done and we have id of file in ECM table)
 					print '<td class="center">';
-					if ($relativedir && $filearray[$key]['rowid'] > 0) {
+					if ($relativedir && !empty($filearray[$key]['rowid']) && $filearray[$key]['rowid'] > 0) {
 						if ($editline) {
 							print $langs->trans("FileSharedViaALink").' ';
 							print '<input class="inline-block" type="checkbox" name="shareenabled"'.($file['share']?' checked="checked"':'').' /> ';

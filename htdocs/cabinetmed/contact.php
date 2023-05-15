@@ -57,6 +57,9 @@ $action = GETPOST('action');
 // Initialize technical object to manage hooks of page. Note that conf->hooks_modules contains array array
 $hookmanager->initHooks(array('thirdpartycard','globalcard'));
 
+$id = GETPOST('socid', 'int');
+$ref= GETPOST('ref');
+
 // Security check
 $socid = GETPOST('socid', 'int');
 if ($user->socid) $socid=$user->socid;
@@ -144,8 +147,6 @@ $userstatic=new User($db);
 /* *************************************************************************** */
 if (isset($mesg)) print $mesg;
 
-$id = $_GET['socid'];
-$ref= $_GET['ref'];
 if ($id > 0 || ! empty($ref)) {
 	$societe = new Patient($db);
 	$societe->fetch($id);
@@ -218,7 +219,7 @@ if ($id > 0 || ! empty($ref)) {
 	* Ajouter une ligne de contact
 	* Non affiche en mode modification de ligne
 	*/
-	if ($_GET["action"] != 'editline') {
+	if ($action != 'editline') {
 		print '<thead><tr class="liste_titre">';
 		//print '<td>'.$langs->trans("Source").'</td>';
 		print '<td>'.$langs->trans("Contacts").'</td>';

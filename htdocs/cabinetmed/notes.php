@@ -188,7 +188,7 @@ if ($socid > 0) {
 
 		// Editeur wysiwyg
 		require_once DOL_DOCUMENT_ROOT."/core/class/doleditor.class.php";
-		$doleditor=new DolEditor('note', $note, '', 360, 'dolibarr_notes', 'In', true, false, $conf->global->FCKEDITOR_ENABLE_SOCIETE, 20, '90%');
+		$doleditor=new DolEditor('note', $note, '', 360, 'dolibarr_notes', 'In', true, false, getDolGlobalInt('FCKEDITOR_ENABLE_SOCIETE') ? true : false, 20, '90%');
 		$doleditor->Create(0, '.on( \'key\', function(e) { console.log("changed"); changed=true; }) ');  // Add on to detect changes with key pressed
 		print '<br>';
 	} else {

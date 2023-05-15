@@ -208,17 +208,15 @@ $resql=$db->query($sql);
 if ($resql) {
 	$i = 0 ;
 	$num = $db->num_rows($resql);
-	$var=true;
 
 	$societestatic=new Societe($db);
 
 	while ($i < $num) {
 		$obj = $db->fetch_object($resql);
 
-		$societestatic->id=$obj->rowid;
-		$societestatic->name=$obj->name;
+		$societestatic->id = $obj->rowid;
+		$societestatic->name = $obj->name;
 
-		$var=!$var;
 		print '<tr class="oddeven">';
 
 		print '<td>';
@@ -242,6 +240,12 @@ if ($resql) {
 
 		print '</tr>';
 		$i++;
+	}
+
+	if (!$num) {
+		print '<tr class="oddeven"><td colspan="6">';
+		print '<span class="opacitymedium">'.$langs->trans("None").'</span>';
+		print '</td></tr>';
 	}
 } else {
 	dol_print_error($db);

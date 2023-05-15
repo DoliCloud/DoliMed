@@ -97,7 +97,7 @@ if (! empty($conf->global->SOCIETE_USEPREFIX)) {  // Old not used prefix field
 //}
 
 // Barcode
-if ($conf->global->MAIN_MODULE_BARCODE) {
+if (getDolGlobalString('MAIN_MODULE_BARCODE')) {
 	print '<tr><td>'.$langs->trans('Gencod').'</td><td colspan="3">'.$object->barcode.'</td></tr>';
 }
 
@@ -105,7 +105,10 @@ if ($conf->global->MAIN_MODULE_BARCODE) {
 $i=1; $j=0;
 while ($i <= 6) {
 	$key='CABINETMED_SHOW_PROFID'.$i;
-	if (empty($conf->global->$key)) { $i++; continue; }
+	if (!getDolGlobalString($key)) {
+		$i++;
+		continue;
+	}
 
 	$idprof=$langs->transcountry('ProfId'.$i, $object->country_code);
 	if ($idprof!='-') {
@@ -196,7 +199,7 @@ if (isModEnabled("categorie") && ! empty($user->rights->categorie->lire)) {
 }
 
 // Default language
-if ($conf->global->MAIN_MULTILANGS) {
+if (getDolGlobalString('MAIN_MULTILANGS')) {
 	require_once DOL_DOCUMENT_ROOT."/core/lib/functions2.lib.php";
 	print '<tr><td>'.$langs->trans("DefaultLang").'</td><td colspan="3">';
 	//$s=picto_from_langcode($object->default_lang);

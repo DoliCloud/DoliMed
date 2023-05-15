@@ -46,6 +46,8 @@ require_once "./class/patient.class.php";
 require_once "./class/cabinetmedcons.class.php";
 require_once "./lib/cabinetmed.lib.php";
 
+$optioncss = GETPOST('optioncss', 'aZ09');
+
 $action=GETPOST("action");
 $id=GETPOST('id', 'int');  // Id consultation
 $fk_agenda=GETPOST('fk_agenda', 'int');	// Id event if consultation is created from an event
