@@ -87,7 +87,6 @@ class ActionsCabinetmed
 		dol_syslog(get_class($this).'::executeHooks action='.$action);
 
 		$arraytmp=dol_getdate(dol_now());
-		//var_dump($parameters);
 
 		// Define cabinetmed context
 		$cabinetmedcontext=0;
@@ -104,7 +103,7 @@ class ActionsCabinetmed
 			}
 		}
 
-		if (GETPOST('canvas') == 'patient@cabinetmed') {
+		if (GETPOST('canvas') == 'patient@cabinetmed' || preg_match('/(consultationcard|exambiocard|examothercard)/', $parameters['context'])) {
 			$cabinetmedcontext++;
 		}
 

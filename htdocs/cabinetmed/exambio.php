@@ -48,7 +48,7 @@ include_once "./class/cabinetmedcons.class.php";
 include_once "./class/cabinetmedexambio.class.php";
 
 $action = GETPOST("action");
-$optioncss = GETPOST('optioncss');
+$optioncss = GETPOST('optioncss', 'aZ09');
 
 $id=GETPOST('id', 'int');  // Id consultation
 
@@ -57,12 +57,6 @@ $langs->load("bills");
 $langs->load("banks");
 $langs->load("cabinetmed@cabinetmed");
 
-// Security check
-$socid = GETPOST('socid', 'int');
-if ($user->socid) $socid=$user->socid;
-$result = restrictedArea($user, 'societe', $socid);
-
-if (!$user->rights->cabinetmed->read) accessforbidden();
 
 $mesgarray=array();
 
@@ -84,6 +78,15 @@ $object = $exambio;
 // Initialize technical object to manage hooks of page. Note that conf->hooks_modules contains array array
 $hookmanager->initHooks(array('thirdpartycard','exambiocard','globalcard'));
 
+// Security check
+$socid = GETPOST('socid', 'int');
+if ($user->socid) $socid=$user->socid;
+$result = restrictedArea($user, 'societe', $socid);
+
+if (!$user->rights->cabinetmed->read) {
+	accessforbidden();
+}
+
 
 /*
  * Actions
@@ -91,7 +94,9 @@ $hookmanager->initHooks(array('thirdpartycard','exambiocard','globalcard'));
 
 $parameters=array('id'=>$socid);
 $reshook=$hookmanager->executeHooks('doActions', $parameters, $object, $action);    // Note that $action and $object may have been modified by some hooks
-if ($reshook < 0) setEventMessages($hookmanager->error, $hookmanager->errors, 'errors');
+if ($reshook < 0) {
+	setEventMessages($hookmanager->error, $hookmanager->errors, 'errors');
+}
 
 if (empty($reshook)) {
 	// Delete exam
@@ -199,10 +204,10 @@ if ($socid > 0) {
 		if ($result < 0) dol_print_error($db, $exambio->error);
 	}
 
-	/*
-	 * Affichage onglets
-	 */
-	if (isModEnabled("notification")) $langs->load("mails");
+	// Show tabs
+	if (isModEnabled("notification")) {
+		$langs->load("mails");
+	}
 
 	$head = societe_prepare_head($societe);
 	if ((float) DOL_VERSION < 7) dol_fiche_head($head, 'tabexambio', $langs->trans("Patient"), 0, 'patient@cabinetmed');
