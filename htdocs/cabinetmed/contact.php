@@ -131,14 +131,12 @@ if (empty($reshook)) {
  * View
  */
 
-llxHeader('', $langs->trans('Contacts'), '');
-
-$html = new Form($db);
 $form = new Form($db);
 $formcompany = new FormCompany($db);
 $contactstatic=new Contact($db);
 $userstatic=new User($db);
 
+llxHeader('', $langs->trans('Contacts'), '');
 
 /* *************************************************************************** */
 /*                                                                             */
@@ -227,14 +225,13 @@ if ($id > 0 || ! empty($ref)) {
 		print '<td colspan="3">&nbsp;</td>';
 		print "</tr></thead>\n";
 
-		$var = true;
-
 		// Line to add contacts
 		print '<tr class="oddeven">';
 
 		print '<td>';
 		// $contactAlreadySelected = $commande->getListContactId('external');	// On ne doit pas desactiver un contact deja selectionner car on doit pouvoir le seclectionner une deuxieme fois pour un autre type
-		$nbofcontacts=$html->select_contacts(0, '', 'contactid', 1, '', '', 1);
+		print $form->selectcontacts(0, '', 'contactid', 1, '', '', 1);
+		$nbofcontacts = $form->num;
 		//if ($nbofcontacts == 0) print $langs->trans("NoContactDefined");
 		if (versioncompare(versiondolibarrarray(), array(3,7,-3)) >= 0) {
 			print ' <a href="'.DOL_URL_ROOT.'/contact/card.php?leftmenu=contacts&action=create&backtopage='.urlencode($_SERVER["PHP_SELF"]).'?socid='.$socid.'">'.$langs->trans("Add").'</a>';
@@ -246,7 +243,7 @@ if ($id > 0 || ! empty($ref)) {
 		$formcompany->selectTypeContact($societe, '', 'type', 'external', 'libelle', 1);
 		//if ($user->admin) print info_admin($langs->trans("YouCanChangeValuesForThisListFromDictionarySetup"),1);
 		print '</td>';
-		print '<td align="center" colspan="3" ><input type="submit" class="button" value="'.$langs->trans("AddLink").'"';
+		print '<td align="center" colspan="3" ><input type="submit" class="button small" value="'.$langs->trans("AddLink").'"';
 		if (! $nbofcontacts) print ' disabled="disabled"';
 		print '></td>';
 		print '</tr>';
@@ -265,7 +262,6 @@ if ($id > 0 || ! empty($ref)) {
 	print "</tr>\n";
 
 	$companystatic=new Societe($db);
-	$var = true;
 
 	foreach (array('external') as $source) {
 		$tab = $societe->liste_contact(-1, $source);
@@ -273,9 +269,7 @@ if ($id > 0 || ! empty($ref)) {
 
 		$i = 0;
 		while ($i < $num) {
-			$var = !$var;
-
-			print '<tr '.$bc[$var].' valign="top">';
+			print '<tr>';
 
 			// Source
 			/*print '<td align="left">';
@@ -347,6 +341,6 @@ if ($id > 0 || ! empty($ref)) {
 	print "</table>";
 }
 
+// End of page
 llxFooter();
-
 $db->close();

@@ -332,9 +332,12 @@ class FormFileCabinetmed extends FormFile
 			if ($nboffiles == 0) {
 				$colspan='6';
 				if (empty($disablemove)) $colspan++;		// 6 columns or 7
-				print '<tr class="oddeven"><td colspan="'.$colspan.'" class="opacitymedium">';
-				if (empty($textifempty)) print $langs->trans("NoFileFound");
-				else print $textifempty;
+				print '<tr class="oddeven"><td colspan="'.$colspan.'">';
+				if (empty($textifempty)) {
+					print '<span class="opacitymedium">'.$langs->trans("NoFileFound").'</span>';
+				} else {
+					print $textifempty;
+				}
 				print '</td></tr>';
 			}
 			print "</table>";
