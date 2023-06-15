@@ -1,5 +1,5 @@
 <?php
-/* Copyright (C) 2011 Laurent Destailleur         <eldy@users.sourceforge.net>
+/* Copyright (C) 2011-2023 Laurent Destailleur         <eldy@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -208,7 +208,7 @@ function cabinetmed_completesubstitutionarray(&$substitutionarray, $langs, $obje
 		$substitutionarray['outcome_diagnostic']=$outcome->diaglesprinc;
 		$substitutionarray['outcome_history']=$outcome->hdm;
 		$substitutionarray['outcome_exam_clinic']=$outcome->examenclinique;
-		// Sugested treatment
+		// Suggested treatment
 		if (! empty($outcome->traitementprescrit)) {
 			$substitutionarray['treatment_title']=$langs->transnoentitiesnoconv("TreatmentSugested"); // old string
 			$substitutionarray['outcome_treatment_title']=$langs->transnoentitiesnoconv("TreatmentSugested");
@@ -221,13 +221,14 @@ function cabinetmed_completesubstitutionarray(&$substitutionarray, $langs, $obje
 		$substitutionarray['outcome_exam_sugested']=$outcome->examenprescrit;  // For backward compatiblity
 		$substitutionarray['outcome_exam_suggested']=$outcome->examenprescrit;
 		$substitutionarray['outcome_comment']=$outcome->comment;
+		$substitutionarray['outcome_type_visit']=$outcome->typevisit;
 		// Payments
 		$substitutionarray['outcome_total_inctax_card']=$outcome->montant_carte;
 		$substitutionarray['outcome_total_inctax_cheque']=$outcome->montant_cheque;
 		$substitutionarray['outcome_total_inctax_cash']=$outcome->montant_espece;
 		$substitutionarray['outcome_total_inctax_other']=$outcome->montant_tiers;
-		$substitutionarray['outcome_total_inctax']=($outcome->montant_carte+$outcome->montant_cheque+$outcome->montant_espece+$outcome->montant_tiers);
-		$substitutionarray['outcome_total_ttc']=($outcome->montant_carte+$outcome->montant_cheque+$outcome->montant_espece+$outcome->montant_tiers);	// For compatibility
+		$substitutionarray['outcome_total_inctax']=price($outcome->montant_carte+$outcome->montant_cheque+$outcome->montant_espece+$outcome->montant_tiers);
+		$substitutionarray['outcome_total_ttc']=price($outcome->montant_carte+$outcome->montant_cheque+$outcome->montant_espece+$outcome->montant_tiers);	// For compatibility
 
 		if (is_array($outcome->array_options)) {
 			foreach ($outcome->array_options as $keyextra => $valextra) {
