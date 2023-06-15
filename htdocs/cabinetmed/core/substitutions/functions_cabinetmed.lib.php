@@ -221,14 +221,15 @@ function cabinetmed_completesubstitutionarray(&$substitutionarray, $langs, $obje
 		$substitutionarray['outcome_exam_sugested']=$outcome->examenprescrit;  // For backward compatiblity
 		$substitutionarray['outcome_exam_suggested']=$outcome->examenprescrit;
 		$substitutionarray['outcome_comment']=$outcome->comment;
-		$substitutionarray['outcome_type_visit']=$outcome->typevisit;
+		$substitutionarray['outcome_type_visit']=$langs->transnoentitiesnoconv($outcome->typevisit);
+		$substitutionarray['outcome_act_code']=$outcome->codageccam;
 		// Payments
-		$substitutionarray['outcome_total_inctax_card']=$outcome->montant_carte;
-		$substitutionarray['outcome_total_inctax_cheque']=$outcome->montant_cheque;
-		$substitutionarray['outcome_total_inctax_cash']=$outcome->montant_espece;
-		$substitutionarray['outcome_total_inctax_other']=$outcome->montant_tiers;
-		$substitutionarray['outcome_total_inctax']=price($outcome->montant_carte+$outcome->montant_cheque+$outcome->montant_espece+$outcome->montant_tiers);
-		$substitutionarray['outcome_total_ttc']=price($outcome->montant_carte+$outcome->montant_cheque+$outcome->montant_espece+$outcome->montant_tiers);	// For compatibility
+		$substitutionarray['outcome_total_inctax_card'] = ($outcome->montant_carte ? price($outcome->montant_carte) : '');
+		$substitutionarray['outcome_total_inctax_cheque'] = ($outcome->montant_cheque ? price($outcome->montant_cheque) : '');
+		$substitutionarray['outcome_total_inctax_cash'] = ($outcome->montant_espece ? price($outcome->montant_espece) : '');
+		$substitutionarray['outcome_total_inctax_other'] = ($outcome->montant_tiers ? price($outcome->montant_tiers) : '');
+		$substitutionarray['outcome_total_inctax'] = price($outcome->montant_carte + $outcome->montant_cheque + $outcome->montant_espece + $outcome->montant_tiers);
+		$substitutionarray['outcome_total_ttc'] = price($outcome->montant_carte + $outcome->montant_cheque + $outcome->montant_espece + $outcome->montant_tiers);	// For compatibility
 
 		if (is_array($outcome->array_options)) {
 			foreach ($outcome->array_options as $keyextra => $valextra) {
