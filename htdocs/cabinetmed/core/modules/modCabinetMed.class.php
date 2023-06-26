@@ -154,12 +154,12 @@ class modCabinetMed extends DolibarrModules
 		// 'contact'          to add a tab in contact view
 		// 'categories_x'	  to add a tab in category view (replace 'x' by type of category (0=product, 1=supplier, 2=customer, 3=member)
 
-		// Dictionnaries
+		// Dictionaries
 		if (! isset($conf->cabinetmed->enabled)) {
 			$conf->cabinetmed=new stdClass();
 			$conf->cabinetmed->enabled = 0;
 		}
-		$this->dictionnaries=array(
+		$this->dictionaries=array(
 			'langs'=>'cabinetmed@cabinetmed',
 			'tabname'=>array("cabinetmed_motifcons",
 							 "cabinetmed_diaglec",
@@ -189,7 +189,6 @@ class modCabinetMed extends DolibarrModules
 			'tabhelp'=>array("",array("icd"=>'http://en.wikipedia.org/wiki/International_Statistical_Classification_of_Diseases_and_Related_Health_Problems'),array("biorad"=>"RADIO|BIO|OTHER")),
 			'tabfieldcheck'=>array("","",array("biorad"=>"/(RADIO|BIO|AUTRE|OTHER)/"))
 		);
-		$this->dictionaries=$this->dictionnaries;
 
 		// Boxes
 		$this->boxes = array(array('file' => "box_patients@cabinetmed", 'enabledbydefaulton' => 1));	// List of boxes
@@ -224,7 +223,7 @@ class modCabinetMed extends DolibarrModules
 		$r++;
 
 		// Main menu entries
-		$this->menus = array();         // List of menus to add
+		$this->menu = array();         // List of menus to add
 		$r=0;
 
 		// Add here entries to declare new menus
