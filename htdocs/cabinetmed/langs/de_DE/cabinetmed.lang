@@ -172,7 +172,7 @@ SearchIntoPatients=Patienten
 LinkToConsultation=Link zu Konsultationen
 CABINETMED_AUTOGENERATE_INVOICE=Schlagen Sie beim Erstellen einer Konsultation vor, Rechnungen zu erstellen
 GenerateInvoiceAndPayment=Generieren Sie auch eine Rechnung, wenn der Betrag nicht Null ist
-YouMustEditInvoiceManually=Sie müssen eine neue Rechnung oder Gutschrift manuell anlegen, wenn Sie hier den Betrag ändern.
+YouMustEditInvoiceManually=Sie müssen eine neue Rechnung oder Stornorechnung manuell anlegen, wenn Sie hier den Betrag ändern.
 PatientsArea=Patientenbereich
 PatientName=Patientenname
 PatientCode=Patientencode
@@ -183,7 +183,13 @@ AddPatient=Patienten erstellen
 Revenues=Erlöse
 PatientsAndConsultations=Patienten | Konsultationen
 ToCreateAConsultationGoOnPatientRecord=Um eine neue Konsultation aufzunehmen, suchen und öffnen Sie zuerst die Patientenakte. Wechseln Sie dann zum Tab "Konsultationen" und klicken Sie auf die Schaltfläche "Konsultation erstellen"
-SendConsultationRef=Message about the consultation %s
-DiagnosticIsMandatoryOnConsultation=Diagnostic is mandatory on consultations
-FeatureForCustomerdisabled=Features to manage customers is hidden so feature to generate independant invoice document is disabled. Only amount of consultation will be saved in consultation (no accounting invoice document generated).
-EditOrAddTemplateFromSetupOfThirdPartyModule=You can edit or add more template from the setup page of the module %s (Menu %s - %s - %s)
+SendConsultationRef=Nachricht über die Konsultation %s
+DiagnosticIsMandatoryOnConsultation=Die Diagnose ist bei Konsultationen obligatorisch
+FeatureForCustomerdisabled=Funktionen zum Verwalten von Kunden sind ausgeblendet, sodass die Funktion zum Erstellen eines unabhängigen Rechnungsdokuments deaktiviert ist. Nur der Beratungsbetrag wird im Beratungsgespräch gespeichert (es wird kein Buchhaltungs-Rechnungsbeleg erstellt).
+EditOrAddTemplateFromSetupOfThirdPartyModule=Sie können weitere Vorlagen auf der Setup-Seite des Moduls %s bearbeiten oder hinzufügen (Menü %s - %s - %s)
+ConvertIntoPatient=In Patienten umwandeln
+ConvertIntoPatientDesc=Der generische Gesch@ftspartner ist auch ein Patient, sodass Sie eine Konsultation darüber erstellen können
+
+LesionDiagnosticsCCA=Chondrokalzinotische Arthritis
+LesionDiagnosticsGOUTTE=Gichtarthritis
+

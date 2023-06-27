@@ -183,7 +183,13 @@ AddPatient=Hozzon létre beteget
 Revenues=Bevételek
 PatientsAndConsultations=Betegek | Konzultációk
 ToCreateAConsultationGoOnPatientRecord=Új konzultáció rögzítéséhez először keresse meg és nyissa meg a betegrekordot, majd lépjen a „Konzultációk” fülre, és kattintson a „Konzultáció létrehozása” gombra.
-SendConsultationRef=Message about the consultation %s
-DiagnosticIsMandatoryOnConsultation=Diagnostic is mandatory on consultations
-FeatureForCustomerdisabled=Features to manage customers is hidden so feature to generate independant invoice document is disabled. Only amount of consultation will be saved in consultation (no accounting invoice document generated).
-EditOrAddTemplateFromSetupOfThirdPartyModule=You can edit or add more template from the setup page of the module %s (Menu %s - %s - %s)
+SendConsultationRef=Üzenet a konzultációról %s
+DiagnosticIsMandatoryOnConsultation=A konzultációkon kötelező a diagnosztika
+FeatureForCustomerdisabled=Az ügyfelek kezelésére szolgáló funkciók el vannak rejtve, így a független számladokumentum létrehozása le van tiltva. A konzultáció során csak a konzultáció mennyisége kerül elmentésre (nincs számviteli számla bizonylat).
+EditOrAddTemplateFromSetupOfThirdPartyModule=Szerkesztheti vagy hozzáadhat további sablonokat az %s modul beállítási oldalán (%s menü - %s - %s)
+ConvertIntoPatient=Convert into Patient
+ConvertIntoPatientDesc=The common thirdparty will also be a patient so you can create consultation on it
+
+LesionDiagnosticsCCA=Chondrocalcinotic Arthritis
+LesionDiagnosticsGOUTTE=Gouty Arthritis
+

@@ -23,7 +23,7 @@ Permission286= Eksportēt kontaktus
 DictionaryCompanyType= Pacienta dzimums
 DictionaryCompanyJuridicalType= Pacienta darbības veids vai trešo pušu juridiskais statuss
 DictionaryTypeContact= Kontaktu veidi
-MotifConsultation=Apspriešanās iemesls
+MotifConsultation=Konsultācijas iemesls
 DiagnostiqueLesionnel=Kaitējuma diagnostika
 Examens=Izmeklēšanas
 ExamenConclusion=Izmeklēšanas secinājums
@@ -31,7 +31,7 @@ BankNameList=Banku saraksts
 
 CompanySetup= Pacienta moduļa iestatīšana
 CompanyCodeChecker=Modelis, lai ģenerētu un pārbaudītu pacienta kodu
-CashDeskThirdPartyForSell=Generic pacients par pārdošanu
+CashDeskThirdPartyForSell=Vispārējs pacients pārdod
 CashDeskBankAccountForSell=Bankas konts, ko izmantot skaidrā naudā
 CashDeskBankAccountForCheque=Bankas konts, lai izmantotu čeku noguldījumiem
 CashDeskBankAccountForCB=Bankas konts, lai izmantotu kredītkarti

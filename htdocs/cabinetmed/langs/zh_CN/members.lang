@@ -1,4 +1,4 @@
 # Dolibarr language file - fr_FR - members
 CHARSET=UTF-8
-SetLinkToThirdParty=Lier à un patient
-ThirdPartyDolibarr=Patient
+SetLinkToThirdParty=链接到患者
+ThirdPartyDolibarr=患者

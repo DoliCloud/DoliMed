@@ -164,8 +164,8 @@ HideProspectFeatures=Slēpt iespējas, lai pārvaldītu perspektīvas (jums nav 
 RecordCreatedFromRDV=Konsultācijas izveidotas no rendez-vous %s (%s)
 ConsultCreatedBy=Konsultācijas radīja
 ConsultTooOld=Nevar modificēt konsultācijas. Tas ir vecāks par <b> %s </b> dienām. Piezīme: tehniskais administrators var pievienot / mainīt opciju CABINETMED_DELAY_TO_LOCK_RECORD, lai mainītu / novērstu šo aizkavi.
-HeightPeople=Augstums
-WeigthPeople=Svērums
+HeightPeople=Garums
+WeigthPeople=Svars
 PatientDeleted=Pacients "%s" tika izdzēsts no datu bāzes.
 DocumentsPatient=Dokumenti / Pievienotie faili
 SearchIntoPatients=Pacienti
@@ -183,3 +183,13 @@ AddPatient=Izveidojiet pacientu
 Revenues=Ieņēmumi
 PatientsAndConsultations=Pacienti | Konsultācijas
 ToCreateAConsultationGoOnPatientRecord=Lai ierakstītu jaunu konsultāciju, vispirms meklējiet un atveriet pacienta ierakstu, pēc tam pavelciet uz cilni “Konsultācijas” un noklikšķiniet uz pogas “Izveidot konsultāciju”
+SendConsultationRef=Ziņa par konsultāciju %s
+DiagnosticIsMandatoryOnConsultation=Konsultācijās diagnostika ir obligāta
+FeatureForCustomerdisabled=Klientu pārvaldības līdzekļi ir paslēpti, tāpēc funkcija neatkarīga rēķina dokumenta ģenerēšanai ir atspējota. Konsultācijā tiks saglabāts tikai konsultācijas apjoms (nav izveidots grāmatvedības rēķina dokuments).
+EditOrAddTemplateFromSetupOfThirdPartyModule=Varat rediģēt vai pievienot papildu veidni moduļa %s iestatīšanas lapā (izvēlne %s - %s - %s)
+ConvertIntoPatient=Pārvērst par pacientu
+ConvertIntoPatientDesc=Kopējā trešā puse arī būs pacients, lai jūs varētu izveidot konsultāciju par to
+
+LesionDiagnosticsCCA=Chondrocalcinotic Arthritis
+LesionDiagnosticsGOUTTE=Gouty Arthritis
+

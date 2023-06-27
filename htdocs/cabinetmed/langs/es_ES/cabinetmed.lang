@@ -183,3 +183,13 @@ AddPatient=Crear paciente
 Revenues=Ingresos
 PatientsAndConsultations=Pacientes | Consultas
 ToCreateAConsultationGoOnPatientRecord=Para registrar una nueva consulta, busque y abra primero el registro del paciente, luego pase a la pestaña "Consultas" y haga clic en el botón "Crear consulta"
+SendConsultationRef=Mensaje sobre la consulta %s
+DiagnosticIsMandatoryOnConsultation=El diagnóstico es obligatorio en las consultas
+FeatureForCustomerdisabled=Las funciones para administrar clientes están ocultas, por lo que la función para generar un documento de factura independiente está deshabilitada. En la consulta solo se guardará el importe de la consulta (no se genera documento factura contable).
+EditOrAddTemplateFromSetupOfThirdPartyModule=Puede editar o agregar más plantillas desde la página de configuración del módulo %s (Menú %s - %s - %s)
+ConvertIntoPatient=Convertir en Paciente
+ConvertIntoPatientDesc=El tercero común también será un paciente para que pueda crear una consulta sobre él.
+
+LesionDiagnosticsCCA=Chondrocalcinotic Arthritis
+LesionDiagnosticsGOUTTE=Gouty Arthritis
+

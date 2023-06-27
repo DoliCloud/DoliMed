@@ -187,3 +187,9 @@ SendConsultationRef=Mesaj despre consultația %s
 DiagnosticIsMandatoryOnConsultation=Diagnosticul este obligatoriu la consultații
 FeatureForCustomerdisabled=Funcțiile de gestionare a clienților sunt ascunse, astfel încât funcția de generare a documentelor de factură independentă este dezactivată. Doar cantitatea de consultare va fi salvată în consultație (nu este generat niciun document de factură contabilă).
 EditOrAddTemplateFromSetupOfThirdPartyModule=Puteți edita sau adăuga mai mult șabloane din pagina de configurare a modulului %s (Meniu %s-%s - %s)
+ConvertIntoPatient=Convertește în Pacient
+ConvertIntoPatientDesc=Terțul obișnuit va fi, de asemenea, un pacient, astfel încât să puteți crea consultație cu privire la acesta
+
+LesionDiagnosticsCCA=Artrită condrocalcinotică
+LesionDiagnosticsGOUTTE=Artrită gutoasă
+

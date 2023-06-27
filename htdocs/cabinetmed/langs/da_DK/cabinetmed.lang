@@ -187,3 +187,9 @@ SendConsultationRef=Besked om konsultationen %s
 DiagnosticIsMandatoryOnConsultation=Diagnostik er obligatorisk ved konsultationer
 FeatureForCustomerdisabled=Funktioner til at administrere kunder er skjult, så funktionen til at generere uafhængigt fakturadokument er deaktiveret. Kun mængden af konsultation vil blive gemt i konsultation (intet regnskabsfakturadokument genereret).
 EditOrAddTemplateFromSetupOfThirdPartyModule=Du kan redigere eller tilføje flere skabeloner fra opsætningssiden for modulet %s (Menu %s - %s - %s)
+ConvertIntoPatient=Konverter til patient
+ConvertIntoPatientDesc=Den fælles tredjepart vil også være patient, så du kan oprette konsultation om det
+
+LesionDiagnosticsCCA=Chondrocalcinotisk arthritis
+LesionDiagnosticsGOUTTE=Gigt arthritis
+

@@ -2,7 +2,7 @@
 CHARSET=UTF-8
 PaymentCustomerInvoice=Règlement consultation patient
 ListOfCustomerPayments=Λίστα πληρωμών πελάτη
-CustomerAccountancyCode=Code compta patient
+CustomerAccountancyCode=Κωδικός λογιστικής ασθενή
 ByPatients=Ανά ασθενή
 ErrorWrongAccountancyCodeForCompany=Code compta patient incorrect pour %s
 COMPTA_ACCOUNT_CUSTOMER=Code comptable patient par défaut (si non défini sur fiche patient)

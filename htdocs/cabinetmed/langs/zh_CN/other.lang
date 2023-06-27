@@ -1,6 +1,6 @@
 # Dolibarr language file - fr_FR - other
 CHARSET=UTF-8
-Notify_NOTIFY_VAL_FAC=Validation consultation patient
-ProfIdShortDesc=<b>Id prof. %s</b> est une information qui dépend du pays du patient.<br>Par exemple, pour le pays <b>%s</b>, il s'agit du code <b>%s</b>.
-NewCompanyToDolibarr=Patient %s ajouté
-CustomerPaymentDoneInDolibarr=Paiement patient %s
+Notify_NOTIFY_VAL_FAC=验证咨询患者
+ProfIdShortDesc=<b>id prof. %s</b>是一个取决于患者所在国家/地区的信息。<br>例如对于国家/地区<b>%s</b>来说，它是一个代码<b>%s</b>
+NewCompanyToDolibarr=添加患者%s
+CustomerPaymentDoneInDolibarr=患者付款%s

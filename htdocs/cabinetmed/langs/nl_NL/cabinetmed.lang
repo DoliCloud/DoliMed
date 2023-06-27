@@ -183,3 +183,13 @@ AddPatient=Aanmaken patiënt
 Revenues=Opbrengsten
 PatientsAndConsultations=Patiënten | Consulten
 ToCreateAConsultationGoOnPatientRecord=Om een ​​nieuw consult op te nemen, zoek en open eerst het patiëntendossier, ga dan naar het tabblad 'Consulten' en klik op de knop 'Consult aanmaken'
+SendConsultationRef=Bericht over het consult 1%s
+DiagnosticIsMandatoryOnConsultation=Diagnostiek is verplicht op consultaties
+FeatureForCustomerdisabled=Functies om klanten te beheren zijn verborgen, dus de functie om een onafhankelijk factuurdocument te genereren is uitgeschakeld. In overleg wordt alleen de hoeveelheid overleg opgeslagen (geen boekhoudkundig factuurdocument gegenereerd).
+EditOrAddTemplateFromSetupOfThirdPartyModule=U kunt meer sjablonen bewerken of toevoegen vanaf de instellingenpagina van de module (Menu 1%s - 1%s - 1%s)
+ConvertIntoPatient=Omzetten in patiënt
+ConvertIntoPatientDesc=De gemeenschappelijke derde partij zal ook een patiënt zijn, dus u kunt er een consultatie over maken
+
+LesionDiagnosticsCCA=Chondrocalcinose Artritis
+LesionDiagnosticsGOUTTE=Jichtige artritis
+

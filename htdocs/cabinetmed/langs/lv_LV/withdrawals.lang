@@ -2,4 +2,4 @@
 CHARSET=UTF-8
 NoInvoiceToWithdraw=Aucune konsultācijas pacients en mode de paiement 'Prélèvement' n'a de demande de prélèvements en attente. Aller sur l'onglet 'Prélèvement' de la fiche fakture pour faire une pieprasa.
 ThirdPartyBankCode=Code banque du patient
-ThirdPartyDeskCode=Kods guichet du pacients
+ThirdPartyDeskCode=Code guichet du pacientam
