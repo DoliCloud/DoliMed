@@ -36,6 +36,22 @@ class ActionsCabinetmed
 	var $errors=array();
 
 	/**
+	 * @var array Hook results. Propagated to $hookmanager->resArray for later reuse
+	 */
+	public $results = array();
+
+	/**
+	 * @var string String displayed by executeHook() immediately after return
+	 */
+	public $resprints;
+
+	/**
+	 * @var int		Priority of hook (50 is used if value is not defined)
+	 */
+	public $priority;
+
+
+	/**
 	 *	Constructor
 	 *
 	 *  @param		DoliDB		$db      Database handler
