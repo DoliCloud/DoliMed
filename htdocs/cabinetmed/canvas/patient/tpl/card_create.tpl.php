@@ -63,7 +63,6 @@ $object->client=GETPOSTISSET("client")?GETPOST("client"):$object->client;
 $object->code_client=GETPOST("code_client");
 $object->fournisseur=GETPOST("fournisseur")?GETPOST("fournisseur"):$object->fournisseur;
 $object->code_fournisseur=GETPOST("code_fournisseur");
-$object->adresse=GETPOST("address"); // TODO obsolete
 $object->address=GETPOST("address");
 $object->zip=GETPOST("zipcode");
 $object->town=GETPOST("town");

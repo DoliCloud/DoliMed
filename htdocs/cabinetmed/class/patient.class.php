@@ -126,6 +126,26 @@ class Patient extends Societe
 	var $logo_small;
 	var $logo_mini;
 
+	var $note_antemed;
+	var $note_antechirgen;
+	var $note_antechirortho;
+	var $note_anterhum;
+	var $note_other;
+	var $note_traitclass;
+	var $note_traitallergie;
+	var $note_traitintol;
+	var $note_traitspec;
+	var $alert_antemed;
+	var $alert_antechirgen;
+	var $alert_antechirortho;
+	var $alert_anterhum;
+	var $alert_other;
+	var $alert_traitclass;
+	var $alert_traitallergie;
+	var $alert_traitintol;
+	var $alert_traitspec;
+	var $alert_note;
+
 
 	/**
 	 *	Constructor

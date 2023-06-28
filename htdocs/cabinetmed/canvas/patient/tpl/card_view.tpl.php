@@ -33,7 +33,7 @@ if (empty($errors)) {
 	$errors = array();
 }
 
-$object=$GLOBALS['object'];
+$object = $GLOBALS['object'];
 
 global $db,$conf,$mysoc,$langs,$user,$hookmanager,$extrafields;
 
@@ -162,8 +162,10 @@ print '</tr>';
 
 // Type + Staff => Genre
 $arr = $formcompany->typent_array(1);
-$object->typent = (empty($arr[$object->typent_code]) ? '' : $arr[$object->typent_code]);
-print '<tr><td>'.$langs->trans("Gender").'</td><td colspan="3">'.$object->typent.'</td>';
+$typent_label = (empty($arr[$object->typent_code]) ? '' : $arr[$object->typent_code]);
+print '<tr><td>'.$langs->trans("Gender").'</td><td colspan="3">';
+print $typent_label;
+print '</td>';
 //print '<td>'.$langs->trans("Staff").'</td><td>'.$object->effectif.'</td>';
 print '</tr>';
 
