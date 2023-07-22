@@ -36,7 +36,7 @@
  */
 function cabinetmed_completesubstitutionarray(&$substitutionarray, $langs, $object, $parameters = null)
 {
-	global $conf,$db;
+	global $conf, $db, $extrafields;
 
 	dol_include_once('/cabinetmed/class/patient.class.php');
 	dol_include_once('/cabinetmed/class/cabinetmedcons.class.php');
@@ -233,7 +233,16 @@ function cabinetmed_completesubstitutionarray(&$substitutionarray, $langs, $obje
 
 		if (is_array($outcome->array_options)) {
 			foreach ($outcome->array_options as $keyextra => $valextra) {
+				$keyextrawithoutoptions = preg_replace('/^options_/', '', $keyextra);
 				$substitutionarray['outcome_'.$keyextra] = $valextra;
+
+				$typeextra = $extrafields->attributes['cabinetmed_cons']['type'][$keyextrawithoutoptions];
+				if ($typeextra == 'date') {
+					$substitutionarray['outcome_'.$keyextra.'_locale'] = dol_print_date($valextra, 'day', $langs);
+				}
+				if ($typeextra == 'datetime') {
+					$substitutionarray['outcome_'.$keyextra.'_locale'] = dol_print_date($valextra, 'dayhour', $langs);
+				}
 			}
 		}
 	} else {
@@ -297,6 +306,14 @@ function cabinetmed_completesubstitutionarray(&$substitutionarray, $langs, $obje
 			foreach ($object->array_options as $keyextra => $valextra) {
 				$keyextrabis = preg_replace('/^company_/', '', $keyextra);
 				$substitutionarray['patient_'.$keyextrabis] = $valextra;
+				$keyextrabiswithoutoptions = preg_replace('/^options_/', '', $keyextrabis);
+				$typeextrabis = $extrafields->attributes['societe']['type'][$keyextrabiswithoutoptions];
+				if ($typeextrabis == 'date') {
+					$substitutionarray['patient_'.$keyextrabis.'_locale'] = dol_print_date($valextra, 'day', $langs);
+				}
+				if ($typeextrabis == 'datetime') {
+					$substitutionarray['patient_'.$keyextrabis.'_locale'] = dol_print_date($valextra, 'dayhour', $langs);
+				}
 			}
 		}
 	}
@@ -331,5 +348,5 @@ function cabinetmed_completesubstitutionarray(&$substitutionarray, $langs, $obje
 		}
 	}
 
-	//var_export($substitutionarray, false);
+	//var_dump($substitutionarray);
 }

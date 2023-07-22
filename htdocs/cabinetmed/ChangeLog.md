@@ -1,5 +1,8 @@
 # ChangeLog
 
+## Unreleased
+
+- NEW Add more substitution for dates
 
 ## 10.0.0
 
