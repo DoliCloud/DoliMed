@@ -91,6 +91,8 @@ function listmotifcons($nboflines, $newwidth = '', $htmlname = 'motifcons', $sel
 			$out .= '>'.$obj->label.'</option>';
 			$i++;
 		}
+	} else {
+		dol_print_error($db);
 	}
 	$out .= '</select>'."\n";
 	if ($conf->use_javascript_ajax) {
@@ -139,6 +141,8 @@ function listdiagles($nboflines, $newwidth = 0, $htmlname = 'diagles', $selected
 			$out.= '>'.$obj->label.'</option>';
 			$i++;
 		}
+	} else {
+		dol_print_error($db);
 	}
 	$out.= '</select>'."\n";
 	if ($conf->use_javascript_ajax) {
@@ -159,7 +163,7 @@ function listdiagles($nboflines, $newwidth = 0, $htmlname = 'diagles', $selected
  */
 function listexamen($nboflines, $newwidth = 0, $type = '', $showtype = 0, $htmlname = 'examen')
 {
-	global $conf,$db,$width;
+	global $conf,$db,$width,$langs;
 
 	if (empty($newwidth)) $newwidth=$width;
 
@@ -169,7 +173,7 @@ function listexamen($nboflines, $newwidth = 0, $type = '', $showtype = 0, $htmln
 	$sql = 'SELECT s.rowid, s.code, s.label, s.biorad as type';
 	$sql.= ' FROM '.MAIN_DB_PREFIX.'cabinetmed_examenprescrit as s';
 	$sql.= ' WHERE active = 1';
-	if ($type) $sql.=" AND s.biorad in ('".$db->escape($type)."')";
+	if ($type) $sql.=" AND s.biorad IN (".$db->sanitize($type,1).")";
 	if (!getDolGlobalInt('CABINETMED_IGNORE_LANG_FOR_COMBOLIST')) {
 		$sql .= " AND (lang LIKE '".$db->escape($langs->shortlang)."%' OR lang IS NULL OR lang = '')";
 	}
@@ -185,6 +189,8 @@ function listexamen($nboflines, $newwidth = 0, $type = '', $showtype = 0, $htmln
 			print '<option value="'.$obj->code.'">'.$obj->label.($showtype?' ('.strtolower($obj->type).')':'').'</option>';
 			$i++;
 		}
+	} else {
+		dol_print_error($db);
 	}
 	print '</select>'."\n";
 }
@@ -200,7 +206,7 @@ function listexamen($nboflines, $newwidth = 0, $type = '', $showtype = 0, $htmln
  */
 function listexamconclusion($nboflines, $newwidth = 0, $htmlname = 'examconc')
 {
-	global $conf,$db,$width;
+	global $conf,$db,$width,$langs;
 
 	if (empty($newwidth)) $newwidth=$width;
 
@@ -226,6 +232,8 @@ function listexamconclusion($nboflines, $newwidth = 0, $htmlname = 'examconc')
 			print '<option value="'.$obj->code.'">'.$obj->label.'</option>';
 			$i++;
 		}
+	} else {
+		dol_print_error($db);
 	}
 	print '</select>'."\n";
 }
@@ -266,6 +274,8 @@ function listebanques($nboflines, $newwidth = 0, $defaultvalue = '', $htmlname =
 			print '>'.dol_escape_htmltag($labeltoshow).'</option>';
 			$i++;
 		}
+	} else {
+		dol_print_error($db);
 	}
 	print '</select>'."\n";
 }
@@ -305,6 +315,8 @@ function listcontacts($nboflines, $newwidth = 0, $htmlname = 'diagles', $selecte
 			$out.= '>'.$obj->label.'</option>';
 			$i++;
 		}
+	} else {
+		dol_print_error($db);
 	}
 	$out.= '</select>'."\n";
 	return $out;

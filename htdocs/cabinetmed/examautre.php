@@ -370,7 +370,7 @@ if ($socid > 0) {
 		print $langs->trans("ExamenPrescrit").':';
 		print '</td><td nowrap="nowrap">';
 		//print '<input type="text" size="3" class="flat" name="searchmotifcons" value="'.GETPOST("searchmotifcons").'" id="searchmotifcons">';
-		listexamen(1, $width, "RADIO','OTHER','AUTRE", 0, 'exam');
+		listexamen(1, $width, "'RADIO','OTHER','AUTRE'", 0, 'exam');
 		/*print ' '.img_picto('Ajouter motif principal','edit_add_p.png@cabinetmed');
 		print ' '.img_picto('Ajouter motif secondaire','edit_add_s.png@cabinetmed');*/
 		print ' <input type="button" class="button small" id="addexamprinc" name="addexamprinc" value="+P">';
