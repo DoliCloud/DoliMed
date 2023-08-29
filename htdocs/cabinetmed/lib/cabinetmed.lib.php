@@ -74,7 +74,7 @@ function listmotifcons($nboflines, $newwidth = '', $htmlname = 'motifcons', $sel
 	$sql .= ' FROM '.MAIN_DB_PREFIX.'cabinetmed_motifcons as s';
 	$sql .= ' WHERE active = 1';
 	if (!getDolGlobalInt('CABINETMED_IGNORE_LANG_FOR_COMBOLIST')) {
-		$sql .= " AND (lang LIKE '".$langs->shortlang."%' OR lang IS NULL OR lang = '')";
+		$sql .= " AND (lang LIKE '".$db->escape($langs->shortlang)."%' OR lang IS NULL OR lang = '')";
 	}
 	$sql .= ' ORDER BY position, label';
 
@@ -122,7 +122,7 @@ function listdiagles($nboflines, $newwidth = 0, $htmlname = 'diagles', $selected
 	$sql .= ' FROM '.MAIN_DB_PREFIX.'cabinetmed_diaglec as s';
 	$sql .= ' WHERE active = 1';
 	if (!getDolGlobalInt('CABINETMED_IGNORE_LANG_FOR_COMBOLIST')) {
-		$sql .= " AND (lang LIKE '".$langs->shortlang."%' OR lang IS NULL OR lang = '')";
+		$sql .= " AND (lang LIKE '".$db->escape($langs->shortlang)."%' OR lang IS NULL OR lang = '')";
 	}
 	$sql .= ' ORDER BY position, label';
 
@@ -171,7 +171,7 @@ function listexamen($nboflines, $newwidth = 0, $type = '', $showtype = 0, $htmln
 	$sql.= ' WHERE active = 1';
 	if ($type) $sql.=" AND s.biorad in ('".$db->escape($type)."')";
 	if (!getDolGlobalInt('CABINETMED_IGNORE_LANG_FOR_COMBOLIST')) {
-		$sql .= " AND (lang LIKE '".$langs->shortlang."%' OR lang IS NULL OR lang = '')";
+		$sql .= " AND (lang LIKE '".$db->escape($langs->shortlang)."%' OR lang IS NULL OR lang = '')";
 	}
 	$sql.= ' ORDER BY position, label';
 	$resql=$db->query($sql);
@@ -211,7 +211,7 @@ function listexamconclusion($nboflines, $newwidth = 0, $htmlname = 'examconc')
 	$sql.= ' FROM '.MAIN_DB_PREFIX.'cabinetmed_c_examconclusion as s';
 	$sql.= ' WHERE active = 1';
 	if (!getDolGlobalInt('CABINETMED_IGNORE_LANG_FOR_COMBOLIST')) {
-		$sql .= " AND (lang LIKE '".$langs->shortlang."%' OR lang IS NULL OR lang = '')";
+		$sql .= " AND (lang LIKE '".$db->escape($langs->shortlang)."%' OR lang IS NULL OR lang = '')";
 	}
 	$sql.= ' ORDER BY position, label';
 
