@@ -82,15 +82,17 @@ print '<div class="fichecenter">';
 print '<div class="fichehalfleft">';
 
 print '<div class="underbanner clearboth"></div>';
-print '<table class="border tableforfield" width="100%">';
+print '<table class="border tableforfield centpercent">';
+
+// Prefix
 if (! empty($conf->global->SOCIETE_USEPREFIX)) {  // Old not used prefix field
-	print '<tr><td>'.$langs->trans('Prefix').'</td><td colspan="3">'.$object->prefix_comm.'</td></tr>';
+	print '<tr><td>'.$langs->trans('Prefix').'</td><td>'.dol_escape_htmltag($object->prefix_comm).'</td></tr>';
 }
 
 //if ($object->client)
 //{
 	print '<tr><td class="titlefield">';
-	print $langs->trans('CustomerCode').'</td><td colspan="3">';
+	print $langs->trans('CustomerCode').'</td><td>';
 	print $object->code_client;
 	if ($object->check_codeclient() <> 0) print ' <font class="error">('.$langs->trans("WrongPatientCode").')</font>';
 	print '</td></tr>';
@@ -98,7 +100,7 @@ if (! empty($conf->global->SOCIETE_USEPREFIX)) {  // Old not used prefix field
 
 // Barcode
 if (getDolGlobalString('MAIN_MODULE_BARCODE')) {
-	print '<tr><td>'.$langs->trans('Gencod').'</td><td colspan="3">'.$object->barcode.'</td></tr>';
+	print '<tr><td>'.$langs->trans('Gencod').'</td><td>'.$object->barcode.'</td></tr>';
 }
 
 // Prof ids
@@ -112,45 +114,50 @@ while ($i <= 6) {
 
 	$idprof=$langs->transcountry('ProfId'.$i, $object->country_code);
 	if ($idprof!='-') {
-		if (($j % 2) == 0) print '<tr>';
+		print '<tr>';
 		print '<td>'.$idprof.'</td><td>';
 		$key='idprof'.$i;
-		print $object->$key;
+		print dol_print_profids($object->$key, 'ProfId'.$i, $object->country_code, 1);
 		if ($object->$key) {
-			if ($object->id_prof_check($i, $object) > 0) print ' &nbsp; '.$object->id_prof_url($i, $object);
-			else print ' <font class="error">('.$langs->trans("ErrorWrongValue").')</font>';
+			if ($object->id_prof_check($i, $object) > 0) {
+				if (!empty($object->id_prof_url($i, $object))) {
+					print ' &nbsp; '.$object->id_prof_url($i, $object);
+				}
+			} else {
+				print ' <span class="error">('.$langs->trans("ErrorWrongValue").')</span>';
+			}
 		}
 		print '</td>';
-		if (($j % 2) == 1) print '</tr>';
+		print '</tr>';
 		$j++;
 	}
 	$i++;
 }
-if ($j % 2 == 1)  print '<td colspan="2"></td></tr>';
+//if ($j % 2 == 1)  print '<td colspan="2"></td></tr>';
 
 // Num secu
 print '<tr>';
-print '<td class="nowrap">'.$langs->trans('PatientVATIntra').'</td><td colspan="3">';
+print '<td class="nowrap">'.$langs->trans('PatientVATIntra').'</td><td>';
 if ($object->tva_intra) {
 	$s='';
 	$s.=$object->tva_intra;
-	$s.='<input type="hidden" name="tva_intra" size="12" maxlength="20" value="'.$object->tva_intra.'">';
+	$s.='<input type="hidden" id="tva_intra" name="tva_intra" maxlength="20" value="'.$object->tva_intra.'">';
 
 	if (empty($conf->global->MAIN_DISABLEVATCHECK)) {
 		$s.=' &nbsp; ';
 
 		if ($conf->use_javascript_ajax) {
 			print "\n";
-			print '<script language="JavaScript" type="text/javascript">';
+			print '<script type="text/javascript">';
 			print "function CheckVAT(a) {\n";
 			print "newpopup('".DOL_URL_ROOT."/societe/checkvat/checkVatPopup.php?vatNumber='+a,'".dol_escape_js($langs->trans("VATIntraCheckableOnEUSite"))."',500,285);\n";
 			print "}\n";
 			print '</script>';
 			print "\n";
-			$s.='<a href="#" onclick="javascript: CheckVAT(document.formsoc.tva_intra.value);">'.$langs->trans("VATIntraCheck").'</a>';
-			$s = $form->textwithpicto($s, $langs->trans("VATIntraCheckDesc", $langs->trans("VATIntraCheck")), 1);
+			$s.='<a href="#" class="hideonsmartphone" onclick="CheckVAT( $(\'#tva_intra\').val() );">'.$langs->trans("VATIntraCheck").'</a>';
+			$s = $form->textwithpicto($s, $langs->trans("VATIntraCheckDesc", $langs->transnoentitiesnoconv("VATIntraCheck")), 1);
 		} else {
-			$s.='<a href="'.$langs->transcountry("VATIntraCheckURL", $object->id_pays).'" target="_blank">'.img_picto($langs->trans("VATIntraCheckableOnEUSite"), 'help').'</a>';
+			$s.='<a href="'.$langs->transcountry("VATIntraCheckURL", $object->country_id).'" class="hideonsmartphone" target="_blank">'.img_picto($langs->trans("VATIntraCheckableOnEUSite"), 'help').'</a>';
 		}
 	}
 	print $s;
@@ -163,14 +170,14 @@ print '</tr>';
 // Type + Staff => Genre
 $arr = $formcompany->typent_array(1);
 $typent_label = (empty($arr[$object->typent_code]) ? '' : $arr[$object->typent_code]);
-print '<tr><td>'.$langs->trans("Gender").'</td><td colspan="3">';
+print '<tr><td>'.$langs->trans("Gender").'</td><td>';
 print $typent_label;
 print '</td>';
 //print '<td>'.$langs->trans("Staff").'</td><td>'.$object->effectif.'</td>';
 print '</tr>';
 
 // Juridical status => Secteur activité
-print '<tr><td>'.$langs->trans('ActivityBranch').'</td><td colspan="3">'.$object->forme_juridique.'</td>';
+print '<tr><td>'.$langs->trans('ActivityBranch').'</td><td>'.$object->forme_juridique.'</td>';
 print '</tr>';
 
 print '</table>';
@@ -186,7 +193,7 @@ if (isModEnabled("categorie") && ! empty($user->rights->categorie->lire)) {
 	// Customer
 	if ($object->prospect || $object->client) {
 		print '<tr><td>' . $langs->trans("CustomersCategoriesShort") . '</td>';
-		print '<td colspan="3">';
+		print '<td>';
 		print $form->showCategories($object->id, 'customer', 1);
 		print "</td></tr>";
 	}
@@ -194,7 +201,7 @@ if (isModEnabled("categorie") && ! empty($user->rights->categorie->lire)) {
 	// Supplier
 	if ($object->fournisseur) {
 		print '<tr><td>' . $langs->trans("SuppliersCategoriesShort") . '</td>';
-		print '<td colspan="3">';
+		print '<td>';
 		print $form->showCategories($object->id, 'supplier', 1);
 		print "</td></tr>";
 	}
@@ -203,7 +210,7 @@ if (isModEnabled("categorie") && ! empty($user->rights->categorie->lire)) {
 // Default language
 if (getDolGlobalString('MAIN_MULTILANGS')) {
 	require_once DOL_DOCUMENT_ROOT."/core/lib/functions2.lib.php";
-	print '<tr><td>'.$langs->trans("DefaultLang").'</td><td colspan="3">';
+	print '<tr><td>'.$langs->trans("DefaultLang").'</td><td>';
 	//$s=picto_from_langcode($object->default_lang);
 	//print ($s?$s.' ':'');
 	$langs->load("languages");
@@ -213,7 +220,7 @@ if (getDolGlobalString('MAIN_MULTILANGS')) {
 }
 
 // Other attributes
-$parameters = array('socid'=>$socid, 'colspan' => ' colspan="3"', 'colspanvalue' => '3');
+$parameters = array('socid'=>$socid);
 include DOL_DOCUMENT_ROOT.'/core/tpl/extrafields_view.tpl.php';
 
 // Inject age if a date is defined
@@ -239,7 +246,7 @@ if (! empty($object->array_options['options_birthdate'])) {
 // Ban
 if (empty($conf->global->SOCIETE_DISABLE_BANKACCOUNT)) {
 	print '<tr><td>';
-	print '<table width="100%" class="nobordernopadding"><tr><td>';
+	print '<table class="centpercent nobordernopadding"><tr><td>';
 	print $langs->trans('RIB');
 	print '<td><td align="right">';
 	if ($user->rights->societe->creer) {
@@ -253,7 +260,7 @@ if (empty($conf->global->SOCIETE_DISABLE_BANKACCOUNT)) {
 	}
 	print '</td></tr></table>';
 	print '</td>';
-	print '<td colspan="3">';
+	print '<td>';
 	print $object->display_rib();
 	print '</td></tr>';
 }
@@ -283,7 +290,7 @@ include DOL_DOCUMENT_ROOT.'/societe/tpl/linesalesrepresentative.tpl.php';
 if (isModEnabled("adherent")) {
 	$langs->load("members");
 	print '<tr><td>'.$langs->trans("LinkedToDolibarrMember").'</td>';
-	print '<td colspan="3">';
+	print '<td>';
 	$adh=new Adherent($db);
 	$result=$adh->fetch('', '', $object->id);
 	if ($result > 0) {
