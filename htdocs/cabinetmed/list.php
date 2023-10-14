@@ -104,7 +104,7 @@ if ($mode == 'search') {
 
 	$sql = "SELECT s.rowid";
 	$sql.= " FROM ".MAIN_DB_PREFIX."societe as s";
-	if ($search_sale || !$user->rights->societe->client->voir && !$socid) $sql.= ", ".MAIN_DB_PREFIX."societe_commerciaux as sc";
+	if ($search_sale || !$user->hasRight('societe', 'client', 'voir') && !$socid) $sql.= ", ".MAIN_DB_PREFIX."societe_commerciaux as sc";
 	// We'll need this table joined to the select in order to filter by categ
 	if ($search_categ) $sql.= ", ".MAIN_DB_PREFIX."categorie_societe as cs";
 	$sql.= " WHERE s.entity IN (".getEntity('societe', 1).")";
@@ -119,12 +119,12 @@ if ($mode == 'search') {
 	}
 
 	$sql.= ")";
-	if (!$user->rights->societe->client->voir && !$socid) $sql.= " AND s.rowid = sc.fk_soc AND sc.fk_user = " .$user->id;
+	if (!$user->hasRight('societe', 'client', 'voir') && !$socid) $sql.= " AND s.rowid = sc.fk_soc AND sc.fk_user = " .$user->id;
 	if ($socid) $sql.= " AND s.rowid = ".$socid;
 	if ($search_sale) $sql.= " AND s.rowid = sc.fk_soc";        // Join for the needed table to filter by sale
 	if ($search_categ) $sql.= " AND s.rowid = cs.fk_soc";   // Join for the needed table to filter by categ
-	if (! $user->rights->societe->lire || ! $user->rights->fournisseur->lire) {
-		if (! $user->rights->fournisseur->lire) $sql.=" AND s.fourn != 1";
+	if (! $user->hasRight('societe', 'lire') || ! $user->hasRight('fournisseur', 'lire')) {
+		if (! $user->hasRight('fournisseur', 'lire')) $sql.=" AND s.fourn != 1";
 	}
 	// Insert sale filter
 	if ($search_sale) {
@@ -204,16 +204,16 @@ if ($search_categ) $sql .= ", cs.fk_categorie, cs.fk_soc";
 $sql.= " FROM ".MAIN_DB_PREFIX."societe as s,";
 $sql.= " ".MAIN_DB_PREFIX."c_stcomm as st";
 // We'll need this table joined to the select in order to filter by sale
-if ($search_sale || !$user->rights->societe->client->voir) $sql.= ", ".MAIN_DB_PREFIX."societe_commerciaux as sc";
+if ($search_sale || !$user->hasRight('societe', 'client', 'voir')) $sql.= ", ".MAIN_DB_PREFIX."societe_commerciaux as sc";
 // We'll need this table joined to the select in order to filter by categ
 if ($search_categ) $sql.= ", ".MAIN_DB_PREFIX."categorie_societe as cs";
 $sql.= " WHERE s.fk_stcomm = st.id";
 $sql.= " AND s.entity IN (".getEntity('societe', 1).")";
-if (! $user->rights->societe->client->voir && ! $socid)	$sql.= " AND s.rowid = sc.fk_soc AND sc.fk_user = " .$user->id;
+if (! $user->hasRight('societe', 'client', 'voir') && ! $socid)	$sql.= " AND s.rowid = sc.fk_soc AND sc.fk_user = " .$user->id;
 if ($socid)	$sql.= " AND s.rowid = ".$socid;
 if ($search_sale) $sql.= " AND s.rowid = sc.fk_soc";        // Join for the needed table to filter by sale
 if ($search_categ) $sql.= " AND s.rowid = cs.fk_soc";   // Join for the needed table to filter by categ
-if (! $user->rights->fournisseur->lire) $sql.=" AND (s.fournisseur <> 1 OR s.client <> 0)";    // client=0, fournisseur=0 must be visible
+if (! $user->hasRight('fournisseur', 'lire')) $sql.=" AND (s.fournisseur <> 1 OR s.client <> 0)";    // client=0, fournisseur=0 must be visible
 // Insert sale filter
 if ($search_sale) {
 	$sql .= " AND sc.fk_user = ".$search_sale;

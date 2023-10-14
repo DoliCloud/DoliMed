@@ -189,7 +189,7 @@ print '<div class="underbanner clearboth"></div>';
 print '<table class="border tableforfield centpercent">';
 
 // Tags / categories
-if (isModEnabled("categorie") && ! empty($user->rights->categorie->lire)) {
+if (isModEnabled("categorie") && $user->hasRight('categorie', 'lire')) {
 	// Customer
 	if ($object->prospect || $object->client) {
 		print '<tr><td>' . $langs->trans("CustomersCategoriesShort") . '</td>';
@@ -249,7 +249,7 @@ if (empty($conf->global->SOCIETE_DISABLE_BANKACCOUNT)) {
 	print '<table class="centpercent nobordernopadding"><tr><td>';
 	print $langs->trans('RIB');
 	print '<td><td align="right">';
-	if ($user->rights->societe->creer) {
+	if ($user->hasRight('societe', 'creer')) {
 		if ((float) DOL_VERSION < 8.0) {
 			print '<a class="editfielda" href="'.DOL_URL_ROOT.'/societe/rib.php?socid='.$object->id.'">'.img_edit().'</a>';
 		} else {
@@ -335,11 +335,11 @@ if (empty($reshook)) {
 		print '<div class="inline-block divButAction"><a class="butActionRefused" href="#" title="'.dol_escape_htmltag($langs->trans("NoEMail")).'">'.$langs->trans('SendMail').'</a></div>';
 	}
 
-	if ($user->rights->societe->creer) {
+	if ($user->hasRight('societe', 'creer')) {
 		print '<div class="inline-block divButAction"><a class="butAction" href="'.$_SERVER["PHP_SELF"].'?socid='.$object->id.'&action=edit&token='.newToken().'">'.$langs->trans("Modify").'</a></div>'."\n";
 	}
 
-	if ($user->rights->societe->supprimer) {
+	if ($user->hasRight('societe', 'supprimer')) {
 		if ($conf->use_javascript_ajax && empty($conf->dol_use_jmobile)) {	// We can't use preloaded confirm form with jmobile
 			print '<div class="inline-block divButAction"><span id="action-delete" class="butActionDelete">'.$langs->trans('Delete').'</span></div>'."\n";
 		} else {

@@ -60,7 +60,7 @@ $socid = GETPOST('socid', 'int');
 if ($user->socid) $socid=$user->socid;
 $result = restrictedArea($user, 'societe', $socid);
 
-if (!$user->rights->cabinetmed->read) accessforbidden();
+if (!$user->hasRight('cabinetmed', 'read')) accessforbidden();
 
 $mesgarray=array();
 
@@ -93,7 +93,7 @@ if ($reshook < 0) setEventMessages($hookmanager->error, $hookmanager->errors, 'e
 
 if (empty($reshook)) {
 	// Delete exam
-	if (GETPOST("action") == 'confirm_delete' && GETPOST("confirm") == 'yes' && $user->rights->societe->supprimer) {
+	if (GETPOST("action") == 'confirm_delete' && GETPOST("confirm") == 'yes' && $user->hasRight('societe', 'supprimer')) {
 		$examother->fetch($id);
 		$result = $examother->delete($user);
 		if ($result >= 0) {
@@ -451,7 +451,7 @@ if ($socid > 0) {
 if ($action == '' || $action == 'delete') {
 	print '<div class="tabsAction">';
 
-	if ($user->rights->societe->creer) {
+	if ($user->hasRight('societe', 'creer')) {
 		print '<a class="butAction" href="'.$_SERVER["PHP_SELF"].'?socid='.$societe->id.'&amp;action=create">'.$langs->trans("NewExamAutre").'</a>';
 	}
 
@@ -526,7 +526,7 @@ if ($action == '' || $action == 'delete') {
 			print '</td>';
 			print '<td align="right">';
 			print '<a class="reposition editfielda" href="'.$_SERVER["PHP_SELF"].'?socid='.$obj->fk_soc.'&id='.$obj->rowid.'&action=edit&token='.newToken().'">'.img_edit().'</a>';
-			if ($user->rights->societe->supprimer) {
+			if ($user->hasRight('societe', 'supprimer')) {
 				print ' &nbsp; ';
 				print '<a href="'.$_SERVER["PHP_SELF"].'?socid='.$obj->fk_soc.'&id='.$obj->rowid.'&action=delete&token='.newToken().'">'.img_delete().'</a>';
 			}

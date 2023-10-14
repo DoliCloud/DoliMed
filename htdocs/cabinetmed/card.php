@@ -119,7 +119,7 @@ if (empty($reshook)) {
 		}
 	}
 
-	if ($action == 'confirm_merge' && $confirm == 'yes' && $user->rights->societe->creer) {
+	if ($action == 'confirm_merge' && $confirm == 'yes' && $user->hasRight('societe', 'creer')) {
 		$error = 0;
 		$soc_origin_id = GETPOST('soc_origin', 'int');
 		$soc_origin = new Societe($db);
@@ -308,7 +308,7 @@ if (empty($reshook)) {
 	if ($action == 'update_extras') {
 		$object->fetch($socid);
 
-		$object->oldcopy = dol_clone($object);
+		$object->oldcopy = dol_clone($object, 2);
 
 		// Fill array 'array_options' with data from update form
 		$ret = $extrafields->setOptionalsFromPost(null, $object, GETPOST('attribute', 'none'));
@@ -327,7 +327,7 @@ if (empty($reshook)) {
 
 	// Add new or update third party
 	if ((! GETPOST('getcustomercode') && ! GETPOST('getsuppliercode'))
-	&& ($action == 'add' || $action == 'update') && $user->rights->societe->creer) {
+	&& ($action == 'add' || $action == 'update') && $user->hasRight('societe', 'creer')) {
 		require_once DOL_DOCUMENT_ROOT.'/core/lib/functions2.lib.php';
 
 		if (! GETPOST('name')) {
@@ -602,7 +602,7 @@ if (empty($reshook)) {
 				}
 
 				// Prevent thirdparty's emptying if a user hasn't rights $user->rights->categorie->lire (in such a case, post of 'custcats' is not defined)
-				if (! $error && !empty($user->rights->categorie->lire)) {
+				if (! $error && $user->hasRight('categorie', 'lire')) {
 					// Customer categories association
 					$categories = GETPOST('custcats', 'array');
 					$result = $object->setCategories($categories, 'customer');
@@ -700,7 +700,7 @@ if (empty($reshook)) {
 	}
 
 	// Delete third party
-	if ($action == 'confirm_delete' && $confirm == 'yes' && $user->rights->societe->supprimer) {
+	if ($action == 'confirm_delete' && $confirm == 'yes' && $user->hasRight('societe', 'supprimer')) {
 		$object->fetch($socid);
 		$result = $object->delete($socid, $user);
 
@@ -717,7 +717,7 @@ if (empty($reshook)) {
 	}
 
 	// Set parent company
-	if ($action == 'set_thirdparty' && $user->rights->societe->creer) {
+	if ($action == 'set_thirdparty' && $user->hasRight('societe', 'creer')) {
 		$object->fetch($socid);
 		if (method_exists($object, 'set_parent')) {
 			$result = $object->set_parent(GETPOST('editparentcompany', 'int'));

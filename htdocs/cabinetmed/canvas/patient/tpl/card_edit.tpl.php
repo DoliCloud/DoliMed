@@ -188,7 +188,7 @@ print '</td></tr></table>';
 print '</td></tr>';
 
 // Supplier
-if (isModEnabled("fournisseur") && ! empty($user->rights->fournisseur->lire)) {
+if (isModEnabled("fournisseur") && $user->hasRight('fournisseur', 'lire')) {
 	print '<tr>';
 	print '<td>'.fieldLabel('Supplier', 'fournisseur', 1).'</td><td class="maxwidthonsmartphone">';
 	print $form->selectyesno("fournisseur", $object->fournisseur, 1);
@@ -341,7 +341,7 @@ if (! empty($conf->global->MAIN_MULTILANGS)) {
 
 
 // Categories
-if (isModEnabled("categorie") && ! empty($user->rights->categorie->lire)) {
+if (isModEnabled("categorie") && $user->hasRight('categorie', 'lire')) {
 	// Customer
 	if ($object->prospect || $object->client) {
 		print '<tr><td>' . fieldLabel('CustomersCategoriesShort', 'custcats') . '</td>';

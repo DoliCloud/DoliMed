@@ -54,7 +54,7 @@ $socid = GETPOST('socid', 'int');
 if ($user->socid) $socid=$user->socid;
 $result = restrictedArea($user, 'societe', $socid);
 
-if (!$user->rights->cabinetmed->read) accessforbidden();
+if (!$user->hasRight('cabinetmed', 'read')) accessforbidden();
 
 
 /*
@@ -185,7 +185,7 @@ if ($socid > 0) {
 	print '<br><input type="checkbox" name="alert_traitspec"'.((isset($_POST['alert_traitspec'])?GETPOST('alert_traitspec'):$object->alert_traitspec)?' checked="checked"':'').'"> '.$langs->trans("Alert");
 	print '</td>';
 	print '<td class="tdtop">';
-	if ($action == 'edit' && $user->rights->societe->creer) {
+	if ($action == 'edit' && $user->hasRight('societe', 'creer')) {
 		print "<input type=\"hidden\" name=\"socid\" value=\"".$object->id."\">";
 
 		// Editeur wysiwyg
@@ -223,7 +223,7 @@ if ($socid > 0) {
 	print '<br><input type="checkbox" name="alert_traitintol"'.((isset($_POST['alert_traitintol'])?GETPOST('alert_traitintol'):$object->alert_traitintol)?' checked="true"':'').'"> '.$langs->trans("Alert");
 	print '</td>';
 	print '<td class="tdtop">';
-	if ($action == 'edit' && $user->rights->societe->creer) {
+	if ($action == 'edit' && $user->hasRight('societe', 'creer')) {
 		print "<input type=\"hidden\" name=\"socid\" value=\"".$object->id."\">";
 
 		// Editeur wysiwyg
@@ -254,7 +254,7 @@ print '</div>';
 if ($action == '') {
 	print '<div class="tabsAction">';
 
-	if ($user->rights->societe->creer) {
+	if ($user->hasRight('societe', 'creer')) {
 		print '<a class="butAction" href="'.$_SERVER["PHP_SELF"].'?socid='.$object->id.'&action=edit&token='.newToken().'">'.$langs->trans("Modify").'</a>';
 	}
 

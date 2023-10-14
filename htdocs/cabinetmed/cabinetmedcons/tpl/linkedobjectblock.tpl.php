@@ -51,7 +51,7 @@ foreach ($linkedObjectBlock as $key => $objectlink) {
 		<td align="center"><?php echo $objectlink->ref_client; ?></td>
 		<td align="center"><?php echo dol_print_date($objectlink->datecons, 'day'); ?></td>
 		<td align="right"><?php
-		if ($user->rights->cabinetmed->read) {
+		if ($user->hasRight('cabinetmed', 'read')) {
 			$amount_consultation = (int) $objectlink->montant_cheque + (int) $objectlink->montant_carte + (int) $objectlink->montant_espece + (int) $objectlink->montant_tiers;
 			$total = $total + $amount_consultation;
 			echo price($amount_consultation);

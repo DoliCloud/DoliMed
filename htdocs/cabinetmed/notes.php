@@ -104,7 +104,7 @@ if (empty($reshook)) {
  *	View
  */
 
-if (getDolGlobalString('MAIN_DIRECTEDITMODE') && $user->rights->societe->creer) {
+if (getDolGlobalString('MAIN_DIRECTEDITMODE') && $user->hasRight('societe', 'creer')) {
 	$action='edit';
 }
 
@@ -182,7 +182,7 @@ if ($socid > 0) {
 	print '</td>';
 	print '<td class="tdtop">';
 	$note=($object->note_private?$object->note_private:$object->note);
-	if ($user->rights->societe->creer) {
+	if ($user->hasRight('societe', 'creer')) {
 		print '<input type="hidden" name="action" value="add" />';
 		print '<input type="hidden" name="socid" value="'.$object->id.'" />';
 
@@ -198,7 +198,7 @@ if ($socid > 0) {
 
 	print "</table>";
 
-	if ($user->rights->societe->creer) {
+	if ($user->hasRight('societe', 'creer')) {
 		print '<center><br>';
 		print '<input type="submit" class="button ignorechange" name="save" value="'.$langs->trans("Save").'">';
 		print '</center>';

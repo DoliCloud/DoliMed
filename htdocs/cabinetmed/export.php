@@ -59,7 +59,7 @@ if ($user->socid > 0) $socid = $user->socid;
 //if (!$user->rights->cabinetmed->lire)
 //accessforbidden();
 
-if (!$user->rights->cabinetmed->read) accessforbidden();
+if (!$user->hasRight('cabinetmed', 'read')) accessforbidden();
 
 
 

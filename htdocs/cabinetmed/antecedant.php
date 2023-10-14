@@ -58,7 +58,7 @@ $socid = GETPOST('socid', 'int');
 if ($user->socid) $socid=$user->socid;
 $result = restrictedArea($user, 'societe', $socid);
 
-if (!$user->rights->cabinetmed->read) accessforbidden();
+if (!$user->hasRight('cabinetmed', 'read')) accessforbidden();
 
 $object = new Patient($db);
 
@@ -250,7 +250,7 @@ if ($socid > 0) {
 	print '<br><input type="checkbox" id="alert_antemed" name="alert_antemed"'.((isset($_POST['alert_antemed'])?GETPOST('alert_antemed'):$object->alert_antemed)?' checked="checked"':'').'"> <label for="alert_antemed">'.$langs->trans("Alert").'</label>';
 	print '</td>';
 	print '<td class="tdtop">';
-	if ($action == 'edit' && $user->rights->societe->creer) {
+	if ($action == 'edit' && $user->hasRight('societe', 'creer')) {
 		print "<input type=\"hidden\" name=\"socid\" value=\"".$object->id."\">";
 
 		// Editeur wysiwyg
@@ -275,7 +275,7 @@ if ($socid > 0) {
 	print '<br><input type="checkbox" id="alert_traitspec" name="alert_traitspec"'.((isset($_POST['alert_traitspec'])?GETPOST('alert_traitspec'):$object->alert_traitspec)?' checked="checked"':'').'">  <label for="alert_traitspec">'.$langs->trans("Alert").'</label>';
 	print '</td>';
 	print '<td class="tdtop">';
-	if ($action == 'edit' && $user->rights->societe->creer) {
+	if ($action == 'edit' && $user->hasRight('societe', 'creer')) {
 		print "<input type=\"hidden\" name=\"socid\" value=\"".$object->id."\">";
 
 		// Editeur wysiwyg
@@ -299,7 +299,7 @@ if ($socid > 0) {
 	print '<br><input type="checkbox" id="alert_antechirgen" name="alert_antechirgen"'.((isset($_POST['alert_antechirgen'])?GETPOST('alert_antechirgen'):$object->alert_antechirgen)?' checked="checked"':'').'">  <label for="alert_antechirgen">'.$langs->trans("Alert").'</label>';
 	print '</td>';
 	print '<td class="tdtop">';
-	if ($action == 'edit' && $user->rights->societe->creer) {
+	if ($action == 'edit' && $user->hasRight('societe', 'creer')) {
 		print "<input type=\"hidden\" name=\"socid\" value=\"".$object->id."\">";
 
 		// Editeur wysiwyg
@@ -323,7 +323,7 @@ if ($socid > 0) {
 	print '<br><input type="checkbox" id="alert_traitintol" name="alert_traitintol"'.((isset($_POST['alert_traitintol'])?GETPOST('alert_traitintol'):$object->alert_traitintol)?' checked="true"':'').'">  <label for="alert_traitintol">'.$langs->trans("Alert").'</label>';
 	print '</td>';
 	print '<td class="tdtop">';
-	if ($action == 'edit' && $user->rights->societe->creer) {
+	if ($action == 'edit' && $user->hasRight('societe', 'creer')) {
 		print "<input type=\"hidden\" name=\"socid\" value=\"".$object->id."\">";
 
 		// Editeur wysiwyg
@@ -346,7 +346,7 @@ if ($socid > 0) {
 	print '<br><input type="checkbox" id="alert_antechirortho" name="alert_antechirortho"'.((isset($_POST['alert_antechirortho'])?GETPOST('alert_antechirortho'):$object->alert_antechirortho)?' checked="checked"':'').'">  <label for="alert_antechirortho">'.$langs->trans("Alert").'</label>';
 	print '</td>';
 	print '<td class="tdtop">';
-	if ($action == 'edit' && $user->rights->societe->creer) {
+	if ($action == 'edit' && $user->hasRight('societe', 'creer')) {
 		print "<input type=\"hidden\" name=\"socid\" value=\"".$object->id."\">";
 
 		// Editeur wysiwyg
@@ -368,7 +368,7 @@ if ($socid > 0) {
 	print '<br><input type="checkbox" id="alert_traitallergie" name="alert_traitallergie"'.((isset($_POST['alert_traitallergie'])?GETPOST('alert_traitallergie'):$object->alert_traitallergie)?' checked="checked"':'').'"">  <label for="alert_traitallergie">'.$langs->trans("Alert").'</label>';
 	print '</td>';
 	print '<td class="tdtop">';
-	if ($action == 'edit' && $user->rights->societe->creer) {
+	if ($action == 'edit' && $user->hasRight('societe', 'creer')) {
 		print "<input type=\"hidden\" name=\"socid\" value=\"".$object->id."\">";
 
 		// Editeur wysiwyg
@@ -391,7 +391,7 @@ if ($socid > 0) {
 	print '<br><input type="checkbox" id="alert_anterhum" name="alert_anterhum"'.((isset($_POST['alert_anterhum'])?GETPOST('alert_anterhum'):$object->alert_anterhum)?' checked="checked"':'').'">  <label for="alert_anterhum">'.$langs->trans("Alert").'</label>';
 	print '</td>';
 	print '<td class="tdtop">';
-	if ($action == 'edit' && $user->rights->societe->creer) {
+	if ($action == 'edit' && $user->hasRight('societe', 'creer')) {
 		print "<input type=\"hidden\" name=\"socid\" value=\"".$object->id."\">";
 
 		// Editeur wysiwyg
@@ -431,7 +431,7 @@ print '</div>';
 if ($action == '') {
 	print '<div class="tabsAction">';
 
-	if ($user->rights->societe->creer) {
+	if ($user->hasRight('societe', 'creer')) {
 		print '<a class="butAction" href="'.$_SERVER["PHP_SELF"].'?socid='.$object->id.'&action=edit&token='.newToken().'">'.$langs->trans("Modify").'</a>';
 	}
 

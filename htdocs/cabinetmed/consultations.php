@@ -64,7 +64,7 @@ $socid = GETPOST('socid', 'int');
 if ($user->socid) $socid=$user->socid;
 $result = restrictedArea($user, 'societe', $socid, '');
 
-if (!$user->rights->cabinetmed->read) accessforbidden();
+if (!$user->hasRight('cabinetmed', 'read')) accessforbidden();
 
 $mesgarray=array();
 
@@ -152,7 +152,7 @@ if (empty($reshook)) {
 	}
 
 	// Delete consultation
-	if (GETPOST("action") == 'confirm_delete' && GETPOST("confirm") == 'yes' && $user->rights->societe->supprimer) {
+	if (GETPOST("action") == 'confirm_delete' && GETPOST("confirm") == 'yes' && $user->hasRight('societe', 'supprimer')) {
 		$object->fetch($id);
 		$result = $object->delete($user);
 		if ($result >= 0) {
@@ -1121,7 +1121,7 @@ if (! ($socid > 0)) {
 if ($action == '' || $action == 'list' || $action == 'delete') {
 	print '<div class="tabsAction">';
 
-	if ($user->rights->societe->creer) {
+	if ($user->hasRight('societe', 'creer')) {
 		print '<a class="butAction" href="'.$_SERVER["PHP_SELF"].'?socid='.$soc->id.'&action=create">'.$langs->trans("NewConsult").'</a>';
 	}
 
@@ -1422,7 +1422,7 @@ if ($action == '' || $action == 'list' || $action == 'delete') {
 
 			print '<td class="nowraponall">';
 			print '<a class="reposition editfielda" href="'.$_SERVER["PHP_SELF"].'?socid='.$obj->fk_soc.'&id='.$obj->rowid.'&action=edit&token='.newToken().'">'.img_edit().'</a>';
-			if (!empty($user->rights->societe->supprimer)) {
+			if ($user->hasRight('societe', 'supprimer')) {
 				print ' &nbsp; ';
 				print '<a href="'.$_SERVER["PHP_SELF"].'?socid='.$obj->fk_soc.'&id='.$obj->rowid.'&action=delete&token='.newToken().'">'.img_delete().'</a>';
 			}

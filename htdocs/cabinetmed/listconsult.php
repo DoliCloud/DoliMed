@@ -114,7 +114,7 @@ $socid = GETPOST('socid', 'int');
 if ($user->socid) $socid=$user->socid;
 $result = restrictedArea($user, 'societe', $socid, '');
 
-if (!$user->rights->cabinetmed->read) accessforbidden();
+if (!$user->hasRight('cabinetmed', 'read')) accessforbidden();
 
 $permissiontoread = $user->rights->societe->lire;
 $permissiontodelete = $user->rights->societe->supprimer;
@@ -222,7 +222,7 @@ if ($search_diaglesprinc) {
 	$label= dol_getIdFromCode($db, $search_diaglesprinc, 'cabinetmed_diaglec', 'code', 'label');
 	$sql.= " AND c.diaglesprinc LIKE '%".$db->escape($label)."%'";
 }
-if (!$user->rights->societe->client->voir && ! $socid) $sql.= " AND s.rowid = sc.fk_soc AND sc.fk_user = ".((int) $user->id);
+if (!$user->hasRight('societe', 'client', 'voir') && ! $socid) $sql.= " AND s.rowid = sc.fk_soc AND sc.fk_user = ".((int) $user->id);
 if ($socid && empty($conf->global->MAIN_DISABLE_RESTRICTION_ON_THIRDPARTY_FOR_EXTERNAL)) $sql.= " AND s.rowid = ".((int) $socid);
 if ($search_ref)   $sql.= " AND c.rowid = ".((int) $db->escape($search_ref));
 if ($search_nom)   $sql.= natural_search("s.nom", $search_nom);
@@ -348,7 +348,7 @@ $massactionbutton = '';
 
 if ((float) DOL_VERSION >= 9.0) {
 	$newcardbutton='';
-	if ($user->rights->cabinetmed->write && $contextpage != 'poslist') {
+	if ($user->hasRight('cabinetmed', 'write') && $contextpage != 'poslist') {
 		$label='NewConsultation';
 
 		$newcardbutton = '<a class="butActionNew" href="consultations.php?action=create&canvas=patient@cabinetmed">';
@@ -377,7 +377,7 @@ if (isModEnabled("categorie")) {
 }
 
 // If the user can view prospects other than his'
-if ($user->rights->societe->client->voir || $socid) {
+if ($user->hasRight('societe', 'client', 'voir') || $socid) {
 	$moreforfilter.='<div class="divsearchfield">';
 	$moreforfilter.=img_picto('', 'user', 'class="pictofixedwidth"').$formother->select_salesrepresentatives($search_sale, 'search_sale', $user, 0, $langs->trans('ConsultCreatedBy'), 'maxwidth300');
 	$moreforfilter.='</div>';

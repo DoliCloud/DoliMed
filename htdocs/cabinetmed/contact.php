@@ -77,7 +77,7 @@ $reshook=$hookmanager->executeHooks('doActions', $parameters, $object, $action);
 if ($reshook < 0) setEventMessages($hookmanager->error, $hookmanager->errors, 'errors');
 
 if (empty($reshook)) {
-	if ($action == 'addcontact' && $user->rights->societe->creer) {
+	if ($action == 'addcontact' && $user->hasRight('societe', 'creer')) {
 		if (GETPOST("contactid", "int") && GETPOST("type")) {
 			$result = 0;
 			$societe = new Societe($db);
@@ -102,7 +102,7 @@ if (empty($reshook)) {
 	}
 
 	// bascule du statut d'un contact
-	if ($action == 'swapstatut' && $user->rights->societe->creer) {
+	if ($action == 'swapstatut' && $user->hasRight('societe', 'creer')) {
 		$object = new Societe($db);
 		if ($object->fetch(GETPOST('facid', 'int'))) {
 			$result=$object->swapContactStatus(GETPOST('ligne', 'int'));
@@ -112,7 +112,7 @@ if (empty($reshook)) {
 	}
 
 	// Efface un contact
-	if ($action == 'deleteline' && $user->rights->societe->creer) {
+	if ($action == 'deleteline' && $user->hasRight('societe', 'creer')) {
 		$societe = new Societe($db);
 		$societe->fetch($socid);
 		$result = $societe->delete_contact(GETPOST("lineid", 'int'));
@@ -325,7 +325,7 @@ if ($id > 0 || ! empty($ref)) {
 
 			// Icon update et delete
 			print '<td align="center" nowrap>';
-			if ($societe->statut < 5 && $user->rights->societe->creer) {
+			if ($societe->statut < 5 && $user->hasRight('societe', 'creer')) {
 				print '&nbsp;';
 				print '<a href="contact.php?socid='.$societe->id.'&action=deleteline&lineid='.$tab[$i]['rowid'].'&token='.newToken().'">';
 				print img_delete();

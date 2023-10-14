@@ -63,7 +63,7 @@ $socid=$id;
 if ($user->socid) $socid=$user->socid;
 $result = restrictedArea($user, 'societe', $socid);
 
-if (!$user->rights->cabinetmed->read) accessforbidden();
+if (!$user->hasRight('cabinetmed', 'read')) accessforbidden();
 
 $error=0;
 $errors=array();
@@ -298,7 +298,7 @@ if ($object->id) {
     // Affiche formulaire upload
     $formfile=new FormFile($db);
     $title=img_picto('','filenew').' '.$langs->trans("AttachANewFile");
-    $formfile->form_attach_new_file($_SERVER["PHP_SELF"].'?socid='.$socid,$title,0,0,$user->rights->societe->creer, 40, $object, '', 1, '', 1);
+    $formfile->form_attach_new_file($_SERVER["PHP_SELF"].'?socid='.$socid,$title,0,0,$user->hasRight('societe', 'creer'), 40, $object, '', 1, '', 1);
 
 
     print '<a name="builddoc"></a>'; // ancre

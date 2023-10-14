@@ -57,7 +57,7 @@ $socid = GETPOST('socid', 'int');
 if ($user->socid) $socid=$user->socid;
 $result = restrictedArea($user, 'societe', $socid);
 
-if (!$user->rights->cabinetmed->read) accessforbidden();
+if (!$user->hasRight('cabinetmed', 'read')) accessforbidden();
 
 $mesgarray=array();
 
@@ -90,7 +90,7 @@ $now=dol_now();
 */
 
 // Delete consultation
-if (GETPOST("action") == 'confirm_delete' && GETPOST("confirm") == 'yes' && $user->rights->societe->supprimer) {
+if (GETPOST("action") == 'confirm_delete' && GETPOST("confirm") == 'yes' && $user->hasRight('societe', 'supprimer')) {
 	$consult->fetch($id);
 	$result = $consult->delete($user);
 	if ($result >= 0) {

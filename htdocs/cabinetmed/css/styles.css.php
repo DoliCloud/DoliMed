@@ -54,7 +54,7 @@ else header('Cache-Control: no-cache');
 //$theme='cabinetmed';
 $path='';    	// This value may be used in future for external module to overwrite theme
 $theme='eldy';	// Value of theme
-if (! empty($conf->global->MAIN_OVERWRITE_THEME_RES)) { $path='/'.$conf->global->MAIN_OVERWRITE_THEME_RES; $theme=$conf->global->MAIN_OVERWRITE_THEME_RES; }
+if (! empty($conf->global->MAIN_OVERWRITE_THEME_RES)) { $path='/' . getDolGlobalString('MAIN_OVERWRITE_THEME_RES'); $theme=$conf->global->MAIN_OVERWRITE_THEME_RES; }
 
 // Define image path files
 $dol_hide_topmenu=$conf->dol_hide_topmenu;

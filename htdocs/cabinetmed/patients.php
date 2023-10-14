@@ -371,7 +371,7 @@ $sqlfields = $sql; // $sql fields to remove for count total
 
 $sql .= " FROM ".MAIN_DB_PREFIX."c_stcomm as st";
 // We'll need this table joined to the select in order to filter by sale
-if ($search_sale > 0 || (!$user->rights->societe->client->voir && !$socid)) $sql.= ", ".MAIN_DB_PREFIX."societe_commerciaux as sc";
+if ($search_sale > 0 || (!$user->hasRight('societe', 'client', 'voir') && !$socid)) $sql.= ", ".MAIN_DB_PREFIX."societe_commerciaux as sc";
 // We'll need this table joined to the select in order to filter by categ
 if ($search_categ > 0) $sql.= ", ".MAIN_DB_PREFIX."categorie_societe as cs";
 $sql .= ", ".MAIN_DB_PREFIX."societe as s";
@@ -475,7 +475,7 @@ if ($search_diagles) {
 	$label = dol_getIdFromCode($db, $search_diagles, 'cabinetmed_diaglec', 'code', 'label');
 	$sql .= natural_search("c.diaglesprinc", $label);
 }
-if (! $user->rights->societe->client->voir && ! $socid)	$sql.= " AND s.rowid = sc.fk_soc AND sc.fk_user = " .$user->id;
+if (! $user->hasRight('societe', 'client', 'voir') && ! $socid)	$sql.= " AND s.rowid = sc.fk_soc AND sc.fk_user = " .$user->id;
 if ($socid && empty($conf->global->MAIN_DISABLE_RESTRICTION_ON_THIRDPARTY_FOR_EXTERNAL)) $sql.= " AND s.rowid = ".$socid;
 if ($search_sale > 0)  $sql.= " AND s.rowid = sc.fk_soc";		// Join for the needed table to filter by sale
 if ($search_categ > 0) $sql.= " AND s.rowid = cs.fk_soc";	// Join for the needed table to filter by categ
@@ -657,7 +657,7 @@ if ($user->hasRight('societe', 'supprimer')) {
 $massactionbutton=$form->selectMassAction('', $arrayofmassactions);
 
 $newcardbutton='';
-if ($user->rights->societe->creer && $contextpage != 'poslist') {
+if ($user->hasRight('societe', 'creer') && $contextpage != 'poslist') {
 	$typefilter='';
 	$label='MenuNewPatient';
 
@@ -724,7 +724,7 @@ if (isModEnabled("categorie")) {
 }
 
 // If the user can view prospects other than his'
-if ($user->rights->societe->client->voir || $socid) {
+if ($user->hasRight('societe', 'client', 'voir') || $socid) {
 	$moreforfilter.='<div class="divsearchfield">';
 	$moreforfilter.=img_picto('', 'user', 'class="pictofixedwidth"').$formother->select_salesrepresentatives($search_sale, 'search_sale', $user, 0, $langs->trans('ConsultCreatedBy'), 'maxwidth300 widthcentpercentminusx');
 	$moreforfilter.='</div>';

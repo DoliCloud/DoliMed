@@ -64,7 +64,7 @@ if ($user->socid > 0) $socid = $user->socid;
 //if (!$user->rights->cabinetmed->lire)
 //accessforbidden();
 
-if (!$user->rights->cabinetmed->read) accessforbidden();
+if (!$user->hasRight('cabinetmed', 'read')) accessforbidden();
 
 $langs->load("bills");
 
@@ -82,7 +82,7 @@ $htmlother=new FormOther($db);
 $nom=$langs->trans("CabinetMedAnnualSummaryInputOutput");
 //$nom.='<br>('.$langs->trans("SeeReportInDueDebtMode",'<a href="'.$_SERVER["PHP_SELF"].'?year_start='.$year_start.'&modecompta=CREANCES-DETTES">','</a>').')';
 $period = $year_start." - ".$year_end;
-if ($user->rights->societe->client->voir || $socid) {
+if ($user->hasRight('societe', 'client', 'voir') || $socid) {
 	$period .= '<br>';
 	$period .= $langs->trans('ConsultCreatedBy'). ': ';
 	$period .= $htmlother->select_salesrepresentatives($search_sale, 'search_sale', $user, 0, 1, 'maxwidth300');
