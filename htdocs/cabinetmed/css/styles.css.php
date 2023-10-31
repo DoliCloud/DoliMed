@@ -71,7 +71,10 @@ legend
 }
 
 
-<?php if ((float) DOL_VERSION >= 10) { ?>
+<?php
+if ((float) DOL_VERSION < 19) {
+
+if ((float) DOL_VERSION >= 10) { ?>
 div.mainmenu.patients::before {
 	content: "\f728";
 }
@@ -87,7 +90,11 @@ div.mainmenu.patients {
 div.mainmenu.contacts {
 	background-image: url(<?php echo dol_buildpath('/cabinetmed/img/menus/stethoscope.png', 1) ?>);
 }
-<?php } ?>
+<?php
+}
+}
+?>
+
 
 
 .quatrevingtpercent, .inputsearch {
