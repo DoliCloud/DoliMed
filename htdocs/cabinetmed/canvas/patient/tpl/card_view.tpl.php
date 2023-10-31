@@ -66,7 +66,40 @@ elseif ((float) DOL_VERSION < 15) dol_fiche_head($head, 'card', $langs->trans("P
 else dol_fiche_head($head, 'card', $langs->trans("Patient"), -1, 'user-injured');
 
 
-dol_htmloutput_errors($error, $errors);
+$formconfirm = '';
+
+// Confirm delete third party
+if (GETPOST('action') == 'delete' || ($conf->use_javascript_ajax && empty($conf->dol_use_jmobile))) {
+	$formconfirm = $form->formconfirm($_SERVER["PHP_SELF"]."?socid=".$object->id, $langs->trans("DeleteACompany"), $langs->trans("ConfirmDeleteCompany"), "confirm_delete", '', 0, "action-delete");
+}
+
+if (GETPOST('action') == 'merge') {
+	$formquestion = array(
+		array(
+			'name' => 'soc_origin',
+			'label' => $langs->trans('MergeOriginThirdparty'),
+			'type' => 'other',
+			'value' => $form->select_company('', 'soc_origin', '', 'SelectThirdParty', 0, 0, array(), 0, 'minwidth200', '', '', 1, null, false, array($object->id))
+		)
+	);
+
+	$formconfirm .= $form->formconfirm($_SERVER["PHP_SELF"]."?socid=".$object->id, $langs->trans("MergeThirdparties"), $langs->trans("ConfirmMergeThirdparties"), "confirm_merge", $formquestion, 'no', 1, 250);
+}
+
+// Call Hook formConfirm
+$parameters = array('formConfirm' => $formconfirm);
+$reshook = $hookmanager->executeHooks('formConfirm', $parameters, $object, $action); // Note that $action and $object may have been modified by hook
+if (empty($reshook)) {
+	$formconfirm .= $hookmanager->resPrint;
+} elseif ($reshook > 0) {
+	$formconfirm = $hookmanager->resPrint;
+}
+
+// Print form confirm
+print $formconfirm;
+
+
+dol_htmloutput_mesg(is_numeric($error) ? '' : $error, $errors, 'error');
 
 
 // Confirm delete third party
@@ -318,6 +351,9 @@ print '<div class="clearboth"></div>';
 dol_fiche_end();
 
 
+$permissiontodelete = $user->hasRight('societe', 'supprimer') || ($permissiontoadd && isset($object->status) && $object->status == 0);
+
+
 /*
  *  Actions
  */
@@ -338,6 +374,9 @@ if (empty($reshook)) {
 	if ($user->hasRight('societe', 'creer')) {
 		print '<div class="inline-block divButAction"><a class="butAction" href="'.$_SERVER["PHP_SELF"].'?socid='.$object->id.'&action=edit&token='.newToken().'">'.$langs->trans("Modify").'</a></div>'."\n";
 	}
+
+	// TODO
+	print dolGetButtonAction($langs->trans('MergeThirdparties'), $langs->trans('Merge'), 'danger', $_SERVER["PHP_SELF"].'?socid='.$object->id.'&action=merge&token='.newToken(), '', $permissiontodelete);
 
 	if ($user->hasRight('societe', 'supprimer')) {
 		if ($conf->use_javascript_ajax && empty($conf->dol_use_jmobile)) {	// We can't use preloaded confirm form with jmobile

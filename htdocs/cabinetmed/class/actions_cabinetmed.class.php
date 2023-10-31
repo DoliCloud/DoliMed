@@ -119,7 +119,7 @@ class ActionsCabinetmed
 			}
 		}
 
-		if (GETPOST('canvas') == 'patient@cabinetmed' || preg_match('/(consultationcard|exambiocard|examothercard)/', $parameters['context'])) {
+		if (GETPOST('canvas') == 'patient@cabinetmed' || $object->canvas == 'patient@cabinetmed' || preg_match('/(consultationcard|exambiocard|examothercard)/', $parameters['context'])) {
 			$cabinetmedcontext++;
 		}
 
@@ -561,5 +561,53 @@ class ActionsCabinetmed
 
 
 		//$object->note_public=dol_concatdesc($text,$object->note_public);
+	}
+
+
+	/**
+	 * Function used to replace a thirdparty id with another one.
+	 *
+	 * @param	array	$parameters		Array of parameters
+	 * @param   mixed	$object      	Object
+	 * @param   string	$action      	'add', 'update', 'view'
+	 * @param   string	$hookmanager  	'add', 'update', 'view'
+	 * @return bool						True=SQL success, False=SQL error
+	 */
+	function replaceThirdparty($parameters, &$object, &$action, &$hookmanager)
+	{
+		global $db;
+
+		$origin_id = $parameters['soc_origin'];
+		$dest_id = $parameters['soc_dest'];
+
+		$ok = 1;
+
+		if ($ok) {
+			$sql = "UPDATE ".MAIN_DB_PREFIX."cabinetmed_cons SET fk_soc = ".((int) $dest_id)." WHERE fk_soc = ".((int) $origin_id);
+			if (!$db->query($sql)) {
+				$ok=0;
+			}
+		}
+
+		if ($ok) {
+			$sql = "UPDATE ".MAIN_DB_PREFIX."cabinetmed_examaut SET fk_soc = ".((int) $dest_id)." WHERE fk_soc = ".((int) $origin_id);
+			if (!$db->query($sql)) {
+				$ok=0;
+			}
+		}
+
+		if ($ok) {
+			$sql = "UPDATE ".MAIN_DB_PREFIX."cabinetmed_exambio SET fk_soc = ".((int) $dest_id)." WHERE fk_soc = ".((int) $origin_id);
+			if (!$db->query($sql)) {
+				$ok=0;
+			}
+		}
+
+		if ($ok) {
+			return true;
+		} else {
+			return false;
+		}
+
 	}
 }
