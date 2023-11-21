@@ -15,19 +15,19 @@ Fiew samples of screenshosts...
  
 ### List of consultations
 
-![Screenshot patient card](img/dolimed_screenshot_consulthome.webp?raw=true "List of consultations")
+![Screenshot patient card](htdocs/cabinetmed/img/dolimed_screenshot_consulthome.webp?raw=true "List of consultations")
 
 ### Consultations
 
-![Screenshot patient card](img/dolimed_screenshot_consult.webp?raw=true "Patient card")
+![Screenshot patient card](htdocs/cabinetmed/img/dolimed_screenshot_consult.webp?raw=true "Patient card")
 
 
 ### History
 
-![Screenshot patient card](img/dolimed_screenshot_atcd.webp?raw=true "History card")
+![Screenshot patient card](htdocs/cabinetmed/img/dolimed_screenshot_atcd.webp?raw=true "History card")
 
 
 ### Statistics
 
-![Screenshot patient card](img/dolimed_screenshot_stats_consult.webp?raw=true "Statistics")
+![Screenshot patient card](htdocs/cabinetmed/img/dolimed_screenshot_stats_consult.webp?raw=true "Statistics")
 
