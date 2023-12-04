@@ -361,7 +361,9 @@ if (empty($reshook)) {
 										$paiement->amounts      = array($invoice->id => $tmpamount);    // Array with all payments dispatching
 										$paiement->paiementid   = dol_getIdFromCode($db, $key, 'c_paiement');
 										$paiement->num_paiement = $object->num_cheque;
+										$paiement->num_payment = $object->num_cheque;
 										$paiement->note         = '';
+										$paiement->note_private = '';
 
 										if (! $error) {
 											$paiement_id = $paiement->create($user, 1);
