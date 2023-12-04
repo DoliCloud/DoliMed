@@ -64,7 +64,7 @@ class autoTranslator
 		// Translate
 		//ini_set('default_charset','UTF-8');
 		ini_set('default_charset',$this->_outputpagecode);
-		$this->parse_refLangTranslationFiles();
+		$this->parseRefLangTranslationFiles();
 
 	}
 
@@ -73,7 +73,7 @@ class autoTranslator
 	 *
 	 * 	@return	void
 	 */
-	private function parse_refLangTranslationFiles()
+	private function parseRefLangTranslationFiles()
 	{
 
 		$files = $this->getTranslationFilesArray($this->_refLang);
