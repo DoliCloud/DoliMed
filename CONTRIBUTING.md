@@ -6,7 +6,7 @@ Bug reports and feature requests
 
 <a name="not-a-support-forum"></a>*Note*: **GitHub Issues is not a support forum.** If you have questions about Dolibarr / need help using the software, please use [the forums](https://www.dolibarr.org/forum.php). Forums exist in different languages.
 
-Issues are managed on [GitHub](https://github.com/Dolibarr/dolibarr/issues). 
+Issues are managed on [GitHub](https://github.com/DoliCloud/DoliMed/issues). 
 Default **language here is English**. So please prepare your contributions in English.
 
 1. Please [use the search engine](https://help.github.com/articles/searching-issues) to check if nobody's already reported your problem.
@@ -79,7 +79,7 @@ The keyword can be omitted if your commit does not fit in any of the following c
 #### Issuenum
 If your commit fixes a referenced bug or feature request.
 
-In the form of a # followed by the GitHub issue number.
+In the form of a # followed by the GitHub issue number, just after the keyword. Example: FIX #12345
 
 #### Desc
 A short description of the commit content.
