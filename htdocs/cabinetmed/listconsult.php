@@ -50,7 +50,7 @@ $langs->load("suppliers");
 $langs->load("commercial");
 $langs->load("cabinetmed@cabinetmed");
 
-$optioncss = GETPOST('optioncss', 'az09');
+$optioncss = GETPOST('optioncss', 'aZ09');
 $contextpage= GETPOST('contextpage', 'aZ')?GETPOST('contextpage', 'aZ'):'consultationlist';   // To manage different context of search
 
 // Load variable for pagination
