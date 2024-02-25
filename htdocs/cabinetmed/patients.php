@@ -340,7 +340,7 @@ $sql = "SELECT s.rowid, s.nom as name, s.name_alias, s.barcode, s.address, s.tow
 $sql .= " s.entity,";
 $sql .= " s.client, s.fournisseur,";
 $sql .= " s.email, s.phone, s.fax, s.url, s.siren as idprof1, s.siret as idprof2, s.ape as idprof3, s.idprof4 as idprof4, s.idprof5 as idprof5, s.idprof6 as idprof6, s.tva_intra, s.fk_pays,";
-$sql .= " s.tms as date_update, s.datec, s.import_key,";
+$sql .= " s.tms as date_modification, s.datec, s.import_key,";
 $sql .= " s.code_compta, s.code_compta_fournisseur, s.parent as fk_parent, s.price_level,";
 $sql .= " s.canvas, s.status as status,";
 $sql .= " country.code as country_code, country.label as country_label,";
@@ -1336,7 +1336,7 @@ while ($i < min($num, $limit)) {
 	// Date modification
 	if (! empty($arrayfields['s.tms']['checked'])) {
 		print '<td class="center nowraponall">';
-		print dol_print_date($db->jdate($obj->date_update), 'dayhour', 'tzuser');
+		print dol_print_date($db->jdate($obj->date_modification), 'dayhour', 'tzuser');
 		print '</td>';
 		if (! $i) $totalarray['nbfield']++;
 	}

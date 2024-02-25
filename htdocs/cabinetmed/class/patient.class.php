@@ -113,7 +113,7 @@ class Patient extends Societe
 	var $price_level;
 
 	var $datec;
-	var $date_update;
+	var $date_modification;
 
 	var $commercial_id; //Id du commercial affecte
 	var $default_lang;
@@ -374,7 +374,7 @@ class Patient extends Societe
 		$sql = 'SELECT s.rowid, s.nom as name, s.entity, s.ref_ext, s.address, s.datec, s.prefix_comm';
 		$sql .= ', s.status';
 		$sql .= ', s.price_level';
-		$sql .= ', s.tms as date_update';
+		$sql .= ', s.tms as date_modification';
 		$sql .= ', s.phone, s.fax, s.email, s.url, s.zip as zip, s.town as town, s.note_public, s.note_private, s.client, s.fournisseur';
 		$sql .= ', s.siren as idprof1, s.siret as idprof2, s.ape as idprof3, s.idprof4, s.idprof5, s.idprof6';
 		$sql .= ', s.capital, s.tva_intra';
@@ -443,7 +443,7 @@ class Patient extends Societe
 				$this->ref_ext      = $obj->ref_ext;
 
 				$this->datec = $this->db->jdate($obj->datec);
-				$this->date_update = $this->db->jdate($obj->date_update);
+				$this->date_modification = $this->db->jdate($obj->date_modification);
 
 				$this->address 		= $obj->address;
 				$this->zip 			= $obj->zip;
