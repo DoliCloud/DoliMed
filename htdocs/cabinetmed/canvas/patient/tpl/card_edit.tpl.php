@@ -376,7 +376,7 @@ $parameters = array('socid'=>$socid, 'colspan' => ' colspan="3"', 'colspanvalue'
 include DOL_DOCUMENT_ROOT.'/core/tpl/extrafields_edit.tpl.php';
 
 // Webservices url/key
-if (isModEnabled("syncsupplierwebservices")) {
+if (isModEnabled('webservicesclient')) {
 	print '<tr><td>'.fieldLabel('WebServiceURL', 'webservices_url').'</td>';
 	print '<td><input type="text" name="webservices_url" id="webservices_url" size="32" value="'.$object->webservices_url.'"></td>';
 	print '<td>'.fieldLabel('WebServiceKey', 'webservices_key').'</td>';

@@ -337,7 +337,7 @@ if (isModEnabled("adherent")) {
 }
 
 	// Webservices url/key
-if (isModEnabled("syncsupplierwebservices")) {
+if (isModEnabled("webservicesclient")) {
 	print '<tr><td>'.$langs->trans("WebServiceURL").'</td><td>'.dol_print_url($object->webservices_url).'</td>';
 	print '<td class="nowrap">'.$langs->trans('WebServiceKey').'</td><td>'.$object->webservices_key.'</td></tr>';
 }
