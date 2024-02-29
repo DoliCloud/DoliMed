@@ -313,7 +313,7 @@ class FormFileCabinetmed extends FormFile
 						// Delete or view link ($param must start with &)
 						// The permission must be permission to add/update a record (managing attachment is updating a record)
 						print '<td class="valignmiddle right actionbuttons nowraponall"><!-- action on files -->';
-						if ($permtoeditline) print '<a class="reposition" href="'.$url.'?socid='.$object->id.'&section='.GETPOST("section", "aplha").'&action=delete&token='.newToken().'&urlfile='.urlencode($file['name']).'">'.img_delete().'</a>';
+						if ($permtoeditline) print '<a class="reposition" href="'.$url.'?socid='.$object->id.'&section='.GETPOST("section", "alpha").'&action=delete&token='.newToken().'&urlfile='.urlencode($file['name']).'">'.img_delete().'</a>';
 						else print '&nbsp;';
 						print "</td>";
 					} else {
