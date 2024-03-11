@@ -116,27 +116,14 @@ if (empty($reshook)) {
 	$res=@include_once DOL_DOCUMENT_ROOT . '/core/actions_linkedfiles.inc.php';
 	if (! $res) include_once DOL_DOCUMENT_ROOT . '/core/tpl/document_actions_pre_headers.tpl.php';
 
-	// Actions to build doc
-	/* avec 3.9
-	$id = $socid;
-	$upload_dir = $conf->societe->dir_output;
-	$permissiontoadd=$user->rights->societe->creer;
-	include DOL_DOCUMENT_ROOT.'/core/actions_builddoc.inc.php';
-	*/
-
 	// Generate document
 	if ($action == 'builddoc')  // En get ou en post
 	{
-	    if (! GETPOST('model'))
-	    {
+	    if (! GETPOST('model')) {
 	        $errors[]=$langs->trans("WarningNoDocumentModelActivated");
-	    }
-	    else if (is_numeric(GETPOST('model')))
-	    {
+	    } else if (is_numeric(GETPOST('model'))) {
 	        $errors[]=$langs->trans("ErrorFieldRequired",$langs->transnoentities("Model"));
-	    }
-	    else
-	    {
+	    } else {
 	        require_once(DOL_DOCUMENT_ROOT.'/core/modules/societe/modules_societe.class.php');
 
 	        // Save last template used to generate document
