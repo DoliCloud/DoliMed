@@ -31,6 +31,8 @@ require_once DOL_DOCUMENT_ROOT ."/core/class/html.formcompany.class.php";
 require_once DOL_DOCUMENT_ROOT ."/core/class/html.formfile.class.php";
 require_once DOL_DOCUMENT_ROOT ."/core/lib/company.lib.php";
 
+$langs->loadLangs(array("cabinetmed@cabinetmed"));
+
 $form=new Form($GLOBALS['db']);
 $formcompany=new FormCompany($GLOBALS['db']);
 $formadmin=new FormAdmin($GLOBALS['db']);
@@ -38,7 +40,7 @@ $formfile=new FormFile($GLOBALS['db']);
 
 
 // Load object modCodeTiers
-$module=$conf->global->SOCIETE_CODECLIENT_ADDON;
+$module = getDolGlobalString('SOCIETE_CODECLIENT_ADDON');
 if (! $module) dolibarr_error('', $langs->trans("ErrorModuleThirdPartyCodeInCompanyModuleNotDefined"));
 if (substr($module, 0, 15) == 'mod_codeclient_' && substr($module, -3) == 'php') {
 	$module = substr($module, 0, dol_strlen($module)-4);
@@ -49,7 +51,7 @@ foreach ($dirsociete as $dirroot) {
 	$res=dol_include_once($dirroot.$module.".php");
 	if ($res) break;
 }
-$modCodeClient = new $module;
+$modCodeClient = new $module($db);
 // We verified if the tag prefix is used
 if ($modCodeClient->code_auto) {
 	$prefixCustomerIsUsed = $modCodeClient->verif_prefixIsUsed();
@@ -71,55 +73,57 @@ if ($modCodeFournisseur->code_auto) {
 }
 
 
-if ($_POST["name"]) {
-	$object->client=1;
+if (GETPOST("name")) {
+	$object->client = 1;
 
-	$object->lastname=$_POST["name"];
-	$object->firstname=$_POST["firstname"];
+	$object->lastname=GETPOST("name");
+	$object->firstname=GETPOST("firstname");
 	$object->particulier=0;
-	$object->prefix_comm=$_POST["prefix_comm"];
-	$object->client=$_POST["client"]?$_POST["client"]:$object->client;
-	$object->code_client=$_POST["code_client"];
-	$object->fournisseur=$_POST["fournisseur"]?$_POST["fournisseur"]:$object->fournisseur;
-	$object->code_fournisseur=$_POST["code_fournisseur"];
-	$object->adresse=$_POST["address"]; // TODO obsolete
-	$object->address=$_POST["address"];
-	$object->zip=$_POST["zipcode"];
-	$object->town=$_POST["town"];
-	$object->state_id=$_POST["departement_id"];
-	$object->phone=$_POST["phone"];
-	$object->fax=$_POST["fax"];
-	$object->email=$_POST["email"];
-	$object->url=$_POST["url"];
-	$object->capital=$_POST["capital"];
-	$object->barcode=$_POST["barcode"];
-	$object->idprof1=$_POST["idprof1"];
-	$object->idprof2=$_POST["idprof2"];
-	$object->idprof3=$_POST["idprof3"];
-	$object->idprof4=$_POST["idprof4"];
-	$object->typent_id=$_POST["typent_id"];
-	$object->effectif_id=$_POST["effectif_id"];
+	$object->prefix_comm=GETPOST("prefix_comm");
+	$object->client=GETPOST("client")?GETPOST("client"):$object->client;
+	$object->code_client=GETPOST("code_client");
+	$object->fournisseur=GETPOST("fournisseur")?GETPOST("fournisseur"):$object->fournisseur;
+	$object->code_fournisseur=GETPOST("code_fournisseur");
+	$object->adresse=GETPOST("address"); // TODO obsolete
+	$object->address=GETPOST("address");
+	$object->zip=GETPOST("zipcode");
+	$object->town=GETPOST("town");
+	$object->state_id=GETPOST("departement_id");
+	$object->phone=GETPOST("phone");
+	$object->fax=GETPOST("fax");
+	$object->email=GETPOST("email");
+	$object->url=GETPOST("url");
+	$object->capital=GETPOST("capital");
+	$object->barcode=GETPOST("barcode");
+	$object->idprof1=GETPOST("idprof1");
+	$object->idprof2=GETPOST("idprof2");
+	$object->idprof3=GETPOST("idprof3");
+	$object->idprof4=GETPOST("idprof4");
+	$object->idprof5=GETPOST("idprof5");
+	$object->idprof6=GETPOST("idprof6");
+	$object->typent_id=GETPOSTINT("typent_id");
+	$object->effectif_id=GETPOSTINT("effectif_id");
 
-	$object->tva_assuj = $_POST["assujtva_value"];
-	$object->status= $_POST["status"];
+	$object->tva_assuj = GETPOST("assujtva_value");
+	$object->status = GETPOST("status");
 
 	//Local Taxes
-	$object->localtax1_assuj       = $_POST["localtax1assuj_value"];
-	$object->localtax2_assuj       = $_POST["localtax2assuj_value"];
+	$object->localtax1_assuj = GETPOST("localtax1assuj_value");
+	$object->localtax2_assuj = GETPOST("localtax2assuj_value");
 
-	$object->tva_intra=$_POST["tva_intra"];
+	$object->tva_intra = GETPOST("tva_intra");
 
-	$object->commercial_id=$_POST["commercial_id"];
-	$object->default_lang=$_POST["default_lang"];
+	$object->commercial_id = GETPOST("commercial_id");
+	$object->default_lang = GETPOST("default_lang");
 
 	// We set country_id, country_code and label for the selected country
-	$object->country_id=$_POST["country_id"]?$_POST["country_id"]:$mysoc->country_id;
+	$object->country_id = GETPOST("country_id")?GETPOST("country_id"):$mysoc->country_id;
 	if ($object->country_id) {
 		$tmparray=getCountry($object->country_id, 'all');
-		$object->country_code=$tmparray['code'];
-		$object->country     =$tmparray['label'];
+		$object->country_code = $tmparray['code'];
+		$object->country      = $tmparray['label'];
 	}
-	$object->forme_juridique_code=$_POST['forme_juridique_code'];
+	$object->forme_juridique_code = GETPOST('forme_juridique_code');
 }
 
 ?>
@@ -221,7 +225,7 @@ print $form->selectarray('status', array('0'=>$langs->trans('ActivityCeased'),'1
 print '</td></tr>';
 
 // Barcode
-if ($conf->global->MAIN_MODULE_BARCODE) {
+if (getDolGlobalString('MAIN_MODULE_BARCODE')) {
 	print '<tr><td class="tdtop">'.$langs->trans('Gencod').'</td><td colspan="3"><input type="text" name="barcode" value="'.$object->barcode.'">';
 	print '</td></tr>';
 }
@@ -342,6 +346,8 @@ if (! empty($conf->global->MAIN_MULTILANGS)) {
 
 // Categories
 if (isModEnabled("categorie") && $user->hasRight('categorie', 'lire')) {
+	$arrayselected = array();
+
 	// Customer
 	if ($object->prospect || $object->client) {
 		print '<tr><td>' . fieldLabel('CustomersCategoriesShort', 'custcats') . '</td>';
@@ -372,7 +378,7 @@ if (isModEnabled("categorie") && $user->hasRight('categorie', 'lire')) {
 }
 
 // Other attributes
-$parameters = array('socid'=>$socid, 'colspan' => ' colspan="3"', 'colspanvalue' => '3');
+$parameters = array('socid'=>$object->id, 'colspan' => ' colspan="3"', 'colspanvalue' => '3');
 include DOL_DOCUMENT_ROOT.'/core/tpl/extrafields_edit.tpl.php';
 
 // Webservices url/key
