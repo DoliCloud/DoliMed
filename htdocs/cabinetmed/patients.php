@@ -93,8 +93,8 @@ $search_vat = trim(GETPOST('search_vat', 'alpha'));
 $search_sale = GETPOST("search_sale", 'int');
 $search_categ_cus = GETPOST("search_categ_cus", 'int');
 $search_categ_sup = GETPOST("search_categ_sup", 'int');
-$search_country = GETPOST("search_country", 'intcomma');
-$search_type_thirdparty = GETPOST("search_type_thirdparty", 'int');
+$search_country = GETPOST("search_country", 'aZ09');
+$search_type_thirdparty = GETPOST("search_type_thirdparty", 'intcomma');
 $search_status = GETPOST("search_status", 'int');
 $search_type = GETPOST('search_type', 'alpha');
 $search_stcomm = GETPOST('search_stcomm', 'int');
@@ -104,7 +104,7 @@ $search_parent_name = trim(GETPOST('search_parent_name', 'alpha'));
 // Load sale and categ filters
 $search_sale = GETPOST("search_sale", "int");
 $search_categ = GETPOST("search_categ", "int");
-$search_diagles=GETPOST("search_diagles", "int");
+$search_diagles = GETPOST("search_diagles", "int");
 $search_contactid = GETPOST("search_contactid", "int");
 
 $type=GETPOST('type', 'alpha');
