@@ -351,23 +351,24 @@ class Patient extends Societe
 	/**
 	 *    Load a third party from database into memory
 	 *
-	 *    @param      int		$rowid			Id of third party to load
-	 *    @param      string	$ref			Reference of third party, name (Warning, this can return several records)
-	 *    @param      string	$ref_ext       	External reference of third party (Warning, this information is a free field not provided by Dolibarr)
-	 *    @param      string	$idprof1		Prof id 1 of third party (Warning, this can return several records)
-	 *    @param      string	$idprof2		Prof id 2 of third party (Warning, this can return several records)
-	 *    @param      string	$idprof3		Prof id 3 of third party (Warning, this can return several records)
-	 *    @param      string	$idprof4		Prof id 4 of third party (Warning, this can return several records)
-	 *    @param      string	$idprof5		Prof id 5 of third party (Warning, this can return several records)
-	 *    @param      string	$idprof6		Prof id 6 of third party (Warning, this can return several records)
-	 *    @param      string	$email			Email
-	 *    @param      string    $ref_alias      Alternative name
-	 *    @return     $int						>0 if OK, <0 if KO or if two records found for same ref or idprof.
+	 *    @param    int		$rowid			Id of third party to load
+	 *    @param    string	$ref			Reference of third party, name (Warning, this can return several records)
+	 *    @param    string	$ref_ext       	External reference of third party (Warning, this information is a free field not provided by Dolibarr)
+	 *    @param    string	$idprof1		Prof id 1 of third party (Warning, this can return several records)
+	 *    @param    string	$idprof2		Prof id 2 of third party (Warning, this can return several records)
+	 *    @param    string	$idprof3		Prof id 3 of third party (Warning, this can return several records)
+	 *    @param    string	$idprof4		Prof id 4 of third party (Warning, this can return several records)
+	 *    @param    string	$idprof5		Prof id 5 of third party (Warning, this can return several records)
+	 *    @param    string	$idprof6		Prof id 6 of third party (Warning, this can return several records)
+	 *    @param    string	$email			Email
+	 *    @param    string  $ref_alias      Alternative name
+	 * 	  @param	int		$is_client		Only client third party
+	 *    @param	int		$is_supplier	Only supplier third party
+	 *    @return   $int					>0 if OK, <0 if KO or if two records found for same ref or idprof.
 	 */
-	function fetch($rowid, $ref = '', $ref_ext = '', $ref_int = '', $idprof1 = '', $idprof2 = '', $idprof3 = '', $idprof4 = '', $idprof5 = '', $idprof6 = '', $email = '', $ref_alias = '')
+	function fetch($rowid, $ref = '', $ref_ext = '', $ref_int = '', $idprof1 = '', $idprof2 = '', $idprof3 = '', $idprof4 = '', $idprof5 = '', $idprof6 = '', $email = '', $ref_alias = '', $is_client = 0, $is_supplier = 0)
 	{
 		global $langs;
-		global $conf;
 
 		if (empty($rowid) && empty($ref) && empty($ref_ext)) return -1;
 
