@@ -78,25 +78,25 @@ if (empty($reshook)) {
 		$db->begin();
 
 		$sql = "INSERT INTO ".MAIN_DB_PREFIX."cabinetmed_patient(rowid, note_antemed, note_antechirgen, note_antechirortho, note_anterhum, note_other, note_traitallergie, note_traitclass, note_traitintol, note_traitspec)";
-		$sql.= " VALUES('".$_POST["socid"]."',";
-		$sql.= " '".addslashes($_POST["note_antemed"])."','".addslashes($_POST["note_antechirgen"])."',";
-		$sql.= " '".addslashes($_POST["note_antechirortho"])."','".addslashes($_POST["note_anterhum"])."','".addslashes($_POST["note_other"])."',";
-		$sql.= " '".addslashes($_POST["note_traitallergie"])."','".addslashes($_POST["note_traitclass"])."','".addslashes($_POST["note_traitintol"])."','".addslashes($_POST["note_traitspec"])."'";
+		$sql.= " VALUES(".GETPOSTINT("socid").",";
+		$sql.= " '".$db->escape($_POST["note_antemed"])."','".$db->escape($_POST["note_antechirgen"])."',";
+		$sql.= " '".$db->escape($_POST["note_antechirortho"])."','".$db->escape($_POST["note_anterhum"])."','".$db->escape($_POST["note_other"])."',";
+		$sql.= " '".$db->escape($_POST["note_traitallergie"])."','".$db->escape($_POST["note_traitclass"])."','".$db->escape($_POST["note_traitintol"])."','".$db->escape($_POST["note_traitspec"])."'";
 		$sql.= ")";
 		$result1 = $db->query($sql, 1);
 		//if (! $result) dol_print_error($db);
 
 		$sql = "UPDATE ".MAIN_DB_PREFIX."cabinetmed_patient SET";
-		$sql.= " note_antemed='".addslashes($_POST["note_antemed"])."',";
-		$sql.= " note_antechirgen='".addslashes($_POST["note_antechirgen"])."',";
-		$sql.= " note_antechirortho='".addslashes($_POST["note_antechirortho"])."',";
-		$sql.= " note_anterhum='".addslashes($_POST["note_anterhum"])."',";
+		$sql.= " note_antemed='".$db->escape($_POST["note_antemed"])."',";
+		$sql.= " note_antechirgen='".$db->escape($_POST["note_antechirgen"])."',";
+		$sql.= " note_antechirortho='".$db->escape($_POST["note_antechirortho"])."',";
+		$sql.= " note_anterhum='".$db->escape($_POST["note_anterhum"])."',";
 		//$sql.= " note_other='".addslashes($_POST["note_other"])."',";
-		$sql.= " note_traitallergie='".addslashes($_POST["note_traitallergie"])."',";
-		$sql.= " note_traitclass='".addslashes($_POST["note_traitclass"])."',";
-		$sql.= " note_traitintol='".addslashes($_POST["note_traitintol"])."',";
-		$sql.= " note_traitspec='".addslashes($_POST["note_traitspec"])."'";
-		$sql.= " WHERE rowid=".$_POST["socid"];
+		$sql.= " note_traitallergie='".$db->escape($_POST["note_traitallergie"])."',";
+		$sql.= " note_traitclass='".$db->escape($_POST["note_traitclass"])."',";
+		$sql.= " note_traitintol='".$db->escape($_POST["note_traitintol"])."',";
+		$sql.= " note_traitspec='".$db->escape($_POST["note_traitspec"])."'";
+		$sql.= " WHERE rowid = ".GETPOSTINT("socid");
 		$result2 = $db->query($sql);
 
 		$alert=($_POST["alert_antemed"]?'1':'0');
@@ -237,7 +237,7 @@ if ($socid > 0) {
 	print '<div class="fichecenter"><div class="fichehalfleft">';
 
 	print '<div class="underbanner clearboth"></div>';
-	print '<table class="border" width="100%" style="margin-bottom: 2px !important;">';
+	print '<table class="border centpercent" style="margin-bottom: 2px !important;">';
 
 	// Force disable fckeditor
 	if (! isset($conf->fckeditor)) $conf->fckeditor = new stdClass();

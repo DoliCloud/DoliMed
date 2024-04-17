@@ -40,7 +40,7 @@ foreach ($dirsociete as $dirroot) {
 }
 require_once DOL_DOCUMENT_ROOT ."/core/class/html.formcompany.class.php";
 require_once DOL_DOCUMENT_ROOT ."/core/class/html.formadmin.class.php";
-$modCodeClient = new $module;
+$modCodeClient = new $module($GLOBALS['db']);
 
 $form=new Form($GLOBALS['db']);
 $formcompany=new FormCompany($GLOBALS['db']);
@@ -54,31 +54,33 @@ if (! empty($conf->global->SOCIETE_DISABLE_CUSTOMERS) && empty($conf->global->SO
 if (! empty($conf->global->SOCIETE_DISABLE_CUSTOMERS) && ! empty($conf->global->SOCIETE_DISABLE_PROSPECTS)) $object->client=3;
 if (! empty($conf->global->THIRDPARTY_CUSTOMERPROSPECT_BY_DEFAULT)) { $object->client=3; }
 
-$object->name=GETPOST("name");
-$object->lastname=GETPOST("name");
-$object->firstname=GETPOST("firstname");
-$object->particulier=0;
-$object->prefix_comm=GETPOST("prefix_comm");
-$object->client=GETPOSTISSET("client")?GETPOST("client"):$object->client;
-$object->code_client=GETPOST("code_client");
-$object->fournisseur=GETPOST("fournisseur")?GETPOST("fournisseur"):$object->fournisseur;
-$object->code_fournisseur=GETPOST("code_fournisseur");
-$object->address=GETPOST("address");
-$object->zip=GETPOST("zipcode");
-$object->town=GETPOST("town");
-$object->state_id=GETPOST("departement_id");
-$object->phone=GETPOST("phone");
-$object->fax=GETPOST("fax");
-$object->email=GETPOST("email");
-$object->url=GETPOST("url");
-$object->capital=GETPOST("capital");
-$object->barcode=GETPOST("barcode");
-$object->idprof1=GETPOST("idprof1");
-$object->idprof2=GETPOST("idprof2");
-$object->idprof3=GETPOST("idprof3");
-$object->idprof4=GETPOST("idprof4");
-$object->typent_id=GETPOST("typent_id");
-$object->effectif_id=GETPOST("effectif_id");
+$object->name = GETPOST("name");
+$object->lastname = GETPOST("name");
+$object->firstname = GETPOST("firstname");
+$object->particulier = 0;
+$object->prefix_comm = GETPOST("prefix_comm");
+$object->client = GETPOSTISSET("client")?GETPOST("client"):$object->client;
+$object->code_client = GETPOST("code_client");
+$object->fournisseur = GETPOST("fournisseur")?GETPOST("fournisseur"):$object->fournisseur;
+$object->code_fournisseur = GETPOST("code_fournisseur");
+$object->address = GETPOST("address");
+$object->zip = GETPOST("zipcode");
+$object->town = GETPOST("town");
+$object->state_id = GETPOST("departement_id");
+$object->phone = GETPOST("phone");
+$object->fax = GETPOST("fax");
+$object->email = GETPOST("email");
+$object->url = GETPOST("url");
+$object->capital = GETPOST("capital");
+$object->barcode = GETPOST("barcode");
+$object->idprof1 = GETPOST("idprof1");
+$object->idprof2 = GETPOST("idprof2");
+$object->idprof3 = GETPOST("idprof3");
+$object->idprof4 = GETPOST("idprof4");
+$object->idprof5 = GETPOST("idprof5");
+$object->idprof6 = GETPOST("idprof6");
+$object->typent_id = GETPOST("typent_id");
+$object->effectif_id = GETPOST("effectif_id");
 
 $object->tva_assuj = GETPOST("assujtva_value");
 $object->status= GETPOST("status");
