@@ -2,7 +2,12 @@
 
 ## Unreleased
 
+
+## 10.0.1
+
 - NEW Add more substitution for dates
+- Fix for merging patients
+- Compatibility Dolibarr 20. Minimal dolibarr version is 16.0 
 
 ## 10.0.0
 

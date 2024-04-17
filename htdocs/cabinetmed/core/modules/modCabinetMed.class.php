@@ -1,6 +1,6 @@
 <?php
 /* Copyright (C) 2003      Rodolphe Quiedeville <rodolphe@quiedeville.org>
- * Copyright (C) 2004-2017 Laurent Destailleur  <eldy@users.sourceforge.net>
+ * Copyright (C) 2004-2024 Laurent Destailleur  <eldy@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -41,7 +41,7 @@ class modCabinetMed extends DolibarrModules
 	 */
 	function __construct($db)
 	{
-		global $langs,$conf;
+		global $conf;
 
 		$this->db = $db;
 
@@ -65,7 +65,7 @@ class modCabinetMed extends DolibarrModules
 		$this->editor_url = 'https://www.dolimed.com';
 
 		// Possible values for version are: 'development', 'experimental', 'dolibarr' or version
-		$this->version = '10.0.0';
+		$this->version = '10.0.1';
 		// Key used in llx_const table to save module status enabled/disabled (where MYMODULE is value of property name of module in uppercase)
 		$this->const_name = 'MAIN_MODULE_'.strtoupper($this->name);
 		// Name of image file used for this module.
@@ -94,8 +94,8 @@ class modCabinetMed extends DolibarrModules
 		// Dependencies
 		$this->depends = array('modSociete');       // List of modules id that must be enabled if this module is enabled
 		$this->requiredby = array();    // List of modules id to disable if this one is disabled
-		$this->phpmin = array(5,6);                 // Minimum version of PHP required by module
-		$this->need_dolibarr_version = array(15, 0, -3);   // Minimum version of Dolibarr required by module
+		$this->phpmin = array(7,0);                 // Minimum version of PHP required by module
+		$this->need_dolibarr_version = array(16, 0, -3);   // Minimum version of Dolibarr required by module
 		$this->langfiles = array('cabinetmed@cabinetmed','companies');
 
 		// Constants
