@@ -51,6 +51,8 @@ $result=restrictedArea($user, 'societe', 0, '', '', '', '');
 
 $thirdparty_static = new Patient($db);
 
+$max = getDolGlobalInt('MAIN_SIZE_SHORTLIST_LIMIT', 5);
+
 
 /*
  * View
@@ -67,9 +69,7 @@ print_fiche_titre($transAreaType);
 print '<div class="fichecenter"><div class="fichethirdleft">';
 
 
-/*
- * Search area
- */
+// Search area
 
 $rowspan=2;
 print '<form method="post" action="'.DOL_URL_ROOT.'/societe/list.php">';
@@ -141,7 +141,6 @@ print '</div><div class="fichetwothirdright"><div class="ficheaddleft">';
 /*
  * Last patients modified
  */
-$max=15;
 $sql = "SELECT s.rowid, s.nom as name, s.client, s.fournisseur, s.canvas, s.tms as datem, s.status as status";
 $sql.= " FROM ".MAIN_DB_PREFIX."societe as s";
 if (! $user->hasRight('societe', 'client', 'voir') && ! $socid) $sql.= ", ".MAIN_DB_PREFIX."societe_commerciaux as sc";
@@ -165,7 +164,13 @@ if ($resql) {
 
 		print '<table class="noborder" width="100%">';
 
-		print '<tr class="liste_titre"><th colspan="2">'.$transRecordedType.'</td>';
+		print '<tr class="liste_titre"><th colspan="2">';
+		print $transRecordedType;
+		$lastmodified .= '<a class="marginleftonly" href="'.dol_buildpath('/cabinetmed/patients.php', 1).'?sortfield=s.tms&sortorder=DESC" title="'.$langs->trans("FullList").'">';
+		$lastmodified .= '<span class="badge marginleftonlyshort">...</span>';
+		$lastmodified .= '</a>';
+		print $lastmodified;
+		print '</td>';
 		print '<th>&nbsp;</td>';
 		print '<th align="right">'.$langs->trans('Status').'</td>';
 		print '</tr>';
