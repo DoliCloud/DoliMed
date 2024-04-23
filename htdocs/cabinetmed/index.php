@@ -162,8 +162,9 @@ if ($resql) {
 	if ($num > 0) {
 		$transRecordedType = $langs->trans("LastModifiedPatients", $max);
 
-		print '<table class="noborder" width="100%">';
+		print '<table class="noborder centpercent">';
 
+		$lastmodified = '';
 		print '<tr class="liste_titre"><th colspan="2">';
 		print $transRecordedType;
 		$lastmodified .= '<a class="marginleftonly" href="'.dol_buildpath('/cabinetmed/patients.php', 1).'?sortfield=s.tms&sortorder=DESC" title="'.$langs->trans("FullList").'">';

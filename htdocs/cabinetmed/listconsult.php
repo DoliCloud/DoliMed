@@ -44,14 +44,15 @@ require_once DOL_DOCUMENT_ROOT."/core/lib/date.lib.php";
 require_once "./class/cabinetmedcons.class.php";
 require_once "./lib/cabinetmed.lib.php";
 
-$langs->load("companies");
-$langs->load("customers");
-$langs->load("suppliers");
-$langs->load("commercial");
-$langs->load("cabinetmed@cabinetmed");
+$langs->loadLangs(array("companies", "customers", "suppliers", "commercial", "cabinetmed@cabinetmed"));
 
+// Get parameters
+$action     = GETPOST('action', 'aZ09') ? GETPOST('action', 'aZ09') : 'view'; // The action 'create'/'add', 'edit'/'update', 'view', ...
+$massaction = GETPOST('massaction', 'alpha'); // The bulk action (combo box choice into lists)
+$toselect   = GETPOST('toselect', 'array'); // Array of ids of elements selected into a list
 $optioncss = GETPOST('optioncss', 'aZ09');
 $contextpage= GETPOST('contextpage', 'aZ')?GETPOST('contextpage', 'aZ'):'consultationlist';   // To manage different context of search
+$mode       = GETPOST('mode', 'aZ'); // The output mode ('list', 'kanban', 'hierarchy', 'calendar', ...)
 
 // Load variable for pagination
 $limit = GETPOST('limit', 'int')?GETPOST('limit', 'int'):$conf->liste_limit;
@@ -403,7 +404,7 @@ if (empty($reshook)) {
 if (! empty($moreforfilter)) {
 	print '<div class="liste_titre liste_titre_bydiv centpercent">';
 	print $moreforfilter;
-	$parameters = array('type'=>$type);
+	$parameters = array();
 	$reshook = $hookmanager->executeHooks('printFieldPreListTitle', $parameters, $object, $action); // Note that $action and $object may have been modified by hook
 	print $hookmanager->resPrint;
 	print '</div>';

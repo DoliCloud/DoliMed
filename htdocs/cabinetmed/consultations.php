@@ -179,11 +179,11 @@ if (empty($reshook)) {
 					exit;
 				}
 
-				$result=$object->fetch_bankid();
+				$result = $object->fetch_bankid();
 
-				$oldconsult=dol_clone($object);
+				$oldconsult = dol_clone($object, 2);
 
-				$object->datecons=$datecons;
+				$object->datecons = $datecons;
 			} else {
 				$object->datecons = $datecons;
 				$object->fk_soc = GETPOST("socid", 'int');

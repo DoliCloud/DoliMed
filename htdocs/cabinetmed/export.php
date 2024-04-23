@@ -105,20 +105,56 @@ if ($result) {
 	$i = 0;
 	while ($i < $num) {
 		$row = $db->fetch_object($result);
-		$rowid=$row->cid;
-		$ymd=dol_print_date($db->jdate($row->datecons), '%Y-%m-%d');
-		$ym=dol_print_date($db->jdate($row->datecons), '%Y-%m');
-		$y=dol_print_date($db->jdate($row->datecons), '%Y');
-		$m=dol_print_date($db->jdate($row->datecons), '%m');
+		$rowid = $row->cid;
+		$ymd = dol_print_date($db->jdate($row->datecons), '%Y-%m-%d');
+		$ym = dol_print_date($db->jdate($row->datecons), '%Y-%m');
+		$y = dol_print_date($db->jdate($row->datecons), '%Y');
+		$m = dol_print_date($db->jdate($row->datecons), '%m');
 		$consult[$rowid] = array('date'=>$db->jdate($row->datecons), 'ymd'=>$ymd, 'ym'=>$ym, 'y'=>$y, 'm'=>$m, 'name'=>$row->name, 'fk_user'=>$row->fk_user, 'type'=>$row->typevisit, 'codageccam'=>$row->codageccam);
+		if (empty($encaiss_chq[$rowid])) {
+			$encaiss_chq[$rowid] = 0;
+		}
+		if (empty($encaiss_esp[$rowid])) {
+			$encaiss_esp[$rowid] = 0;
+		}
+		if (empty($encaiss_tie[$rowid])) {
+			$encaiss_tie[$rowid] = 0;
+		}
+		if (empty($encaiss_car[$rowid])) {
+			$encaiss_car[$rowid] = 0;
+		}
 		$encaiss_chq[$rowid] += $row->montant_cheque;
 		$encaiss_esp[$rowid] += $row->montant_espece;
 		$encaiss_tie[$rowid] += $row->montant_tiers;
 		$encaiss_car[$rowid] += $row->montant_carte;
+		if (empty($encaiss_chq[$ym])) {
+			$encaiss_chq[$ym] = 0;
+		}
+		if (empty($encaiss_esp[$ym])) {
+			$encaiss_esp[$ym] = 0;
+		}
+		if (empty($encaiss_tie[$ym])) {
+			$encaiss_tie[$ym] = 0;
+		}
+		if (empty($encaiss_car[$ym])) {
+			$encaiss_car[$ym] = 0;
+		}
 		$encaiss_chq[$ym] += $row->montant_cheque;
 		$encaiss_esp[$ym] += $row->montant_espece;
 		$encaiss_tie[$ym] += $row->montant_tiers;
 		$encaiss_car[$ym] += $row->montant_carte;
+		if (empty($encaiss_chq[$ymd])) {
+			$encaiss_chq[$ymd] = 0;
+		}
+		if (empty($encaiss_esp[$ymd])) {
+			$encaiss_esp[$ymd] = 0;
+		}
+		if (empty($encaiss_tie[$ymd])) {
+			$encaiss_tie[$ymd] = 0;
+		}
+		if (empty($encaiss_car[$ymd])) {
+			$encaiss_car[$ymd] = 0;
+		}
 		$encaiss_chq[$ymd] += $row->montant_cheque;
 		$encaiss_esp[$ymd] += $row->montant_espece;
 		$encaiss_tie[$ymd] += $row->montant_tiers;
@@ -148,10 +184,10 @@ if ((float) DOL_VERSION < 12) {
 	$filename='export_'.dol_sanitizeFileName($user->lastname).($year?'_'.$year:'').'.xlsx';
 	$outputfile=$dirname."/".$filename;
 	dol_mkdir($dirname);
-	$outputlangs=dol_clone($langs);
+	$outputlangs = dol_clone($langs, 1);
 
 	$array_selected = array('date'=>1, 'cid'=>1, 'name'=>1);
-	if ($conf->global->CABINETMED_ADDTYPECCAM) {
+	if (getDolGlobalString('CABINETMED_ADDTYPECCAM')) {
 		$array_selected['type']=1;
 		$array_selected['codageccam']=1;
 	}
@@ -159,9 +195,10 @@ if ((float) DOL_VERSION < 12) {
 	$array_selected['montant_carte']=1;
 	$array_selected['montant_espece']=1;
 	$array_selected['montant_tiers']=1;
+
 	$array_export_fields = array('cid'=>'ID', 'name'=>'Name', 'date'=>'Date', 'type'=>'CS', 'codageccam'=>'CCAM', 'montant_cheque'=>'Cheque', 'montant_carte'=>'CreditCard', 'montant_espece'=>'Cash', 'montant_tiers'=>'Other');
-	$objexport->array_export_fields[0]=$array_export_fields;
-	$objexport->array_export_alias[0]=$array_alias;
+	$objmodel->array_export_fields[0]=$array_export_fields;
+	//$objmodel->array_export_alias[0]=$array_alias;
 
 	// Open file
 	$result=$objmodel->open_file($outputfile, $outputlangs);
@@ -374,10 +411,10 @@ if ((float) DOL_VERSION < 12) {
 	$filename='export_'.dol_sanitizeFileName($user->lastname).($year?'_'.$year:'').'.xlsx';
 	$outputfile=$dirname."/".$filename;
 	dol_mkdir($dirname);
-	$outputlangs=dol_clone($langs);
+	$outputlangs = dol_clone($langs, 1);
 
 	$array_selected = array('date'=>1, 'cid'=>1, 'name'=>1);
-	if ($conf->global->CABINETMED_ADDTYPECCAM) {
+	if (getDolGlobalString('CABINETMED_ADDTYPECCAM')) {
 		$array_selected['type']=1;
 		$array_selected['codageccam']=1;
 	}
@@ -385,9 +422,10 @@ if ((float) DOL_VERSION < 12) {
 	$array_selected['montant_carte']=1;
 	$array_selected['montant_espece']=1;
 	$array_selected['montant_tiers']=1;
+
 	$array_export_fields = array('cid'=>'ID', 'name'=>'Name', 'date'=>'Date', 'type'=>'CS', 'codageccam'=>'CCAM', 'montant_cheque'=>'Cheque', 'montant_carte'=>'CreditCard', 'montant_espece'=>'Cash', 'montant_tiers'=>'Other');
-	$objexport->array_export_fields[0]=$array_export_fields;
-	$objexport->array_export_alias[0]=$array_alias;
+	$objmodel->array_export_fields[0] = $array_export_fields;
+	//$objmodel->array_export_alias[0] = $array_alias;
 
 	// Open file
 	$result=$objmodel->open_file($outputfile, $outputlangs);
