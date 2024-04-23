@@ -23,6 +23,7 @@
  */
 require_once DOL_DOCUMENT_ROOT."/core/class/commonobject.class.php";
 dol_include_once("/cabinetmed/lib/cabinetmed.lib.php");
+dol_include_once("/cabinetmed/class/patient.class.php");
 dol_include_once("/cabinetmed/class/cabinetmedcons.class.php");
 
 
@@ -568,7 +569,7 @@ class ActionsCabinetmed
 	 * Function used to replace a thirdparty id with another one.
 	 *
 	 * @param	array	$parameters		Array of parameters
-	 * @param   mixed	$object      	Object
+	 * @param   mixed	$object      	Object patient we keep
 	 * @param   string	$action      	'add', 'update', 'view'
 	 * @param   string	$hookmanager  	'add', 'update', 'view'
 	 * @return bool						True=SQL success, False=SQL error
@@ -579,6 +580,10 @@ class ActionsCabinetmed
 
 		$origin_id = $parameters['soc_origin'];
 		$dest_id = $parameters['soc_dest'];
+
+		$oldpatienttodelete = new Patient($db);
+		$oldpatienttodelete->fetch($origin_id);
+
 
 		$ok = 1;
 
@@ -602,6 +607,20 @@ class ActionsCabinetmed
 				$ok=0;
 			}
 		}
+
+		if ($ok) {
+			$sql = "UPDATE ".MAIN_DB_PREFIX."cabinetmed_patient SET note_antemed = '".$db->escape($oldpatienttodelete->note_antemed)."' WHERE note_antemed IS NULL OR note_antemed = ''";
+			if (!$db->query($sql)) {
+				$ok=0;
+			}
+		}
+		if ($ok) {
+			$sql = "UPDATE ".MAIN_DB_PREFIX."cabinetmed_patient SET note_traitspec = '".$db->escape($oldpatienttodelete->note_traitspec)."' WHERE note_traitspec IS NULL OR note_traitspec = ''";
+			if (!$db->query($sql)) {
+				$ok=0;
+			}
+		}
+
 
 		if ($ok) {
 			return true;
