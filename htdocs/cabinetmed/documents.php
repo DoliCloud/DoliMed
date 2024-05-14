@@ -114,7 +114,9 @@ if ($reshook < 0) setEventMessages($hookmanager->error, $hookmanager->errors, 'e
 
 if (empty($reshook)) {
 	$res=@include_once DOL_DOCUMENT_ROOT . '/core/actions_linkedfiles.inc.php';
-	if (! $res) include_once DOL_DOCUMENT_ROOT . '/core/tpl/document_actions_pre_headers.tpl.php';
+	if (! $res) {
+		include_once DOL_DOCUMENT_ROOT . '/core/tpl/document_actions_pre_headers.tpl.php';
+	}
 
 	// Generate document
 	if ($action == 'builddoc')  // En get ou en post
@@ -264,7 +266,7 @@ if ($object->id) {
 
     $param='';
 
-    if ($action == 'delete')
+    if ($action == 'delete' || $action == 'deletelink')
     {
 		$langs->load("companies");	// Need for string DeleteFile+ConfirmDeleteFiles
 		$formconfirm = $form->formconfirm(
