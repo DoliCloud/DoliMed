@@ -230,7 +230,12 @@ if ($id > 0 || ! empty($ref)) {
 
 		print '<td>';
 		// $contactAlreadySelected = $commande->getListContactId('external');	// On ne doit pas desactiver un contact deja selectionner car on doit pouvoir le seclectionner une deuxieme fois pour un autre type
-		print $form->selectcontacts(0, '', 'contactid', 1, '', '', 1);
+		if (method_exists($form, 'select_contact')) {
+			print $form->select_contact(0, '', 'contactid', 1, '', '', 1, 'minwidth100imp maxwidth400 widthcentpercentminusx', true);
+		} else {
+			print $form->selectcontacts(0, '', 'contactid', 1, '', '', 1);
+		}
+
 		$nbofcontacts = $form->num;
 		//if ($nbofcontacts == 0) print $langs->trans("NoContactDefined");
 		if (versioncompare(versiondolibarrarray(), array(3,7,-3)) >= 0) {

@@ -106,7 +106,7 @@ $arrayfields=array(
 	'typepayment'=>array('label'=>"TypePaiement", 'checked'=>1, 'enabled'=>1),
 );
 // Extra fields
-if (is_array($extrafields->attributes[$object->table_element]['label']) && count($extrafields->attributes[$object->table_element]['label']) > 0) {
+if (!empty($extrafields->attributes[$object->table_element]['label']) && is_array($extrafields->attributes[$object->table_element]['label']) && count($extrafields->attributes[$object->table_element]['label']) > 0) {
 	foreach ($extrafields->attributes[$object->table_element]['label'] as $key => $val) {
 		if (! empty($extrafields->attributes[$object->table_element]['list'][$key]))
 			$arrayfields["ef.".$key]=array('label'=>$extrafields->attributes[$object->table_element]['label'][$key], 'checked'=>(($extrafields->attributes[$object->table_element]['list'][$key]<0)?0:1), 'position'=>$extrafields->attributes[$object->table_element]['pos'][$key], 'enabled'=>(abs((int) $extrafields->attributes[$object->table_element]['list'][$key])!=3 && $extrafields->attributes[$object->table_element]['perms'][$key]));
@@ -1037,7 +1037,7 @@ if (! ($socid > 0)) {
 		print '>';
 		if (isModEnabled("banque")) {
 			print ' &nbsp; '.$langs->trans("RecBank").' ';
-			$form->select_comptes(GETPOST('bankchequeto')?GETPOST('bankchequeto'):($object->bank['CHQ']['account_id']?$object->bank['CHQ']['account_id']:$defaultbankaccountchq), 'bankchequeto', 2, 'courant = 1', 1);
+			$form->select_comptes(GETPOST('bankchequeto')?GETPOST('bankchequeto'):(empty($object->bank['CHQ']['account_id']) ? $defaultbankaccountchq : $object->bank['CHQ']['account_id']), 'bankchequeto', 2, 'courant = 1', 1);
 		}
 		print ' &nbsp; ';
 		print $langs->trans("ChequeBank").' ';
@@ -1056,7 +1056,7 @@ if (! ($socid > 0)) {
 		print '>';
 		if (isModEnabled("banque")) {
 			print ' &nbsp; '.$langs->trans("RecBank").' ';
-			$form->select_comptes(GETPOST('bankcarteto')?GETPOST('bankcarteto'):($object->bank['CB']['account_id']?$object->bank['CB']['account_id']:$defaultbankaccountchq), 'bankcarteto', 2, 'courant = 1', 1);
+			$form->select_comptes(GETPOST('bankcarteto')?GETPOST('bankcarteto'):(empty($object->bank['CB']['account_id']) ? $defaultbankaccountchq : $object->bank['CB']['account_id']), 'bankcarteto', 2, 'courant = 1', 1);
 		}
 		print '</td></tr>';
 		// Cash
@@ -1067,7 +1067,7 @@ if (! ($socid > 0)) {
 		print '>';
 		if (isModEnabled("banque")) {
 			print ' &nbsp; '.$langs->trans("RecBank").' ';
-			$form->select_comptes(GETPOST('bankespeceto')?GETPOST('bankespeceto'):($object->bank['LIQ']['account_id']?$object->bank['LIQ']['account_id']:$defaultbankaccountliq), 'bankespeceto', 2, 'courant = 2', 1);
+			$form->select_comptes(GETPOST('bankespeceto')?GETPOST('bankespeceto'):(empty($object->bank['LIQ']['account_id']) ? $defaultbankaccountliq : $object->bank['LIQ']['account_id']), 'bankespeceto', 2, 'courant = 2', 1);
 		}
 		print '</td></tr>';
 
@@ -1404,7 +1404,7 @@ if ($action == '' || $action == 'list' || $action == 'delete') {
 				if (price2num($obj->montant_tiers) > 0) {
 					if ($foundamount) print ' + ';
 					print $langs->trans("PaymentTypeThirdParty");
-					if (isModEnabled("banque") && $object->bank['OTH']['account_id']) {
+					if (isModEnabled("banque") && !empty($object->bank['OTH']['account_id'])) {
 						$bank=new Account($db);
 						$bank->fetch($object->bank['OTH']['account_id']);
 						print '&nbsp;('.$bank->getNomUrl(0, 'transactions').')';

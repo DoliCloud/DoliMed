@@ -386,10 +386,11 @@ if ($user->hasRight('societe', 'client', 'voir') || $socid) {
 // To add filter on contact
 $width="200";
 $moreforfilter.='<div class="divsearchfield">';
-if ((float) DOL_VERSION >= 16.0) {
-	$moreforfilter.=img_picto('', 'user-md', 'class="pictofixedwidth"').$form->selectcontacts(0, $search_contactid, 'search_contactid', $langs->trans('Correspondants'), '', '', 1);
+$moreforfilter.=img_picto('', 'user-md', 'class="pictofixedwidth"');
+if (method_exists($form, 'select_contact')) {
+	$moreforfilter .= $form->select_contact(0, $search_contactid, 'search_contactid', $langs->trans('Correspondants'), '', '', 1, 'minwidth100imp maxwidth300 widthcentpercentminusx', true);
 } else {
-	$moreforfilter.=img_picto('', 'user-md', 'class="pictofixedwidth"').$form->selectcontacts(0, $search_contactid, 'search_contactid', 1, '', '', 1);
+	$moreforfilter .= $form->selectcontacts(0, $search_contactid, 'search_contactid', $langs->trans('Correspondants'), '', '', 1);
 }
 $moreforfilter.='</div>';
 

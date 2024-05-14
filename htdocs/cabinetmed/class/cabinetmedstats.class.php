@@ -20,7 +20,7 @@
 
 /**
  *       \file       htdocs/compta/facture/class/facturestats.class.php
- *       \ingroup    factures
+ *       \ingroup    invoices
  *       \brief      Fichier de la classe de gestion des stats des factures
  */
 include_once DOL_DOCUMENT_ROOT . "/core/class/stats.class.php";

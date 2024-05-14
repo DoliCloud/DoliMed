@@ -732,10 +732,11 @@ if ($user->hasRight('societe', 'client', 'voir') || $socid) {
 // To add filter on contact
 $width="200";
 $moreforfilter.='<div class="divsearchfield">';
-if ((float) DOL_VERSION >= 16.0) {
-	$moreforfilter.=img_picto('', 'user-md', 'class="pictofixedwidth"').$form->selectcontacts(0, $search_contactid, 'search_contactid', $langs->trans('Correspondants'), '', '', 1, 'maxwidth300 widthcentpercentminusx');
+$moreforfilter.=img_picto('', 'user-md', 'class="pictofixedwidth"');
+if (method_exists($form, 'select_contact')) {
+	$moreforfilter .= $form->select_contact(0, $search_contactid, 'search_contactid', $langs->trans('Correspondants'), '', '', 1, 'minwidth100imp maxwidth300 widthcentpercentminusx', true);
 } else {
-	$moreforfilter.=img_picto('', 'user-md', 'class="pictofixedwidth"').$form->selectcontacts(0, $search_contactid, 'search_contactid', 1, '', '', 1);
+	$moreforfilter .= $form->selectcontacts(0, $search_contactid, 'search_contactid', $langs->trans('Correspondants'), '', '', 1, 'maxwidth300 widthcentpercentminusx');
 }
 $moreforfilter.='</div>';
 // To add filter on diagnostic
@@ -1069,12 +1070,12 @@ include DOL_DOCUMENT_ROOT.'/core/tpl/extrafields_list_search_title.tpl.php';
 $parameters=array('arrayfields'=>$arrayfields,'param'=>$param,'sortfield'=>$sortfield,'sortorder'=>$sortorder);
 $reshook = $hookmanager->executeHooks('printFieldListTitle', $parameters, $object);    // Note that $action and $object may have been modified by hook
 print $hookmanager->resPrint;
-if (! empty($arrayfields['nb']['checked']))           print_liste_field_titre($arrayfields['nb']['label'], $_SERVER["PHP_SELF"], "nb", "", $param, 'align="center" class="nowrap"', $sortfield, $sortorder);
-if (! empty($arrayfields['lastcons']['checked']))     print_liste_field_titre($arrayfields['lastcons']['label'], $_SERVER["PHP_SELF"], "lastcons", "", $param, 'align="center" class="nowrap"', $sortfield, $sortorder);
-if (! empty($arrayfields['s.datec']['checked']))      print_liste_field_titre($arrayfields['s.datec']['label'], $_SERVER["PHP_SELF"], "s.datec", "", $param, 'align="center" class="nowrap"', $sortfield, $sortorder);
-if (! empty($arrayfields['s.tms']['checked']))        print_liste_field_titre($arrayfields['s.tms']['label'], $_SERVER["PHP_SELF"], "s.tms", "", $param, 'align="center" class="nowrap"', $sortfield, $sortorder);
-if (! empty($arrayfields['s.status']['checked']))     print_liste_field_titre($arrayfields['s.status']['label'], $_SERVER["PHP_SELF"], "s.status", "", $param, 'align="center"', $sortfield, $sortorder);
-if (! empty($arrayfields['s.import_key']['checked'])) print_liste_field_titre($arrayfields['s.import_key']['label'], $_SERVER["PHP_SELF"], "s.import_key", "", $param, 'align="center"', $sortfield, $sortorder);
+if (! empty($arrayfields['nb']['checked']))           print_liste_field_titre($arrayfields['nb']['label'], $_SERVER["PHP_SELF"], "nb", "", $param, '', $sortfield, $sortorder, 'nowraponall right ');
+if (! empty($arrayfields['lastcons']['checked']))     print_liste_field_titre($arrayfields['lastcons']['label'], $_SERVER["PHP_SELF"], "lastcons", "", $param, '', $sortfield, $sortorder, 'center ');
+if (! empty($arrayfields['s.datec']['checked']))      print_liste_field_titre($arrayfields['s.datec']['label'], $_SERVER["PHP_SELF"], "s.datec", "", $param, '', $sortfield, $sortorder, 'center ');
+if (! empty($arrayfields['s.tms']['checked']))        print_liste_field_titre($arrayfields['s.tms']['label'], $_SERVER["PHP_SELF"], "s.tms", "", $param, '', $sortfield, $sortorder, 'center ');
+if (! empty($arrayfields['s.status']['checked']))     print_liste_field_titre($arrayfields['s.status']['label'], $_SERVER["PHP_SELF"], "s.status", "", $param, '', $sortfield, $sortorder, 'center ');
+if (! empty($arrayfields['s.import_key']['checked'])) print_liste_field_titre($arrayfields['s.import_key']['label'], $_SERVER["PHP_SELF"], "s.import_key", "", $param, '', $sortfield, $sortorder, 'center ');
 // Action column
 if (empty($conf->global->MAIN_CHECKBOX_LEFT_COLUMN)) {
 	print_liste_field_titre($selectedfields, $_SERVER["PHP_SELF"], "", '', $param, '', $sortfield, $sortorder, 'center maxwidthsearch actioncolumn ');
