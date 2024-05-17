@@ -1095,11 +1095,13 @@ if (! ($socid > 0)) {
 		print '<center>';
 		if ($action == 'edit') {
 			// Set option if not defined
-			if (! isset($conf->global->CABINETMED_DELAY_TO_LOCK_RECORD)) $conf->global->CABINETMED_DELAY_TO_LOCK_RECORD=30;
+			if (!getDolGlobalInt('CABINETMED_DELAY_TO_LOCK_RECORD')) {
+				$conf->global->CABINETMED_DELAY_TO_LOCK_RECORD = 30;
+			}
 
 			// If consult was create before current date - CABINETMED_DELAY_TO_LOCK_RECORD days.
-			if (! empty($conf->global->CABINETMED_DELAY_TO_LOCK_RECORD) && $object->date_c < ($now - ($conf->global->CABINETMED_DELAY_TO_LOCK_RECORD * 24 * 3600))) {
-				print '<input type="submit" class="button ignorechange" id="updatebutton" name="update" value="'.$langs->trans("Save").'" disabled="disabled" title="'.dol_escape_htmltag($langs->trans("ConsultTooOld", $conf->global->CABINETMED_DELAY_TO_LOCK_RECORD)).'">';
+			if (getDolGlobalInt('CABINETMED_DELAY_TO_LOCK_RECORD') && $object->date_c < ($now - (getDolGlobalInt('CABINETMED_DELAY_TO_LOCK_RECORD') * 24 * 3600))) {
+				print '<input type="submit" class="button ignorechange" id="updatebutton" name="update" value="'.$langs->trans("Save").'" disabled="disabled" title="'.dol_escape_htmltag($langs->trans("ConsultTooOld", getDolGlobalInt('CABINETMED_DELAY_TO_LOCK_RECORD'))).'">';
 			} else {
 				print '<input type="submit" class="button ignorechange" id="updatebutton" name="update" value="'.$langs->trans("Save").'">';
 			}

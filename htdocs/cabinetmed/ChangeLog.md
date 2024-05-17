@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- NEW Option CABINETMED_DELAY_TO_LOCK_RECORD is now into the setup
+
 
 ## 10.0.1
 
