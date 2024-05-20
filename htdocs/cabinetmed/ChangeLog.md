@@ -2,7 +2,7 @@
 
 ## Unreleased
 
-- NEW Option CABINETMED_DELAY_TO_LOCK_RECORD is now into the setup
+- NEW Option CABINETMED_DELAY_TO_LOCK_RECORD is now into the setup. It can alse control deletion of uploaded files into bio and radio tab.
 
 
 ## 10.0.1

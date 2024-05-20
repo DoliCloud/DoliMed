@@ -87,6 +87,9 @@ if (!$user->hasRight('cabinetmed', 'read')) {
 	accessforbidden();
 }
 
+$usercanupdate = $user->hasRight('societe', 'write');
+$usercandelete = $user->hasRight('societe', 'supprimer');
+
 
 /*
  * Actions
@@ -648,10 +651,21 @@ if ($action == '' || $action == 'delete') {
 				print '</td>';
 			}
 			print '<td align="right">';
-			print '<a class="reposition editfielda" href="'.$_SERVER["PHP_SELF"].'?socid='.$obj->fk_soc.'&id='.$obj->rowid.'&action=edit&token='.newToken().'">'.img_edit().'</a>';
-			if ($user->hasRight('societe', 'supprimer')) {
+			//$conf->global->CABINETMED_DELAY_TO_LOCK_RECORD = 1;
+			if ($usercanupdate) {
+				if (!getDolGlobalInt('CABINETMED_DELAY_TO_LOCK_RECORD') || ($db->jdate($obj->dateexam) >= (dol_now() - (getDolGlobalInt('CABINETMED_DELAY_TO_LOCK_RECORD') * 24 * 60)))) {
+					print '<a class="reposition editfielda" href="'.$_SERVER["PHP_SELF"].'?socid='.$obj->fk_soc.'&id='.$obj->rowid.'&action=edit&token='.newToken().'">'.img_edit().'</a>';
+				} else {
+					print '<a class="reposition editfielda" href="#" title="'.$langs->trans("Locked").'">'.img_edit('', 0, 'class="delete"').'</a>';
+				}
+			}
+			if ($usercandelete) {
 				print ' &nbsp; ';
-				print '<a href="'.$_SERVER["PHP_SELF"].'?socid='.$obj->fk_soc.'&id='.$obj->rowid.'&action=delete&token='.newToken().'">'.img_delete().'</a>';
+				if (!getDolGlobalInt('CABINETMED_DELAY_TO_LOCK_RECORD') || ($db->jdate($obj->dateexam) >= (dol_now() - (getDolGlobalInt('CABINETMED_DELAY_TO_LOCK_RECORD') * 24 * 60)))) {
+					print '<a class="editfielda disabled" href="'.$_SERVER["PHP_SELF"].'?socid='.$obj->fk_soc.'&id='.$obj->rowid.'&action=delete&token='.newToken().'">'.img_delete().'</a>';
+				} else {
+					print '<a class="editfielda disabled" href="#" title="'.$langs->trans("Locked").'">'.img_delete('', 'class="delete"').'</a>';
+				}
 			}
 			print '</td>';
 			print '</tr>';

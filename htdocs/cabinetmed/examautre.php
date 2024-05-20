@@ -55,13 +55,6 @@ $langs->load("bills");
 $langs->load("banks");
 $langs->load("cabinetmed@cabinetmed");
 
-// Security check
-$socid = GETPOST('socid', 'int');
-if ($user->socid) $socid=$user->socid;
-$result = restrictedArea($user, 'societe', $socid);
-
-if (!$user->hasRight('cabinetmed', 'read')) accessforbidden();
-
 $mesgarray=array();
 
 // Load variable for pagination
@@ -81,6 +74,16 @@ $object = $examother;
 
 // Initialize technical object to manage hooks of page. Note that conf->hooks_modules contains array array
 $hookmanager->initHooks(array('thirdpartycard','examothercard','globalcard'));
+
+// Security check
+$socid = GETPOST('socid', 'int');
+if ($user->socid) $socid=$user->socid;
+$result = restrictedArea($user, 'societe', $socid);
+
+if (!$user->hasRight('cabinetmed', 'read')) accessforbidden();
+
+$usercanupdate = $user->hasRight('societe', 'write');
+$usercandelete = $user->hasRight('societe', 'supprimer');
 
 
 /*
@@ -525,10 +528,21 @@ if ($action == '' || $action == 'delete') {
 			print $obj->concprinc;
 			print '</td>';
 			print '<td align="right">';
-			print '<a class="reposition editfielda" href="'.$_SERVER["PHP_SELF"].'?socid='.$obj->fk_soc.'&id='.$obj->rowid.'&action=edit&token='.newToken().'">'.img_edit().'</a>';
-			if ($user->hasRight('societe', 'supprimer')) {
+			//$conf->global->CABINETMED_DELAY_TO_LOCK_RECORD = 1;
+			if ($usercanupdate) {
+				if (!getDolGlobalInt('CABINETMED_DELAY_TO_LOCK_RECORD') || ($db->jdate($obj->dateexam) >= (dol_now() - (getDolGlobalInt('CABINETMED_DELAY_TO_LOCK_RECORD') * 24 * 60)))) {
+					print '<a class="reposition editfielda" href="'.$_SERVER["PHP_SELF"].'?socid='.$obj->fk_soc.'&id='.$obj->rowid.'&action=edit&token='.newToken().'">'.img_edit().'</a>';
+				} else {
+					print '<a class="reposition editfielda disabled" href="#" title="'.$langs->trans("Locked").'">'.img_edit('', 0, 'class="disabled"').'</a>';
+				}
+			}
+			if ($usercandelete) {
 				print ' &nbsp; ';
-				print '<a href="'.$_SERVER["PHP_SELF"].'?socid='.$obj->fk_soc.'&id='.$obj->rowid.'&action=delete&token='.newToken().'">'.img_delete().'</a>';
+				if (!getDolGlobalInt('CABINETMED_DELAY_TO_LOCK_RECORD') || ($db->jdate($obj->dateexam) >= (dol_now() - (getDolGlobalInt('CABINETMED_DELAY_TO_LOCK_RECORD') * 24 * 60)))) {
+					print '<a class="editfielda" href="'.$_SERVER["PHP_SELF"].'?socid='.$obj->fk_soc.'&id='.$obj->rowid.'&action=delete&token='.newToken().'">'.img_delete().'</a>';
+				} else {
+					print '<a class="editfielda disabled" href="#" title="'.$langs->trans("Locked").'">'.img_delete('', 'class="disabled"').'</a>';
+				}
 			}
 			print '</td>';
 			print '</tr>';
