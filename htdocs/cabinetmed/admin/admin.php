@@ -86,8 +86,9 @@ if ($action == 'update') {
 		$res=dolibarr_set_const($db, 'CABINETMED_DELAY_TO_LOCK_RECORD', GETPOST("CABINETMED_DELAY_TO_LOCK_RECORD") ? 0 : 1, 'texte', 0, '', $conf->entity);
 	}
 
-	if ($res == 1) $mesg=$langs->trans("RecordModifiedSuccessfully");
-	else {
+	if ($res == 1) {
+		$mesg=$langs->trans("RecordModifiedSuccessfully");
+	} else {
 		dol_print_error($db);
 	}
 }

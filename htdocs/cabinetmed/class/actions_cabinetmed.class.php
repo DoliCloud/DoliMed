@@ -120,7 +120,7 @@ class ActionsCabinetmed
 			}
 		}
 
-		if (GETPOST('canvas') == 'patient@cabinetmed' || $object->canvas == 'patient@cabinetmed' || preg_match('/(consultationcard|exambiocard|examothercard)/', $parameters['context'])) {
+		if (GETPOST('canvas') == 'patient@cabinetmed' || (is_object($object) && property_exists($object, 'canvas') && $object->canvas == 'patient@cabinetmed') || preg_match('/(consultationcard|exambiocard|examothercard)/', $parameters['context'])) {
 			$cabinetmedcontext++;
 		}
 
