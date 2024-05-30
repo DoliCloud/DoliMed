@@ -190,7 +190,7 @@ if ($socid > 0) {
 
 		// Editeur wysiwyg
 		require_once DOL_DOCUMENT_ROOT."/core/class/doleditor.class.php";
-		$doleditor=new DolEditor('note_traitspec', $object->note_traitspec, 0, $height, 'dolibarr_notes', 'In', false, false, isModEnabled("fckeditor") && $conf->global->FCKEDITOR_ENABLE_SOCIETE, 8, '90%');
+		$doleditor=new DolEditor('note_traitspec', $object->note_traitspec, 0, $height, 'dolibarr_notes', 'In', false, false, isModEnabled("fckeditor") && getDolGlobalInt('FCKEDITOR_ENABLE_SOCIETE'), 8, '90%');
 		$doleditor->Create();
 	} else {
 		print nl2br($object->note_traitspec);
@@ -208,7 +208,7 @@ if ($socid > 0) {
 
 		// Editeur wysiwyg
 		require_once(DOL_DOCUMENT_ROOT."/core/class/doleditor.class.php");
-		$doleditor=new DolEditor('note_traitclass',$object->note_traitclass,0,$height,'dolibarr_notes','In',false,false,isModEnabled("fckeditor") && $conf->global->FCKEDITOR_ENABLE_SOCIETE,6,'90%');
+		$doleditor=new DolEditor('note_traitclass',$object->note_traitclass,0,$height,'dolibarr_notes','In',false,false, isModEnabled("fckeditor") && getDolGlobalInt('FCKEDITOR_ENABLE_SOCIETE'),6,'90%');
 		$doleditor->Create();
 	}
 	else
@@ -228,7 +228,7 @@ if ($socid > 0) {
 
 		// Editeur wysiwyg
 		require_once DOL_DOCUMENT_ROOT."/core/class/doleditor.class.php";
-		$doleditor=new DolEditor('note_traitintol', $object->note_traitintol, 0, $height, 'dolibarr_notes', 'In', false, false, isModEnabled("fckeditor") && $conf->global->FCKEDITOR_ENABLE_SOCIETE, 8, '90%');
+		$doleditor=new DolEditor('note_traitintol', $object->note_traitintol, 0, $height, 'dolibarr_notes', 'In', false, false, isModEnabled("fckeditor") && getDolGlobalInt('FCKEDITOR_ENABLE_SOCIETE'), 8, '90%');
 		$doleditor->Create();
 	} else {
 		print nl2br($object->note_traitintol);
