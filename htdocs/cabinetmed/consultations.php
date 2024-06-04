@@ -1040,7 +1040,7 @@ if (! ($socid > 0)) {
 			$form->select_comptes(GETPOST('bankchequeto')?GETPOST('bankchequeto'):(empty($object->bank['CHQ']['account_id']) ? $defaultbankaccountchq : $object->bank['CHQ']['account_id']), 'bankchequeto', 2, 'courant = 1', 1);
 		}
 		print ' &nbsp; ';
-		print $langs->trans("ChequeBank").' ';
+		print $langs->trans("SourceBank").' ';
 		listebanques(1, 0, $object->banque);
 		if ($user->admin) print info_admin($langs->trans("YouCanChangeValuesForThisListFromDictionarySetup"), 1);
 		if (isModEnabled("banque")) {
@@ -1071,9 +1071,9 @@ if (! ($socid > 0)) {
 		}
 		print '</td></tr>';
 
-		// Third party
+		// Other payment mode (Third party, ...)
 		print '<tr class="cabpaymentthirdparty"><td class="">';
-		print $langs->trans("PaymentTypeThirdParty").'</td><td>';
+		print $langs->trans("PaymentTypeOther").'</td><td>';
 		print '<input type="text" class="flat" name="montant_tiers" id="idmontant_tiers" value="'.($object->montant_tiers!=''?price($object->montant_tiers):'').'" size="4"';
 		print ' placeholder="'.($conf->currency != $langs->getCurrencySymbol($conf->currency) ? $langs->getCurrencySymbol($conf->currency) : '').'"';
 		print '>';
@@ -1227,7 +1227,7 @@ if ($action == '' || $action == 'list' || $action == 'delete') {
 	print_liste_field_titre($selectedfields, $_SERVER["PHP_SELF"], "", '', $param, 'align="center"', $sortfield, $sortorder, 'maxwidthsearch ');
 	print '</tr>';
 
-	// List des consult
+	// List of consultations
 	$sql = "SELECT";
 	$sql.= " t.rowid,";
 	$sql.= " t.fk_soc,";
