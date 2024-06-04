@@ -402,9 +402,14 @@ if (empty($reshook)) {
 									//var_dump($key.' '.$banque[$key].' '.$soc->name.' '.$object->banque);exit;
 									$bankaccount=new Account($db);
 									$result=$bankaccount->fetch($banque[$key]);
-									if ($result < 0) dol_print_error($db, $bankaccount->error);
-									if ($key == 'CHQ') $lineid=$bankaccount->addline($datecons, $key, $langs->trans("CustomerInvoicePayment"), $amount[$key], $object->num_cheque, '', $user, $soc->name, $object->banque);
-									else $lineid=$bankaccount->addline($datecons, $key, $langs->trans("CustomerInvoicePayment"), $amount[$key], '', '', $user, $soc->name, '');
+									if ($result < 0) {
+										dol_print_error($db, $bankaccount->error);
+									}
+									if ($key == 'CHQ') {
+										$lineid=$bankaccount->addline($datecons, $key, $langs->trans("CustomerInvoicePayment"), $amount[$key], $object->num_cheque, '', $user, $soc->name, $object->banque);
+									} else {
+										$lineid=$bankaccount->addline($datecons, $key, $langs->trans("CustomerInvoicePayment"), $amount[$key], '', '', $user, $soc->name, '');
+									}
 									if ($lineid <= 0) {
 										$error++;
 										$object->error=$bankaccount->error;
@@ -1029,49 +1034,75 @@ if (! ($socid > 0)) {
 			print '</td></tr>';
 		}
 
-		// Cheque
+		// Cheque (CHQ)
 		print '<tr class="cabpaymentcheque"><td class="titlefield">';
 		print $langs->trans("PaymentTypeCheque").'</td><td>';
 		print '<input type="text" class="flat" name="montant_cheque" id="idmontant_cheque" value="'.($object->montant_cheque!=''?price($object->montant_cheque):'').'" size="4"';
 		print ' placeholder="'.($conf->currency != $langs->getCurrencySymbol($conf->currency) ? $langs->getCurrencySymbol($conf->currency) : '').'"';
 		print '>';
 		if (isModEnabled("banque")) {
-			print ' &nbsp; '.$langs->trans("RecBank").' ';
-			$form->select_comptes(GETPOST('bankchequeto')?GETPOST('bankchequeto'):(empty($object->bank['CHQ']['account_id']) ? $defaultbankaccountchq : $object->bank['CHQ']['account_id']), 'bankchequeto', 2, 'courant = 1', 1);
+			print ' &nbsp; ';
+			if (((float) DOL_VERSION) >= 20.0) {
+				$form->select_comptes(GETPOST('bankchequeto')?GETPOST('bankchequeto'):(empty($object->bank['CHQ']['account_id']) ? $defaultbankaccountchq : $object->bank['CHQ']['account_id']), 'bankchequeto', 2, 'courant = 1', $langs->trans("RecBank"), '', 0, 'maxwidth200');
+			} else {
+				print $langs->trans("RecBank").' ';
+				$form->select_comptes(GETPOST('bankchequeto')?GETPOST('bankchequeto'):(empty($object->bank['CHQ']['account_id']) ? $defaultbankaccountchq : $object->bank['CHQ']['account_id']), 'bankchequeto', 2, 'courant = 1', 1, '', 0, 'maxwidth200');
+			}
 		}
 		print ' &nbsp; ';
+		/*
+		$langs->load("withdrawals");
+		$arrayoftypes = array('CHQ' => "Cheque", 'VIR' => "CreditTransfer");
+		print $form->selectarray('banktype', $arrayoftypes, (GETPOSTISSET('banktype') ? GETPOST('banktype') : 'CHQ'), $langs->trans("Type"), 0, 0, '', 1, 0, 0, '', 'maxwidth125');
+		print ' &nbsp; ';
+		*/
 		print $langs->trans("SourceBank").' ';
 		listebanques(1, 0, $object->banque);
-		if ($user->admin) print info_admin($langs->trans("YouCanChangeValuesForThisListFromDictionarySetup"), 1);
+		if ($user->admin) {
+			print info_admin($langs->trans("YouCanChangeValuesForThisListFromDictionarySetup"), 1);
+		}
 		if (isModEnabled("banque")) {
-			print ' &nbsp; '.$langs->trans("ChequeOrTransferNumber").' ';
+			print ' &nbsp; ';
+			print $langs->trans("ChequeOrTransferNumber").' ';
 			print '<input type="text" class="flat" name="num_cheque" id="idnum_cheque" value="'.$object->num_cheque.'" size="6">';
 		}
 		print '</td></tr>';
-		// Card
+
+		// Card (CB)
 		print '<tr class="cabpaymentcarte"><td class="">';
 		print $langs->trans("PaymentTypeCarte").'</td><td>';
 		print '<input type="text" class="flat" name="montant_carte" id="idmontant_carte" value="'.($object->montant_carte!=''?price($object->montant_carte):'').'" size="4"';
 		print ' placeholder="'.($conf->currency != $langs->getCurrencySymbol($conf->currency) ? $langs->getCurrencySymbol($conf->currency) : '').'"';
 		print '>';
 		if (isModEnabled("banque")) {
-			print ' &nbsp; '.$langs->trans("RecBank").' ';
-			$form->select_comptes(GETPOST('bankcarteto')?GETPOST('bankcarteto'):(empty($object->bank['CB']['account_id']) ? $defaultbankaccountchq : $object->bank['CB']['account_id']), 'bankcarteto', 2, 'courant = 1', 1);
+			print ' &nbsp; ';
+			if (((float) DOL_VERSION) >= 20.0) {
+				$form->select_comptes(GETPOST('bankcarteto')?GETPOST('bankcarteto'):(empty($object->bank['CB']['account_id']) ? $defaultbankaccountchq : $object->bank['CB']['account_id']), 'bankcarteto', 2, 'courant = 1', $langs->trans("RecBank"), '', 0, 'maxwidth200');
+			} else {
+				print $langs->trans("RecBank").' ';
+				$form->select_comptes(GETPOST('bankcarteto')?GETPOST('bankcarteto'):(empty($object->bank['CB']['account_id']) ? $defaultbankaccountchq : $object->bank['CB']['account_id']), 'bankcarteto', 2, 'courant = 1', 1, '', 0, 'maxwidth200');
+			}
 		}
 		print '</td></tr>';
-		// Cash
+
+		// Cash (LIQ)
 		print '<tr class="cabpaymentcash"><td class="">';
 		print $langs->trans("PaymentTypeEspece").'</td><td>';
 		print '<input type="text" class="flat" name="montant_espece" id="idmontant_espece" value="'.($object->montant_espece!=''?price($object->montant_espece):'').'" size="4"';
 		print ' placeholder="'.($conf->currency != $langs->getCurrencySymbol($conf->currency) ? $langs->getCurrencySymbol($conf->currency) : '').'"';
 		print '>';
 		if (isModEnabled("banque")) {
-			print ' &nbsp; '.$langs->trans("RecBank").' ';
-			$form->select_comptes(GETPOST('bankespeceto')?GETPOST('bankespeceto'):(empty($object->bank['LIQ']['account_id']) ? $defaultbankaccountliq : $object->bank['LIQ']['account_id']), 'bankespeceto', 2, 'courant = 2', 1);
+			print ' &nbsp; ';
+			if (((float) DOL_VERSION) >= 20.0) {
+				$form->select_comptes(GETPOST('bankespeceto')?GETPOST('bankespeceto'):(empty($object->bank['LIQ']['account_id']) ? $defaultbankaccountliq : $object->bank['LIQ']['account_id']), 'bankespeceto', 2, 'courant = 2', $langs->trans("RecBank"));
+			} else {
+				print $langs->trans("RecBank").' ';
+				$form->select_comptes(GETPOST('bankespeceto')?GETPOST('bankespeceto'):(empty($object->bank['LIQ']['account_id']) ? $defaultbankaccountliq : $object->bank['LIQ']['account_id']), 'bankespeceto', 2, 'courant = 2', 1);
+			}
 		}
 		print '</td></tr>';
 
-		// Other payment mode (Third party, ...)
+		// Other payment mode (VIR)
 		print '<tr class="cabpaymentthirdparty"><td class="">';
 		print $langs->trans("PaymentTypeOther").'</td><td>';
 		print '<input type="text" class="flat" name="montant_tiers" id="idmontant_tiers" value="'.($object->montant_tiers!=''?price($object->montant_tiers):'').'" size="4"';

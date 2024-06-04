@@ -242,7 +242,7 @@ function listexamconclusion($nboflines, $newwidth = 0, $htmlname = 'examconc')
  * Show combo box with list of banks
  *
  * @param 	int		$nboflines		Nb of lines
- * @param 	int		$newwidth		Force width
+ * @param 	int		$newwidth		Deprecated
  * @param	string	$defaultvalue	Preselected value
  * @param	string	$htmlname		Name of HTML select field
  * @return	void
@@ -253,7 +253,7 @@ function listebanques($nboflines, $newwidth = 0, $defaultvalue = '', $htmlname =
 
 	if (empty($newwidth)) $newwidth=$width;
 
-	print '<select class="flat valignmiddle maxwidth200onsmartphone" id="'.$htmlname.'" name="'.$htmlname.'" '.(empty($conf->dol_use_jmobile)?' style="width: '.$newwidth.'px" ':'').'size="'.$nboflines.'"'.($nboflines > 1?' multiple':'').'>';
+	print '<select class="flat valignmiddle minwidth100 maxwidth200" id="'.$htmlname.'" name="'.$htmlname.'" size="'.$nboflines.'"'.($nboflines > 1?' multiple':'').'>';
 	print '<option value="">&nbsp;</option>';
 
 	$sql = 'SELECT s.rowid, s.code, s.label';
