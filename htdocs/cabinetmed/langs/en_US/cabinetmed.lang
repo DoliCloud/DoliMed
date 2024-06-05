@@ -92,7 +92,9 @@ PaymentTypeThirdParty=Third party
 PaymentTypeEspece=Cash
 PaymentTypeCarte=Credit card
 PaymentTypeCheque=Cheque
+PaymentTypeOther=Other
 Secondaries=Secondaries
+SourceBank=Source bank
 Commentaires=Comments
 RecBank=To deposit on
 Paiement=Payment
@@ -192,4 +194,6 @@ ConvertIntoPatientDesc=The common thirdparty will also be a patient so you can c
 
 LesionDiagnosticsCCA=Chondrocalcinotic Arthritis
 LesionDiagnosticsGOUTTE=Gouty Arthritis
-
+Patients=Patients
+Consultations=Consultations
+CABINETMED_DELAY_TO_LOCK_RECORD=Consultations can't be modified x days after their creation (use 0 to keep consultations always editable) 

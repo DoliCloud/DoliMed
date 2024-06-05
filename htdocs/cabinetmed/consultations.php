@@ -106,7 +106,7 @@ $arrayfields=array(
 	'typepayment'=>array('label'=>"TypePaiement", 'checked'=>1, 'enabled'=>1),
 );
 // Extra fields
-if (is_array($extrafields->attributes[$object->table_element]['label']) && count($extrafields->attributes[$object->table_element]['label']) > 0) {
+if (!empty($extrafields->attributes[$object->table_element]['label']) && is_array($extrafields->attributes[$object->table_element]['label']) && count($extrafields->attributes[$object->table_element]['label']) > 0) {
 	foreach ($extrafields->attributes[$object->table_element]['label'] as $key => $val) {
 		if (! empty($extrafields->attributes[$object->table_element]['list'][$key]))
 			$arrayfields["ef.".$key]=array('label'=>$extrafields->attributes[$object->table_element]['label'][$key], 'checked'=>(($extrafields->attributes[$object->table_element]['list'][$key]<0)?0:1), 'position'=>$extrafields->attributes[$object->table_element]['pos'][$key], 'enabled'=>(abs((int) $extrafields->attributes[$object->table_element]['list'][$key])!=3 && $extrafields->attributes[$object->table_element]['perms'][$key]));
@@ -402,9 +402,14 @@ if (empty($reshook)) {
 									//var_dump($key.' '.$banque[$key].' '.$soc->name.' '.$object->banque);exit;
 									$bankaccount=new Account($db);
 									$result=$bankaccount->fetch($banque[$key]);
-									if ($result < 0) dol_print_error($db, $bankaccount->error);
-									if ($key == 'CHQ') $lineid=$bankaccount->addline($datecons, $key, $langs->trans("CustomerInvoicePayment"), $amount[$key], $object->num_cheque, '', $user, $soc->name, $object->banque);
-									else $lineid=$bankaccount->addline($datecons, $key, $langs->trans("CustomerInvoicePayment"), $amount[$key], '', '', $user, $soc->name, '');
+									if ($result < 0) {
+										dol_print_error($db, $bankaccount->error);
+									}
+									if ($key == 'CHQ') {
+										$lineid=$bankaccount->addline($datecons, $key, $langs->trans("CustomerInvoicePayment"), $amount[$key], $object->num_cheque, '', $user, $soc->name, $object->banque);
+									} else {
+										$lineid=$bankaccount->addline($datecons, $key, $langs->trans("CustomerInvoicePayment"), $amount[$key], '', '', $user, $soc->name, '');
+									}
 									if ($lineid <= 0) {
 										$error++;
 										$object->error=$bankaccount->error;
@@ -1029,51 +1034,77 @@ if (! ($socid > 0)) {
 			print '</td></tr>';
 		}
 
-		// Cheque
+		// Cheque (CHQ)
 		print '<tr class="cabpaymentcheque"><td class="titlefield">';
 		print $langs->trans("PaymentTypeCheque").'</td><td>';
 		print '<input type="text" class="flat" name="montant_cheque" id="idmontant_cheque" value="'.($object->montant_cheque!=''?price($object->montant_cheque):'').'" size="4"';
 		print ' placeholder="'.($conf->currency != $langs->getCurrencySymbol($conf->currency) ? $langs->getCurrencySymbol($conf->currency) : '').'"';
 		print '>';
 		if (isModEnabled("banque")) {
-			print ' &nbsp; '.$langs->trans("RecBank").' ';
-			$form->select_comptes(GETPOST('bankchequeto')?GETPOST('bankchequeto'):($object->bank['CHQ']['account_id']?$object->bank['CHQ']['account_id']:$defaultbankaccountchq), 'bankchequeto', 2, 'courant = 1', 1);
+			print ' &nbsp; ';
+			if (((float) DOL_VERSION) >= 20.0) {
+				$form->select_comptes(GETPOST('bankchequeto')?GETPOST('bankchequeto'):(empty($object->bank['CHQ']['account_id']) ? $defaultbankaccountchq : $object->bank['CHQ']['account_id']), 'bankchequeto', 2, 'courant = 1', $langs->trans("RecBank"), '', 0, 'maxwidth200');
+			} else {
+				print $langs->trans("RecBank").' ';
+				$form->select_comptes(GETPOST('bankchequeto')?GETPOST('bankchequeto'):(empty($object->bank['CHQ']['account_id']) ? $defaultbankaccountchq : $object->bank['CHQ']['account_id']), 'bankchequeto', 2, 'courant = 1', 1, '', 0, 'maxwidth200');
+			}
 		}
 		print ' &nbsp; ';
-		print $langs->trans("ChequeBank").' ';
+		/*
+		$langs->load("withdrawals");
+		$arrayoftypes = array('CHQ' => "Cheque", 'VIR' => "CreditTransfer");
+		print $form->selectarray('banktype', $arrayoftypes, (GETPOSTISSET('banktype') ? GETPOST('banktype') : 'CHQ'), $langs->trans("Type"), 0, 0, '', 1, 0, 0, '', 'maxwidth125');
+		print ' &nbsp; ';
+		*/
+		print $langs->trans("SourceBank").' ';
 		listebanques(1, 0, $object->banque);
-		if ($user->admin) print info_admin($langs->trans("YouCanChangeValuesForThisListFromDictionarySetup"), 1);
+		if ($user->admin) {
+			print info_admin($langs->trans("YouCanChangeValuesForThisListFromDictionarySetup"), 1);
+		}
 		if (isModEnabled("banque")) {
-			print ' &nbsp; '.$langs->trans("ChequeOrTransferNumber").' ';
+			print ' &nbsp; ';
+			print $langs->trans("ChequeOrTransferNumber").' ';
 			print '<input type="text" class="flat" name="num_cheque" id="idnum_cheque" value="'.$object->num_cheque.'" size="6">';
 		}
 		print '</td></tr>';
-		// Card
+
+		// Card (CB)
 		print '<tr class="cabpaymentcarte"><td class="">';
 		print $langs->trans("PaymentTypeCarte").'</td><td>';
 		print '<input type="text" class="flat" name="montant_carte" id="idmontant_carte" value="'.($object->montant_carte!=''?price($object->montant_carte):'').'" size="4"';
 		print ' placeholder="'.($conf->currency != $langs->getCurrencySymbol($conf->currency) ? $langs->getCurrencySymbol($conf->currency) : '').'"';
 		print '>';
 		if (isModEnabled("banque")) {
-			print ' &nbsp; '.$langs->trans("RecBank").' ';
-			$form->select_comptes(GETPOST('bankcarteto')?GETPOST('bankcarteto'):($object->bank['CB']['account_id']?$object->bank['CB']['account_id']:$defaultbankaccountchq), 'bankcarteto', 2, 'courant = 1', 1);
+			print ' &nbsp; ';
+			if (((float) DOL_VERSION) >= 20.0) {
+				$form->select_comptes(GETPOST('bankcarteto')?GETPOST('bankcarteto'):(empty($object->bank['CB']['account_id']) ? $defaultbankaccountchq : $object->bank['CB']['account_id']), 'bankcarteto', 2, 'courant = 1', $langs->trans("RecBank"), '', 0, 'maxwidth200');
+			} else {
+				print $langs->trans("RecBank").' ';
+				$form->select_comptes(GETPOST('bankcarteto')?GETPOST('bankcarteto'):(empty($object->bank['CB']['account_id']) ? $defaultbankaccountchq : $object->bank['CB']['account_id']), 'bankcarteto', 2, 'courant = 1', 1, '', 0, 'maxwidth200');
+			}
 		}
 		print '</td></tr>';
-		// Cash
+
+		// Cash (LIQ)
 		print '<tr class="cabpaymentcash"><td class="">';
 		print $langs->trans("PaymentTypeEspece").'</td><td>';
 		print '<input type="text" class="flat" name="montant_espece" id="idmontant_espece" value="'.($object->montant_espece!=''?price($object->montant_espece):'').'" size="4"';
 		print ' placeholder="'.($conf->currency != $langs->getCurrencySymbol($conf->currency) ? $langs->getCurrencySymbol($conf->currency) : '').'"';
 		print '>';
 		if (isModEnabled("banque")) {
-			print ' &nbsp; '.$langs->trans("RecBank").' ';
-			$form->select_comptes(GETPOST('bankespeceto')?GETPOST('bankespeceto'):($object->bank['LIQ']['account_id']?$object->bank['LIQ']['account_id']:$defaultbankaccountliq), 'bankespeceto', 2, 'courant = 2', 1);
+			print ' &nbsp; ';
+			if (((float) DOL_VERSION) >= 20.0) {
+				$form->select_comptes(GETPOST('bankespeceto')?GETPOST('bankespeceto'):(empty($object->bank['LIQ']['account_id']) ? $defaultbankaccountliq : $object->bank['LIQ']['account_id']), 'bankespeceto', 2, 'courant = 2', $langs->trans("RecBank"));
+			} else {
+				print $langs->trans("RecBank").' ';
+				$form->select_comptes(GETPOST('bankespeceto')?GETPOST('bankespeceto'):(empty($object->bank['LIQ']['account_id']) ? $defaultbankaccountliq : $object->bank['LIQ']['account_id']), 'bankespeceto', 2, 'courant = 2', 1);
+			}
 		}
 		print '</td></tr>';
 
-		// Third party
+		// Other payment mode (VIR)
 		print '<tr class="cabpaymentthirdparty"><td class="">';
-		print $langs->trans("PaymentTypeThirdParty").'</td><td>';
+		print $langs->trans("PaymentTypeOther").'</td><td>';
 		print '<input type="text" class="flat" name="montant_tiers" id="idmontant_tiers" value="'.($object->montant_tiers!=''?price($object->montant_tiers):'').'" size="4"';
 		print ' placeholder="'.($conf->currency != $langs->getCurrencySymbol($conf->currency) ? $langs->getCurrencySymbol($conf->currency) : '').'"';
 		print '>';
@@ -1095,11 +1126,13 @@ if (! ($socid > 0)) {
 		print '<center>';
 		if ($action == 'edit') {
 			// Set option if not defined
-			if (! isset($conf->global->CABINETMED_DELAY_TO_LOCK_RECORD)) $conf->global->CABINETMED_DELAY_TO_LOCK_RECORD=30;
+			if (!getDolGlobalInt('CABINETMED_DELAY_TO_LOCK_RECORD')) {
+				$conf->global->CABINETMED_DELAY_TO_LOCK_RECORD = 30;
+			}
 
 			// If consult was create before current date - CABINETMED_DELAY_TO_LOCK_RECORD days.
-			if (! empty($conf->global->CABINETMED_DELAY_TO_LOCK_RECORD) && $object->date_c < ($now - ($conf->global->CABINETMED_DELAY_TO_LOCK_RECORD * 24 * 3600))) {
-				print '<input type="submit" class="button ignorechange" id="updatebutton" name="update" value="'.$langs->trans("Save").'" disabled="disabled" title="'.dol_escape_htmltag($langs->trans("ConsultTooOld", $conf->global->CABINETMED_DELAY_TO_LOCK_RECORD)).'">';
+			if (getDolGlobalInt('CABINETMED_DELAY_TO_LOCK_RECORD') && $object->date_c < ($now - (getDolGlobalInt('CABINETMED_DELAY_TO_LOCK_RECORD') * 24 * 3600))) {
+				print '<input type="submit" class="button ignorechange" id="updatebutton" name="update" value="'.$langs->trans("Save").'" disabled="disabled" title="'.dol_escape_htmltag($langs->trans("ConsultTooOld", getDolGlobalInt('CABINETMED_DELAY_TO_LOCK_RECORD'))).'">';
 			} else {
 				print '<input type="submit" class="button ignorechange" id="updatebutton" name="update" value="'.$langs->trans("Save").'">';
 			}
@@ -1225,7 +1258,7 @@ if ($action == '' || $action == 'list' || $action == 'delete') {
 	print_liste_field_titre($selectedfields, $_SERVER["PHP_SELF"], "", '', $param, 'align="center"', $sortfield, $sortorder, 'maxwidthsearch ');
 	print '</tr>';
 
-	// List des consult
+	// List of consultations
 	$sql = "SELECT";
 	$sql.= " t.rowid,";
 	$sql.= " t.fk_soc,";
@@ -1404,7 +1437,7 @@ if ($action == '' || $action == 'list' || $action == 'delete') {
 				if (price2num($obj->montant_tiers) > 0) {
 					if ($foundamount) print ' + ';
 					print $langs->trans("PaymentTypeThirdParty");
-					if (isModEnabled("banque") && $object->bank['OTH']['account_id']) {
+					if (isModEnabled("banque") && !empty($object->bank['OTH']['account_id'])) {
 						$bank=new Account($db);
 						$bank->fetch($object->bank['OTH']['account_id']);
 						print '&nbsp;('.$bank->getNomUrl(0, 'transactions').')';
