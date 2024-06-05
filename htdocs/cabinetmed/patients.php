@@ -559,7 +559,7 @@ $num = $db->num_rows($resql);
 $arrayofselected=is_array($toselect)?$toselect:array();
 
 // Direct jump if only one record found
-if ($num == 1 && !empty($conf->global->MAIN_SEARCH_DIRECT_OPEN_IF_ONLY_ONE) && ($search_all != '' || $search_cti != '') && $action != 'list' && ! $page) {
+if ($num == 1 && getDolGlobalInt('MAIN_SEARCH_DIRECT_OPEN_IF_ONLY_ONE') && ($search_all != '' || $search_cti != '') && $action != 'list' && ! $page) {
 	$obj = $db->fetch_object($resql);
 	$id = $obj->rowid;
 
