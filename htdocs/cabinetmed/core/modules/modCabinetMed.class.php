@@ -639,7 +639,7 @@ class modCabinetMed extends DolibarrModules
 		$extrafields = new ExtraFields($this->db);
 		$result1=$extrafields->addExtraField('height', $langs->trans("HeightPeople"), 'varchar', 1, 128, 'thirdparty');
 		$result2=$extrafields->addExtraField('weight', $langs->trans("WeigthPeople"), 'varchar', 2, 128, 'thirdparty');
-		$result3=$extrafields->addExtraField('prof', $langs->trans("Profession"), 'varchar', 3, 128, 'thirdparty');
+		$result3=$extrafields->addExtraField('prof', $langs->trans("Profession"), 'varchar', 3, 128, 'thirdparty', 0, 0, '', '', 0, '', 'tdoverflowmax125');
 		$result4=$extrafields->addExtraField('birthdate', $langs->trans('DateOfBirth'), 'date', 4, 0, 'thirdparty');
 
 		return $this->_load_tables('/cabinetmed/sql/');
