@@ -59,15 +59,16 @@ function addAlert($db, $type, $id, $value)
  * @param 	string	$newwidth		Force width
  * @param	string	$htmlname		Name of HTML select field
  * @param	string	$selected		Preselected value
+ * @param	string	$morecss		More CSS
  * @return	void
 */
-function listmotifcons($nboflines, $newwidth = '', $htmlname = 'motifcons', $selected = '')
+function listmotifcons($nboflines, $newwidth = '', $htmlname = 'motifcons', $selected = '', $morecss = '')
 {
 	global $conf,$db,$width,$langs;
 
 	if (empty($newwidth)) $newwidth=$width;
 
-	$out = '<select class="flat valignmiddle maxwidth200onsmartphone" id="list'.$htmlname.'" name="'.$htmlname.'" '.(empty($conf->dol_use_jmobile)?' style="width: '.$newwidth.'px" ':'').'size="'.$nboflines.'"'.($nboflines > 1?' multiple':'').'>';
+	$out = '<select class="flat valignmiddle maxwidth200onsmartphone'.($morecss ? ' '.$morecss : '').'" id="list'.$htmlname.'" name="'.$htmlname.'"'.($nboflines > 1?' multiple':'').'>';
 	$out .= '<option value="0">&nbsp;</option>';
 
 	$sql = 'SELECT s.rowid, s.code, s.label';
@@ -109,15 +110,16 @@ function listmotifcons($nboflines, $newwidth = '', $htmlname = 'motifcons', $sel
  * @param 	int		$newwidth		Force width
  * @param	string	$htmlname		Name of HTML select field
  * @param	string	$selected		Preselected value
+ * @param	string	$morecss		More CSS
  * @return	void
 */
-function listdiagles($nboflines, $newwidth = 0, $htmlname = 'diagles', $selected = '')
+function listdiagles($nboflines, $newwidth = 0, $htmlname = 'diagles', $selected = '', $morecss = '')
 {
 	global $conf,$db,$width,$langs;
 
 	if (empty($newwidth)) $newwidth=$width;
 
-	$out = '<select class="flat valignmiddle maxwidth200onsmartphone" id="list'.$htmlname.'" name="'.$htmlname.'" '.(empty($conf->dol_use_jmobile)?' style="width: '.$newwidth.'px" ':'').'size="'.$nboflines.'"'.($nboflines > 1?' multiple':'').'>';
+	$out = '<select class="flat valignmiddle maxwidth200onsmartphone'.($morecss ? ' '.$morecss : '').'" id="list'.$htmlname.'" name="'.$htmlname.'"'.($nboflines > 1?' multiple':'').'>';
 	$out .= '<option value="0">&nbsp;</option>';
 
 	$sql = 'SELECT s.rowid, s.code, s.label';

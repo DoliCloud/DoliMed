@@ -455,13 +455,13 @@ if (! empty($arrayfields['c.fk_user']['checked'])) {
 if (! empty($arrayfields['c.motifconsprinc']['checked'])) {
 	print '<td class="liste_titre">';
 	$width='200';
-	print listmotifcons(1, $width, 'search_motifprinc', $search_motifprinc);
+	print listmotifcons(1, $width, 'search_motifprinc', $search_motifprinc, 'maxwidth100');
 	print '</td>';
 }
 if (! empty($arrayfields['c.diaglesprinc']['checked'])) {
 	print '<td class="liste_titre">';
 	$width='200';
-	print listdiagles(1, $width, 'search_diaglesprinc', $search_diaglesprinc);
+	print listdiagles(1, $width, 'search_diaglesprinc', $search_diaglesprinc, 'maxwidth100');
 	print '</td>';
 }
 if (! empty($arrayfields['c.typepriseencharge']['checked'])) {
@@ -592,8 +592,14 @@ while ($i < $imaxinloop) {
 
 	if (! empty($arrayfields['c.fk_user']['checked'])) {
 		print '<td class="nowraponall tdoverflowmax125">';
-		$userstatic->fetch($obj->fk_user_creation);
-		print $userstatic->getNomUrl(1);
+		if (empty($conf->cache["user"][$obj->fk_user_creation])) {
+			$userstatic = new User($db);
+			$userstatic->fetch($obj->fk_user_creation);
+			$conf->cache["user"][$obj->fk_user_creation] = $userstatic;
+		} else {
+			$userstatic = $conf->cache["user"][$obj->fk_user_creation];
+		}
+		print $userstatic->getNomUrl(-1);
 		print '</td>';
 	}
 
