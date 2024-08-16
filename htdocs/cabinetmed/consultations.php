@@ -1324,8 +1324,8 @@ if ($action == '' || $action == 'list' || $action == 'delete') {
 
 			if (! empty($arrayfields['t.rowid']['checked'])) {
 				print '<td>';
-				$consultstatic->id=$obj->rowid;
-				$consultstatic->fk_soc=$obj->fk_soc;
+				$consultstatic->id = $obj->rowid;
+				$consultstatic->fk_soc = $obj->fk_soc;
 				print $consultstatic->getNomUrl(1, '&backtopage='.urlencode($_SERVER["PHP_SELF"].'?socid='.$obj->fk_soc));
 				print '</td>';
 				$totalarray['nbfield']++;
@@ -1341,8 +1341,14 @@ if ($action == '' || $action == 'list' || $action == 'delete') {
 			if (! empty($arrayfields['t.fk_user']['checked'])) {
 				print '<td>';
 				if ($obj->fk_user_creation > 0) {
-					$usertmp->fetch($obj->fk_user_creation);
-					print $usertmp->getNomUrl(1);
+					if (empty($conf->cache["user"][$obj->fk_user_creation])) {
+						$usertmp = new User($db);
+						$usertmp->fetch($obj->fk_user_creation);
+						$conf->cache["user"][$obj->fk_user_creation] = $usertmp;
+					} else {
+						$usertmp = $conf->cache["user"][$obj->fk_user_creation];
+					}
+					print $usertmp->getNomUrl(-1);
 				}
 				print '</td>';
 				$totalarray['nbfield']++;

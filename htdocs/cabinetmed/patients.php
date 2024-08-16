@@ -107,10 +107,10 @@ $search_categ = GETPOST("search_categ", "int");
 $search_diagles = GETPOST("search_diagles", "int");
 $search_contactid = GETPOST("search_contactid", "int");
 
-$type=GETPOST('type', 'alpha');
+$type = GETPOST('type', 'alpha');
 
 
-$diroutputmassaction=$conf->societe->dir_output . '/temp/massgeneration/'.$user->id;
+$diroutputmassaction = $conf->societe->dir_output . '/temp/massgeneration/'.$user->id;
 
 // Load variable for pagination
 $limit = GETPOST('limit', 'int')?GETPOST('limit', 'int'):$conf->liste_limit;
@@ -227,7 +227,7 @@ if (GETPOST('cancel', 'alpha')) { $action='list'; $massaction=''; }
 if (! GETPOST('confirmmassaction', 'alpha') && $massaction != 'presend' && $massaction != 'confirm_presend') { $massaction=''; }
 
 $parameters=array();
-$reshook=$hookmanager->executeHooks('doActions', $parameters, $object, $action);    // Note that $action and $object may have been modified by some hooks
+$reshook = $hookmanager->executeHooks('doActions', $parameters, $object, $action);    // Note that $action and $object may have been modified by some hooks
 if ($reshook < 0) {
 	setEventMessages($hookmanager->error, $hookmanager->errors, 'errors');
 }
@@ -291,9 +291,9 @@ if (empty($reshook)) {
 
 	if ($action == 'setstcomm') {
 		$object = new Client($db);
-		$result=$object->fetch(GETPOST('stcommsocid'));
-		$object->stcomm_id=dol_getIdFromCode($db, GETPOST('stcomm', 'alpha'), 'c_stcomm');
-		$result=$object->update($object->id, $user);
+		$result = $object->fetch(GETPOST('stcommsocid'));
+		$object->stcomm_id = dol_getIdFromCode($db, GETPOST('stcomm', 'alpha'), 'c_stcomm');
+		$result = $object->update($object->id, $user);
 		if ($result < 0) {
 			setEventMessages($object->error, $object->errors, 'errors');
 		}
@@ -341,7 +341,7 @@ $sql .= " s.entity,";
 $sql .= " s.client, s.fournisseur,";
 $sql .= " s.email, s.phone, s.fax, s.url, s.siren as idprof1, s.siret as idprof2, s.ape as idprof3, s.idprof4 as idprof4, s.idprof5 as idprof5, s.idprof6 as idprof6, s.tva_intra, s.fk_pays,";
 $sql .= " s.tms as date_modification, s.datec, s.import_key,";
-$sql .= " s.code_compta, s.code_compta_fournisseur, s.parent as fk_parent, s.price_level,";
+$sql .= " s.code_compta as code_compta_client, s.code_compta_fournisseur, s.parent as fk_parent, s.price_level,";
 $sql .= " s.canvas, s.status as status,";
 $sql .= " country.code as country_code, country.label as country_label,";
 $sql .= " MAX(c.datecons) as lastcons, COUNT(c.rowid) as nb";
@@ -748,8 +748,11 @@ $moreforfilter.='</div>';
 
 $parameters=array();
 $reshook=$hookmanager->executeHooks('printFieldPreListTitle', $parameters, $object);    // Note that $action and $object may have been modified by hook
-if (empty($reshook)) $moreforfilter .= $hookmanager->resPrint;
-else $moreforfilter = $hookmanager->resPrint;
+if (empty($reshook)) {
+	$moreforfilter .= $hookmanager->resPrint;
+} else {
+	$moreforfilter = $hookmanager->resPrint;
+}
 
 if (!empty($moreforfilter)) {
 	print '<div class="liste_titre liste_titre_bydiv centpercent">';
@@ -1107,7 +1110,7 @@ while ($i < min($num, $limit)) {
 	$companystatic->tva_intra = $obj->tva_intra;
 	$companystatic->country_code = $obj->country_code;
 
-	$companystatic->code_compta_client=$obj->code_compta;
+	$companystatic->code_compta_client=$obj->code_compta_client;
 	$companystatic->code_compta_fournisseur=$obj->code_compta_fournisseur;
 
 	//$companystatic->fk_prospectlevel=$obj->fk_prospectlevel;
@@ -1175,7 +1178,7 @@ while ($i < min($num, $limit)) {
 	}
 	// Account customer code
 	if (! empty($arrayfields['s.code_compta']['checked'])) {
-		print '<td>'.dol_escape_htmltag($obj->code_compta).'</td>';
+		print '<td>'.dol_escape_htmltag($obj->code_compta_client).'</td>';
 		if (! $i) $totalarray['nbfield']++;
 	}
 	// Account supplier code

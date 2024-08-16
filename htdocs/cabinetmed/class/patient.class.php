@@ -232,8 +232,8 @@ class Patient extends Societe
 		if ($this->code_client == -1) $this->get_codeclient($this->prefix_comm, 0);
 		if ($this->code_fournisseur == -1) $this->get_codefournisseur($this->prefix_comm, 1);
 
-		$this->code_compta=trim($this->code_compta);
-		$this->code_compta_fournisseur=trim($this->code_compta_fournisseur);
+		$this->code_compta_client = trim($this->code_compta_client);
+		$this->code_compta_fournisseur = trim($this->code_compta_fournisseur);
 
 		// Check parameters
 		if (! empty($conf->global->SOCIETE_EMAIL_MANDATORY) && ! isValidEMail($this->email)) {
@@ -250,36 +250,36 @@ class Patient extends Societe
 			dol_syslog(get_class($this)."::Update verify ok");
 
 			$sql = "UPDATE ".MAIN_DB_PREFIX."societe";
-			$sql.= " SET nom = '" . addslashes($this->name) ."'"; // Champ obligatoire
+			$sql.= " SET nom = '" . $this->db->escape($this->name) ."'"; // Champ obligatoire
 			$sql.= ",datea = '".$this->db->idate(mktime())."'";
-			$sql.= ",address = '" . addslashes($this->address) ."'";
+			$sql.= ",address = '" . $this->db->escape($this->address) ."'";
 
 			$sql.= ",zip = ".($this->zip?"'".$this->zip."'":"null");
-			$sql.= ",town = ".($this->town?"'".addslashes($this->town)."'":"null");
+			$sql.= ",town = ".($this->town?"'".$this->db->escape($this->town)."'":"null");
 
 			$sql .= ",fk_departement = '" . ($this->state_id?$this->state_id:'0') ."'";
 			$sql .= ",fk_pays = '" . ($this->country_id?$this->country_id:'0') ."'";
 
-			$sql .= ",phone = ".($this->phone?"'".addslashes($this->phone)."'":"null");
-			$sql .= ",fax = ".($this->fax?"'".addslashes($this->fax)."'":"null");
-			$sql .= ",email = ".($this->email?"'".addslashes($this->email)."'":"null");
-			$sql .= ",url = ".($this->url?"'".addslashes($this->url)."'":"null");
+			$sql .= ",phone = ".($this->phone?"'".$this->db->escape($this->phone)."'":"null");
+			$sql .= ",fax = ".($this->fax?"'".$this->db->escape($this->fax)."'":"null");
+			$sql .= ",email = ".($this->email?"'".$this->db->escape($this->email)."'":"null");
+			$sql .= ",url = ".($this->url?"'".$this->db->escape($this->url)."'":"null");
 
-			$sql .= ",siren   = '". addslashes($this->idprof1) ."'";
-			$sql .= ",siret   = '". addslashes($this->idprof2) ."'";
-			$sql .= ",ape     = '". addslashes($this->idprof3) ."'";
-			$sql .= ",idprof4 = '". addslashes($this->idprof4) ."'";
+			$sql .= ",siren   = '". $this->db->escape($this->idprof1) ."'";
+			$sql .= ",siret   = '". $this->db->escape($this->idprof2) ."'";
+			$sql .= ",ape     = '". $this->db->escape($this->idprof3) ."'";
+			$sql .= ",idprof4 = '". $this->db->escape($this->idprof4) ."'";
 
 			$sql .= ",tva_assuj = ".($this->tva_assuj!=''?"'".$this->tva_assuj."'":"null");
-			$sql .= ",tva_intra = '" . addslashes($this->tva_intra) ."'";
+			$sql .= ",tva_intra = '" . $this->db->escape($this->tva_intra) ."'";
 
 			// Local taxes
-			$sql .= ",localtax1_assuj = ".($this->localtax1_assuj!=''?"'".$this->localtax1_assuj."'":"null");
-			$sql .= ",localtax2_assuj = ".($this->localtax2_assuj!=''?"'".$this->localtax2_assuj."'":"null");
+			$sql .= ",localtax1_assuj = ".($this->localtax1_assuj!=''?"'".$this->db->escape($this->localtax1_assuj)."'":"null");
+			$sql .= ",localtax2_assuj = ".($this->localtax2_assuj!=''?"'".$this->db->escape($this->localtax2_assuj)."'":"null");
 
-			$sql .= ",capital = ".$this->capital;
+			$sql .= ",capital = ".((float) $this->capital);
 
-			$sql .= ",prefix_comm = ".($this->prefix_comm?"'".addslashes($this->prefix_comm)."'":"null");
+			$sql .= ",prefix_comm = ".($this->prefix_comm?"'".$this->db->escape($this->prefix_comm)."'":"null");
 
 			$sql .= ",fk_effectif = ".($this->effectif_id?"'".$this->effectif_id."'":"null");
 
@@ -296,26 +296,28 @@ class Patient extends Societe
 			if ($allowmodcodeclient) {
 				//$this->check_codeclient();
 
-				$sql .= ", code_client = ".($this->code_client?"'".addslashes($this->code_client)."'":"null");
+				$sql .= ", code_client = ".($this->code_client?"'".$this->db->escape($this->code_client)."'":"null");
 
 				// Attention get_codecompta peut modifier le code suivant le module utilise
-				if (empty($this->code_compta)) $this->get_codecompta('customer');
+				if (empty($this->code_compta_client)) {
+					$this->get_codecompta('customer');
+				}
 
-				$sql .= ", code_compta = ".($this->code_compta?"'".addslashes($this->code_compta)."'":"null");
+				$sql .= ", code_compta = ".($this->code_compta_client ? "'".$this->db->escape($this->code_compta_client)."'":"null");
 			}
 
 			if ($allowmodcodefournisseur) {
 				//$this->check_codefournisseur();
 
-				$sql .= ", code_fournisseur = ".($this->code_fournisseur?"'".addslashes($this->code_fournisseur)."'":"null");
+				$sql .= ", code_fournisseur = ".($this->code_fournisseur?"'".$this->db->escape($this->code_fournisseur)."'":"null");
 
 				// Attention get_codecompta peut modifier le code suivant le module utilise
 				if (empty($this->code_compta_fournisseur)) $this->get_codecompta('supplier');
 
-				$sql .= ", code_compta_fournisseur = ".($this->code_compta_fournisseur?"'".addslashes($this->code_compta_fournisseur)."'":"null");
+				$sql .= ", code_compta_fournisseur = ".($this->code_compta_fournisseur?"'".$this->db->escape($this->code_compta_fournisseur)."'":"null");
 			}
-			$sql .= ", fk_user_modif = ".($user->id > 0 ? "'".$user->id."'":"null");
-			$sql .= " WHERE rowid = '" . $id ."'";
+			$sql .= ", fk_user_modif = ".($user->id > 0 ? ((int) $user->id) : "null");
+			$sql .= " WHERE rowid = " . ((int) $id);
 
 
 			dol_syslog(get_class($this)."::update sql=".$sql);
@@ -382,7 +384,7 @@ class Patient extends Societe
 		$sql .= ', s.fk_typent as typent_id';
 		$sql .= ', s.fk_effectif as effectif_id';
 		$sql .= ', s.fk_forme_juridique as forme_juridique_code';
-		$sql .= ', s.code_client, s.code_fournisseur, s.code_compta, s.code_compta_fournisseur, s.parent, s.barcode';
+		$sql .= ', s.code_client, s.code_fournisseur, s.code_compta as code_compta_client, s.code_compta_fournisseur, s.parent, s.barcode';
 		$sql .= ', s.fk_departement as state_id, s.fk_pays, s.fk_stcomm, s.remise_client, s.mode_reglement, s.cond_reglement, s.tva_assuj';
 		$sql .= ', s.mode_reglement_supplier, s.cond_reglement_supplier, s.localtax1_assuj, s.localtax1_value, s.localtax2_assuj, s.localtax2_value, s.fk_prospectlevel, s.default_lang, s.logo';
 		$sql .= ', s.outstanding_limit, s.import_key, s.canvas';
@@ -482,7 +484,8 @@ class Patient extends Societe
 				$this->code_client = $obj->code_client;
 				$this->code_fournisseur = $obj->code_fournisseur;
 
-				$this->code_compta = $obj->code_compta;
+				$this->code_compta = $obj->code_compta_client;
+				$this->code_compta_client = $obj->code_compta_client;
 				$this->code_compta_fournisseur = $obj->code_compta_fournisseur;
 
 				$this->barcode = $obj->barcode;
