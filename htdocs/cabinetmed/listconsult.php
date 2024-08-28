@@ -590,6 +590,7 @@ while ($i < $imaxinloop) {
 		print '<td class="center">'.dol_print_date($db->jdate($obj->datecons), 'day').'</td>';
 	}
 
+	// Created by
 	if (! empty($arrayfields['c.fk_user']['checked'])) {
 		print '<td class="nowraponall tdoverflowmax125">';
 		if (empty($conf->cache["user"][$obj->fk_user_creation])) {
