@@ -231,18 +231,13 @@ if ($id > 0 || ! empty($ref)) {
 		print '<td>';
 		// $contactAlreadySelected = $commande->getListContactId('external');	// On ne doit pas desactiver un contact deja selectionner car on doit pouvoir le seclectionner une deuxieme fois pour un autre type
 		if (method_exists($form, 'select_contact')) {
-			print $form->select_contact(0, '', 'contactid', 1, '', '', 1, 'minwidth100imp maxwidth400 widthcentpercentminusx', true);
+			print $form->select_contact(0, GETPOSTINT('contactid'), 'contactid', 1, '', '', 1, 'minwidth100imp maxwidth400 widthcentpercentminusx', true);
 		} else {
-			print $form->selectcontacts(0, '', 'contactid', 1, '', '', 1);
+			print $form->selectcontacts(0, GETPOSTINT('contactid'), 'contactid', 1, '', '', 1);
 		}
 
 		$nbofcontacts = $form->num;
-		//if ($nbofcontacts == 0) print $langs->trans("NoContactDefined");
-		if (versioncompare(versiondolibarrarray(), array(3,7,-3)) >= 0) {
-			print ' <a href="'.DOL_URL_ROOT.'/contact/card.php?leftmenu=contacts&action=create&backtopage='.urlencode($_SERVER["PHP_SELF"]).'?socid='.$socid.'">'.$langs->trans("Add").'</a>';
-		} else {
-			print ' <a href="'.DOL_URL_ROOT.'/contact/card.php?leftmenu=contacts&action=create&backtopage='.urlencode($_SERVER["PHP_SELF"]).'?socid='.$socid.'">'.$langs->trans("Add").'</a>';
-		}
+		print ' <a href="'.DOL_URL_ROOT.'/contact/card.php?leftmenu=contacts&action=create&backtopage='.urlencode($_SERVER["PHP_SELF"].'?socid='.$socid.'&contactid=__ID__').'">'.$langs->trans("Add").'</a>';
 		print '</td>';
 		print '<td>';
 		$formcompany->selectTypeContact($societe, '', 'type', 'external', 'libelle', 1);
