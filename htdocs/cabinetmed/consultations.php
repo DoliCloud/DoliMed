@@ -893,7 +893,7 @@ if (! ($socid > 0)) {
 
 		print '<div class="fichecenter"><div class="fichehalfleft">';
 
-		print '<table class="notopnoleftnoright" id="adddiagbox" width="100%">';
+		print '<table class="notopnoleftnoright centpercent" id="adddiagbox">';
 		//print '<tr><td><br></td></tr>';
 		print '<tr><td class="titlefield">';
 		print $langs->trans("DiagnostiqueLesionnel").':';
@@ -1339,7 +1339,7 @@ if ($action == '' || $action == 'list' || $action == 'delete') {
 			}
 
 			if (! empty($arrayfields['t.fk_user']['checked'])) {
-				print '<td>';
+				print '<td class="tdoverflowmax125">';
 				if ($obj->fk_user_creation > 0) {
 					if (empty($conf->cache["user"][$obj->fk_user_creation])) {
 						$usertmp = new User($db);
