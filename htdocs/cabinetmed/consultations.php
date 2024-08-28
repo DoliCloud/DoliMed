@@ -1355,26 +1355,28 @@ if ($action == '' || $action == 'list' || $action == 'delete') {
 			}
 
 			if (! empty($arrayfields['t.motifconsprinc']['checked'])) {
-				print '<td>'.dol_trunc($obj->motifconsprinc, 32).'</td>';
+				print '<td class="tdoverflowmax150" title="'.dol_escape_htmltag($obj->motifconsprinc).'">';
+				print dol_escape_htmltag($obj->motifconsprinc);
+				print '</td>';
 				$totalarray['nbfield']++;
 			}
 
 			if (! empty($arrayfields['t.diaglesprinc']['checked'])) {
-				print '<td>';
-				print dol_trunc($obj->diaglesprinc, 32);
+				print '<td class="tdoverflowmax150" title="'.dol_escape_htmltag($obj->diaglesprinc).'">';
+				print dol_escape_htmltag($obj->diaglesprinc);
 				print '</td>';
 				$totalarray['nbfield']++;
 			}
 
 			if (! empty($arrayfields['t.typepriseencharge']['checked'])) {
-				print '<td>';
+				print '<td class="tdoverflowmax150">';
 				print $obj->typepriseencharge;
 				print '</td>';
 				$totalarray['nbfield']++;
 			}
 
 			if (! empty($arrayfields['t.typevisit']['checked'])) {
-				print '<td>';
+				print '<td class="tdoverflowmax150">';
 				print $langs->trans($obj->typevisit);
 				print '</td>';
 				$totalarray['nbfield']++;
