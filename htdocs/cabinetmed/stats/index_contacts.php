@@ -193,7 +193,7 @@ print '</tr>';
 
 $sql = "SELECT";
 $sql.= " COUNT(s.rowid) as nb,";
-$sql.= " AVG(DATEDIFF(NOW(), se.birthdate)) as averageold,";
+$sql.= " AVG(DATEDIFF('".$db->idate(dol_now())."', se.birthdate)) as averageold,";
 $sql.= " c.rowid,";
 $sql.= " c.lastname as lastname,";
 $sql.= " c.firstname as firstname";
