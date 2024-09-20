@@ -152,9 +152,9 @@ Gender=Dzimums
 NumberConsultByMonth=Apspriežu skaits mēnesī
 NumberConsult=Apspriežu skaits
 ActivityBranch=Darbības nozare
-AboutInfo=Šo moduli izstrādā un izplata Laurent Destailleur par NLTechno, <a href="http://www.nltechno.com"> www.nltechno.com </a> (Dolibarr Preferred Partner uzņēmums).
+AboutInfo=Šo moduli izstrādā un izplata Laurent Destailleur par DoliCloud, <a href="http://www.dolicloud.com"> www.dolicloud.com </a> (Dolibarr Preferred Partner uzņēmums).
 MoreModules=Citi tā paša autora moduļi ir pieejami oficiālajā DoliStore tirgū.
-MoreModulesLink= <a target="_blank" href="http://www.dolistore.com/search.php?search_query=nltechno"> Noklikšķiniet šeit, lai redzētu pilnu sarakstu </a>
+MoreModulesLink= <a target="_blank" href="http://www.dolistore.com/search.php?search_query=dolicloud"> Noklikšķiniet šeit, lai redzētu pilnu sarakstu </a>
 MoreCloudHosting=Lai izmantotu tiešsaistes Dolibarr, izvēlieties drošu hostingu DoliCloud.
 MoreCloudHostingLink= <a target="_blank" href="http://www.dolicloud.com"> Noklikšķiniet šeit, lai iegūtu vairāk informācijas </a>
 CompatibleWithDoliDroid=Šie moduļi ir saderīgi arī ar DoliDroid, Android lietojumprogrammu Dolibarr.

@@ -152,9 +152,9 @@ Gender=Φύλο
 NumberConsultByMonth=Αριθμός γνωματεύσεων ανά μήνα
 NumberConsult=Αριθμός της γνωμάτευσης
 ActivityBranch=Activity branch
-AboutInfo=Αύτό το άρθρωμα αναπτύσεται  και διανέμεται από τον Laurent Destailleur για την NLTechno, <a href="http://www.nltechno.com">www.nltechno.com</a> (Μια επιλεγμένη εταιρία συνεργασίας με το Dolibarr).
+AboutInfo=Αύτό το άρθρωμα αναπτύσεται  και διανέμεται από τον Laurent Destailleur για την DoliCloud, <a href="http://www.dolicloud.com">www.dolicloud.com</a> (Μια επιλεγμένη εταιρία συνεργασίας με το Dolibarr).
 MoreModules=Άλλα αρθρώματα του ίδιου δημιουργού είναι διαθέσιμα στο DoliStore
-MoreModulesLink=<a target="_blank" href="http://www.dolistore.com/search.php?search_query=nltechno">Click για εμφάνιση πλήρους λίστας</a>
+MoreModulesLink=<a target="_blank" href="http://www.dolistore.com/search.php?search_query=dolicloud">Click για εμφάνιση πλήρους λίστας</a>
 MoreCloudHosting=Για να χρησιμοποιήσετε το Dolibarr online, επιλέξτε τη ασφαλή φιλοξενεία στο DoliCloud.
 MoreCloudHostingLink=<a target="_blank" href="http://www.dolicloud.com">Click εδώ για περισσότερες πληρφορίες</a>
 CompatibleWithDoliDroid=Αυτά τα ενθέματα είναι επίσης συμβατά με το DoliDroid, την Android εφαρμογή για το Dolibarr.

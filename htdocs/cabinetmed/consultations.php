@@ -1210,7 +1210,7 @@ if ($action == '' || $action == 'list' || $action == 'delete') {
 	$totalarray['nbfield'] = 0;
 
 	print '<div class="div-table-responsive">';
-	print '<table class="noborder" width="100%">';
+	print '<table class="noborder centpercent">';
 	print '<tr class="liste_titre">';
 	if (! empty($arrayfields['t.rowid']['checked'])) {
 		print_liste_field_titre($langs->trans('Num'), $_SERVER['PHP_SELF'], 't.rowid', '', $param, '', $sortfield, $sortorder);

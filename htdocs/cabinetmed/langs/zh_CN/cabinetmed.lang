@@ -152,9 +152,9 @@ Gender=性别
 NumberConsultByMonth=每月咨询数量
 NumberConsult=咨询数量
 ActivityBranch=活动分支
-AboutInfo=此模块由Laurent Destailleur为NLTechno, <a href="http://www.nltechno.com">www.nltechno.com</a> ( Dolibarr 首选合作伙伴公司)开发和发布
+AboutInfo=此模块由Laurent Destailleur为DoliCloud, <a href="http://www.dolicloud.com">www.dolicloud.com</a> ( Dolibarr 首选合作伙伴公司)开发和发布
 MoreModules=同一作者的其他模块可在DoliStore官方市场上找到
-MoreModulesLink=<a target="_blank" href="http://www.dolistore.com/search.php?search_query=nltechno">点击这里查看完整清单</a>
+MoreModulesLink=<a target="_blank" href="http://www.dolistore.com/search.php?search_query=dolicloud">点击这里查看完整清单</a>
 MoreCloudHosting=要使用在线Dolibarr，请选择安全的主机DoliCloud
 MoreCloudHostingLink=<a target="_blank" href="http://www.dolicloud.com">点击这里获取更多信息</a>
 CompatibleWithDoliDroid=本模块与Dolibarr的安卓应用程序DoliDroid兼容

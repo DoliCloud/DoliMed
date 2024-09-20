@@ -90,9 +90,9 @@ ClickHereToSetPrimaryDiagnostic=Clique aqui para marcar o principal diagnóstico
 ClickHereToSetSecondaryDiagnostic=Clique aqui para adicionar o diagnóstico secundário
 Gender=Genero
 ActivityBranch=Ramo de atividade
-AboutInfo=Este módulo é desenvolvido e distribuído por Laurent Destailleur para NLTechno, <a href="http://www.nltechno.com">www.nltechno.com</a> (A empresa Dolibarr Preferred Partner).
+AboutInfo=Este módulo é desenvolvido e distribuído por Laurent Destailleur para DoliCloud, <a href="http://www.dolicloud.com">www.dolicloud.com</a> (A empresa Dolibarr Preferred Partner).
 MoreModules=Outros módulos do mesmo autor estão disponíveis na loja oficial DoliStore...
-MoreModulesLink=<a target="_blank" href="http://www.dolistore.com/search.php?search_query=nltechno">Clique aqui para ver a lista completa</a>
+MoreModulesLink=<a target="_blank" href="http://www.dolistore.com/search.php?search_query=dolicloud">Clique aqui para ver a lista completa</a>
 MoreCloudHosting=Para usar online Dolibarr, escolha a hospedagem segura DoliCloud.
 CompatibleWithDoliDroid=Este módulo é compatível com DoliDroid, o aplicativo Android para Dolibarr.
 HideThirdPartiesMenu=Fechar menu terceiros (todos clientes são pacientes). Se você gerencia fornecedores (módulo Fornecedor habilitado), este menu será visível para manter os recursos de fornecedor acessíveis.

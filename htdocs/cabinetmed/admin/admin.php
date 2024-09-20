@@ -130,6 +130,7 @@ print '<input type="hidden" name="action" value="update">';
 
 dol_fiche_head($head, 'tabsetup', '', ((float) DOL_VERSION < 7.0 ? 0 : -1));
 
+print '<div class="div-table-responsive">';
 
 print '<table class="noborder centpercent">';
 print '<tr class="liste_titre">';
@@ -145,6 +146,14 @@ print '<tr class="oddeven"><td>'.$langs->trans("HideCustomerFeatures").'</td>';
 print '<td>'.$form->selectyesno('SOCIETE_DISABLE_CUSTOMERS', getDolGlobalString('SOCIETE_DISABLE_CUSTOMERS'), 1).'</td>';
 print '</tr>';
 
+print '<tr class="oddeven"><td>'.$langs->trans("DiagnosticIsMandatoryOnConsultation").'</td>';
+print '<td>'.$form->selectyesno('DIAGNOSTIC_IS_NOT_MANDATORY', (getDolGlobalString('DIAGNOSTIC_IS_NOT_MANDATORY') ? 0 : 1), 1).'</td>';
+print '</tr>';
+
+print '<tr class="oddeven"><td>'.$langs->trans("CABINETMED_BANK_PATIENT_REQUIRED").'</td>';
+print '<td>'.$form->selectyesno('CABINETMED_BANK_PATIENT_REQUIRED', getDolGlobalString('CABINETMED_BANK_PATIENT_REQUIRED'), 1).'</td>';
+print '</tr>';
+
 print '<tr class="oddeven"><td>'.$langs->trans("CABINETMED_AUTOGENERATE_INVOICE").'</td>';
 print '<td>';
 if (!getDolGlobalString('SOCIETE_DISABLE_CUSTOMERS')) {
@@ -155,16 +164,8 @@ if (!getDolGlobalString('SOCIETE_DISABLE_CUSTOMERS')) {
 print '</td>';
 print '</tr>';
 
-print '<tr class="oddeven"><td>'.$langs->trans("CABINETMED_BANK_PATIENT_REQUIRED").'</td>';
-print '<td>'.$form->selectyesno('CABINETMED_BANK_PATIENT_REQUIRED', getDolGlobalString('CABINETMED_BANK_PATIENT_REQUIRED'), 1).'</td>';
-print '</tr>';
-
 print '<tr class="oddeven"><td>'.$langs->trans("EnableSpecificFeaturesToRheumatology").'</td>';
 print '<td>'.$form->selectyesno('CABINETMED_RHEUMATOLOGY_ON', getDolGlobalString('CABINETMED_RHEUMATOLOGY_ON'), 1).'</td>';
-print '</tr>';
-
-print '<tr class="oddeven"><td>'.$langs->trans("DiagnosticIsMandatoryOnConsultation").'</td>';
-print '<td>'.$form->selectyesno('DIAGNOSTIC_IS_NOT_MANDATORY', (getDolGlobalString('DIAGNOSTIC_IS_NOT_MANDATORY') ? 0 : 1), 1).'</td>';
 print '</tr>';
 
 print '<tr class="oddeven"><td>'.$langs->trans("CABINETMED_DELAY_TO_LOCK_RECORD").'</td>';
@@ -173,9 +174,12 @@ print '</tr>';
 
 print '</table>';
 
+print '</div>';
+
 dol_fiche_end();
 
 print '<div class="center"><input type="submit" name="save" value="'.$langs->trans("Save").'" class="button"></div>';
+
 print '</form>';
 
 

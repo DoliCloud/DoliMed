@@ -152,9 +152,9 @@ Gender=性別
 NumberConsultByMonth=1ヶ月あたりの診察件数
 NumberConsult=診察件数
 ActivityBranch=アクティビティブランチ
-AboutInfo=このモジュールは、NLTechnoのLaurent Destailleur、<a href="http://www.nltechno.com"> www.nltechno.com </a>（Dolibarr優先パートナー企業）によって開発および配布されている。
+AboutInfo=このモジュールは、DoliCloudのLaurent Destailleur、<a href="http://www.dolicloud.com"> www.dolicloud.com </a>（Dolibarr優先パートナー企業）によって開発および配布されている。
 MoreModules=同じ作者の他のモジュールは、公式のDoliStoreマーケットプレイスで入手できる...
-MoreModulesLink= <a target="_blank" href="http://www.dolistore.com/search.php?search_query=nltechno">完全なリストを表示するには、ここをクリックすること</a>
+MoreModulesLink= <a target="_blank" href="http://www.dolistore.com/search.php?search_query=dolicloud">完全なリストを表示するには、ここをクリックすること</a>
 MoreCloudHosting=オンラインDolibarrを使用するには、セキュリティで保護されたホスティングDoliCloudを選択する。
 MoreCloudHostingLink= <a target="_blank" href="http://www.dolicloud.com">詳細についてはここをクリック</a>
 CompatibleWithDoliDroid=このモジュールは、Dolibarr用のAndroidアプリケーションであるDoliDroidとも互換性がある。
