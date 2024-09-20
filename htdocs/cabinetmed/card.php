@@ -79,6 +79,8 @@ $extrafields->fetch_name_optionals_label($object->table_element);
 // Initialize technical object to manage hooks of page. Note that conf->hooks_modules contains array of hook context
 $hookmanager->initHooks(array('thirdpartycard','globalcard'));
 
+$socialnetworks = getArrayOfSocialNetworks();
+
 if ($socid > 0) $object->fetch($socid);
 
 if (! ($object->id > 0) && $action == 'view') {
@@ -97,6 +99,14 @@ if (! empty($canvas)) {
 	$objcanvas->getCanvas('thirdparty', 'card', $canvas);
 }
 
+// Permissions
+$permissiontoread 	= $user->hasRight('societe', 'lire');
+$permissiontoadd 	= $user->hasRight('societe', 'creer'); // Used by the include of actions_addupdatedelete.inc.php and actions_lineupdown.inc.php
+$permissiontodelete = $user->hasRight('societe', 'supprimer') || ($permissiontoadd && isset($object->status) && $object->status == 0);
+$permissionnote 	= $user->hasRight('societe', 'creer'); // Used by the include of actions_setnotes.inc.php
+$permissiondellink 	= $user->hasRight('societe', 'creer'); // Used by the include of actions_dellink.inc.php
+$upload_dir 		= $conf->societe->multidir_output[isset($object->entity) ? $object->entity : 1];
+
 // Security check
 $result = restrictedArea($user, 'societe', $socid, '&societe', '', 'fk_soc', 'rowid', 0);
 
@@ -108,7 +118,9 @@ $result = restrictedArea($user, 'societe', $socid, '&societe', '', 'fk_soc', 'ro
 
 $parameters=array('id'=>$socid, 'objcanvas'=>$objcanvas);
 $reshook=$hookmanager->executeHooks('doActions', $parameters, $object, $action);    // Note that $action and $object may have been modified by some hooks
-if ($reshook < 0) setEventMessages($hookmanager->error, $hookmanager->errors, 'errors');
+if ($reshook < 0) {
+	setEventMessages($hookmanager->error, $hookmanager->errors, 'errors');
+}
 
 if (empty($reshook)) {
 	if ($cancel) {
@@ -293,13 +305,13 @@ if (empty($reshook)) {
 	}
 
 	if ($action=='set_localtax1' && $user->hasRight('societe', 'creer')) {
-		//obtidre selected del combobox
+		//get selected from combobox
 		$value=GETPOST('lt1');
 		$object->fetch($socid);
 		$res=$object->setValueFrom('localtax1_value', $value, '', null, 'text', '', $user, 'COMPANY_MODIFY');
 	}
 	if ($action=='set_localtax2' && $user->hasRight('societe', 'creer')) {
-		//obtidre selected del combobox
+		//get selected from combobox
 		$value=GETPOST('lt2');
 		$object->fetch($socid);
 		$res=$object->setValueFrom('localtax2_value', $value, '', null, 'text', '', $user, 'COMPANY_MODIFY');
@@ -311,8 +323,12 @@ if (empty($reshook)) {
 		$object->oldcopy = dol_clone($object, 2);
 
 		// Fill array 'array_options' with data from update form
+		$extrafields->fetch_name_optionals_label($object->table_element);
+		
 		$ret = $extrafields->setOptionalsFromPost(null, $object, GETPOST('attribute', 'restricthtml'));
-		if ($ret < 0) $error++;
+		if ($ret < 0) {
+			$error++;
+		}
 
 		if (! $error) {
 			$result = $object->insertExtraFields('COMPANY_MODIFY');
@@ -322,7 +338,9 @@ if (empty($reshook)) {
 			}
 		}
 
-		if ($error) $action = 'edit_extras';
+		if ($error) {
+			$action = 'edit_extras';
+		}
 	}
 
 	// Add new or update third party
@@ -338,9 +356,11 @@ if (empty($reshook)) {
 			if ($action == 'update') {
 				$ret=$object->fetch($socid);
 				$object->oldcopy=clone $object;
-			} else $object->canvas=$canvas;
+			} else {
+				$object->canvas = $canvas;
+			}
 
-			if (GETPOST("private", 'int') == 1) {	// Ask to create a contact
+			if (GETPOSTINT("private") == 1) {	// Ask to create a contact
 				$object->particulier       = GETPOST("private");
 
 				$object->name              = dolGetFirstLastname(GETPOST('firstname', 'alpha'), GETPOST('name', 'alpha'));
@@ -351,33 +371,46 @@ if (empty($reshook)) {
 				$object->firstname         = GETPOST('firstname', 'alpha');
 			} else {
 				$object->name              = GETPOST('name')?GETPOST('name', 'alpha'):GETPOST('nom', 'alpha');
-				$object->name_alias        = GETPOST('name_alias');
 			}
 			$object->entity					= (GETPOSTISSET('entity')?GETPOST('entity', 'int'):$conf->entity);
 			$object->name_alias				= GETPOST('name_alias');
+			$object->parent					= GETPOSTISSET('parent_company_id') ? GETPOSTINT('parent_company_id') : $object->parent;
 			$object->address				= GETPOST('address');
 			$object->zip					= GETPOST('zipcode', 'alpha');
 			$object->town					= GETPOST('town', 'alpha');
 			$object->country_id				= GETPOST('country_id', 'int');
 			$object->state_id				= GETPOST('state_id', 'int');
+
+			$object->socialnetworks = array();
+			if (isModEnabled('socialnetworks')) {
+				foreach ($socialnetworks as $key => $value) {
+					if (GETPOSTISSET($key) && GETPOST($key, 'alphanohtml') != '') {
+						$object->socialnetworks[$key] = GETPOST($key, 'alphanohtml');
+					}
+				}
+			}
+			
 			$object->phone					= GETPOST('phone', 'alpha');
+			$object->phone_mobile 			= (string) GETPOST("phone_mobile", 'alpha');
 			$object->fax					= GETPOST('fax', 'alpha');
 			$object->email					= trim(GETPOST('email', 'custom', 0, FILTER_SANITIZE_EMAIL));
+			$object->no_email 				= GETPOSTINT("no_email");
 			$object->url					= trim(GETPOST('url', 'custom', 0, FILTER_SANITIZE_URL));
-			$object->idprof1				= trim(GETPOST('idprof1', 'alpha'));
-			$object->idprof2				= trim(GETPOST('idprof2', 'alpha'));
-			$object->idprof3				= trim(GETPOST('idprof3', 'alpha'));
-			$object->idprof4				= trim(GETPOST('idprof4', 'alpha'));
-			$object->idprof5				= trim(GETPOST('idprof5', 'alpha'));
-			$object->idprof6				= trim(GETPOST('idprof6', 'alpha'));
-			$object->prefix_comm			= GETPOST('prefix_comm', 'alpha');
-			$object->code_client			= GETPOSTISSET('customer_code')?GETPOST('customer_code', 'alpha'):GETPOST('code_client', 'alpha');
-			$object->code_fournisseur		= GETPOSTISSET('supplier_code')?GETPOST('supplier_code', 'alpha'):GETPOST('code_fournisseur', 'alpha');
-			$object->capital				= GETPOST('capital', 'alpha');
-			$object->barcode				= GETPOST('barcode', 'alpha');
-
-			$object->tva_intra				= GETPOST('tva_intra', 'alpha');
+			$object->idprof1				= trim(GETPOST('idprof1', 'alphanohtml'));
+			$object->idprof2				= trim(GETPOST('idprof2', 'alphanohtml'));
+			$object->idprof3				= trim(GETPOST('idprof3', 'alphanohtml'));
+			$object->idprof4				= trim(GETPOST('idprof4', 'alphanohtml'));
+			$object->idprof5				= trim(GETPOST('idprof5', 'alphanohtml'));
+			$object->idprof6				= trim(GETPOST('idprof6', 'alphanohtml'));
+			$object->prefix_comm			= GETPOST('prefix_comm', 'alphanohtml');
+			$object->code_client			= GETPOSTISSET('customer_code') ? GETPOST('customer_code', 'alpha') : GETPOST('code_client', 'alpha');
+			$object->code_fournisseur		= GETPOSTISSET('supplier_code') ? GETPOST('supplier_code', 'alpha') : GETPOST('code_fournisseur', 'alpha');
+			$object->capital				= GETPOST('capital', 'alphanohtml');
+			$object->barcode				= GETPOST('barcode', 'alphanohtml');
+			
+			$object->tva_intra				= GETPOST('tva_intra', 'alphanohtml');
 			$object->tva_assuj				= GETPOST('assujtva_value', 'alpha');
+			$object->vat_reverse_charge		= GETPOST('vat_reverse_charge') == 'on' ? 1 : 0;
 			$object->status					= GETPOST('status', 'alpha');
 
 

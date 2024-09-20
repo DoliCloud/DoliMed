@@ -33,6 +33,14 @@ if (empty($errors)) {
 	$errors = array();
 }
 
+// Get parameters
+$action		= (GETPOST('action', 'aZ09') ? GETPOST('action', 'aZ09') : 'view');
+$cancel		= GETPOST('cancel', 'alpha');
+$backtopage = GETPOST('backtopage', 'alpha');
+$backtopageforcancel = GETPOST('backtopageforcancel', 'alpha');
+$backtopagejsfields = GETPOST('backtopagejsfields', 'alpha');
+$confirm 	= GETPOST('confirm', 'alpha');
+
 $object = $GLOBALS['object'];
 
 global $db,$conf,$mysoc,$langs,$user,$hookmanager,$extrafields;
@@ -69,11 +77,11 @@ else dol_fiche_head($head, 'card', $langs->trans("Patient"), -1, 'user-injured')
 $formconfirm = '';
 
 // Confirm delete third party
-if (GETPOST('action') == 'delete' || ($conf->use_javascript_ajax && empty($conf->dol_use_jmobile))) {
+if ($action == 'delete' || ($conf->use_javascript_ajax && empty($conf->dol_use_jmobile))) {
 	$formconfirm = $form->formconfirm($_SERVER["PHP_SELF"]."?socid=".$object->id, $langs->trans("DeleteACompany"), $langs->trans("ConfirmDeleteCompany"), "confirm_delete", '', 0, "action-delete");
 }
 
-if (GETPOST('action') == 'merge') {
+if ($action == 'merge') {
 	$formquestion = array(
 		array(
 			'name' => 'soc_origin',
@@ -117,9 +125,15 @@ print '<div class="fichehalfleft">';
 print '<div class="underbanner clearboth"></div>';
 print '<table class="border tableforfield centpercent">';
 
+// Type Prospect/Customer/Supplier
+//print '<tr><td class="titlefieldmiddle">'.$langs->trans('NatureOfThirdParty').'</td><td>';
+//print $object->getTypeUrl(1);
+//print '</td></tr>';
+
 // Prefix
-if (! empty($conf->global->SOCIETE_USEPREFIX)) {  // Old not used prefix field
-	print '<tr><td>'.$langs->trans('Prefix').'</td><td>'.dol_escape_htmltag($object->prefix_comm).'</td></tr>';
+if (getDolGlobalString('SOCIETE_USEPREFIX')) {  // Old not used prefix field
+	print '<tr><td>'.$langs->trans('Prefix').'</td><td>'.dol_escape_htmltag($object->prefix_comm).'</td>';
+	print '</tr>';
 }
 
 //if ($object->client)
@@ -131,22 +145,41 @@ if (! empty($conf->global->SOCIETE_USEPREFIX)) {  // Old not used prefix field
 	print '</td></tr>';
 //}
 
+// Supplier code
+if (((isModEnabled("fournisseur") && $user->hasRight('fournisseur', 'lire') && !getDolGlobalString('MAIN_USE_NEW_SUPPLIERMOD')) || (isModEnabled("supplier_order") && $user->hasRight('supplier_order', 'lire')) || (isModEnabled("supplier_invoice") && $user->hasRight('supplier_invoice', 'lire'))) && $object->fournisseur) {
+	print '<tr><td>';
+	print $langs->trans('SupplierCode').'</td><td>';
+	print showValueWithClipboardCPButton(dol_escape_htmltag($object->code_fournisseur));
+	$tmpcheck = $object->check_codefournisseur();
+	if ($tmpcheck != 0 && $tmpcheck != -5) {
+		print ' <span class="error">('.$langs->trans("WrongSupplierCode").')</span>';
+	}
+	print '</td>';
+	print '</tr>';
+}
+
 // Barcode
-if (getDolGlobalString('MAIN_MODULE_BARCODE')) {
-	print '<tr><td>'.$langs->trans('Gencod').'</td><td>'.$object->barcode.'</td></tr>';
+if (isModEnabled('barcode')) {
+	print '<tr><td>';
+	print $langs->trans('Gencod').'</td><td>'.showValueWithClipboardCPButton(dol_escape_htmltag($object->barcode));
+	print '</td>';
+	print '</tr>';
 }
 
 // Prof ids
-$i=1; $j=0;
-while ($i <= 6) {
+$i = 1;
+$j = 0;
+$NBPROFIDMIN = getDolGlobalInt('THIRDPARTY_MIN_NB_PROF_ID', 2);
+$NBPROFIDMAX = getDolGlobalInt('THIRDPARTY_MAX_NB_PROF_ID', 6);
+while ($i <= $NBPROFIDMAX) {
 	$key='CABINETMED_SHOW_PROFID'.$i;
-	if (!getDolGlobalString($key)) {
-		$i++;
-		continue;
-	}
+	if (empty($conf->global->$key)) { $i++; continue; }
 
-	$idprof=$langs->transcountry('ProfId'.$i, $object->country_code);
-	if ($idprof!='-') {
+	$idprof = $langs->transcountry('ProfId'.$i, $object->country_code);
+	if (!empty($conf->dol_optimize_smallscreen)) {
+		$idprof = $langs->transcountry('ProfId'.$i.'Short', $object->country_code);
+	}
+	if ($idprof != '-' && ($i <= $NBPROFIDMIN || !empty($langs->tab_translate['ProfId'.$i.$object->country_code]))) {
 		print '<tr>';
 		print '<td>'.$idprof.'</td><td>';
 		$key='idprof'.$i;
@@ -176,29 +209,37 @@ if ($object->tva_intra) {
 	$s.=$object->tva_intra;
 	$s.='<input type="hidden" id="tva_intra" name="tva_intra" maxlength="20" value="'.$object->tva_intra.'">';
 
-	if (empty($conf->global->MAIN_DISABLEVATCHECK)) {
+	if (!getDolGlobalString('MAIN_DISABLEVATCHECK') && isInEEC($object)) {
 		$s.=' &nbsp; ';
 
 		if ($conf->use_javascript_ajax) {
+			$widthpopup = 600;
+			if (!empty($conf->dol_use_jmobile)) {
+				$widthpopup = 350;
+			}
+			$heightpopup = 400;
 			print "\n";
 			print '<script type="text/javascript">';
 			print "function CheckVAT(a) {\n";
-			print "newpopup('".DOL_URL_ROOT."/societe/checkvat/checkVatPopup.php?vatNumber='+a,'".dol_escape_js($langs->trans("VATIntraCheckableOnEUSite"))."',500,285);\n";
+			if ($mysoc->country_code == 'GR' && $object->country_code == 'GR' && !empty($u)) {
+				print "GRVAT(a,'{$u}','{$p}','{$myafm}');\n";
+			} else {
+				print "newpopup('".DOL_URL_ROOT."/societe/checkvat/checkVatPopup.php?vatNumber='+a, '".dol_escape_js($langs->trans("VATIntraCheckableOnEUSite"))."', ".$widthpopup.", ".$heightpopup.");\n";
+			}
 			print "}\n";
 			print '</script>';
 			print "\n";
 			$s.='<a href="#" class="hideonsmartphone" onclick="CheckVAT( $(\'#tva_intra\').val() );">'.$langs->trans("VATIntraCheck").'</a>';
 			$s = $form->textwithpicto($s, $langs->trans("VATIntraCheckDesc", $langs->transnoentitiesnoconv("VATIntraCheck")), 1);
 		} else {
-			$s.='<a href="'.$langs->transcountry("VATIntraCheckURL", $object->country_id).'" class="hideonsmartphone" target="_blank">'.img_picto($langs->trans("VATIntraCheckableOnEUSite"), 'help').'</a>';
+			$s .= '<a href="'.$langs->transcountry("VATIntraCheckURL", $object->country_id).'" class="hideonsmartphone" target="_blank" rel="noopener noreferrer">'.img_picto($langs->trans("VATIntraCheckableOnEUSite"), 'help').'</a>';
 		}
 	}
 	print $s;
 } else {
 	print '&nbsp;';
 }
-print '</td>';
-print '</tr>';
+print '</td></tr>';
 
 // Type + Staff => Genre
 $arr = $formcompany->typent_array(1);
@@ -222,38 +263,39 @@ print '<div class="underbanner clearboth"></div>';
 print '<table class="border tableforfield centpercent">';
 
 // Tags / categories
-if (isModEnabled("categorie") && $user->hasRight('categorie', 'lire')) {
+if (isModEnabled('category') && $user->hasRight('categorie', 'lire')) {
 	// Customer
-	if ($object->prospect || $object->client) {
-		print '<tr><td>' . $langs->trans("CustomersCategoriesShort") . '</td>';
+	if ($object->prospect || $object->client || getDolGlobalString('THIRDPARTY_CAN_HAVE_CUSTOMER_CATEGORY_EVEN_IF_NOT_CUSTOMER_PROSPECT')) {
+		print '<tr><td class="titlefieldmiddle">'.$langs->trans("CustomersCategoriesShort").'</td>';
 		print '<td>';
-		print $form->showCategories($object->id, 'customer', 1);
+		print $form->showCategories($object->id, Categorie::TYPE_CUSTOMER, 1);
 		print "</td></tr>";
 	}
 
 	// Supplier
-	if ($object->fournisseur) {
-		print '<tr><td>' . $langs->trans("SuppliersCategoriesShort") . '</td>';
+	if (((isModEnabled("fournisseur") && $user->hasRight('fournisseur', 'lire') && !getDolGlobalString('MAIN_USE_NEW_SUPPLIERMOD')) || (isModEnabled("supplier_order") && $user->hasRight('supplier_order', 'lire')) || (isModEnabled("supplier_invoice") && $user->hasRight('supplier_invoice', 'lire'))) && $object->fournisseur) {
+		print '<tr><td class="titlefieldmiddle">'.$langs->trans("SuppliersCategoriesShort").'</td>';
 		print '<td>';
-		print $form->showCategories($object->id, 'supplier', 1);
+		print $form->showCategories($object->id, Categorie::TYPE_SUPPLIER, 1);
 		print "</td></tr>";
 	}
 }
 
 // Default language
-if (getDolGlobalString('MAIN_MULTILANGS')) {
+if (getDolGlobalInt('MAIN_MULTILANGS')) {
 	require_once DOL_DOCUMENT_ROOT."/core/lib/functions2.lib.php";
 	print '<tr><td>'.$langs->trans("DefaultLang").'</td><td>';
 	//$s=picto_from_langcode($object->default_lang);
 	//print ($s?$s.' ':'');
 	$langs->load("languages");
 	$labellang = ($object->default_lang?$langs->trans('Language_'.$object->default_lang):'');
+	print picto_from_langcode($object->default_lang, 'class="paddingrightonly saturatemedium opacitylow"');
 	print $labellang;
 	print '</td></tr>';
 }
 
 // Other attributes
-$parameters = array('socid'=>$socid);
+$parameters = array('socid' => $socid, 'colspan' => ' colspan="3"', 'colspanvalue' => '3');
 include DOL_DOCUMENT_ROOT.'/core/tpl/extrafields_view.tpl.php';
 
 // Inject age if a date is defined
@@ -328,12 +370,11 @@ if (isModEnabled("adherent")) {
 	$result=$adh->fetch('', '', $object->id);
 	if ($result > 0) {
 		$adh->ref=$adh->getFullName($langs);
-		print $adh->getNomUrl(1);
+		print $adh->getNomUrl(-1);
 	} else {
 		print '<span class="opacitymedium">'.$langs->trans("ThirdpartyNotLinkedToMember").'</span>';
 	}
-	print '</td>';
-	print "</tr>\n";
+	print "</td></tr>\n";
 }
 
 	// Webservices url/key
@@ -348,7 +389,7 @@ print '</div>';
 print '</div>';
 print '<div class="clearboth"></div>';
 
-dol_fiche_end();
+print dol_get_fiche_end();
 
 
 $permissiontodelete = $user->hasRight('societe', 'supprimer') || ($permissiontoadd && isset($object->status) && $object->status == 0);

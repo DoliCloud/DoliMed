@@ -152,8 +152,8 @@ class ActionsCabinetmed
 
 		// Hook called when asking to add a new record
 		if ($action == 'add') {
-			$nametocheck=GETPOST('name');
-			$date=GETPOST('options_birthdate');
+			$nametocheck = GETPOST('name');
+			$date =GETPOST('options_birthdate');
 			//$confirmduplicate=$_POST['confirmduplicate'];
 
 			// Check on date
@@ -165,7 +165,7 @@ class ActionsCabinetmed
 			if (GETPOST('options_birthdate') && (empty($birthdatearray['tm_year']) || (empty($birthdate) && $birthdate != '0') || ($day > 31) || ($month > 12) || ($year >( $arraytmp['year']+1)))) {
 				$langs->load("errors");
 				$this->errors[] = $langs->trans("ErrorBadDateFormat", $date);
-				$ret=-1;
+				$ret = -1;
 			}
 
 			// Check duplicate
@@ -185,7 +185,7 @@ class ActionsCabinetmed
 							// If already exists, we want to block creation
 							//$_POST['confirmduplicate']=$nametocheck;
 							$langs->load("errors");
-							$this->errors[]=$langs->trans("ErrorPatientNameAlreadyExists", $nametocheck);
+							$this->errors[] = $langs->trans("ErrorPatientNameAlreadyExists", $nametocheck);
 							$ret=-1;
 						}
 					} else {
@@ -195,10 +195,14 @@ class ActionsCabinetmed
 						// or
 						// Do nothing
 					}
-				} else dol_print_error($this->db);
+				} else {
+					dol_print_error($this->db);
+				}
 			}
 
-			if ($ret == 0 && $parameters['id'] > 0) $backtopage=$_SERVER["PHP_SELF"]."?socid=".$parameters['id'];
+			if ($ret == 0 && $parameters['id'] > 0) {
+				$backtopage=$_SERVER["PHP_SELF"]."?socid=".$parameters['id'];
+			}
 		}
 
 		// Hook called when asking to update a record

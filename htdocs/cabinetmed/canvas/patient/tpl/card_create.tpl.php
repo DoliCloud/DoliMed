@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program. If not, see <http://www.gnu.org/licenses/>.
- * or see http://www.gnu.org/
+ * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
 // Protection to avoid direct call of template
@@ -27,7 +26,11 @@ $object=$GLOBALS['object'];
 
 global $db,$conf,$mysoc,$langs,$user,$hookmanager,$extrafields,$object;
 
-$module=$conf->global->SOCIETE_CODECLIENT_ADDON;
+
+$socialnetworks = getArrayOfSocialNetworks();
+
+
+$module = getDolGlobalString('SOCIETE_CODECLIENT_ADDON');
 if (! $module) dolibarr_error('', $langs->trans("ErrorModuleThirdPartyCodeInCompanyModuleNotDefined"));
 if (substr($module, 0, 15) == 'mod_codeclient_' && substr($module, -3) == 'php') {
 	$module = substr($module, 0, dol_strlen($module)-4);
@@ -60,65 +63,112 @@ $object->firstname = GETPOST("firstname");
 $object->particulier = 0;
 $object->prefix_comm = GETPOST("prefix_comm");
 $object->client = GETPOSTISSET("client")?GETPOST("client"):$object->client;
-$object->code_client = GETPOST("code_client");
+$object->code_client = GETPOST("customer_code");
 $object->fournisseur = GETPOST("fournisseur")?GETPOST("fournisseur"):$object->fournisseur;
 $object->code_fournisseur = GETPOST("code_fournisseur");
-$object->address = GETPOST("address");
-$object->zip = GETPOST("zipcode");
-$object->town = GETPOST("town");
-$object->state_id = GETPOST("departement_id");
-$object->phone = GETPOST("phone");
-$object->fax = GETPOST("fax");
-$object->email = GETPOST("email");
-$object->url = GETPOST("url");
-$object->capital = GETPOST("capital");
-$object->barcode = GETPOST("barcode");
-$object->idprof1 = GETPOST("idprof1");
-$object->idprof2 = GETPOST("idprof2");
-$object->idprof3 = GETPOST("idprof3");
-$object->idprof4 = GETPOST("idprof4");
-$object->idprof5 = GETPOST("idprof5");
-$object->idprof6 = GETPOST("idprof6");
-$object->typent_id = GETPOST("typent_id");
-$object->effectif_id = GETPOST("effectif_id");
 
-$object->tva_assuj = GETPOST("assujtva_value");
-$object->status= GETPOST("status");
+$object->address = GETPOST('address', 'alphanohtml');
+$object->zip = GETPOST('zipcode', 'alphanohtml');
+$object->town = GETPOST('town', 'alphanohtml');
+$object->state_id = GETPOSTINT('state_id');
 
-//Local Taxes
-$object->localtax1_assuj       = GETPOST("localtax1assuj_value");
-$object->localtax2_assuj       = GETPOST("localtax2assuj_value");
-
-$object->tva_intra=GETPOST("tva_intra");
-
-$object->commercial_id=GETPOST("commercial_id");
-$object->default_lang=GETPOST("default_lang");
-
-$countrytable="c_pays";
-$fieldlabel='libelle';
-include_once DOL_DOCUMENT_ROOT.'/core/lib/admin.lib.php';
-if (versioncompare(versiondolibarrarray(), array(3,7,-3)) >= 0) {
-	$countrytable="c_country";
-	$fieldlabel='label';
+$object->socialnetworks = array();
+if (isModEnabled('socialnetworks')) {
+	foreach ($socialnetworks as $key => $value) {
+		if (GETPOSTISSET($key) && GETPOST($key, 'alphanohtml') != '') {
+			$object->socialnetworks[$key] = GETPOST($key, 'alphanohtml');
+		}
+	}
 }
 
-// We set country_id, country_code and label for the selected country
-$object->country_id = (GETPOSTISSET("country_id") ? GETPOST("country_id") : $mysoc->country_id);
-if ($object->country_id) {
-	$sql = "SELECT code, ".$fieldlabel." as label";
-	$sql.= " FROM ".MAIN_DB_PREFIX.$countrytable;
-	$sql.= " WHERE rowid = ".$object->country_id;
-	$resql=$db->query($sql);
-	if ($resql) {
-		$obj = $db->fetch_object($resql);
+$object->phone				= GETPOST('phone', 'alpha');
+$object->phone_mobile       = (string) GETPOST("phone_mobile", 'alpha');
+$object->fax				= GETPOST('fax', 'alpha');
+$object->email				= GETPOST('email', 'custom', 0, FILTER_SANITIZE_EMAIL);
+$object->url				= GETPOST('url', 'custom', 0, FILTER_SANITIZE_URL);
+$object->capital			= GETPOST('capital', 'alphanohtml');
+$object->barcode			= GETPOST('barcode', 'alphanohtml');
+$object->idprof1			= GETPOST('idprof1', 'alphanohtml');
+$object->idprof2			= GETPOST('idprof2', 'alphanohtml');
+$object->idprof3			= GETPOST('idprof3', 'alphanohtml');
+$object->idprof4			= GETPOST('idprof4', 'alphanohtml');
+$object->idprof5			= GETPOST('idprof5', 'alphanohtml');
+$object->idprof6			= GETPOST('idprof6', 'alphanohtml');
+$object->typent_id = GETPOSTINT('typent_id');
+$object->effectif_id		= GETPOSTINT('effectif_id');
+$object->civility_id		= GETPOST('civility_id', 'alpha');
+
+$object->tva_assuj = GETPOSTINT('assujtva_value');
+$object->vat_reverse_charge	= GETPOST('vat_reverse_charge') == 'on' ? 1 : 0;
+$object->status = GETPOSTINT('status');
+
+//Local Taxes
+$object->localtax1_assuj	= GETPOSTINT('localtax1assuj_value');
+$object->localtax2_assuj	= GETPOSTINT('localtax2assuj_value');
+
+$object->localtax1_value	= GETPOSTINT('lt1');
+$object->localtax2_value	= GETPOSTINT('lt2');
+
+$object->tva_intra = GETPOST('tva_intra', 'alphanohtml');
+
+$object->commercial_id = GETPOSTINT('commercial_id');
+$object->default_lang = GETPOST('default_lang');
+
+if (GETPOSTISSET('accountancy_code_sell')) {
+	$accountancy_code_sell  = GETPOST('accountancy_code_sell', 'alpha');
+
+	if (empty($accountancy_code_sell) || $accountancy_code_sell == '-1') {
+		$object->accountancy_code_sell = '';
 	} else {
-		dol_print_error($db);
+		$object->accountancy_code_sell = $accountancy_code_sell;
 	}
-	$object->country_code=$obj->code;
-	$object->country=$obj->label;
+}
+if (GETPOSTISSET('accountancy_code_buy')) {
+	$accountancy_code_buy   = GETPOST('accountancy_code_buy', 'alpha');
+
+	if (empty($accountancy_code_buy) || $accountancy_code_buy == '-1') {
+		$object->accountancy_code_buy = '';
+	} else {
+		$object->accountancy_code_buy = $accountancy_code_buy;
+	}
+}
+
+$object->logo = (isset($_FILES['photo']) ? dol_sanitizeFileName($_FILES['photo']['name']) : '');
+
+// Company logo management
+$dir     = $conf->societe->multidir_output[$conf->entity]."/".$object->id."/logos";
+$file_OK = (isset($_FILES['photo']) ? is_uploaded_file($_FILES['photo']['tmp_name']) : false);
+if ($file_OK) {
+	if (image_format_supported($_FILES['photo']['name'])) {
+		dol_mkdir($dir);
+
+		if (@is_dir($dir)) {
+			$newfile = $dir.'/'.dol_sanitizeFileName($_FILES['photo']['name']);
+			$result = dol_move_uploaded_file($_FILES['photo']['tmp_name'], $newfile, 1);
+
+			if (!($result > 0)) {
+				$errors[] = "ErrorFailedToSaveFile";
+			} else {
+				// Create thumbs
+				$object->addThumbs($newfile);
+			}
+		}
+	}
+}
+
+// We set country_id, country_code and country for the selected country
+$object->country_id = GETPOST('country_id') ? GETPOST('country_id') : $mysoc->country_id;
+if ($object->country_id) {
+	$tmparray = getCountry($object->country_id, 'all');
+	$object->country_code = $tmparray['code'];
+	$object->country = $tmparray['label'];
 }
 $object->forme_juridique_code=GETPOST('forme_juridique_code');
 
+// We set multicurrency_code if enabled
+if (isModEnabled("multicurrency")) {
+	$object->multicurrency_code = GETPOST('multicurrency_code') ? GETPOST('multicurrency_code') : $conf->currency;
+}
 ?>
 
 <!-- BEGIN PHP TEMPLATE -->
@@ -161,19 +211,17 @@ dol_fiche_head('');
 <?php
 		print '<table class="nobordernopadding"><tr><td>';
 		$tmpcode=$object->code_client;
-		if ($modCodeClient->code_auto) $tmpcode=$modCodeClient->getNextValue($object, 0);
-		print '<input type="text" name="code_client" size="16" value="'.$tmpcode.'" maxlength="24">';
+		if (empty($tmpcode) && !empty($modCodeClient->code_auto)) {
+			$tmpcode = $modCodeClient->getNextValue($object, 0);
+		}
+		print '<input type="text" name="customer_code" id="customer_code" class="maxwidthonsmartphone" value="'.dol_escape_htmltag($tmpcode).'" maxlength="24">';
 		print '</td><td>';
 		$s=$modCodeClient->getToolTip($langs, $object, 0);
 		print $form->textwithpicto('', $s, 1);
 		print '</td></tr></table>';
-?>
-	</td>
-</tr>
+		print '</td></tr>';
 
-<?php
-
-	// Prospect/Customer
+// Prospect/Customer
 if (! empty($conf->global->SOCIETE_DISABLE_CUSTOMERS) && ! empty($conf->global->SOCIETE_DISABLE_PROSPECTS)) {
 	print '<!-- -->';
 } else {
@@ -244,9 +292,19 @@ if (empty($conf->global->SOCIETE_DISABLE_STATE)) {
 		print '</tr>';
 		print '<tr>';
 */
-	   // Prof ids
-		$i=1; $j=0;
-while ($i <= 6) {
+
+// Social networks
+if (isModEnabled('socialnetworks')) {
+	$object->showSocialNetwork($socialnetworks, ($conf->browser->layout == 'phone' ? 2 : 4));
+}
+
+// Prof ids
+$i=1;
+$j=0;
+$NBCOLS = ($conf->browser->layout == 'phone' ? 1 : 2);
+$NBPROFIDMIN = getDolGlobalInt('THIRDPARTY_MIN_NB_PROF_ID', 2);
+$NBPROFIDMAX = getDolGlobalInt('THIRDPARTY_MAX_NB_PROF_ID', 6);
+while ($i <= $NBPROFIDMAX) {
 	$key='CABINETMED_SHOW_PROFID'.$i;
 	if (empty($conf->global->$key)) { $i++; continue; }
 
