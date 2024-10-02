@@ -185,7 +185,7 @@ $param='&userid='.$user->id;
 
 print '<table class="noborder" width="100%">';
 print '<tr class="liste_titre">';
-print_liste_field_titre($langs->trans('Contact'), $_SERVER['PHP_SELF'], 'c.name', '', $param, '', $sortfield, $sortorder);
+print_liste_field_titre($langs->trans('Contact'), $_SERVER['PHP_SELF'], 'c.lastname', '', $param, '', $sortfield, $sortorder);
 print_liste_field_titre($langs->trans('NumberOfPatient'), $_SERVER['PHP_SELF'], 'nb', '', $param, 'align="right"', $sortfield, $sortorder);
 print_liste_field_titre($langs->trans('AverageOld'), $_SERVER['PHP_SELF'], 'averageold', '', $param, 'align="right"', $sortfield, $sortorder);
 print '</tr>';

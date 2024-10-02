@@ -746,8 +746,8 @@ $moreforfilter.=$langs->trans('DiagnostiqueLesionnel'). ': ';
 $moreforfilter.=listdiagles(1, $width, 'search_diagles', $search_diagles);
 $moreforfilter.='</div>';
 
-$parameters=array();
-$reshook=$hookmanager->executeHooks('printFieldPreListTitle', $parameters, $object);    // Note that $action and $object may have been modified by hook
+$parameters=array('type'=>$type);
+$reshook=$hookmanager->executeHooks('printFieldPreListTitle', $parameters, $object, $action);    // Note that $action and $object may have been modified by hook
 if (empty($reshook)) {
 	$moreforfilter .= $hookmanager->resPrint;
 } else {
@@ -757,9 +757,6 @@ if (empty($reshook)) {
 if (!empty($moreforfilter)) {
 	print '<div class="liste_titre liste_titre_bydiv centpercent">';
 	print $moreforfilter;
-	$parameters = array('type'=>$type);
-	$reshook = $hookmanager->executeHooks('printFieldPreListTitle', $parameters, $object, $action); // Note that $action and $object may have been modified by hook
-	print $hookmanager->resPrint;
 	print '</div>';
 }
 
