@@ -152,11 +152,11 @@ Gender=性別
 NumberConsultByMonth=每月諮詢次數
 NumberConsult=諮詢數
 ActivityBranch=活動分支
-AboutInfo=此模組由Laurent Destailleur為DoliCloud開發，<a href="http://www.dolicloud.com"> www.dolicloud.com </a>（Dolibarr首選合作夥伴公司）。
+AboutInfo=此模組由Laurent Destailleur為DoliCloud開發，<a href="https://www.dolicloud.com?origin=dolimed"> www.dolicloud.com </a>（Dolibarr首選合作夥伴公司）。
 MoreModules=同一作者的其他模組可在官方的DoliStore market place 找到...
 MoreModulesLink= <a target="_blank" href="http://www.dolistore.com/search.php?search_query=dolicloud">點擊此處查看完整清單</a>
 MoreCloudHosting=要使用網路版Dolibarr，請選擇 DoliCloud 安全雲端。
-MoreCloudHostingLink=<a target="_blank" href="http://www.dolicloud.com">點擊此處了解更多資訊</a>
+MoreCloudHostingLinkDoliMed=<a target="_blank" href="https://www.dolicloud.com?origin=dolimed">點擊此處了解更多資訊</a>
 CompatibleWithDoliDroid=此模組還與 Dolibarr 的Android應用程序 DoliDroid 兼容。
 HideThirdPartiesMenu=隱藏第三方選單（所有客戶均為病患）。如果您有管理供應商（啟用了供應商模組），此選單仍將可見讓供應商功能可存取。
 HideCustomerFeatures=隱藏管理客戶的功能（您無需開具發票）。

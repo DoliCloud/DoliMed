@@ -152,11 +152,11 @@ Gender=Genere
 NumberConsultByMonth=Numero dei consulti per mese
 NumberConsult=Numero dei consulti
 ActivityBranch=Ramo attività
-AboutInfo=Questo modulo è sviluppato e distribuito da Laurent Destailleur per DoliCloud, <a href="http://www.dolicloud.com">www.dolicloud.com</a> (Una Azienza Partner Preferenziale di Dolibarr)
+AboutInfo=Questo modulo è sviluppato e distribuito da Laurent Destailleur per DoliCloud, <a href="https://www.dolicloud.com?origin=dolimed">www.dolicloud.com</a> (Una Azienza Partner Preferenziale di Dolibarr)
 MoreModules=Altri moduli dello stesso autore sono disponibili nello store ufficiale DoliStore...
 MoreModulesLink=<a target="_blank" href="http://www.dolistore.com/search.php?search_query=dolicloud">Clicca per vedere la lista completa</a>
 MoreCloudHosting=Per usare Dolibarr online, scegli l'hosting sicuro DoliCloud
-MoreCloudHostingLink=<a target="_blank" href="http://www.dolicloud.com">Clicca per maggiori informazioni</a>
+MoreCloudHostingLinkDoliMed=<a target="_blank" href="https://www.dolicloud.com?origin=dolimed">Clicca per maggiori informazioni</a>
 CompatibleWithDoliDroid=Questo modulo è anche compatibile con DoliDroid, l'applicazione Android per Dolibarr.
 HideThirdPartiesMenu=Nascondi il menu Terze Parti (tutti i clienti e i pazienti). Se gestisci i Fornitori (Modulo Fornitore abilitato), la voce di questo menu sarà ancora visibile per consentire l'accesso alle funzioni Fornitore.
 HideCustomerFeatures=Nascondi impostazioni per festire i clienti (non hai bisogno di emettere fattura)

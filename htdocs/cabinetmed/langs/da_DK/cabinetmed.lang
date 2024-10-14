@@ -152,11 +152,11 @@ Gender=Køn
 NumberConsultByMonth=Antal høringer pr. Måned
 NumberConsult=Antal høringer
 ActivityBranch=Aktivitetsgren
-AboutInfo=Dette modul er udviklet og distribueret af Laurent Destailleur til DoliCloud, <a href="http://www.dolicloud.com"> www.dolicloud.com </a> (et Dolibarr Preferred Partner-selskab).
+AboutInfo=Dette modul er udviklet og distribueret af Laurent Destailleur til DoliCloud, <a href="https://www.dolicloud.com?origin=dolimed"> www.dolicloud.com </a> (et Dolibarr Preferred Partner-selskab).
 MoreModules=Andre moduler af samme forfatter er tilgængelige på den officielle DoliStore markedsplads ...
 MoreModulesLink=<a target="_blank" href="http://www.dolistore.com/search.php?search_query=dolicloud"> Klik her for at se den fulde liste </a>
 MoreCloudHosting=For at bruge online Dolibarr, vælg den sikrede hosting DoliCloud.
-MoreCloudHostingLink=<a target="_blank" href="http://www.dolicloud.com"> Klik her for flere oplysninger </a>
+MoreCloudHostingLinkDoliMed=<a target="_blank" href="https://www.dolicloud.com?origin=dolimed"> Klik her for flere oplysninger </a>
 CompatibleWithDoliDroid=Disse moduler er også kompatible med DoliDroid, Android-applikationen til Dolibarr.
 HideThirdPartiesMenu=Skjul tredjepartsmenu (alle kunder er patienter). Hvis du styrer Leverandører (Modul Leverandør aktiveret), vil denne menuindgang stadig være synlig for at holde leverandørfunktionen tilgængelig.
 HideCustomerFeatures=Skjul funktioner til at administrere kunder (du behøver ikke lave fakturaer).

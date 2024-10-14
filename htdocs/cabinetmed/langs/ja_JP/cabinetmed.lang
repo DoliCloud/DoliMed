@@ -152,11 +152,11 @@ Gender=性別
 NumberConsultByMonth=1ヶ月あたりの診察件数
 NumberConsult=診察件数
 ActivityBranch=アクティビティブランチ
-AboutInfo=このモジュールは、DoliCloudのLaurent Destailleur、<a href="http://www.dolicloud.com"> www.dolicloud.com </a>（Dolibarr優先パートナー企業）によって開発および配布されている。
+AboutInfo=このモジュールは、DoliCloudのLaurent Destailleur、<a href="https://www.dolicloud.com?origin=dolimed"> www.dolicloud.com </a>（Dolibarr優先パートナー企業）によって開発および配布されている。
 MoreModules=同じ作者の他のモジュールは、公式のDoliStoreマーケットプレイスで入手できる...
 MoreModulesLink= <a target="_blank" href="http://www.dolistore.com/search.php?search_query=dolicloud">完全なリストを表示するには、ここをクリックすること</a>
 MoreCloudHosting=オンラインDolibarrを使用するには、セキュリティで保護されたホスティングDoliCloudを選択する。
-MoreCloudHostingLink= <a target="_blank" href="http://www.dolicloud.com">詳細についてはここをクリック</a>
+MoreCloudHostingLinkDoliMed= <a target="_blank" href="https://www.dolicloud.com?origin=dolimed">詳細についてはここをクリック</a>
 CompatibleWithDoliDroid=このモジュールは、Dolibarr用のAndroidアプリケーションであるDoliDroidとも互換性がある。
 HideThirdPartiesMenu=取引先のメニューを非表示にする（すべての顧客は患者 ）。サプライヤを管理している場合（モジュールサプライヤが有効）、サプライヤ機能にアクセスできるように、このメニューエントリは引き続き表示される。
 HideCustomerFeatures=顧客を管理する機能を非表示にする（請求書を作成する必要はない）。

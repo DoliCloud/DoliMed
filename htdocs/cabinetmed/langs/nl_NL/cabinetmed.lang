@@ -152,11 +152,11 @@ Gender=Geslacht
 NumberConsultByMonth=Aantal consulten per maand
 NumberConsult=Aantal consulten
 ActivityBranch=Soort beroep
-AboutInfo=Deze module is ontwikkeld en gedistribuëerd door Laurent Destailleur van DoliCloud, <a href="http://www.dolicloud.com">www.dolicloud.com</a> (Een Dolibarr Geprefereerde Partner bedrijf).
+AboutInfo=Deze module is ontwikkeld en gedistribuëerd door Laurent Destailleur van DoliCloud, <a href="https://www.dolicloud.com?origin=dolimed">www.dolicloud.com</a> (Een Dolibarr Geprefereerde Partner bedrijf).
 MoreModules=Andere modules van dezelfde auteur kunnen op de officiëele DoliStore markt gevonden worden...
 MoreModulesLink=<a target="_blank" href="http://www.dolistore.com/search.php?search_query=dolicloud">Klik hier voor de volledige lijst</a>
 MoreCloudHosting=Om Dolibarr online te gebruiken kun je het beste keizen voor de veilige hosting van DoliCloud.
-MoreCloudHostingLink=<a target="_blank" href="http://www.dolicloud.com">Klik hier voor meer informatie</a>
+MoreCloudHostingLinkDoliMed=<a target="_blank" href="https://www.dolicloud.com?origin=dolimed">Klik hier voor meer informatie</a>
 CompatibleWithDoliDroid=Deze module is compatiebel met DoliDroid, de Android app voor Dolibarr.
 HideThirdPartiesMenu=Verberg het derden menu (alle klanten zijn patiënten)
 HideCustomerFeatures=Verberg functies om klanten te beheren (u hoeft geen facturen te maken).

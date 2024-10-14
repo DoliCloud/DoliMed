@@ -152,11 +152,11 @@ Gender=Nem
 NumberConsultByMonth=A konzultációk száma havonta
 NumberConsult=A konzultáció száma
 ActivityBranch=Tevékenységi ág
-AboutInfo=Ezt a modult Laurent Destailleur fejleszti és terjeszti az DoliCloud számára, <a href="http://www.dolicloud.com"> www.dolicloud.com </a> (A Dolibarr Preferred Partner cég).
+AboutInfo=Ezt a modult Laurent Destailleur fejleszti és terjeszti az DoliCloud számára, <a href="https://www.dolicloud.com?origin=dolimed"> www.dolicloud.com </a> (A Dolibarr Preferred Partner cég).
 MoreModules=Ugyanazon szerző többi modulja elérhető a hivatalos DoliStore piactéren...
 MoreModulesLink= <a target="_blank" href="http://www.dolistore.com/search.php?search_query=dolicloud"> Kattintson ide a teljes lista megtekintéséhez </a>
 MoreCloudHosting=Az online Dolibarr használatához válassza a DoliCloud biztonságos tárhelyet.
-MoreCloudHostingLink= <a target="_blank" href="http://www.dolicloud.com"> Kattintson ide további információkért </a>
+MoreCloudHostingLinkDoliMed= <a target="_blank" href="https://www.dolicloud.com?origin=dolimed"> Kattintson ide további információkért </a>
 CompatibleWithDoliDroid=Ez a modul kompatibilis a DoliDroid-dal, a Dolibarr Android-alkalmazásával is.
 HideThirdPartiesMenu=Harmadik fél menüjének elrejtése (minden ügyfél beteg). Ha Ön kezeli a beszállítókat (a Szállító modul engedélyezve van), ez a menübejegyzés továbbra is látható lesz, hogy a beszállítói funkciók elérhetők maradjanak.
 HideCustomerFeatures=Az ügyfelek kezeléséhez szükséges funkciók elrejtése (nem kell számlát készítenie).
