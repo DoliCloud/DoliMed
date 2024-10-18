@@ -662,9 +662,9 @@ if ($action == '' || $action == 'delete') {
 			if ($usercandelete) {
 				print ' &nbsp; ';
 				if (!getDolGlobalInt('CABINETMED_DELAY_TO_LOCK_RECORD') || ($db->jdate($obj->dateexam) >= (dol_now() - (getDolGlobalInt('CABINETMED_DELAY_TO_LOCK_RECORD') * 24 * 60)))) {
-					print '<a class="editfielda disabled" href="'.$_SERVER["PHP_SELF"].'?socid='.$obj->fk_soc.'&id='.$obj->rowid.'&action=delete&token='.newToken().'">'.img_delete().'</a>';
+					print '<a class="reposition" href="'.$_SERVER["PHP_SELF"].'?socid='.$obj->fk_soc.'&id='.$obj->rowid.'&action=delete&token='.newToken().'">'.img_delete().'</a>';
 				} else {
-					print '<a class="editfielda disabled" href="#" title="'.$langs->trans("Locked").'">'.img_delete('', 'class="delete"').'</a>';
+					print '<a class="reposition disabled" href="#" title="'.$langs->trans("Locked").'">'.img_delete('', 'class="delete"').'</a>';
 				}
 			}
 			print '</td>';
