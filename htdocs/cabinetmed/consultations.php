@@ -378,7 +378,7 @@ if (empty($reshook)) {
 											if (isModEnabled("banque") && isset($banque[$key]) && $banque[$key] > 0) {
 												$label='(CustomerInvoicePayment)';
 												if ((float) DOL_VERSION >= 13) {
-													$accountancycode = empty($conf->global->CABINETMED_ACCOUNTANCY_CODE_FOR_CONSULTATION) ? '' : $conf->global->CABINETMED_ACCOUNTANCY_CODE_FOR_CONSULTATION;
+													$accountancycode = getDolGlobalString('CABINETMED_ACCOUNTANCY_CODE_FOR_CONSULTATION');
 													$result=$paiement->addPaymentToBank($user, 'payment', $label, $banque[$key], $soc->name, $object->banque, $accountancycode);
 												} else {
 													$result=$paiement->addPaymentToBank($user, 'payment', $label, $banque[$key], $soc->name, $object->banque);
