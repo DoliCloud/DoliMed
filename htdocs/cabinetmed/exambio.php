@@ -639,10 +639,10 @@ if ($action == '' || $action == 'delete') {
 			print dol_print_date($db->jdate($obj->dateexam), 'day');
 			print '</a>';
 			print '</td>';
-			print '<td>';
-			print dol_trunc($obj->resultat, 40);
+			print '<td class="tdoverflowmax500">';
+			print dolPrintHTML($obj->resultat);
 			print '</td>';
-			if (! empty($conf->global->CABINETMED_RHEUMATOLOGY_ON)) {
+			if (getDolGlobalString('CABINETMED_RHEUMATOLOGY_ON')) {
 				print '<td>';
 				print $obj->suivipr_das28;
 				print '</td>';

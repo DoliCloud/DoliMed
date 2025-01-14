@@ -523,9 +523,9 @@ if ($action == '' || $action == 'delete') {
 			print dol_print_date($db->jdate($obj->dateexam), 'day');
 			print '</a>';
 			print '</td><td>';
-			print $obj->examprinc;
+			print dolPrintHTML($obj->examprinc);
 			print '</td><td>';
-			print $obj->concprinc;
+			print dolPrintHTML($obj->concprinc);
 			print '</td>';
 			print '<td align="right">';
 			//$conf->global->CABINETMED_DELAY_TO_LOCK_RECORD = 1;
