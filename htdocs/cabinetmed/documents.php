@@ -311,7 +311,7 @@ if ($object->id) {
     $disablemove = 0;
 
     $formfilecabinetmed=new FormFileCabinetmed($db);
-    $formfilecabinetmed->list_of_documents(
+    $formfilecabinetmed->list_of_documents_cabinetmed(
         $filearray,
         $object,
         $modulepart,
