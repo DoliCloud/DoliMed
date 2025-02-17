@@ -80,8 +80,42 @@ for (0..@ARGV-1) {
     }
 }
 $SOURCE="$DIR/../..";
-$DESTI="$SOURCE/dev/build";
-if ($ENV{"DESTIMODULES"}) { $DESTI = $ENV{"DESTIMODULES"}; }		# Force output dir if env DESTIMODULES is defined
+$DESTI="";
+if ($ENV{"DESTIMODULES"}) {				# Force output dir if env DESTIMODULES is defined 
+	$DESTI = $ENV{"DESTIMODULES"}; 
+} else {
+	$DESTI = $ENV{"DESTIMODULES"};
+}
+
+if (! $ENV{"DESTIMODULES"})
+{
+	print "Error: Missing environment variables.\n";
+	print "You must define the environment variable DESTIMODULES to point to the\ndirectories where you want to save the generated packages.\n";
+	print "$PROG.$Extension aborted.\n";
+	print "\n";
+	print "You can set them with\n";
+	print "On Linux:\n";
+	print "export DESTIMODULES='/tmp';\n";
+	print "On Windows:\n";
+	print "set DESTISTABLE=c:/tmp\n";
+	print "\n";
+	print "Example in .bashrc:\n";
+	print "export DESTIMODULES='/mnt/HDDATA1_LD/Mes Archives/Doli/dolibarr/modules'\n";
+	print "\n";
+	exit 1;
+}
+if (! -d $ENV{"DESTIMODULES"})
+{
+	print "Error: Directory of environment variable DESTIMODULES ($ENV{'DESTIMODULES'}) does not exist.\n";
+	print "$PROG.$Extension aborted.\n";
+	print "\n";
+	sleep 1;
+	exit 1;
+}
+
+
+
+
 $NEWDESTI=$DESTI;
 
 
