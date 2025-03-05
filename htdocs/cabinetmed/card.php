@@ -324,7 +324,7 @@ if (empty($reshook)) {
 
 		// Fill array 'array_options' with data from update form
 		$extrafields->fetch_name_optionals_label($object->table_element);
-		
+
 		$ret = $extrafields->setOptionalsFromPost(null, $object, GETPOST('attribute', 'restricthtml'));
 		if ($ret < 0) {
 			$error++;
@@ -389,7 +389,7 @@ if (empty($reshook)) {
 					}
 				}
 			}
-			
+
 			$object->phone					= GETPOST('phone', 'alpha');
 			$object->phone_mobile 			= (string) GETPOST("phone_mobile", 'alpha');
 			$object->fax					= GETPOST('fax', 'alpha');
@@ -407,7 +407,7 @@ if (empty($reshook)) {
 			$object->code_fournisseur		= GETPOSTISSET('supplier_code') ? GETPOST('supplier_code', 'alpha') : GETPOST('code_fournisseur', 'alpha');
 			$object->capital				= GETPOST('capital', 'alphanohtml');
 			$object->barcode				= GETPOST('barcode', 'alphanohtml');
-			
+
 			$object->tva_intra				= GETPOST('tva_intra', 'alphanohtml');
 			$object->tva_assuj				= GETPOST('assujtva_value', 'alpha');
 			$object->vat_reverse_charge		= GETPOST('vat_reverse_charge') == 'on' ? 1 : 0;
@@ -768,7 +768,7 @@ if (empty($reshook)) {
 	$object->fetch($socid);
 
 	// Actions to send emails
-	$trigger_name='COMPANY_SENTBYMAIL';
+	$triggersendname='COMPANY_SENTBYMAIL';
 	$paramname='socid';
 	$mode='emailfromthirdparty';
 	$trackid='thi'.$object->id;

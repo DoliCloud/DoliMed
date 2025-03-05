@@ -158,7 +158,7 @@ if (empty($reshook)) {
 
 
 // Actions to send emails
-$trigger_name='COMPANY_SENTBYMAIL';
+$triggersendname='COMPANY_SENTBYMAIL';
 $paramname='socid';
 $mode='emailfromthirdparty';
 $trackid='thi'.$object->id;
