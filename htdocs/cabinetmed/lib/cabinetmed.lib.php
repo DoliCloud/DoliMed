@@ -158,7 +158,7 @@ function listdiagles($nboflines, $newwidth = 0, $htmlname = 'diagles', $selected
  *
  *  @param	int		$nboflines       Max nb of lines
  *  @param  int     $newwidth        Force width
- *  @param  string  $type            To filter on a type (Ex: "RADIO" or "RADIO,OTHER")
+ *  @param  string  $type            To filter on a type (Ex: "'RADIO'" or "'RADIO','OTHER'")
  *  @param	string	$showtype        1=Show type of line after label
  *  @param  string	$htmlname        Name of html select area
  *  @return	void
@@ -175,7 +175,9 @@ function listexamen($nboflines, $newwidth = 0, $type = '', $showtype = 0, $htmln
 	$sql = 'SELECT s.rowid, s.code, s.label, s.biorad as type';
 	$sql.= ' FROM '.MAIN_DB_PREFIX.'cabinetmed_examenprescrit as s';
 	$sql.= ' WHERE active = 1';
-	if ($type) $sql.=" AND s.biorad IN (".$db->sanitize($type,1).")";
+	if ($type) {
+		$sql.=" AND s.biorad IN (".$db->sanitize($type, 1).")";
+	}
 	if (!getDolGlobalInt('CABINETMED_IGNORE_LANG_FOR_COMBOLIST')) {
 		$sql .= " AND (lang LIKE '".$db->escape($langs->shortlang)."%' OR lang IS NULL OR lang = '')";
 	}
