@@ -203,7 +203,7 @@ function cabinetmed_completesubstitutionarray(&$substitutionarray, $langs, $obje
 	}
 	if ($isconsult) {	// A consultation was selected
 		$substitutionarray['outcome_id']=$outcome->id;
-		$substitutionarray['outcome_date']=dol_print_date($outcome->datecons, 'day');
+		$substitutionarray['outcome_date']=dol_print_date($outcome->datecons, 'day', 'auto', $langs);
 		$substitutionarray['outcome_reason']=$outcome->motifconsprinc;
 		$substitutionarray['outcome_diagnostic']=$outcome->diaglesprinc;
 		$substitutionarray['outcome_history']=$outcome->hdm;
@@ -238,10 +238,10 @@ function cabinetmed_completesubstitutionarray(&$substitutionarray, $langs, $obje
 
 				$typeextra = $extrafields->attributes['cabinetmed_cons']['type'][$keyextrawithoutoptions];
 				if ($typeextra == 'date') {
-					$substitutionarray['outcome_'.$keyextra.'_locale'] = dol_print_date($valextra, 'day', $langs);
+					$substitutionarray['outcome_'.$keyextra.'_locale'] = dol_print_date($valextra, 'day', 'auto', $langs);
 				}
 				if ($typeextra == 'datetime') {
-					$substitutionarray['outcome_'.$keyextra.'_locale'] = dol_print_date($valextra, 'dayhour', $langs);
+					$substitutionarray['outcome_'.$keyextra.'_locale'] = dol_print_date($valextra, 'dayhour', 'auto', $langs);
 				}
 			}
 		}
@@ -291,9 +291,9 @@ function cabinetmed_completesubstitutionarray(&$substitutionarray, $langs, $obje
 		$substitutionarray['patient_height']=(isset($object->array_options['options_height']) ? $object->array_options['options_height'] : '');
 		$substitutionarray['patient_weight']=(isset($object->array_options['options_weight'])? $object->array_options['options_weight'] : '');
 		if (is_numeric($object->array_options['options_birthdate'])) {
-			$substitutionarray['patient_birthdate']=dol_print_date($object->array_options['options_birthdate'], 'day', '', $langs);
+			$substitutionarray['patient_birthdate']=dol_print_date($object->array_options['options_birthdate'], 'day', 'auto', $langs);
 		} elseif (!empty($object->array_options['options_birthdate'])) {
-			$substitutionarray['patient_birthdate']=dol_print_date(dol_stringtotime($object->array_options['options_birthdate'].' 00:00:00'), 'day', '', $langs);
+			$substitutionarray['patient_birthdate']=dol_print_date(dol_stringtotime($object->array_options['options_birthdate'].' 00:00:00'), 'day', 'auto', $langs);
 		} else {
 			$substitutionarray['patient_birthdate']='';
 		}
@@ -309,10 +309,10 @@ function cabinetmed_completesubstitutionarray(&$substitutionarray, $langs, $obje
 				$keyextrabiswithoutoptions = preg_replace('/^options_/', '', $keyextrabis);
 				$typeextrabis = $extrafields->attributes['societe']['type'][$keyextrabiswithoutoptions];
 				if ($typeextrabis == 'date') {
-					$substitutionarray['patient_'.$keyextrabis.'_locale'] = dol_print_date($valextra, 'day', $langs);
+					$substitutionarray['patient_'.$keyextrabis.'_locale'] = dol_print_date($valextra, 'day', 'auto', $langs);
 				}
 				if ($typeextrabis == 'datetime') {
-					$substitutionarray['patient_'.$keyextrabis.'_locale'] = dol_print_date($valextra, 'dayhour', $langs);
+					$substitutionarray['patient_'.$keyextrabis.'_locale'] = dol_print_date($valextra, 'dayhour', 'auto', $langs);
 				}
 			}
 		}
