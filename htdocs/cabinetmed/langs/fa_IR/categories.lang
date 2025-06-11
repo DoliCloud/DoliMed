@@ -1,10 +1,10 @@
 # Dolibarr language file - en_US - categories
-CHARSET=UTF-8
-PatientsCategoriesArea=Categories of patient area
-PatientIsInCustomersCategories=This patient is inside following categories
-PatientsCategoryShort=Patients category
-PatientsCategoriesShort=Patients categories
-ThisCategoryHasNoCustomer=This category has no patient
-AssignedToPatients=Set a patient
-AssignedToThePatients=Set a patient
-CatCusListPatients=List of patients categories
+CHARSET=یوتی‌اف-۸
+PatientsCategoriesArea=دسته بندی های بخش بیمار
+PatientIsInCustomersCategories=این بیمار در دسته‌های زیر قرار دارد
+PatientsCategoryShort=دسته بندی بیماران
+PatientsCategoriesShort=دسته بندی بیماران
+ThisCategoryHasNoCustomer=این دسته بندی بیمار ندارد
+AssignedToPatients=بیمار را تنظیم کنید
+AssignedToThePatients=بیمار را تنظیم کنید
+CatCusListPatients=فهرست دسته‌های بیماران

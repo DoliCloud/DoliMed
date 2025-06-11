@@ -1,6 +1,6 @@
 # Dolibarr language file - fr_FR - other
-CHARSET=UTF-8
-Notify_NOTIFY_VAL_FAC=Validation consultation patient
-ProfIdShortDesc=<b>Id prof. %s</b> est une information qui dépend du pays du patient.<br>Par exemple, pour le pays <b>%s</b>, il s'agit du code <b>%s</b>.
-NewCompanyToDolibarr=Patient %s ajouté
-CustomerPaymentDoneInDolibarr=Paiement patient %s
+CHARSET=ಯುಟಿಎಫ್ -8
+Notify_NOTIFY_VAL_FAC=ರೋಗಿಯ ದೃಢೀಕರಣ ಸಮಾಲೋಚನೆ
+ProfIdShortDesc=<b>Id prof. %s</b> ಇದು ರೋಗಿಯನ್ನು ಅವಲಂಬಿಸಿರುವ ಮಾಹಿತಿಯಾಗಿದೆ.<br>ಉದಾಹರಣೆಗೆ, <b>%s</b>, il s'agit du code <b>%s>TXPROTECT-9aEND</f739T.
+NewCompanyToDolibarr=ರೋಗಿಯ %s ajouté
+CustomerPaymentDoneInDolibarr=ಪಾವತಿ ರೋಗಿಯ %s

@@ -11,6 +11,7 @@ LastYear=Últim any
 LastConsult=Última consulta
 LastConsultShort=Última consulta
 LastModifiedPatients=Els %s últims pacients modificats
+LastModifiedConsultations=Consultes modificades per a les darreres %s
 NbConsult=Nº cons.
 MenuCabinet=Informació consulta
 MenuNewPatient=Nou pacient
@@ -92,7 +93,9 @@ PaymentTypeThirdParty=Tercers
 PaymentTypeEspece=Efectiu
 PaymentTypeCarte=Pagaré
 PaymentTypeCheque=Xec
+PaymentTypeOther=Altres
 Secondaries=Secundaris
+SourceBank=Banc d'origen
 Commentaires=Comentaris
 RecBank=A registrar a
 Paiement=Pagament
@@ -152,11 +155,11 @@ Gender=Sexe
 NumberConsultByMonth=Número de consultes per mes
 NumberConsult=Número de consulta
 ActivityBranch=Branca d'activitat
-AboutInfo=Aquest mòdul està desenvolupat i distribuït per Laurent Destailleur per DoliCloud,  <a href="https://www.dolicloud.com?origin=dolimed">www.dolicloud.com</a> (Una empresa Preferred Partner de Dolibarr).
+AboutInfo=Aquest mòdul està desenvolupat i distribuït per Laurent Destailleur per a DoliCloud, <a href="https://www.dolicloud.com?origin=dolimed">www.dolicloud.com</a> (una empresa associada preferent de Dolibarr).
 MoreModules=Altres mòduls del mateix autor estan disponibles la botiga oficial DoliStore...
-MoreModulesLink=<a target="_blank" href="http://www.dolistore.com/search.php?search_query=dolicloud">Fes clic per veure la llista completa</a>
+MoreModulesLink=<a target="_blank" href="http://www.dolistore.com/search.php?search_query=dolicloud">Feu clic aquí per veure la llista completa</a>
 MoreCloudHosting=Per utilitzar Dolibarr online, selecciona l'allotjament segur DoliCloud.
-MoreCloudHostingLinkDoliMed=<a target="_blank" href="https://www.dolicloud.com?origin=dolimed">Fes clic per més informació</a>
+MoreCloudHostingLinkDoliMed=<a target="_blank" href="https://www.dolicloud.com?origin=dolimed">Feu clic aquí per obtenir més informació</a>
 CompatibleWithDoliDroid=Aquests mòduls també són compatibles amb DoliDroid, la aplicació Android per Dolibarr.
 HideThirdPartiesMenu=Oculta el menú de tercer (tots els clients son pacients). Si gestiones proveïdors (mòdul de Proveïdors habilitat), aquesta entrada de menú estarà visible per mantenir accessibles les característiques de proveïdors.
 HideCustomerFeatures=Ocultar funcionalitat per gestionar clients (no necessites fer factures)
@@ -190,6 +193,8 @@ EditOrAddTemplateFromSetupOfThirdPartyModule=Podeu editar o afegir més plantill
 ConvertIntoPatient=Convertir en pacient
 ConvertIntoPatientDesc=El tercer comú també serà un pacient, de manera que podeu crear-ne una consulta
 
-LesionDiagnosticsCCA=Chondrocalcinotic Arthritis
-LesionDiagnosticsGOUTTE=Gouty Arthritis
-
+LesionDiagnosticsCCA=Artritis condrocalcinòtica
+LesionDiagnosticsGOUTTE=Artritis gotosa
+Patients=pacients
+Consultations=Consultes
+CABINETMED_DELAY_TO_LOCK_RECORD=Les consultes no es poden modificar x dies després de la seva creació (feu servir 0 per mantenir les consultes sempre editables)

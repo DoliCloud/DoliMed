@@ -2,11 +2,11 @@
 CHARSET=UTF-8
 ActionOnCompany=Evento do doente
 ActionOnContact=Evento do contacto
-SalesRepresentative=Followed by
-SalesRepresentatives=Followed by
-SalesRepresentativeFollowUp=Doctors (referent)
-SalesRepresentativeSignature=Doctors (signature)
-NoSalesRepresentativeAffected=No particular doctor
+SalesRepresentative=Seguido pela
+SalesRepresentatives=Seguido pela
+SalesRepresentativeFollowUp=Médicos (referente)
+SalesRepresentativeSignature=Médicos (assinatura)
+NoSalesRepresentativeAffected=Nenhum médico em particular
 ShowPatient=Mostrar doente
 ListOfCustomers=Lista de terceiros/doentes
 ListOfPatients=Lista de doentes

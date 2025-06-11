@@ -1,6 +1,6 @@
 # Dolibarr language file - fr_FR - other
 CHARSET=UTF-8
-Notify_NOTIFY_VAL_FAC=Validation consultation patient
-ProfIdShortDesc=<b>Id prof. %s</b> est une information qui dépend du pays du patient.<br>Par exemple, pour le pays <b>%s</b>, il s'agit du code <b>%s</b>.
-NewCompanyToDolibarr=Patient %s ajouté
-CustomerPaymentDoneInDolibarr=Paiement patient %s
+Notify_NOTIFY_VAL_FAC=Konzultácia s pacientom pre validáciu
+ProfIdShortDesc=<b>Id prof. %s</b> est une information qui dépend du pays du patient.ENDTXdacc>2TXfspanECT-TXEND napríklad, pour le pays ><b>%sTXPROTECT-9a4b8agit-duspan>code-9a4b739f kód class='notranslate'><b>%s</b>.
+NewCompanyToDolibarr=Pacient %s ajouté
+CustomerPaymentDoneInDolibarr=Pacient s platbou %s

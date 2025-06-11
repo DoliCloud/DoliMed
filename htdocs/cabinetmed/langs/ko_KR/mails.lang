@@ -1,5 +1,5 @@
 # Dolibarr language file - en_US - mails
 CHARSET=UTF-8
-MailingModuleDescContactCompanies=Contacts of thirdparties/patients (by type)
-MailingModuleDescContactsByCompanyCategory=Contacts of thirdparties/patients (by category)
-MailingModuleDescContactsByFunction=Contacts of thirdparties/patients (by speciality)
+MailingModuleDescContactCompanies=제3자/환자의 연락처(유형별)
+MailingModuleDescContactsByCompanyCategory=제3자/환자의 연락처(범주별)
+MailingModuleDescContactsByFunction=제3자/환자 연락처(전문 분야별)

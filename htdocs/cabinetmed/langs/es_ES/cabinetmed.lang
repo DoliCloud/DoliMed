@@ -11,6 +11,7 @@ LastYear=Último año
 LastConsult=Última consulta
 LastConsultShort=Última consulta
 LastModifiedPatients=Los %s últimos pacientes modificados
+LastModifiedConsultations=Últimas consultas modificadas de %s
 NbConsult=Nº cons.
 MenuCabinet=Información consulta
 MenuNewPatient=Nuevo paciente
@@ -92,7 +93,9 @@ PaymentTypeThirdParty=Tercero
 PaymentTypeEspece=Efectivo
 PaymentTypeCarte=Pagaré
 PaymentTypeCheque=Cheque
+PaymentTypeOther=Otro
 Secondaries=Secundarios
+SourceBank=Banco de origen
 Commentaires=Comentarios
 RecBank=A registrar en
 Paiement=Pago
@@ -152,9 +155,9 @@ Gender=Género
 NumberConsultByMonth=Número de consultas por mes
 NumberConsult=Número de consultas
 ActivityBranch=Sector de actividad
-AboutInfo=Este módulo ha sido desarrollado y distribuido por Laurent Destaillerur para DoliCloud, <a target="_blank" href="https://www.dolicloud.com?origin=dolimed">www.dolicloud.com</a> (Empresa Dolibarr Prefered Partner).
+AboutInfo=Este módulo ha sido desarrollado y distribuido por Laurent Destailleur para DoliCloud, <a href="https://www.dolicloud.com?origin=dolimed">www.dolicloud.com</a> (Una empresa preferida y partner de Dolibarr).
 MoreModules=Otros módulos del mismo autor se encuentran disponibles en la tienda oficial DoliStore...
-MoreModulesLink=<a target="_blank" href="http://www.dolistore.com/search.php?search_query=dolicloud">Haga clic aquí para ver el listado</a>
+MoreModulesLink=<a target="_blank" href="http://www.dolistore.com/search.php?search_query=dolicloud">Haga clic aquí para ver la lista completa</a>
 MoreCloudHosting=Para usar Dolibarr en línea , puede optar por DoliCloud
 MoreCloudHostingLinkDoliMed=<a target="_blank" href="https://www.dolicloud.com?origin=dolimed">Haga clic aquí para más información</a>
 CompatibleWithDoliDroid=Este módulo es compatible con DoliDroid, la aplicación Android para Dolibarr
@@ -190,6 +193,8 @@ EditOrAddTemplateFromSetupOfThirdPartyModule=Puede editar o agregar más plantil
 ConvertIntoPatient=Convertir en Paciente
 ConvertIntoPatientDesc=El tercero común también será un paciente para que pueda crear una consulta sobre él.
 
-LesionDiagnosticsCCA=Chondrocalcinotic Arthritis
-LesionDiagnosticsGOUTTE=Gouty Arthritis
-
+LesionDiagnosticsCCA=Artritis por condrocalcinosis
+LesionDiagnosticsGOUTTE=Artritis gotosa
+Patients=Pacientes
+Consultations=Consultas
+CABINETMED_DELAY_TO_LOCK_RECORD=Las consultas no se pueden modificar x días después de su creación (use 0 para mantener las consultas siempre editables)

@@ -3,5 +3,5 @@ CHARSET=UTF-8
 ErrorThisContactIsAlreadyDefinedAsThisType=Ten przypadek jest już zdefiniowany dla przypadku tego typu
 ErrorBadPatientName=Błędna nazwa pacjenta
 ErrorBadCustomerCodeSyntax=Kod nie poprawny
-ErrorCustomerCodeRequired=Patient code manatory
+ErrorCustomerCodeRequired=Kod pacjenta obowiązkowy
 ErrorCustomerCodeAlreadyUsed=Kod pacjenta już wykorzystany

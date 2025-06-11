@@ -1,7 +1,7 @@
 # Dolibarr language file - en_US - errors
 CHARSET=UTF-8
-ErrorThisContactIsAlreadyDefinedAsThisType=This correspondant is already defined as a correspondant for this type
-ErrorBadPatientName=Bad patient name
-ErrorBadCustomerCodeSyntax=Syntaxe for patient code is not correct
-ErrorCustomerCodeRequired=Patient code manatory
-ErrorCustomerCodeAlreadyUsed=Patient code already used
+ErrorThisContactIsAlreadyDefinedAsThisType=Šis korespondentas jau apibrėžtas kaip šio tipo korespondentas
+ErrorBadPatientName=Netinkamas paciento vardas
+ErrorBadCustomerCodeSyntax=Paciento kodo sintaksė neteisinga
+ErrorCustomerCodeRequired=Privalomas paciento kodas
+ErrorCustomerCodeAlreadyUsed=Paciento kodas jau panaudotas

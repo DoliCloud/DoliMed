@@ -1,14 +1,14 @@
 # Dolibarr language file - fr_FR - boxes
 CHARSET=UTF-8
-BoxLastPatients=Last modified patients
-BoxLastContacts=Lasts contacts
-BoxTotalUnpaidCustomerBills=Total of not payed consultations
-BoxTitleNbOfPatients=Number of patient
-BoxTitleLastPatients=Last %s recorded patiens
-BoxTitleLastModifiedPatients=Last %s modified patients
-BoxTitleTotalUnpaidCustomerBills=Unpayed consultations
-BoxTitleLastModifiedContacts=Last %s modified contacts
-NoRecordedPatients=No patient recorded
-NoRecordedContacts=No contact recorded
-NoRecordedInvoices=No consultation recorded
-NoUnpaidCustomerBills=No unpayed consultation
+BoxLastPatients=Nazadnje spremenjeni pacienti
+BoxLastContacts=Traja stike
+BoxTotalUnpaidCustomerBills=Skupaj neplačanih posvetovanj
+BoxTitleNbOfPatients=Število pacientov
+BoxTitleLastPatients=Zadnji %s zabeleženi bolniki
+BoxTitleLastModifiedPatients=Zadnji spremenjeni bolniki z %s
+BoxTitleTotalUnpaidCustomerBills=Neplačane konzultacije
+BoxTitleLastModifiedContacts=Nazadnje spremenjeni stiki %s
+NoRecordedPatients=Ni zabeleženega pacienta
+NoRecordedContacts=Ni zabeleženega stika
+NoRecordedInvoices=Ni zabeleženega posvetovanja
+NoUnpaidCustomerBills=Brez neplačanih posvetovanj

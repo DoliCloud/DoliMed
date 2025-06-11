@@ -11,6 +11,7 @@ LastYear=Tahun lalu
 LastConsult=Konsultasi terbaru
 LastConsultShort=Konsultasi terbaru
 LastModifiedPatients=Pasien yang dimodifikasi %s terbaru
+LastModifiedConsultations=Konsultasi %s terbaru yang dimodifikasi
 NbConsult=Nb konsultasi
 MenuCabinet=Pusat informasi medis
 MenuNewPatient=Pasien baru
@@ -92,7 +93,9 @@ PaymentTypeThirdParty=Pihak ketiga
 PaymentTypeEspece=Tunai
 PaymentTypeCarte=Kartu kredit
 PaymentTypeCheque=Memeriksa
+PaymentTypeOther=Lainnya
 Secondaries=Sekunder
+SourceBank=Sumber bank
 Commentaires=Komentar
 RecBank=Untuk menyetor
 Paiement=Pembayaran
@@ -152,11 +155,11 @@ Gender=Jenis kelamin
 NumberConsultByMonth=Jumlah konsultasi per bulan
 NumberConsult=Jumlah konsultasi
 ActivityBranch=Cabang kegiatan
-AboutInfo=Modul ini dikembangkan dan didistribusikan oleh Laurent Destailleur untuk DoliCloud, <a href="https://www.dolicloud.com?origin=dolimed"> www.dolicloud.com </a> (Perusahaan Mitra Pilihan Dolibarr).
+AboutInfo=Modul ini dikembangkan dan didistribusikan oleh Laurent Destailleur untuk DoliCloud, <a href="https://www.dolicloud.com?origin=dolimed">www.dolicloud.com</a> (Perusahaan Mitra Pilihan Dolibarr).
 MoreModules=Modul lain dari penulis yang sama tersedia di pasar resmi DoliStore ...
-MoreModulesLink= <a target="_blank" href="http://www.dolistore.com/search.php?search_query=dolicloud"> Klik di sini untuk melihat daftar lengkap </a>
+MoreModulesLink=<a target="_blank" href="http://www.dolistore.com/search.php?search_query=dolicloud">Klik di sini untuk melihat daftar lengkapnya</a>
 MoreCloudHosting=Untuk menggunakan Dolibarr online, pilih DoliCloud hosting yang aman.
-MoreCloudHostingLinkDoliMed= <a target="_blank" href="https://www.dolicloud.com?origin=dolimed"> Klik di sini untuk informasi lebih lanjut </a>
+MoreCloudHostingLinkDoliMed=<a target="_blank" href="https://www.dolicloud.com?origin=dolimed">Klik di sini untuk informasi lebih lanjut</a>
 CompatibleWithDoliDroid=Modul ini juga kompatibel dengan DoliDroid, aplikasi Android untuk Dolibarr.
 HideThirdPartiesMenu=Sembunyikan menu pihak ketiga (semua pelanggan adalah pasien). Jika Anda mengelola Pemasok (Pemasok modul diaktifkan), entri menu ini akan tetap terlihat agar fitur pemasok dapat diakses.
 HideCustomerFeatures=Sembunyikan fitur untuk mengelola pelanggan (Anda tidak perlu membuat faktur).
@@ -183,3 +186,15 @@ AddPatient=Buat pasien
 Revenues=Pendapatan
 PatientsAndConsultations=Pasien | Konsultasi
 ToCreateAConsultationGoOnPatientRecord=Untuk merekam konsultasi baru, cari dan buka catatan Pasien terlebih dahulu, kemudian geser ke tab 'Konsultasi' dan klik tombol 'Buat konsultasi'
+SendConsultationRef=Pesan tentang konsultasi %s
+DiagnosticIsMandatoryOnConsultation=Diagnostik wajib dilakukan pada konsultasi
+FeatureForCustomerdisabled=Fitur untuk mengelola pelanggan disembunyikan sehingga fitur untuk membuat dokumen faktur independen dinonaktifkan. Hanya jumlah konsultasi yang akan disimpan dalam konsultasi (tidak ada dokumen faktur akuntansi yang dibuat).
+EditOrAddTemplateFromSetupOfThirdPartyModule=Anda dapat mengedit atau menambahkan lebih banyak templat dari halaman pengaturan modul %s (Menu %s - %s - %s)
+ConvertIntoPatient=Konversi menjadi Pasien
+ConvertIntoPatientDesc=Pihak ketiga yang umum juga akan menjadi pasien sehingga Anda dapat membuat konsultasi tentangnya
+
+LesionDiagnosticsCCA=Artritis Kondrokalsinotik
+LesionDiagnosticsGOUTTE=Artritis Asam Urat
+Patients=Pasien
+Consultations=Konsultasi
+CABINETMED_DELAY_TO_LOCK_RECORD=Konsultasi tidak dapat diubah x hari setelah dibuat (gunakan 0 agar konsultasi selalu dapat diedit)

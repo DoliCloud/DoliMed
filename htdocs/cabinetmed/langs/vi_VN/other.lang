@@ -1,6 +1,6 @@
 # Dolibarr language file - fr_FR - other
 CHARSET=UTF-8
-Notify_NOTIFY_VAL_FAC=Validation consultation patient
-ProfIdShortDesc=<b>Id prof. %s</b> est une information qui dépend du pays du patient.<br>Par exemple, pour le pays <b>%s</b>, il s'agit du code <b>%s</b>.
-NewCompanyToDolibarr=Patient %s ajouté
-CustomerPaymentDoneInDolibarr=Paiement patient %s
+Notify_NOTIFY_VAL_FAC=Xác nhận tư vấn bệnh nhân
+ProfIdShortDesc=<b>Id prof. %s</b> là một thông tin đáng tin cậy mà bạn sẽ trả tiền cho bệnh nhân.<br>Ví dụ, hãy trình bày thanh toán <b>%s</b>, bằng cách sử dụng mã <span> class='notranslate'><b>%s</b>.
+NewCompanyToDolibarr=Bệnh nhân %s thường lệ
+CustomerPaymentDoneInDolibarr=Bệnh nhân thanh toán %s

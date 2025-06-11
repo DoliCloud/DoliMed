@@ -11,6 +11,7 @@ LastYear=letztes Jahr
 LastConsult=Letzte Konsultation
 LastConsultShort=Letzte Konsultation
 LastModifiedPatients=zuletzt %s geänderte Patienten
+LastModifiedConsultations=Zuletzt geänderte Konsultationen zu %s
 NbConsult=Anzahl Konsultationen
 MenuCabinet=Informationszentrum
 MenuNewPatient=Neuer Patient
@@ -92,7 +93,9 @@ PaymentTypeThirdParty=Geschäftspartner
 PaymentTypeEspece=Bargeld
 PaymentTypeCarte=Kreditkarte
 PaymentTypeCheque=Scheck
+PaymentTypeOther=Andere
 Secondaries=Sekundäre
+SourceBank=Quellbank
 Commentaires=Kommentare
 RecBank=Auf einzahlen
 Paiement=Zahlung
@@ -152,11 +155,11 @@ Gender=Geschlecht
 NumberConsultByMonth=Anzahl Konsultationen pro Monat
 NumberConsult=Anzahl Konsultationen
 ActivityBranch=Tätigkeitszweig
-AboutInfo=Dieses Modul wurde von Laurent Destailleur für DoliCloud entwickelt und vertrieben. <a href="https://www.dolicloud.com?origin=dolimed"> www.dolicloud.com </a> (Ein Dolibarr Preferred Partner).
+AboutInfo=Dieses Modul wird von Laurent Destailleur für DoliCloud entwickelt und vertrieben, <a href="https://www.dolicloud.com?origin=dolimed">www.dolicloud.com</a> (ein bevorzugtes Partnerunternehmen von Dolibarr).
 MoreModules=Andere Module desselben Autors sind auf dem offiziellen DoliStore-Marktplatz erhältlich ...
-MoreModulesLink=<a target="_blank" href="http://www.dolistore.com/search.php?search_query=dolicloud">Hier klicken für eine vollständige Liste</a>
+MoreModulesLink=<a target="_blank" href="http://www.dolistore.com/search.php?search_query=dolicloud">Klicken Sie hier, um die vollständige Liste anzuzeigen</a>
 MoreCloudHosting=Um Online-Dolibarr zu verwenden, wählen Sie das gesicherte Hosting-DoliCloud.
-MoreCloudHostingLinkDoliMed= <a target="_blank" href="https://www.dolicloud.com?origin=dolimed"> Klicken Sie hier, um weitere Informationen zu erhalten. </a>
+MoreCloudHostingLinkDoliMed=<a target="_blank" href="https://www.dolicloud.com?origin=dolimed">Klicken Sie hier, um weitere Informationen zu erhalten</a>
 CompatibleWithDoliDroid=Dieses Modul ist auch mit DoliDroid, der Android-Anwendung für Dolibarr, kompatibel.
 HideThirdPartiesMenu=Drittanbieter-Menü ausblenden (alle Kunden sind Patienten). Wenn Sie Lieferanten verwalten (Modul Lieferanten ist aktiviert), ist dieser Menüeintrag weiterhin sichtbar, um die Lieferantenfunktion zugänglich zu machen.
 HideCustomerFeatures=Verbergen Sie Funktionen zur Verwaltung von Kunden (Sie müssen keine Rechnungen erstellen).
@@ -192,4 +195,6 @@ ConvertIntoPatientDesc=Der generische Gesch@ftspartner ist auch ein Patient, sod
 
 LesionDiagnosticsCCA=Chondrokalzinotische Arthritis
 LesionDiagnosticsGOUTTE=Gichtarthritis
-
+Patients=Patienten
+Consultations=Konsultationen
+CABINETMED_DELAY_TO_LOCK_RECORD=Konsultationen können x Tage nach ihrer Erstellung nicht mehr geändert werden (verwenden Sie 0, damit Konsultationen immer bearbeitbar bleiben)

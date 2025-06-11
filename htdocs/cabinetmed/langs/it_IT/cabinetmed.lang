@@ -11,6 +11,7 @@ LastYear=Ultimo anno
 LastConsult=Ultima Visita
 LastConsultShort=Ultima Visita
 LastModifiedPatients=Ultimi %s pazienti modificati
+LastModifiedConsultations=Ultime consultazioni modificate %s
 NbConsult=Nr di Visite
 MenuCabinet=Informazioni Centro Medico
 MenuNewPatient=Nuovo Paziente
@@ -92,7 +93,9 @@ PaymentTypeThirdParty=Terze parti
 PaymentTypeEspece=Contanti
 PaymentTypeCarte=Carta di Credito
 PaymentTypeCheque=Assegno
+PaymentTypeOther=Altro
 Secondaries=Secondarie
+SourceBank=Banca di origine
 Commentaires=Commenti
 RecBank=Da versare su
 Paiement=Pagamento
@@ -152,11 +155,11 @@ Gender=Genere
 NumberConsultByMonth=Numero dei consulti per mese
 NumberConsult=Numero dei consulti
 ActivityBranch=Ramo attività
-AboutInfo=Questo modulo è sviluppato e distribuito da Laurent Destailleur per DoliCloud, <a href="https://www.dolicloud.com?origin=dolimed">www.dolicloud.com</a> (Una Azienza Partner Preferenziale di Dolibarr)
+AboutInfo=Questo modulo è sviluppato e distribuito da Laurent Destailleur per DoliCloud, <a href="https://www.dolicloud.com?origin=dolimed">www.dolicloud.com</a> (azienda Dolibarr Preferred Partner).
 MoreModules=Altri moduli dello stesso autore sono disponibili nello store ufficiale DoliStore...
-MoreModulesLink=<a target="_blank" href="http://www.dolistore.com/search.php?search_query=dolicloud">Clicca per vedere la lista completa</a>
+MoreModulesLink=<a target="_blank" href="http://www.dolistore.com/search.php?search_query=dolicloud">Clicca qui per vedere l'elenco completo</a>
 MoreCloudHosting=Per usare Dolibarr online, scegli l'hosting sicuro DoliCloud
-MoreCloudHostingLinkDoliMed=<a target="_blank" href="https://www.dolicloud.com?origin=dolimed">Clicca per maggiori informazioni</a>
+MoreCloudHostingLinkDoliMed=<a target="_blank" href="https://www.dolicloud.com?origin=dolimed">Clicca qui per maggiori informazioni</a>
 CompatibleWithDoliDroid=Questo modulo è anche compatibile con DoliDroid, l'applicazione Android per Dolibarr.
 HideThirdPartiesMenu=Nascondi il menu Terze Parti (tutti i clienti e i pazienti). Se gestisci i Fornitori (Modulo Fornitore abilitato), la voce di questo menu sarà ancora visibile per consentire l'accesso alle funzioni Fornitore.
 HideCustomerFeatures=Nascondi impostazioni per festire i clienti (non hai bisogno di emettere fattura)
@@ -183,3 +186,15 @@ AddPatient=Crea Paziente
 Revenues=Ricavi
 PatientsAndConsultations=Pazienti | Consultazioni
 ToCreateAConsultationGoOnPatientRecord=Per registrare una nuova consultazione, cercare e aprire un record paziente prima, poi andare alla scheda 'Consultazioni' e cliccare sul bottone 'Crea consultazione'
+SendConsultationRef=Messaggio sulla consultazione %s
+DiagnosticIsMandatoryOnConsultation=La diagnosi è obbligatoria nelle visite
+FeatureForCustomerdisabled=Le funzionalità di gestione dei clienti sono nascoste, quindi la funzione per generare fatture indipendenti è disabilitata. Verrà salvato solo l'importo della consulenza (non verrà generato alcun documento di fatturazione contabile).
+EditOrAddTemplateFromSetupOfThirdPartyModule=Puoi modificare o aggiungere altri modelli dalla pagina di configurazione del modulo %s (Menu %s - %s - %s)
+ConvertIntoPatient=Converti in paziente
+ConvertIntoPatientDesc=La terza parte comune sarà anche un paziente, quindi puoi creare una consulenza su di esso
+
+LesionDiagnosticsCCA=Artrite condrocalcinotica
+LesionDiagnosticsGOUTTE=artrite gottosa
+Patients=Pazienti
+Consultations=Consulenze
+CABINETMED_DELAY_TO_LOCK_RECORD=Le consulenze non possono essere modificate per x giorni dopo la loro creazione (usare 0 per mantenere le consulenze sempre modificabili)

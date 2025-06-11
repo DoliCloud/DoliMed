@@ -11,6 +11,7 @@ LastYear=Прошлый год
 LastConsult=Последняя консультация
 LastConsultShort=Последняя консультация
 LastModifiedPatients=Последние модифицированные пациенты %s
+LastModifiedConsultations=Последние измененные консультации %s
 NbConsult=Количество консультаций
 MenuCabinet=Информационный медицинский центр
 MenuNewPatient=Новый пациент
@@ -92,7 +93,9 @@ PaymentTypeThirdParty=Сторонний
 PaymentTypeEspece=Денежные средства
 PaymentTypeCarte=Кредитная карта
 PaymentTypeCheque=Проверять
+PaymentTypeOther=Другой
 Secondaries=Вторичные
+SourceBank=Исходный банк
 Commentaires=Комментарии
 RecBank=Сделать депозит на
 Paiement=Оплата
@@ -152,11 +155,11 @@ Gender=Пол
 NumberConsultByMonth=Количество консультаций в месяц
 NumberConsult=Количество консультаций
 ActivityBranch=Ветвь деятельности
-AboutInfo=Этот модуль разработан и распространен Laurent Destailleur для DoliCloud, <a href="https://www.dolicloud.com?origin=dolimed"> www.dolicloud.com </a> (Компания-предпочтительный партнер Dolibarr).
+AboutInfo=Этот модуль разработан и распространяется Лораном Дестайлером для DoliCloud, <a href="https://www.dolicloud.com?origin=dolimed">www.dolicloud.com</a> (компания-предпочтительный партнер Dolibarr).
 MoreModules=Другие модули того же автора доступны на официальной торговой площадке DoliStore ...
-MoreModulesLink= <a target="_blank" href="http://www.dolistore.com/search.php?search_query=dolicloud"> Нажмите здесь, чтобы увидеть полный список </a>
+MoreModulesLink=<a target="_blank" href="http://www.dolistore.com/search.php?search_query=dolicloud">Нажмите здесь, чтобы увидеть полный список</a>
 MoreCloudHosting=Чтобы использовать онлайн Dolibarr, выберите защищенный хостинг DoliCloud.
-MoreCloudHostingLinkDoliMed= <a target="_blank" href="https://www.dolicloud.com?origin=dolimed"> Щелкните здесь для получения дополнительной информации </a>
+MoreCloudHostingLinkDoliMed=<a target="_blank" href="https://www.dolicloud.com?origin=dolimed">Нажмите здесь для получения дополнительной информации</a>
 CompatibleWithDoliDroid=Эти модули также совместимы с DoliDroid, Android-приложением для Dolibarr.
 HideThirdPartiesMenu=Скрыть стороннее меню (все клиенты - пациенты). Если вы управляете поставщиками (модуль «Поставщик» включен), этот пункт меню будет по-прежнему видимым, чтобы функция поставщика оставалась доступной.
 HideCustomerFeatures=Скрыть функции для управления клиентами (вам не нужно выставлять счета).
@@ -183,3 +186,15 @@ AddPatient=Создать пациента
 Revenues=Доходы
 PatientsAndConsultations=Пациенты | Консультации
 ToCreateAConsultationGoOnPatientRecord=Чтобы записать новую консультацию, сначала найдите и откройте запись пациента, затем перейдите на вкладку «Консультации» и нажмите кнопку «Создать консультацию».
+SendConsultationRef=Сообщение о консультации %s
+DiagnosticIsMandatoryOnConsultation=Диагностика обязательна на консультациях
+FeatureForCustomerdisabled=Функции управления клиентами скрыты, поэтому функция создания независимого документа счета-фактуры отключена. В консультации будет сохранена только сумма консультации (документ бухгалтерского счета-фактуры не будет сгенерирован).
+EditOrAddTemplateFromSetupOfThirdPartyModule=Вы можете редактировать или добавлять больше шаблонов на странице настройки модуля %s (Меню %s - %s - %s)
+ConvertIntoPatient=Превратить в пациента
+ConvertIntoPatientDesc=Общая третья сторона также будет пациентом, поэтому вы можете создать консультацию по нему.
+
+LesionDiagnosticsCCA=Хондрокальцинотический артрит
+LesionDiagnosticsGOUTTE=Подагрический артрит
+Patients=Пациенты
+Consultations=Консультации
+CABINETMED_DELAY_TO_LOCK_RECORD=Консультации не могут быть изменены в течение x дней после их создания (используйте 0, чтобы консультации всегда были доступны для редактирования)

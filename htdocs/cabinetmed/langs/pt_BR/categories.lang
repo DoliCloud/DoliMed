@@ -1,6 +1,5 @@
 # Dolibarr language file - Source file is en_US - categories
 PatientsCategoriesArea=Categoria de área de paciente
-PatientIsInCustomersCategories=Este paciente está dentro das seguintes categorias
 PatientsCategoryShort=Categoria de paciente
 PatientsCategoriesShort=Categorias de pacientes
 ThisCategoryHasNoCustomer=Esta categoria não tem paciente

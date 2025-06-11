@@ -11,6 +11,7 @@ LastYear=Laatste jaar
 LastConsult=Laatste consult
 LastConsultShort=Laatste consult
 LastModifiedPatients=Laatste %s gewijzigde patiënten
+LastModifiedConsultations=Laatste %s aangepaste consultaties
 NbConsult=Aantal consulten
 MenuCabinet=Informations medical center
 MenuNewPatient=Nieuwe patiënt
@@ -92,7 +93,9 @@ PaymentTypeThirdParty=Derden
 PaymentTypeEspece=Contant
 PaymentTypeCarte=Credit card
 PaymentTypeCheque=Cheque
+PaymentTypeOther=Ander
 Secondaries=Secondair
+SourceBank=Bronbank
 Commentaires=Opmerkingen
 RecBank=Storten op
 Paiement=Betaling
@@ -152,9 +155,9 @@ Gender=Geslacht
 NumberConsultByMonth=Aantal consulten per maand
 NumberConsult=Aantal consulten
 ActivityBranch=Soort beroep
-AboutInfo=Deze module is ontwikkeld en gedistribuëerd door Laurent Destailleur van DoliCloud, <a href="https://www.dolicloud.com?origin=dolimed">www.dolicloud.com</a> (Een Dolibarr Geprefereerde Partner bedrijf).
+AboutInfo=Deze module is ontwikkeld en gedistribueerd door Laurent Destailleur voor DoliCloud, <a href="https://www.dolicloud.com?origin=dolimed">www.dolicloud.com</a> (een Dolibarr Preferred Partner-bedrijf).
 MoreModules=Andere modules van dezelfde auteur kunnen op de officiëele DoliStore markt gevonden worden...
-MoreModulesLink=<a target="_blank" href="http://www.dolistore.com/search.php?search_query=dolicloud">Klik hier voor de volledige lijst</a>
+MoreModulesLink=<a target="_blank" href="http://www.dolistore.com/search.php?search_query=dolicloud">Klik hier om de volledige lijst te bekijken</a>
 MoreCloudHosting=Om Dolibarr online te gebruiken kun je het beste keizen voor de veilige hosting van DoliCloud.
 MoreCloudHostingLinkDoliMed=<a target="_blank" href="https://www.dolicloud.com?origin=dolimed">Klik hier voor meer informatie</a>
 CompatibleWithDoliDroid=Deze module is compatiebel met DoliDroid, de Android app voor Dolibarr.
@@ -192,4 +195,6 @@ ConvertIntoPatientDesc=De gemeenschappelijke derde partij zal ook een patiënt z
 
 LesionDiagnosticsCCA=Chondrocalcinose Artritis
 LesionDiagnosticsGOUTTE=Jichtige artritis
-
+Patients=Patiënten
+Consultations=Consultaties
+CABINETMED_DELAY_TO_LOCK_RECORD=Consultaties kunnen x dagen na creatie niet gewijzigd worden (gebruik 0 om consultaties altijd bewerkbaar te houden)

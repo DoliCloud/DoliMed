@@ -3,4 +3,3 @@ ErrorThisContactIsAlreadyDefinedAsThisType=Esta correspondecia já é definida c
 ErrorBadPatientName=Nome do paciente ruim
 ErrorBadCustomerCodeSyntax=Syntaxe para código do paciente não está correta
 ErrorCustomerCodeRequired=Código do paciente obrigatório
-ErrorCustomerCodeAlreadyUsed=Código do paciente já utilizado

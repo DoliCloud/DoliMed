@@ -1,9 +1,9 @@
 # Dolibarr language file - fr_FR - compta
 CHARSET=UTF-8
-PaymentCustomerInvoice=Règlement consultation patient
-ListOfCustomerPayments=Liste des règlements patients
-CustomerAccountancyCode=Code compta patient
-ByPatients=Par patient
-ErrorWrongAccountancyCodeForCompany=Code compta patient incorrect pour %s
-COMPTA_ACCOUNT_CUSTOMER=Code comptable patient par défaut (si non défini sur fiche patient)
-COMPTA_ACCOUNT_SUPPLIER=Code comptable fournisseur par défaut (si non défini sur fiche patient)
+PaymentCustomerInvoice=정규 상담 환자
+ListOfCustomerPayments=Liste des Règlements 환자
+CustomerAccountancyCode=코드 compta 환자
+ByPatients=Par 환자
+ErrorWrongAccountancyCodeForCompany=코드 compta 환자 잘못된 입력 %s
+COMPTA_ACCOUNT_CUSTOMER=코드 호환 환자 par défaut(si non défini sur fiche 환자)
+COMPTA_ACCOUNT_SUPPLIER=Code comptable fournisseur par défaut(si non défini sur fiche 환자)

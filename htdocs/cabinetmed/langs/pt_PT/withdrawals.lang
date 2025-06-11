@@ -1,5 +1,5 @@
 # Dolibarr language file - fr_FR - withdrawals
 CHARSET=UTF-8
-NoInvoiceToWithdraw=Aucune consultation patient en mode de paiement 'Prélèvement' n'a de demande de prélèvements en attente. Aller sur l'onglet 'Prélèvement' de la fiche facture pour faire une demande.
-ThirdPartyBankCode=Code banque du patient
-ThirdPartyDeskCode=Code guichet du patient
+NoInvoiceToWithdraw=Nenhuma consulta paciente no modo de pagamento 'Prélèvement' e sem demanda de prélèvements attente. Consulte a guia 'Prélèvement' da ficha fabricada para atender a uma demanda.
+ThirdPartyBankCode=Código bancário do paciente
+ThirdPartyDeskCode=Código guichet du paciente

@@ -1,10 +1,10 @@
 # Dolibarr language file - en_US - categories
-CHARSET=UTF-8
-PatientsCategoriesArea=Categories of patient area
-PatientIsInCustomersCategories=This patient is inside following categories
-PatientsCategoryShort=Patients category
-PatientsCategoriesShort=Patients categories
-ThisCategoryHasNoCustomer=This category has no patient
-AssignedToPatients=Set a patient
-AssignedToThePatients=Set a patient
-CatCusListPatients=List of patients categories
+CHARSET=ಯುಟಿಎಫ್ -8
+PatientsCategoriesArea=ರೋಗಿ ಪ್ರದೇಶದ ವರ್ಗಗಳು
+PatientIsInCustomersCategories=ಈ ರೋಗಿಯು ಈ ಕೆಳಗಿನ ವರ್ಗಗಳಿಗೆ ಸೇರಿದ್ದಾರೆ:
+PatientsCategoryShort=ರೋಗಿಗಳ ವರ್ಗ
+PatientsCategoriesShort=ರೋಗಿಗಳ ವರ್ಗಗಳು
+ThisCategoryHasNoCustomer=ಈ ವರ್ಗದಲ್ಲಿ ಯಾವುದೇ ರೋಗಿಗಳಿಲ್ಲ.
+AssignedToPatients=ರೋಗಿಯನ್ನು ಹೊಂದಿಸಿ
+AssignedToThePatients=ರೋಗಿಯನ್ನು ಹೊಂದಿಸಿ
+CatCusListPatients=ರೋಗಿಗಳ ವರ್ಗಗಳ ಪಟ್ಟಿ

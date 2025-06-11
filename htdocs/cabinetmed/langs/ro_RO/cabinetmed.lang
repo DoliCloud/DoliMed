@@ -11,6 +11,7 @@ LastYear=Ultimul an
 LastConsult=Ultimile consultaţii 
 LastConsultShort=Ultimile consultaţii
 LastModifiedPatients=Ultimii %s pacienţi modificaţi
+LastModifiedConsultations=Ultimile %s consultații modificate
 NbConsult=Nr consultaţii
 MenuCabinet=Informaţii Centru medical
 MenuNewPatient=Pacient nou
@@ -92,7 +93,9 @@ PaymentTypeThirdParty=Terţ
 PaymentTypeEspece=Numerar
 PaymentTypeCarte=Card credit
 PaymentTypeCheque=Cec
+PaymentTypeOther=Altele
 Secondaries=Secundare
+SourceBank=Banca sursă
 Commentaires=Comentarii
 RecBank=De depus la
 Paiement=Plată
@@ -152,11 +155,11 @@ Gender=Gen
 NumberConsultByMonth=Număr de consultaţii pe lună
 NumberConsult=Număr consultaţie
 ActivityBranch=Ramură activitate
-AboutInfo=Acest modul este dezvoltat și distribuit de către Laurent Destailleur pentru DoliCloud, <a href="https://www.dolicloud.com?origin=dolimed">www.dolicloud.com</a> (o companie parteneră preferată Dolibarr).
+AboutInfo=Acest modul este dezvoltat și distribuit de Laurent Destailleur pentru DoliCloud, <a href="https://www.dolicloud.com?origin=dolimed">www.dolicloud.com</a> (O companie Dolibarr Preferred Partner).
 MoreModules=Alte module ale aceluiași autor sunt disponibile în marketplace-ul DoliStore ...
-MoreModulesLink=<a target="_blank" href="http://www.dolistore.com/search.php?search_query=dolicloud">Click aici pentru a vedea lista integrală</a>
+MoreModulesLink=<a target="_blank" href="http://www.dolistore.com/search.php?search_query=dolicloud">Clic aici pentru a vedea toată lista</a>
 MoreCloudHosting=Pentru a utiliza Dolibarr online, alegeți DoliCloud pentru găzduire securizată.
-MoreCloudHostingLinkDoliMed=<a target="_blank" href="https://www.dolicloud.com?origin=dolimed">Click aici pentru mai multe informaţii</a>
+MoreCloudHostingLinkDoliMed=<a target="_blank" href="https://www.dolicloud.com?origin=dolimed">Clic aici pentru mai multe informații</a>
 CompatibleWithDoliDroid=Acest modul este compatibil și cu DoliDroid, aplicația Android pentru Dolibarr.
 HideThirdPartiesMenu=Ascundere meniu Terţi (toți clienții sunt pacienți). În cazul în care gestionaţi furnizorii (modulul Furnizori activat), aceasta intrare în meniu va fi vizibilă pentru a accesa caracteristicile pentru furnizori.
 HideCustomerFeatures=Ascundeți funcțiile pentru gestionarea clienților (nu puteţi să mai faceți facturi).
@@ -192,4 +195,6 @@ ConvertIntoPatientDesc=Terțul obișnuit va fi, de asemenea, un pacient, astfel 
 
 LesionDiagnosticsCCA=Artrită condrocalcinotică
 LesionDiagnosticsGOUTTE=Artrită gutoasă
-
+Patients=Pacienți
+Consultations=Consultații
+CABINETMED_DELAY_TO_LOCK_RECORD=Consultațiile nu pot fi modificate la x zile după crearea lor (utilizează 0 pentru a menține consultațiile întotdeauna editabile)

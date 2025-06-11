@@ -1,11 +1,11 @@
 # Dolibarr language file - fr_FR - users
 CHARSET=UTF-8
-ContactCard=Contact record
-NoContactCard=No record among contacts
-LinkToCompanyContact=Link patient / contact
-LinkedToDolibarrThirdParty=Link patient
-CreateDolibarrThirdParty=Create a patient
-ConfirmCreateContact=Are you sure you want to create an account for this contact ?
-ConfirmCreateLogin=Are you sure you want to create an account for this member ?
-ConfirmCreateThirdParty=Are you sure you want to create a patient for this member ?
-NameToCreate=Name of patient to create
+ContactCard=Запис контакту
+NoContactCard=Немає запису серед контактів
+LinkToCompanyContact=Посилання пацієнта / контакту
+LinkedToDolibarrThirdParty=Зв'язати пацієнта
+CreateDolibarrThirdParty=Створити пацієнта
+ConfirmCreateContact=Ви впевнені, що хочете створити обліковий запис для цього контакту?
+ConfirmCreateLogin=Ви впевнені, що хочете створити обліковий запис для цього учасника?
+ConfirmCreateThirdParty=Ви впевнені, що хочете створити пацієнта для цього учасника?
+NameToCreate=Ім'я пацієнта для створення

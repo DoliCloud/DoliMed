@@ -1,10 +1,10 @@
 # Dolibarr language file - en_US - categories
 CHARSET=UTF-8
-PatientsCategoriesArea=Categories of patient area
-PatientIsInCustomersCategories=This patient is inside following categories
-PatientsCategoryShort=Patients category
-PatientsCategoriesShort=Patients categories
-ThisCategoryHasNoCustomer=This category has no patient
-AssignedToPatients=Set a patient
-AssignedToThePatients=Set a patient
-CatCusListPatients=List of patients categories
+PatientsCategoriesArea=Kategórie oblasti pacienta
+PatientIsInCustomersCategories=Tento pacient patrí do nasledujúcich kategórií
+PatientsCategoryShort=Kategória pacientov
+PatientsCategoriesShort=Kategórie pacientov
+ThisCategoryHasNoCustomer=Táto kategória nemá žiadneho pacienta
+AssignedToPatients=Nastaviť pacienta
+AssignedToThePatients=Nastaviť pacienta
+CatCusListPatients=Zoznam kategórií pacientov

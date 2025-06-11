@@ -11,6 +11,7 @@ LastYear=去年
 LastConsult=最新咨询
 LastConsultShort=最新咨询
 LastModifiedPatients=最新%s修改的病患
+LastModifiedConsultations=最新%s修改后的咨询
 NbConsult=咨询编号
 MenuCabinet=信息医疗中心
 MenuNewPatient=新患者
@@ -92,7 +93,9 @@ PaymentTypeThirdParty=第三方
 PaymentTypeEspece=现金
 PaymentTypeCarte=信用卡
 PaymentTypeCheque=支票
+PaymentTypeOther=其他
 Secondaries=次要的
+SourceBank=源库
 Commentaires=意见
 RecBank=存款于
 Paiement=付款
@@ -152,11 +155,11 @@ Gender=性别
 NumberConsultByMonth=每月咨询数量
 NumberConsult=咨询数量
 ActivityBranch=活动分支
-AboutInfo=此模块由Laurent Destailleur为DoliCloud, <a href="https://www.dolicloud.com?origin=dolimed">www.dolicloud.com</a> ( Dolibarr 首选合作伙伴公司)开发和发布
+AboutInfo=该模块由 Laurent Destailleur 为 DoliCloud 开发和分发，<a href="https://www.dolicloud.com?origin=dolimed">www.dolicloud.com</a>（Dolibarr 首选合作伙伴公司）。
 MoreModules=同一作者的其他模块可在DoliStore官方市场上找到
-MoreModulesLink=<a target="_blank" href="http://www.dolistore.com/search.php?search_query=dolicloud">点击这里查看完整清单</a>
+MoreModulesLink=<a target="_blank" href="http://www.dolistore.com/search.php?search_query=dolicloud">点击此处查看完整列表</a>
 MoreCloudHosting=要使用在线Dolibarr，请选择安全的主机DoliCloud
-MoreCloudHostingLinkDoliMed=<a target="_blank" href="https://www.dolicloud.com?origin=dolimed">点击这里获取更多信息</a>
+MoreCloudHostingLinkDoliMed=<a target="_blank" href="https://www.dolicloud.com?origin=dolimed">点击此处了解更多信息</a>
 CompatibleWithDoliDroid=本模块与Dolibarr的安卓应用程序DoliDroid兼容
 HideThirdPartiesMenu=隐藏第三方菜单（所有客户都是患者）。如果您管理供应商（启用了供应商模块），此菜单仍然可见，确保供应商功能的可访问性
 HideCustomerFeatures=隐藏管理客户的功能（您不需要开具发票）。
@@ -190,6 +193,8 @@ EditOrAddTemplateFromSetupOfThirdPartyModule=您可以在模块%s的设置页面
 ConvertIntoPatient=转换为患者
 ConvertIntoPatientDesc=常见的第三方也会是患者，您可以对它创建咨询
 
-LesionDiagnosticsCCA=Chondrocalcinotic Arthritis
-LesionDiagnosticsGOUTTE=Gouty Arthritis
-
+LesionDiagnosticsCCA=软骨钙质性关节炎
+LesionDiagnosticsGOUTTE=痛风性关节炎
+Patients=患者
+Consultations=咨询
+CABINETMED_DELAY_TO_LOCK_RECORD=咨询创建后 x 天内无法修改（使用 0 可保持咨询始终可编辑）

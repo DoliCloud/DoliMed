@@ -1,10 +1,10 @@
 # Dolibarr language file - en_US - categories
 CHARSET=UTF-8
-PatientsCategoriesArea=Categories of patient area
-PatientIsInCustomersCategories=This patient is inside following categories
-PatientsCategoryShort=Patients category
-PatientsCategoriesShort=Patients categories
-ThisCategoryHasNoCustomer=This category has no patient
-AssignedToPatients=Set a patient
-AssignedToThePatients=Set a patient
-CatCusListPatients=List of patients categories
+PatientsCategoriesArea=환자 구역의 종류
+PatientIsInCustomersCategories=이 환자는 다음 카테고리에 속합니다.
+PatientsCategoryShort=환자 카테고리
+PatientsCategoriesShort=환자 카테고리
+ThisCategoryHasNoCustomer=이 카테고리에는 환자가 없습니다
+AssignedToPatients=환자를 설정하세요
+AssignedToThePatients=환자를 설정하세요
+CatCusListPatients=환자 카테고리 목록

@@ -1,5 +1,5 @@
 # Dolibarr language file - fr_FR - agenda
-CHARSET=UTF-8
-NewCompanyToDolibarr=Patient créé
-AgendaShowBirthdayEvents=Afficher anniversaires correspondants
-AgendaHideBirthdayEvents=Cacher anniversaires correspondants
+CHARSET=ಯುಟಿಎಫ್ -8
+NewCompanyToDolibarr=ರೋಗಿಯ ಆರೈಕೆ
+AgendaShowBirthdayEvents=ಅಫಿಚರ್ ವಾರ್ಷಿಕೋತ್ಸವದ ವರದಿಗಾರರು
+AgendaHideBirthdayEvents=ಕ್ಯಾಚರ್ ವಾರ್ಷಿಕೋತ್ಸವದ ವರದಿಗಾರರು

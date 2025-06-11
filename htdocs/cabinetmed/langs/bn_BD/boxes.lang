@@ -1,14 +1,14 @@
 # Dolibarr language file - fr_FR - boxes
-CHARSET=UTF-8
-BoxLastPatients=Last modified patients
-BoxLastContacts=Lasts contacts
-BoxTotalUnpaidCustomerBills=Total of not payed consultations
-BoxTitleNbOfPatients=Number of patient
-BoxTitleLastPatients=Last %s recorded patiens
-BoxTitleLastModifiedPatients=Last %s modified patients
-BoxTitleTotalUnpaidCustomerBills=Unpayed consultations
-BoxTitleLastModifiedContacts=Last %s modified contacts
-NoRecordedPatients=No patient recorded
-NoRecordedContacts=No contact recorded
-NoRecordedInvoices=No consultation recorded
-NoUnpaidCustomerBills=No unpayed consultation
+CHARSET=ইউটিএফ-৮
+BoxLastPatients=সর্বশেষ পরিবর্তিত রোগীরা
+BoxLastContacts=পরিচিতিগুলি ধরে রাখে
+BoxTotalUnpaidCustomerBills=মোট অ-অর্থপ্রাপ্ত পরামর্শের সংখ্যা
+BoxTitleNbOfPatients=রোগীর সংখ্যা
+BoxTitleLastPatients=সর্বশেষ %s রেকর্ড করা রোগী
+BoxTitleLastModifiedPatients=শেষ %s পরিবর্তিত রোগী
+BoxTitleTotalUnpaidCustomerBills=বেতনবিহীন পরামর্শ
+BoxTitleLastModifiedContacts=শেষ %s পরিবর্তিত পরিচিতি
+NoRecordedPatients=কোনও রোগীর নাম নথিভুক্ত হয়নি
+NoRecordedContacts=কোনও যোগাযোগ রেকর্ড করা হয়নি
+NoRecordedInvoices=কোনও পরামর্শ রেকর্ড করা হয়নি
+NoUnpaidCustomerBills=কোনও বিনা বেতনে পরামর্শ নেই

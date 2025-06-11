@@ -11,6 +11,7 @@ LastYear=Pagājušais gads
 LastConsult=Jaunākās konsultācijas
 LastConsultShort=Jaunākā konsultācija
 LastModifiedPatients=Jaunākie %s modificētie pacienti
+LastModifiedConsultations=Jaunākās %s modificētās konsultācijas
 NbConsult=Konsultāciju skaits
 MenuCabinet=Medicīnas centra informācija
 MenuNewPatient=Jauns pacients
@@ -92,7 +93,9 @@ PaymentTypeThirdParty=Trešā persona
 PaymentTypeEspece=Skaidra nauda
 PaymentTypeCarte=Kredītkarte
 PaymentTypeCheque=Čeks
+PaymentTypeOther=Citi
 Secondaries=Sekundāri
+SourceBank=Avota banka
 Commentaires=Komentāri
 RecBank=Noguldīt
 Paiement=Maksājums
@@ -152,11 +155,11 @@ Gender=Dzimums
 NumberConsultByMonth=Apspriežu skaits mēnesī
 NumberConsult=Apspriežu skaits
 ActivityBranch=Darbības nozare
-AboutInfo=Šo moduli izstrādā un izplata Laurent Destailleur par DoliCloud, <a href="https://www.dolicloud.com?origin=dolimed"> www.dolicloud.com </a> (Dolibarr Preferred Partner uzņēmums).
+AboutInfo=Šo moduli DoliCloud, <a href="https://www.dolicloud.com?origin=dolimed">www.dolicloud.com</a> (Dolibarr vēlamā partnera uzņēmums), izstrādā un izplata Lorāns Destajērs.
 MoreModules=Citi tā paša autora moduļi ir pieejami oficiālajā DoliStore tirgū.
-MoreModulesLink= <a target="_blank" href="http://www.dolistore.com/search.php?search_query=dolicloud"> Noklikšķiniet šeit, lai redzētu pilnu sarakstu </a>
+MoreModulesLink=<a target="_blank" href="http://www.dolistore.com/search.php?search_query=dolicloud">Noklikšķiniet šeit, lai skatītu pilnu sarakstu</a>
 MoreCloudHosting=Lai izmantotu tiešsaistes Dolibarr, izvēlieties drošu hostingu DoliCloud.
-MoreCloudHostingLinkDoliMed= <a target="_blank" href="https://www.dolicloud.com?origin=dolimed"> Noklikšķiniet šeit, lai iegūtu vairāk informācijas </a>
+MoreCloudHostingLinkDoliMed=<a target="_blank" href="https://www.dolicloud.com?origin=dolimed">Lai iegūtu plašāku informāciju, noklikšķiniet šeit</a>
 CompatibleWithDoliDroid=Šie moduļi ir saderīgi arī ar DoliDroid, Android lietojumprogrammu Dolibarr.
 HideThirdPartiesMenu=Paslēpt trešo personu izvēlni (visi klienti ir pacienti). Ja pārvaldāt piegādātājus (modulis piegādātājs iespējots), šis izvēlnes ieraksts joprojām būs redzams, lai nodrošinātu piegādātāja funkciju pieejamību.
 HideCustomerFeatures=Paslēpt funkcijas, lai pārvaldītu klientus (jums nav nepieciešams veikt rēķinus).
@@ -190,6 +193,8 @@ EditOrAddTemplateFromSetupOfThirdPartyModule=Varat rediģēt vai pievienot papil
 ConvertIntoPatient=Pārvērst par pacientu
 ConvertIntoPatientDesc=Kopējā trešā puse arī būs pacients, lai jūs varētu izveidot konsultāciju par to
 
-LesionDiagnosticsCCA=Chondrocalcinotic Arthritis
-LesionDiagnosticsGOUTTE=Gouty Arthritis
-
+LesionDiagnosticsCCA=Hondrokalcinotiskais artrīts
+LesionDiagnosticsGOUTTE=Podagras artrīts
+Patients=Pacienti
+Consultations=Konsultācijas
+CABINETMED_DELAY_TO_LOCK_RECORD=Konsultācijas nevar mainīt x dienas pēc to izveides (izmantojiet 0, lai konsultācijas vienmēr būtu rediģējamas)

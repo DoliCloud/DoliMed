@@ -8,7 +8,6 @@ IdThirdParty=Identificação paciente
 IdCompany=Identificação paciente
 IdContact=Identificação contato
 Contacts=Contatos
-ContactsAddresses=Contatos / Endereços
 ThirdPartyContacts=Contatos do Paciente
 ThirdPartyContact=Contato do Paciente
 StatusContactValidated=Situação do contato

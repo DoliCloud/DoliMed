@@ -1,9 +1,10 @@
 # Dolibarr language file - en_US - main
 CHARSET=UTF-8
-ContactsAddressesForCompany=Contacts/addresses for this patient or third party
-ActionsOnCompany=Events on this patient or thirdparty
-ByCompanies=By patient
-NbOfPatients=Number of patients
-PatientPreview=Patient preview
-ShowPatientPreview=Show patient preview
-RefPatient=Patient Ref.
+ContactsAddressesForCompany=Địa chỉ liên lạc/địa chỉ của bệnh nhân này hoặc bên thứ ba
+ActionsOnCompany=Sự kiện trên bệnh nhân này hoặc bên thứ ba
+ByCompanies=Theo bệnh nhân
+NbOfPatients=Số lượng bệnh nhân
+PatientPreview=Xem trước bệnh nhân
+ShowPatientPreview=Hiển thị bản xem trước của bệnh nhân
+RefPatient=Tham chiếu bệnh nhân
+ContactDefault_societe=Liên hệ
