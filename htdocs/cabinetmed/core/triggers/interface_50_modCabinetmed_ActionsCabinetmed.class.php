@@ -115,10 +115,21 @@ class InterfaceActionsCabinetmed extends DolibarrTriggers
 	{
 		$ok=0;
 
+		if (!isModEnabled("agenda")) return 0;     // Module not active, we do nothing
+		if (!isModEnabled("cabinetmed")) return 0;     // Module not active, we do nothing
+
+		$key = 'MAIN_AGENDA_ACTIONAUTO_'.$action;
+		//var_dump($action.' - '.$key.' - '.$conf->global->$key);exit;
+
+		// Do not log events disabled for this action
+		// GUI allow to set this option only if entry exists into table llx_c_action_trigger
+		if (isset($conf->global->$key) && !getDolGlobalString($key)) {
+			return 0;
+		}
+
 		// Actions
 		if ($action == 'CABINETMED_OUTCOME_CREATE') {
 			// object is consultation.class.php
-			if (!isModEnabled("agenda")) return 0;     // Module not active, we do nothing
 
 			dol_syslog("Trigger '".$this->name."' for action '$action' launched by ".__FILE__.". id=".$object->id);
 			$langs->load("agenda");
@@ -157,15 +168,6 @@ class InterfaceActionsCabinetmed extends DolibarrTriggers
 			$ok=1;
 		}
 
-		// If not found
-		/*
-		else
-		{
-			dol_syslog("Trigger '".$this->name."' for action '$action' was ran by ".__FILE__." but no handler found for this action.");
-			return 0;
-		}
-		*/
-
 		// Add entry in event table
 		if ($ok) {
 			$now=dol_now();
@@ -189,6 +191,7 @@ class InterfaceActionsCabinetmed extends DolibarrTriggers
 			$actioncomm->userownerid = $user->id;	// Owner of action
 
 			$actioncomm->fk_element  = $object->id;
+			$actioncomm->elementid   = $object->id;
 			$actioncomm->elementtype = $object->element;
 
 			$ret=$actioncomm->create($user);       // User qui saisit l'action
