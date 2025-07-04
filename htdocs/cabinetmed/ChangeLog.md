@@ -1,6 +1,6 @@
 # ChangeLog
 
-## Unreleased
+## Unreleased - future 17.0
 
 - NEW Can disable auto recordinagenda with MAIN_AGENDA_ACTIONAUTO_CABINETMED_OUTCOME_CREATE 
 and MAIN_AGENDA_ACTIONAUTO_CABINETMED_SENTBYMAIL
