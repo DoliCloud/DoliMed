@@ -41,7 +41,7 @@ class CabinetmedCons extends CommonObject
 
 	var $id;
 	var $ref;
-	
+
 	var $fk_soc;
 	var $datecons='';
 	var $typepriseencharge;
@@ -92,7 +92,6 @@ class CabinetmedCons extends CommonObject
 	 */
 	function create($user, $notrigger = 0)
 	{
-		global $conf, $langs;
 		$error=0;
 
 		$now=dol_now();
@@ -223,8 +222,6 @@ class CabinetmedCons extends CommonObject
 	 */
 	function fetch($id)
 	{
-		global $langs;
-
 		$sql = "SELECT";
 		$sql.= " t.rowid,";
 		$sql.= " t.fk_soc,";
@@ -336,7 +333,6 @@ class CabinetmedCons extends CommonObject
 			}
 			return 1;
 		} else {
-			$error++;
 			$this->error=$this->db->lasterror();
 			return -1;
 		}
@@ -352,7 +348,6 @@ class CabinetmedCons extends CommonObject
 	 */
 	function update($user = null, $notrigger = 0)
 	{
-		global $conf, $langs;
 		$error=0;
 
 		// Clean parameters
@@ -446,7 +441,6 @@ class CabinetmedCons extends CommonObject
 	 */
 	function delete($user, $notrigger = 0)
 	{
-		global $conf, $langs;
 		$error=0;
 
 		$this->db->begin();
@@ -465,14 +459,14 @@ class CabinetmedCons extends CommonObject
 			}
 		} else {
 			$error++;
-			$consult->error=$this->db->lasterror();
+			$this->error = $this->db->lasterror();
 		}
 
 		if (! $error) {
 			// If bid
 			if ($bid) {
-				$bankaccountline=new AccountLine($this->db);
-				$result=$bankaccountline->fetch($bid);
+				$bankaccountline = new AccountLine($this->db);
+				$bankaccountline->fetch($bid);
 				$bankaccountline->delete($user);
 			}
 		}
@@ -508,11 +502,11 @@ class CabinetmedCons extends CommonObject
 	 */
 	function createFromClone($fromid)
 	{
-		global $user,$langs;
+		global $user;
 
 		$error=0;
 
-		$object=new Cabinetmed_cons($this->db);
+		$object=new CabinetmedCons($this->db);
 
 		$this->db->begin();
 
@@ -520,6 +514,7 @@ class CabinetmedCons extends CommonObject
 		$object->fetch($fromid);
 		$object->id=0;
 		$object->statut=0;
+		$object->status=0;
 
 		// Clear fields
 		// ...
@@ -675,8 +670,6 @@ class CabinetmedCons extends CommonObject
 	 */
 	function LibStatut($statut, $mode)
 	{
-		global $langs, $conf;
-
 		return '';
 	}
 }
