@@ -1,6 +1,6 @@
 <?php
 /* Copyright (C) 2003-2004 Rodolphe Quiedeville         <rodolphe@quiedeville.org>
- * Copyright (C) 2004-2010 Laurent Destailleur          <eldy@users.sourceforge.net>
+ * Copyright (C) 2004-2025 Laurent Destailleur          <eldy@users.sourceforge.net>
  * Copyright (C) 2005      Eric Seigne                  <eric.seigne@ryxeo.com>
  * Copyright (C) 2005-2009 Regis Houssin                <regis@dolibarr.fr>
  * Copyright (C) 2008      Raphael Bertrand (Resultic)  <raphael.bertrand@resultic.fr>
@@ -53,10 +53,10 @@ $langs->load("other");
 $langs->load("errors");
 $langs->load("cabinetmed@cabinetmed");
 
-if (!$user->admin)
-accessforbidden();
+if (!$user->admin) {
+	accessforbidden();
+}
 
-$typeconst=array('yesno','texte','chaine');
 $mesg='';
 $action=GETPOST("action");
 
@@ -135,7 +135,7 @@ print '<div class="div-table-responsive">';
 print '<table class="noborder centpercent">';
 print '<tr class="liste_titre">';
 print '<td>'.$langs->trans("Parameter").'</td>';
-print '<td>'.$langs->trans("Value").'</td>';
+print '<td></td>';
 print "</tr>\n";
 
 print '<tr class="oddeven"><td>'.$langs->trans("HideProspectFeatures").'</td>';
