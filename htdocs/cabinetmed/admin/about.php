@@ -56,7 +56,7 @@ $langs->load("cabinetmed@cabinetmed");
 $help_url='';
 llxHeader('', '', $help_url);
 
-$linkback='<a href="'.DOL_URL_ROOT.'/admin/modules.php">'.$langs->trans("BackToModuleList").'</a>';
+$linkback='<a href="'.DOL_URL_ROOT.'/admin/modules.php?restore_lastsearch_values=1">'.$langs->trans("BackToModuleList").'</a>';
 print_fiche_titre($langs->trans("CabinetMedSetup"), $linkback, 'title_setup');
 print '<br>';
 
@@ -79,7 +79,7 @@ $head[$h][2] = 'tababout';
 $h++;
 
 
-dol_fiche_head($head, 'tababout', '', ((float) DOL_VERSION < 7.0 ? 0 : -1));
+dol_fiche_head($head, 'tababout', '', -1);
 
 print $langs->trans("AboutInfo").'<br>';
 print '<br>';
@@ -90,7 +90,7 @@ print '<br>';
 print $langs->trans("MoreModules").'<br>';
 print '<br>';
 print $langs->trans("MoreModulesLink").'<br>';
-$url='http://www.dolistore.com/search.php?search_query=nltechno';
+$url='http://www.dolistore.com/search.php?search_query=dolicloud';
 print '<a href="'.$url.'" target="_blank"><img border="0" width="180" src="'.DOL_URL_ROOT.'/theme/dolistore_logo.png"></a><br><br><br>';
 
 print '<br>';
