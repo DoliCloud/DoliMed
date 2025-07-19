@@ -65,7 +65,7 @@ class modCabinetMed extends DolibarrModules
 		$this->editor_url = 'https://www.dolimed.com';
 
 		// Possible values for version are: 'development', 'experimental', 'dolibarr' or version
-		$this->version = '10.0.1';
+		$this->version = '17';
 		// Key used in llx_const table to save module status enabled/disabled (where MYMODULE is value of property name of module in uppercase)
 		$this->const_name = 'MAIN_MODULE_'.strtoupper($this->name);
 		// Name of image file used for this module.
@@ -113,7 +113,7 @@ class modCabinetMed extends DolibarrModules
 							12=>array('MAIN_DISABLEDRAFTSTATUS','chaine','1','Disable draft status',1,'current',1),
 							16=>array('MAIN_SUPPORT_SHARED_CONTACT_BETWEEN_THIRDPARTIES','chaine','1','Can add third party type of contact',1,'current',1),
 							17=>array('MAIN_SUPPORT_CONTACT_TYPE_FOR_THIRDPARTIES','chaine','1','Can add third party type of contact',1,'current',1),	// old one. Replaced with MAIN_SUPPORT_SHARED_CONTACT_BETWEEN_THIRDPARTIES
-							18=>array('MAIN_APPLICATION_TITLE','chaine','DoliMed '.$this->version,'Change software title',1,'current',1),
+							18=>array('MAIN_APPLICATION_TITLE','chaine','+DoliMed','Change software title',1,'current',1),
 							19=>array('CABINETMED_RHEUMATOLOGY_ON','chaine','0','Enable features for rheumatology',0,'current',0),		// Not visible, Do not remove if module removed
 							20=>array('SOCIETE_DISABLE_CUSTOMERS','chaine','1','Hide customer features',1,'current',1),
 							21=>array('SOCIETE_DISABLE_PROSPECTS','chaine','1','Hide prospect features',1,'current',1),
