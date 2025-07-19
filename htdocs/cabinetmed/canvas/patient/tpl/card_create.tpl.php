@@ -30,32 +30,52 @@ global $db,$conf,$mysoc,$langs,$user,$hookmanager,$extrafields,$object;
 $socialnetworks = getArrayOfSocialNetworks();
 
 
-$module = getDolGlobalString('SOCIETE_CODECLIENT_ADDON');
-if (! $module) dolibarr_error('', $langs->trans("ErrorModuleThirdPartyCodeInCompanyModuleNotDefined"));
+// Load object modCodeTiers
+$module = getDolGlobalString('SOCIETE_CODECLIENT_ADDON', 'mod_codeclient_leopard');
 if (substr($module, 0, 15) == 'mod_codeclient_' && substr($module, -3) == 'php') {
-	$module = substr($module, 0, dol_strlen($module)-4);
+	$module = substr($module, 0, dol_strlen($module) - 4);
 }
-// Load object modCodeClient
 $dirsociete=array_merge(array('/core/modules/societe/'), $conf->modules_parts['societe']);
 foreach ($dirsociete as $dirroot) {
-	$res=dol_include_once($dirroot.$module.".php");
-	if ($res) break;
+	$res = dol_include_once($dirroot.$module.'.php');
+	if ($res) {
+		break;
+	}
 }
 require_once DOL_DOCUMENT_ROOT ."/core/class/html.formcompany.class.php";
 require_once DOL_DOCUMENT_ROOT ."/core/class/html.formadmin.class.php";
 $modCodeClient = new $module($GLOBALS['db']);
+'@phan-var-force ModeleThirdPartyCode $modCodeClient';
+
+// Load object modCodeFournisseur
+/*
+$module = getDolGlobalString('SOCIETE_CODECLIENT_ADDON', 'mod_codeclient_leopard');
+if (substr($module, 0, 15) == 'mod_codeclient_' && substr($module, -3) == 'php') {
+	$module = substr($module, 0, dol_strlen($module) - 4);
+}
+$dirsociete = array_merge(array('/core/modules/societe/'), $conf->modules_parts['societe']);
+foreach ($dirsociete as $dirroot) {
+	$res = dol_include_once($dirroot.$module.'.php');
+	if ($res) {
+		break;
+	}
+}
+$modCodeFournisseur = new $module($db);
+'@phan-var-force ModeleThirdPartyCode $modCodeFournisseur';
+*/
 
 $form=new Form($GLOBALS['db']);
 $formcompany=new FormCompany($GLOBALS['db']);
 $formadmin=new FormAdmin($GLOBALS['db']);
 
-
-
-$object->client=-1;
-if (empty($conf->global->SOCIETE_DISABLE_CUSTOMERS) && ! empty($conf->global->SOCIETE_DISABLE_PROSPECTS)) $object->client=1;
-if (! empty($conf->global->SOCIETE_DISABLE_CUSTOMERS) && empty($conf->global->SOCIETE_DISABLE_PROSPECTS)) $object->client=2;
-if (! empty($conf->global->SOCIETE_DISABLE_CUSTOMERS) && ! empty($conf->global->SOCIETE_DISABLE_PROSPECTS)) $object->client=3;
-if (! empty($conf->global->THIRDPARTY_CUSTOMERPROSPECT_BY_DEFAULT)) { $object->client=3; }
+// Define if customer/prospect or supplier status is set or not
+$object->client = -1;
+if (getDolGlobalString('THIRDPARTY_CUSTOMERPROSPECT_BY_DEFAULT')) {
+	$object->client = 3;
+}
+if (getDolGlobalString('SOCIETE_DISABLE_PROSPECTSCUSTOMERS') && $object->client == 3) {
+	$object->client = 1;
+}
 
 $object->name = GETPOST("name");
 $object->lastname = GETPOST("name");
@@ -65,7 +85,7 @@ $object->prefix_comm = GETPOST("prefix_comm");
 $object->client = GETPOSTISSET("client")?GETPOST("client"):$object->client;
 $object->code_client = GETPOST("customer_code");
 $object->fournisseur = GETPOST("fournisseur")?GETPOST("fournisseur"):$object->fournisseur;
-$object->code_fournisseur = GETPOST("code_fournisseur");
+$object->code_fournisseur = GETPOST("code_fournisseur") ? GETPOST("code_fournisseur"): GETPOST("supplier_code");
 
 $object->address = GETPOST('address', 'alphanohtml');
 $object->zip = GETPOST('zipcode', 'alphanohtml');
@@ -86,7 +106,17 @@ $object->phone_mobile       = (string) GETPOST("phone_mobile", 'alpha');
 $object->fax				= GETPOST('fax', 'alpha');
 $object->email				= GETPOST('email', 'custom', 0, FILTER_SANITIZE_EMAIL);
 $object->url				= GETPOST('url', 'custom', 0, FILTER_SANITIZE_URL);
-$object->capital			= GETPOST('capital', 'alphanohtml');
+$object->capital			= GETPOSTFLOAT('capital');
+$paymentTermId = GETPOSTINT('cond_reglement_id'); // can be set by default values on create page and not already in get or post variables
+if (empty($paymentTermId) && !GETPOSTISSET('cond_reglement_id')) {
+	$paymentTermId = getDolGlobalString('MAIN_DEFAULT_PAYMENT_TERM_ID');
+}
+$object->cond_reglement_id	= $paymentTermId;
+$paymentTypeId = GETPOSTINT('mode_reglement_id'); // can be set by default values on create page and not already in get or post variables
+if (empty($paymentTypeId) && !GETPOSTISSET('mode_reglement_id')) {
+	$paymentTypeId = getDolGlobalString('MAIN_DEFAULT_PAYMENT_TYPE_ID');
+}
+$object->mode_reglement_id 	= $paymentTypeId;
 $object->barcode			= GETPOST('barcode', 'alphanohtml');
 $object->idprof1			= GETPOST('idprof1', 'alphanohtml');
 $object->idprof2			= GETPOST('idprof2', 'alphanohtml');
@@ -106,8 +136,8 @@ $object->status = GETPOSTINT('status');
 $object->localtax1_assuj	= GETPOSTINT('localtax1assuj_value');
 $object->localtax2_assuj	= GETPOSTINT('localtax2assuj_value');
 
-$object->localtax1_value	= GETPOSTINT('lt1');
-$object->localtax2_value	= GETPOSTINT('lt2');
+$object->localtax1_value	= GETPOST('lt1', 'alpha');
+$object->localtax2_value	= GETPOST('lt2', 'alpha');
 
 $object->tva_intra = GETPOST('tva_intra', 'alphanohtml');
 
@@ -163,7 +193,7 @@ if ($object->country_id) {
 	$object->country_code = $tmparray['code'];
 	$object->country = $tmparray['label'];
 }
-$object->forme_juridique_code=GETPOST('forme_juridique_code');
+$object->forme_juridique_code = GETPOSTINT('forme_juridique_code');
 
 // We set multicurrency_code if enabled
 if (isModEnabled("multicurrency")) {
@@ -181,6 +211,7 @@ dol_htmloutput_errors($GLOBALS['error'], $GLOBALS['errors']);
 
 <script type="text/javascript">$(document).ready(function () {
 	$("#selectcountry_id").change(function() {
+		console.log("selectcountry_id change");
 		document.formsoc.action.value="create";
 		document.formsoc.submit();
 	});
@@ -192,91 +223,138 @@ dol_htmloutput_errors($GLOBALS['error'], $GLOBALS['errors']);
 <input type="hidden" name="canvas" value="<?php echo $GLOBALS['canvas'] ?>">
 <input type="hidden" name="action" value="add">
 <input type="hidden" name="token" value="<?php echo newToken(); ?>">
+<input type="hidden" name="backtopage" value="<?php echo $backtopage; ?>">
 <input type="hidden" name="private" value="0">
 <input type="hidden" name="status" value="1">
 <input type="hidden" name="client" value="<?php echo $object->client; ?>">
-<?php if ($modCodeClient->code_auto || $modCodeFournisseur->code_auto) print '<input type="hidden" name="code_auto" value="1">';
-
-dol_fiche_head('');
-
-?>
-
-<table class="border centpercent">
-
-<tr>
-	<td class="titlefield"><span class="fieldrequired"><?php echo $langs->trans('PatientName'); ?></span></td>
-	<td><input type="text" size="40" maxlength="60" name="name" value="<?php echo $object->name; ?>" autofocus="autofocus"></td>
-	<td width="25%"><?php echo $langs->trans('PatientCode'); ?></td>
-	<td width="25%">
-<?php
-		print '<table class="nobordernopadding"><tr><td>';
-		$tmpcode=$object->code_client;
-		if (empty($tmpcode) && !empty($modCodeClient->code_auto)) {
-			$tmpcode = $modCodeClient->getNextValue($object, 0);
-		}
-		print '<input type="text" name="customer_code" id="customer_code" class="maxwidthonsmartphone" value="'.dol_escape_htmltag($tmpcode).'" maxlength="24">';
-		print '</td><td>';
-		$s=$modCodeClient->getToolTip($langs, $object, 0);
-		print $form->textwithpicto('', $s, 1);
-		print '</td></tr></table>';
-		print '</td></tr>';
-
-// Prospect/Customer
-if (! empty($conf->global->SOCIETE_DISABLE_CUSTOMERS) && ! empty($conf->global->SOCIETE_DISABLE_PROSPECTS)) {
-	print '<!-- -->';
-} else {
-	print '<tr><td class="titlefieldcreate">'.fieldLabel('ProspectCustomer', 'customerprospect', 1).'</td>';
-	print '<td class="maxwidthonsmartphone">';
-	$selected = (GETPOSTISSET('client') ? GETPOST('client') : $object->client);
-	print '<select class="flat" name="client" id="customerprospect">';
-	if (GETPOST("type") == '') print '<option value="-1"></option>';
-	if (empty($conf->global->SOCIETE_DISABLE_PROSPECTS)) print '<option value="2"'.($selected==2?' selected':'').'>'.$langs->trans('Prospect').'</option>';
-	if (empty($conf->global->SOCIETE_DISABLE_PROSPECTS) && empty($conf->global->SOCIETE_DISABLE_CUSTOMERS)) print '<option value="3"'.($selected==3?' selected':'').'>'.$langs->trans('ProspectCustomer').'</option>';
-	if (empty($conf->global->SOCIETE_DISABLE_CUSTOMERS)) print '<option value="1"'.($selected==1?' selected':'').'>'.$langs->trans('Customer').'</option>';
-	print '<option value="0"'.((string) $selected == '0'?' selected':'').'>'.$langs->trans('NorProspectNorCustomer').'</option>';
-	print '</select></td>';
+<?php 
+if ($modCodeClient->code_auto || $modCodeFournisseur->code_auto) {
+	print '<input type="hidden" name="code_auto" value="1">';
 }
-?>
-<tr>
-	<td class="titlefield tdtop"><?php echo $langs->trans('Address'); ?></td>
-	<td colspan="3"><textarea name="address" class="quatrevingtpercent" rows="3"><?php echo $object->address; ?></textarea></td>
-</tr>
 
-<?php
+print dol_get_fiche_head(array(), 'card', '', 0, '');
+
+print '<table class="border centpercent">';
+
+print '<tr class="tr-field-thirdparty-name">';
+print '<td class="titlefieldcreate"><span class="fieldrequired">'.$langs->trans('PatientName').'</span></td>';
+print '<td><input type="text" class="minwidth300" maxlength="128" name="name" id="name" value="'.dol_escape_htmltag($object->name).'" autofocus="autofocus">';
+print $form->widgetForTranslation("name", $object, $permissiontoadd, 'string', 'alphanohtml', 'minwidth300');	// For some countries that need the company name in 2 languages
+print '</td><td colspan="2"></td>';
+print '</tr>';
+
+			// Customer code
+			print '<tr>';
+			print '<td>'.$form->editfieldkey('CustomerCode', 'customer_code', '', $object, 0).'</td><td>';
+			print '<table class="nobordernopadding"><tr><td>';
+			$tmpcode = $object->code_client ?? '';
+			if (empty($tmpcode) && !empty($modCodeClient->code_auto)) {
+				$tmpcode = $modCodeClient->getNextValue($object, 0);
+			}
+			print '<input type="text" name="customer_code" id="customer_code" class="maxwidthonsmartphone" value="'.dol_escape_htmltag($tmpcode).'" maxlength="24">';
+			print '</td><td>';
+			$s = $modCodeClient->getToolTip($langs, $object, 0);
+			print $form->textwithpicto('', $s, 1);
+			print '</td></tr></table>';
+			print '</td>';
+
+			/*
+			if ((isModEnabled("fournisseur") && $user->hasRight('fournisseur', 'lire') && !getDolGlobalString('MAIN_USE_NEW_SUPPLIERMOD')) || (isModEnabled("supplier_order") && $user->hasRight('supplier_order', 'lire')) || (isModEnabled("supplier_invoice") && $user->hasRight('supplier_invoice', 'lire'))
+				|| (isModEnabled('supplier_proposal') && $user->hasRight('supplier_proposal', 'lire'))) {
+				if ($conf->browser->layout == 'phone') {
+					print '<td colspan="2"></td>';
+					print '</tr><tr>';
+				}
+				print '<td>'.$form->editfieldkey('SupplierCode', 'supplier_code', '', $object, 0).'</td><td>';
+				print '<table class="nobordernopadding"><tr><td>';
+				$tmpcode = $object->code_fournisseur ?? '';
+				if (empty($tmpcode) && !empty($modCodeFournisseur->code_auto)) {
+					$tmpcode = $modCodeFournisseur->getNextValue($object, 1);
+				}
+				print '<input type="text" name="supplier_code" id="supplier_code" class="maxwidthonsmartphone" value="'.dol_escape_htmltag($tmpcode).'" maxlength="24">';
+				print '</td><td>';
+				$s = $modCodeFournisseur->getToolTip($langs, $object, 1);
+				print $form->textwithpicto('', $s, 1);
+				print '</td></tr></table>';
+				print '</td>';
+			} else {
+				print '<td colspan="2"></td>';
+			}
+			*/
+			print '<td colspan="2"></td>';
+			print '</tr>';
+			
+			// Barcode
+			if (isModEnabled('barcode')) {
+				print '<tr><td>'.$form->editfieldkey('Gencod', 'barcode', '', $object, 0).'</td>';
+				print '<td colspan="3">';
+				print img_picto('', 'barcode', 'class="pictofixedwidth"');
+				print '<input type="text" class="minwidth200 maxwidth300 widthcentpercentminusx" name="barcode" id="barcode" value="'.dol_escape_htmltag($object->barcode).'">';
+				print '</td></tr>';
+			}
+			
+			print '<tr><td colspan="4">&nbsp;</td></tr>';
+			
+			// Address
+			print '<tr><td class="tdtop">';
+			print $form->editfieldkey('Address', 'address', '', $object, 0);
+			print '</td>';
+			print '<td colspan="3">';
+			print '<textarea name="address" id="address" class="quatrevingtpercent" rows="'.ROWS_2.'" wrap="soft">';
+			print dol_escape_htmltag($object->address, 0, 1);
+			print '</textarea>';
+			print $form->widgetForTranslation("address", $object, $permissiontoadd, 'textarea', 'alphanohtml', 'quatrevingtpercent');
+			print '</td></tr>';
+			
 		// Zip / Town
 		print '<tr><td>'.$langs->trans('Zip').'</td><td>';
-		print $formcompany->select_ziptown($object->zip, 'zipcode', array('town','selectcountry_id','departement_id'), 6);
-		print '</td><td>'.$langs->trans('Town').'</td><td>';
-		print $formcompany->select_ziptown($object->town, 'town', array('zipcode','selectcountry_id','departement_id'));
+		print $formcompany->select_ziptown($object->zip, 'zipcode', array('town','selectcountry_id','departement_id'), 0, 0, '', 'maxwidth100');
+		print '</td>';
+		if ($conf->browser->layout == 'phone') {
+			print '</tr><tr>';
+		}
+		print '<td>'.$langs->trans('Town').'</td><td>';
+		print $formcompany->select_ziptown($object->town, 'town', array('zipcode','selectcountry_id','departement_id'), 0, 0, '', 'maxwidth150 quatrevingtpercent');
 		print '</td></tr>';
 
 		// Country
-		print '<tr><td width="25%">'.$langs->trans('Country').'</td><td colspan="3">';
-		print $form->select_country($object->country_id, 'country_id');
-		if ($user->admin) print info_admin($langs->trans("YouCanChangeValuesForThisListFromDictionarySetup"), 1);
+		print '<tr><td>'.$langs->trans('Country').'</td><td colspan="3" class="maxwidthonsmartphone">';
+		print img_picto('', 'country', 'class="pictofixedwidth"');
+		print $form->select_country((GETPOSTISSET('country_id') ? GETPOST('country_id') : $object->country_id), 'country_id', '', 0, 'minwidth200 maxwidth300 widthcentpercentminusx');
+		if ($user->admin) {
+			print info_admin($langs->trans("YouCanChangeValuesForThisListFromDictionarySetup"), 1);
+		}
 		print '</td></tr>';
 
 		// State
-if (empty($conf->global->SOCIETE_DISABLE_STATE)) {
-	print '<tr><td>'.$langs->trans('State').'</td><td colspan="3">';
-	print $formcompany->select_state($object->state_id, $object->country_code);
-	print '</td></tr>';
-}
-?>
+		if (!getDolGlobalString('SOCIETE_DISABLE_STATE')) {
+			print '<tr><td>'.$langs->trans('State').'</td><td colspan="3" class="maxwidthonsmartphone">';
+			
+			if ($object->country_id) {
+				print img_picto('', 'state', 'class="pictofixedwidth"');
+				print $formcompany->select_state($object->state_id, $object->country_code, 'state_id', 'minwidth200 maxwidth300 widthcentpercentminusx');
+			} else {
+				print $countrynotdefined;
+			}
+			print '</td></tr>';
+		}
+		
+		// Phone / Fax
+		print '<tr><td>'.$form->editfieldkey('Phone', 'phone', '', $object, 0).'</td>';
+		print '<td'.($conf->browser->layout == 'phone' ? ' colspan="3"' : '').'>'.img_picto('', 'object_phoning', 'class="pictofixedwidth"').' <input type="text" name="phone" id="phone" class="maxwidth200 widthcentpercentminusx" value="'.(GETPOSTISSET('phone') ? GETPOST('phone', 'alpha') : $object->phone).'"></td>';
 
-<tr>
-	<td><?php echo $langs->trans('PhonePerso'); ?></td>
-	<td><input type="text" name="phone" value="<?php echo $object->phone; ?>"></td>
-	<td><?php echo $langs->trans('PhoneMobile'); ?></td>
-	<td><input type="text" name="fax" value="<?php echo $object->fax; ?>"></td>
-</tr>
+		if ($conf->browser->layout == 'phone') {
+			print '</tr><tr>';
+		}		
+		
+		// Phone mobile
+		print '<td>'.$form->editfieldkey('PhoneMobile', 'phone_mobile', '', $object, 0).'</td>';
+		print '<td'.($conf->browser->layout == 'phone' ? ' colspan="3"' : '').'>'.img_picto('', 'object_phoning_mobile', 'class="pictofixedwidth"').' <input type="text" name="phone_mobile" id="phone_mobile" class="maxwidth200 widthcentpercentminusx" value="'.(GETPOSTISSET('phone_mobile') ? GETPOST('phone_mobile', 'alpha') : $object->phone_mobile).'"></td></tr>';
 
-<tr>
-	<td><?php echo $langs->trans('EMail').(getDolGlobalString('SOCIETE_EMAIL_MANDATORY') ? '*' : ''); ?></td>
-	<td colspan="3"><input type="text" name="email" size="32" value="<?php echo $object->email; ?>"></td>
-</tr>
+		// Email
+		print '<tr><td>'.$form->editfieldkey('EMail', 'email', '', $object, 0, 'string', '', getDolGlobalInt('SOCIETE_EMAIL_MANDATORY')).'</td>';
+		print '<td'.(($conf->browser->layout == 'phone') || !isModEnabled('mailing') ? ' colspan="3"' : '').'>'.img_picto('', 'object_email', 'class="pictofixedwidth"').' <input type="text" class="maxwidth200 widthcentpercentminusx" name="email" id="email" value="'.$object->email.'"></td>';
 
-<?php
 /*
 		print '<tr>';
 		// Height
@@ -295,7 +373,11 @@ if (empty($conf->global->SOCIETE_DISABLE_STATE)) {
 
 // Social networks
 if (isModEnabled('socialnetworks')) {
-	$object->showSocialNetwork($socialnetworks, ($conf->browser->layout == 'phone' ? 2 : 4));
+	$colspan = ($conf->browser->layout == 'phone' ? 2 : 4);
+
+	$object->showSocialNetwork($socialnetworks, $colspan);
+
+	print '<tr><td'.($colspan ? ' colspan="'.$colspan.'"' : '').'><hr></td></tr>';
 }
 
 // Prof ids
