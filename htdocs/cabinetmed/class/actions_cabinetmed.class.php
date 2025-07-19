@@ -349,7 +349,7 @@ class ActionsCabinetmed
 	 */
 	function formObjectOptions($parameters, &$object, &$action, &$hookmanager)
 	{
-		global $langs, $user, $conf;
+		//global $langs, $user, $conf;
 	}
 
 
@@ -364,7 +364,7 @@ class ActionsCabinetmed
 	 */
 	function addMoreActionsButtons($parameters, &$object, &$action, &$hookmanager)
 	{
-		global $langs, $user, $conf;
+		global $langs, $user;
 
 		if ($parameters['currentcontext'] == 'xxx' && !empty($object) && !empty($object->societe->id) && $object->societe->id > 0 && ! empty($object->societe->canvas)) {
 			if ($object->societe->canvas == 'patient@cabinetmed') {
@@ -631,6 +631,80 @@ class ActionsCabinetmed
 		} else {
 			return false;
 		}
+	}
 
+
+	/**
+	 * Overloading the loadDataForCustomReports function : returns data to complete the customreport tool
+	 *
+	 * @param   array           $parameters     Hook metadatas (context, etc...)
+	 * @param   string          $action         Current action (if set). Generally create or edit or null
+	 * @param   HookManager     $hookmanager    Hook manager propagated to allow calling another hook
+	 * @return  int                             < 0 on error, 0 on success, 1 to replace standard code
+	 */
+	public function loadDataForCustomReports($parameters, &$action, $hookmanager)
+	{
+		global $langs;
+
+		$langs->load("cabinetmed@cabinetmed");
+
+		$this->results = array();
+
+		$head = array();
+		$h = 0;
+
+		/*
+		if ($parameters['tabfamily'] == 'sellyoursaas') {
+			//$this->results['modenotusedforlist'] = 1;
+			$head[$h][0] = dol_buildpath('/sellyoursaas/backoffice/index.php', 1);
+			$head[$h][1] = $langs->trans("Home");
+			$head[$h][2] = 'home';
+			$h++;
+
+			if (!getDolGlobalString('SELLYOURSAAS_OBJECT_DEPLOYMENT_SERVER_MIGRATION')) {
+				$head[$h][0] = dol_buildpath('/sellyoursaas/backoffice/deployment_servers.php', 1);
+				$head[$h][1] = $langs->trans("DeploymentServers");
+				$head[$h][2] = 'deploymentservers';
+				$h++;
+			} else {
+				$head[$h][0] = '/custom/sellyoursaas/deploymentserver_list.php';
+				$head[$h][0] = dol_buildpath('/sellyoursaas/deploymentserver_list.php', 1);
+				$head[$h][1] = $langs->trans("DeploymentServers");
+				$head[$h][2] = 'deploymentservers';
+				$h++;
+			}
+
+			$head[$h][0] = dol_buildpath('/sellyoursaas/backoffice/setup_antispam.php', 1);
+			$head[$h][1] = $langs->trans("AntiSpam");
+			$head[$h][2] = 'antispam';
+			$h++;
+
+			$this->results['title'] = $langs->trans("DoliCloudArea");
+			$this->results['picto'] = 'sellyoursaas@sellyoursaas';
+		}
+
+		if ($parameters['tabfamily'] == 'sellyoursaas') {
+			$head[$h][0] = 'customreports.php?objecttype='.$parameters['objecttype'].(empty($parameters['tabfamily']) ? '' : '&tabfamily='.$parameters['tabfamily']);
+			$head[$h][1] = $langs->trans("CustomReports");
+			$head[$h][2] = 'customreports';
+			$h++;
+		}
+
+		if ($parameters['tabfamily'] == 'sellyoursaas') {
+			$head[$h][0] = dol_buildpath('/sellyoursaas/backoffice/notes.php', 1);
+			$head[$h][1] = $langs->trans("Notes");
+			$head[$h][2] = 'notes';
+			$h++;
+		}
+		*/
+
+		$this->results['head'] = $head;
+
+		$arrayoftypes = array(
+			'consultations@cabinetmed' => array('label' => 'Consultations', 'picto'=>'label', 'ObjectClassName' => 'CabinetmedCons', 'enabled' => isModEnabled('cabinetmed'), 'ClassPath' => "/cabinetmed/class/cabinetmecons.class.php", 'langs'=>'cabinetmed@cabinetmed')
+		);
+		$this->results['arrayoftype'] = $arrayoftypes;
+
+		return 0;
 	}
 }

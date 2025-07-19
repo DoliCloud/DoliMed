@@ -5,6 +5,7 @@
 - NEW Can disable auto recording agenda with MAIN_AGENDA_ACTIONAUTO_CABINETMED_OUTCOME_CREATE 
   and MAIN_AGENDA_ACTIONAUTO_CABINETMED_SENTBYMAIL
 - NEW Option CABINETMED_DELAY_TO_LOCK_RECORD is now into the setup. It can also control deletion of uploaded files into bio and radio tab.
+- NEW Consultations are available in the BI reporting tool.
 - Minimum version of Dolibarr is 17.0
 
 ## 10.0.1

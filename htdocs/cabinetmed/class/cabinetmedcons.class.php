@@ -36,40 +36,79 @@ class CabinetmedCons extends CommonObject
 	var $db;							//!< To store db handler
 	var $error;							//!< To return error code (or message)
 	var $errors=array();				//!< To return several error codes (or messages)
-	var $element='cabinetmed_cons';			//!< Id that identify managed objects
-	var $table_element='cabinetmed_cons';	//!< Name of table without prefix where object is stored
+
+	var $element = 'cabinetmed_cons';			//!< Id that identify managed objects
+	var $element_for_permission = 'cabinetmed';
+
+	var $table_element = 'cabinetmed_cons';	//!< Name of table without prefix where object is stored
 
 	var $id;
 	var $ref;
 
-	var $fk_soc;
-	var $datecons='';
-	var $typepriseencharge;
-	var $motifconsprinc;
-	var $diaglesprinc;
-	var $motifconssec;
-	var $diaglessec;
-	var $hdm;
-	var $examenclinique;
-	var $examenprescrit;
-	var $traitementprescrit;
-	var $comment;
-	var $typevisit='CS';
-	var $infiltration;
-	var $codageccam;
-	var $montant_cheque;
-	var $montant_espece;
-	var $montant_carte;
-	var $montant_tiers;
-	var $banque;
 	var $num_cheque;
-
-	var $date_c;
-	var $date_m;
-
-	var $fk_agenda;
-
 	var $bank;
+
+
+	// BEGIN MODULEBUILDER PROPERTIES
+	/**
+	 * @inheritdoc
+	 * Array with all fields and their property. Do not use it as a static var. It may be modified by constructor.
+	 */
+	public $fields = array(
+		"rowid" => array("type" => "integer", "label" => "TechnicalID", "picto" => "fa-file", "enabled" => "1", 'position' => 10, 'notnull' => 1, "visible" => "-1",),
+		"entity" => array("type" => "integer", "label" => "Entity", "picto" => "fa-file", "enabled" => "1", 'position' => 15, 'notnull' => 1, "visible" => "-2", "default" => "1", "index" => "1",),
+		"fk_soc" => array("type" => "integer:Societe:societe/class/societe.class.php", "label" => "ThirdParty", "picto" => "company", "enabled" => "1", 'position' => 20, 'notnull' => 0, "visible" => "-1", "css" => "maxwidth500 widthcentpercentminusxx", "csslist" => "tdoverflowmax150",),
+		"datecons" => array("type" => "date", "label" => "Date", "picto" => "company", "enabled" => "1", 'position' => 25, 'notnull' => 1, "visible" => "-1",),
+		"typepriseencharge" => array("type" => "varchar(8)", "label" => "TypePriseEnCharge", "picto" => "company", "enabled" => "1", 'position' => 30, 'notnull' => 0, "visible" => "-1",),
+		"motifconsprinc" => array("type" => "varchar(64)", "label" => "MotifPrincipal", "picto" => "company", "enabled" => "1", 'position' => 35, 'notnull' => 0, "visible" => "-1",),
+		"diaglesprinc" => array("type" => "varchar(64)", "label" => "DiagLesPrincipal", "picto" => "company", "enabled" => "1", 'position' => 40, 'notnull' => 0, "visible" => "-1",),
+		"motifconssec" => array("type" => "text", "label" => "MotifSecondaires", "picto" => "company", "enabled" => "1", 'position' => 45, 'notnull' => 0, "visible" => "-1",),
+		"diaglessec" => array("type" => "text", "label" => "DiagLesSecondaires", "picto" => "company", "enabled" => "1", 'position' => 50, 'notnull' => 0, "visible" => "-1",),
+		"hdm" => array("type" => "text", "label" => "Hdm", "picto" => "company", "enabled" => "1", 'position' => 55, 'notnull' => 0, "visible" => "-1",),
+		"examenclinique" => array("type" => "text", "label" => "Examenclinique", "picto" => "company", "enabled" => "1", 'position' => 60, 'notnull' => 0, "visible" => "-1",),
+		"examenprescrit" => array("type" => "text", "label" => "Examenprescrit", "picto" => "company", "enabled" => "1", 'position' => 65, 'notnull' => 0, "visible" => "-1",),
+		"traitementprescrit" => array("type" => "text", "label" => "TreatmentSugested", "picto" => "company", "enabled" => "1", 'position' => 70, 'notnull' => 0, "visible" => "-1",),
+		"comment" => array("type" => "text", "label" => "Comment", "picto" => "company", "enabled" => "1", 'position' => 75, 'notnull' => 0, "visible" => "-1",),
+		"typevisit" => array("type" => "varchar(8)", "label" => "TypeVisite", "picto" => "company", "enabled" => "1", 'position' => 80, 'notnull' => 1, "visible" => "-1",),
+		"infiltration" => array("type" => "varchar(255)", "label" => "Infiltration", "picto" => "company", "enabled" => "1", 'position' => 85, 'notnull' => 0, "visible" => "-1",),
+		"codageccam" => array("type" => "varchar(16)", "label" => "CodageCCAM", "picto" => "company", "enabled" => "1", 'position' => 90, 'notnull' => 0, "visible" => "-1",),
+		"montant_cheque" => array("type" => "double(24,8)", "label" => "MontantCheque", "picto" => "company", "enabled" => "1", 'position' => 95, 'notnull' => 0, "visible" => "-1",),
+		"montant_espece" => array("type" => "double(24,8)", "label" => "MontantEspece", "picto" => "company", "enabled" => "1", 'position' => 100, 'notnull' => 0, "visible" => "-1",),
+		"montant_carte" => array("type" => "double(24,8)", "label" => "MontantCarte", "picto" => "company", "enabled" => "1", 'position' => 105, 'notnull' => 0, "visible" => "-1",),
+		"montant_tiers" => array("type" => "double(24,8)", "label" => "MontantTiers", "picto" => "company", "enabled" => "1", 'position' => 110, 'notnull' => 0, "visible" => "-1",),
+		"banque" => array("type" => "varchar(128)", "label" => "Banque", "picto" => "company", "enabled" => "1", 'position' => 115, 'notnull' => 0, "visible" => "-1",),
+		"date_c" => array("type" => "datetime", "label" => "DateCreation", "picto" => "company", "enabled" => "1", 'position' => 120, 'notnull' => 1, "visible" => "-1",),
+		"tms" => array("type" => "timestamp", "label" => "DateModification", "picto" => "company", "enabled" => "1", 'position' => 125, 'notnull' => 0, "visible" => "-1",),
+		"fk_user" => array("type" => "integer:User:user/class/user.class.php", "label" => "CareGiver", "picto" => "company", "enabled" => "1", 'position' => 130, 'notnull' => 0, "visible" => "-1", "css" => "maxwidth500 widthcentpercentminusxx", "csslist" => "tdoverflowmax150",),
+		"fk_user_creation" => array("type" => "integer:User:user/class/user.class.php", "label" => "UserCreation", "picto" => "company", "enabled" => "1", 'position' => 135, 'notnull' => 0, "visible" => "-1", "css" => "maxwidth500 widthcentpercentminusxx", "csslist" => "tdoverflowmax150",),
+		"fk_user_m" => array("type" => "integer:User:user/class/user.class.php", "label" => "UserModification", "picto" => "company", "enabled" => "1", 'position' => 140, 'notnull' => 0, "visible" => "-1", "css" => "maxwidth500 widthcentpercentminusxx", "csslist" => "tdoverflowmax150",),
+		"fk_agenda" => array("type" => "integer", "label" => "IDAgenda", "picto" => "company", "enabled" => "1", 'position' => 145, 'notnull' => 0, "visible" => "-1", "css" => "maxwidth500 widthcentpercentminusxx",),
+	);
+	public $rowid;
+	public $entity;
+	public $fk_soc;
+	public $datecons;
+	public $typepriseencharge;
+	public $motifconsprinc;
+	public $diaglesprinc;
+	public $motifconssec;
+	public $diaglessec;
+	public $hdm;
+	public $examenclinique;
+	public $examenprescrit;
+	public $traitementprescrit;
+	public $comment;
+	public $typevisit = 'CS';
+	public $infiltration;
+	public $banque;
+	public $date_c;
+	public $tms;
+	public $fk_user;
+	public $fk_user_creation;
+	public $fk_user_m;
+	public $fk_agenda;
+	// END MODULEBUILDER PROPERTIES
+	var $date_m;
 
 
 	/**
@@ -149,7 +188,7 @@ class CabinetmedCons extends CommonObject
 		$sql.= "fk_user_creation";
 		$sql.= ") VALUES (";
 		$sql.= " ".(! isset($this->fk_soc)?'NULL':"'".$this->fk_soc."'").",";
-		$sql.= " ".$user->id.",";
+		$sql.= " ".((int) $user->id).",";
 		$sql.= " ".(! isset($this->datecons) || dol_strlen($this->datecons)==0?'NULL':"'".$this->db->idate($this->datecons))."',";
 		$sql.= " '".$this->db->idate($now)."',";
 		$sql.= " ".(! isset($this->typepriseencharge)?'NULL':"'".$this->db->escape($this->typepriseencharge)."'").",";
