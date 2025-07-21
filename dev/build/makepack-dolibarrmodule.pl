@@ -311,10 +311,10 @@ foreach my $PROJECT (@PROJECTLIST) {
 				
 				@timearray=localtime(time());
 				$fulldate=($timearray[5]+1900).'-'.($timearray[4]+1).'-'.$timearray[3].' '.$timearray[2].':'.$timearray[1];
-				open(VF,">$BUILDROOT/$PROJECTLC/dev/build/version-".$PROJECTLC.".txt");
-		
-				print "Create version file $BUILDROOT/$PROJECTLC/dev/build/version-".$PROJECTLC.".txt with date ".$fulldate."\n";
-				$ret=`mkdir -p "$BUILDROOT/$PROJECTLC/dev/build"`;
+
+				print "Create version file $BUILDROOT/$PROJECTLC/htdocs/version-".$PROJECTLC.".txt with date ".$fulldate."\n";
+				$ret=`mkdir -p "$BUILDROOT/$PROJECTLC/htdocs/$PROJECTLC"`;
+				open(VF,">$BUILDROOT/$PROJECTLC/htdocs/$PROJECTLC/version-".$PROJECTLC.".txt");
 				print VF "Version: ".$MAJOR.".".$MINOR.($BUILD ne ''?".$BUILD":"")."\n";
 				print VF "Build  : ".$fulldate."\n";
 				close VF;
