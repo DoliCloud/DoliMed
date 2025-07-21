@@ -83,10 +83,7 @@ $SOURCE="$DIR/../..";
 $DESTI="";
 if ($ENV{"DESTIMODULES"}) {				# Force output dir if env DESTIMODULES is defined 
 	$DESTI = $ENV{"DESTIMODULES"}; 
-} else {
-	$DESTI = $ENV{"DESTIMODULES"};
 }
-
 if (! $ENV{"DESTIMODULES"})
 {
 	print "Error: Missing environment variables.\n";
@@ -169,8 +166,10 @@ foreach my $PROJECT (@PROJECTLIST) {
 	
 	# Get version $MAJOR, $MINOR and $BUILD
 	print "Version detected for module ".$PROJECT.": ";
-	$result=open(IN,"<".$SOURCE."/htdocs/".$PROJECTLC."/core/modules/mod".$PROJECT.".class.php");
-	if (! $result) { die "Error: Can't open descriptor file ".$SOURCE."/htdocs/".$PROJECTLC."/core/modules/mod".$PROJECT.".class.php for reading.\n"; }
+	$result=open(IN, "<", $SOURCE."/htdocs/".$PROJECTLC."/core/modules/mod".$PROJECT.".class.php");
+	if (! $result) { 
+		die "Error: Can't open descriptor file ".$SOURCE."/htdocs/".$PROJECTLC."/core/modules/mod".$PROJECT.".class.php for reading.\n"; 
+	}
     while(<IN>)
     {
     	if ($_ =~ /this->version\s*=\s*'([\d\.]+)'/) { $PROJVERSION=$1; break; }
@@ -277,6 +276,8 @@ foreach my $PROJECT (@PROJECTLIST) {
 		    	mkdir "$BUILDROOT";
 		    	mkdir "$BUILDROOT/$PROJECTLC";
 		    	
+				print "Now, we will copy all files declared in the makepack-".$PROJECT.".conf into the directory $BUILDROOT\n";
+
 				$result=open(IN,"<makepack-".$PROJECT.".conf");
 				if (! $result) { die "Error: Can't open conf file makepack-".$PROJECT.".conf for reading.\n"; }
 			    while(<IN>)
@@ -291,7 +292,7 @@ foreach my $PROJECT (@PROJECTLIST) {
 			    	{
 			    		print "Remove $BUILDROOT/$PROJECTLC/$1\n";
 			    		$ret=`rm -fr "$BUILDROOT/$PROJECTLC/"$1`;
-		    		    if ($? != 0) { die "Failed to delete a file to exclude declared into makepack-".$PROJECT.".conf file (Fails on line ".$entry.")\n"; }
+		    		    if ($? != 0) { die "Failed to delete a file to exclude declared into makepack-".$PROJECT.".conf file (Failed on the line ".$entry.")\n"; }
 		    		    next; 
 			    	}
 					
@@ -302,7 +303,7 @@ foreach my $PROJECT (@PROJECTLIST) {
 			    	{
 			    	    print "Copy $SOURCE/$entry into $BUILDROOT/$PROJECTLC/$entry\n";
 		    		    $ret=`cp -pr "$SOURCE/$entry" "$BUILDROOT/$PROJECTLC/$entry"`;
-		    		    if ($? != 0) { die "Failed to make copy of a file declared into makepack-".$PROJECT.".conf file (Fails on line ".$entry.")\n"; } 
+		    		    if ($? != 0) { die "Failed to make copy of a file declared into makepack-".$PROJECT.".conf file (Failed on the line ".$entry.")\n"; } 
 			    	}
 			    	
 				}	
@@ -320,10 +321,11 @@ foreach my $PROJECT (@PROJECTLIST) {
 		    }
 		    print "Clean $BUILDROOT\n";
 		    $ret=`rm -fr $BUILDROOT/$PROJECTLC/.cache`;
+   		    $ret=`rm -fr $BUILDROOT/$PROJECTLC/.git`;
 		    $ret=`rm -fr $BUILDROOT/$PROJECTLC/.project`;
 		    $ret=`rm -fr $BUILDROOT/$PROJECTLC/.settings`;
 		    $ret=`rm -fr $BUILDROOT/$PROJECTLC/index.php`;
-		    $ret=`rm -fr $BUILDROOT/$PROJECTLC/build/html`;
+		    $ret=`rm -fr $BUILDROOT/$PROJECTLC/dev/build/html`;
 		    $ret=`rm -fr $BUILDROOT/$PROJECTLC/documents`;
 		    $ret=`rm -fr $BUILDROOT/$PROJECTLC/document`;
 		    $ret=`rm -fr $BUILDROOT/$PROJECTLC/htdocs/conf/conf.php.mysql`;
