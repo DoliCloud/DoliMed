@@ -1,6 +1,6 @@
 # ChangeLog
 
-## 17.0
+## 17.0.0
 
 - NEW Can disable auto recording agenda with MAIN_AGENDA_ACTIONAUTO_CABINETMED_OUTCOME_CREATE 
   and MAIN_AGENDA_ACTIONAUTO_CABINETMED_SENTBYMAIL
