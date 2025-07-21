@@ -483,7 +483,7 @@ if ($socid > 0) {
 		print '<div class="fichecenter" style="height:10px;"></div>';
 		//print '<hr style="height:1px; color: #dddddd;">';
 
-		if (! empty($conf->global->CABINETMED_RHEUMATOLOGY_ON)) {
+		if (getDolGlobalString('CABINETMED_RHEUMATOLOGY_ON')) {
 			//print '<table width="100%">';
 			//print '<tr><td width="50%" valign="top">';
 			print '<div class="fichecenter"><div class="fichehalfleft">';
@@ -639,18 +639,20 @@ if ($action == '' || $action == 'delete') {
 			print dol_print_date($db->jdate($obj->dateexam), 'day');
 			print '</a>';
 			print '</td>';
-			print '<td class="tdoverflowmax500">';
+			print '<td class="maxwidth250imp classfortooltip" title="'.dolPrintHTMLForAttribute($obj->resultat).'">';
+			print '<div class="small lineheightsmall twolinesmax-normallineheight">';
 			print dolPrintHTML($obj->resultat);
+			print '</div>';
 			print '</td>';
 			if (getDolGlobalString('CABINETMED_RHEUMATOLOGY_ON')) {
 				print '<td>';
-				print $obj->suivipr_das28;
+				print dolPrintHTML($obj->suivipr_das28);
 				print '</td>';
 				print '<td>';
-				print $obj->suivisa_basdai;
+				print dolPrintHTML($obj->suivisa_basdai);
 				print '</td>';
 			}
-			print '<td align="right">';
+			print '<td class="right">';
 			//$conf->global->CABINETMED_DELAY_TO_LOCK_RECORD = 1;
 			if ($usercanupdate) {
 				if (!getDolGlobalInt('CABINETMED_DELAY_TO_LOCK_RECORD') || ($db->jdate($obj->dateexam) >= (dol_now() - (getDolGlobalInt('CABINETMED_DELAY_TO_LOCK_RECORD') * 24 * 60)))) {
