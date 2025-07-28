@@ -429,6 +429,12 @@ if (empty($reshook)) {
 
 			$object->client					= GETPOST('client', 'int');
 			$object->fournisseur			= GETPOST('fournisseur', 'int');
+			if ($object->client < 0) {
+				$object->client = Societe::CUSTOMER_AND_PROSPECT;
+			}
+			if ($object->fournisseur < 0) {
+				$object->fournisseur = Societe::SUPPLIER;
+			}
 
 			$object->commercial_id         = GETPOST('commercial_id', 'int');
 
