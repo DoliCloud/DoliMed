@@ -81,13 +81,8 @@ print_fiche_titre($title, '');
 
 dol_mkdir($dir);
 
-$countrytable="c_pays";
-$fieldlabel='libelle';
 include_once DOL_DOCUMENT_ROOT.'/core/lib/admin.lib.php';
-if (versioncompare(versiondolibarrarray(), array(3,7,-3)) >= 0) {
-	$countrytable="c_country";
-	$fieldlabel="label";
-}
+$countrytable="c_country";
 
 if ($mode) {
 	// Define sql
@@ -97,7 +92,7 @@ if ($mode) {
 
 		$data = array();
 		$sql.="SELECT COUNT(d.rowid) as nb, MAX(d.datevalid) as lastdate, c.code, c.label";
-		$sql.=" FROM ".MAIN_DB_PREFIX."adherent as d LEFT JOIN ".MAIN_DB_PREFIX.$countrytable." as c on d.country = c.rowid";
+		$sql.=" FROM ".MAIN_DB_PREFIX."adherent as d LEFT JOIN ".MAIN_DB_PREFIX."c_country as c on d.country = c.rowid";
 		$sql.=" WHERE d.statut = 1";
 		$sql.=" GROUP BY c.label, c.code";
 		//print $sql;
@@ -111,10 +106,12 @@ if ($mode) {
 		$sql.="SELECT COUNT(d.rowid) as nb, MAX(d.datevalid) as lastdate, p.code, p.label, c.nom as label2";
 		$sql.=" FROM ".MAIN_DB_PREFIX."cabinetmed_cons as d LEFT JOIN ".MAIN_DB_PREFIX."c_departements as c on d.fk_departement = c.rowid";
 		$sql.=" LEFT JOIN ".MAIN_DB_PREFIX."c_regions as r on c.fk_region = r.code_region";
-		$sql.=" LEFT JOIN ".MAIN_DB_PREFIX.$countrytable." as p on d.country = p.rowid";
+		$sql.=" LEFT JOIN ".MAIN_DB_PREFIX."c_country as p on d.country = p.rowid";
 		$sql.=" WHERE d.statut = 1";
 		//if (!$user->rights->societe->client->voir && ! $socid) $sql.= " AND s.rowid = sc.fk_soc AND sc.fk_user = " .$user->id;
-		if ($socid && empty($conf->global->MAIN_DISABLE_RESTRICTION_ON_THIRDPARTY_FOR_EXTERNAL)) $sql.= " AND s.rowid = ".$socid;
+		if ($socid && !getDolGlobalString('MAIN_DISABLE_RESTRICTION_ON_THIRDPARTY_FOR_EXTERNAL')) {
+			$sql.= " AND s.rowid = ".((int) $socid);
+		}
 		$sql.=" GROUP BY p.label, p.code, c.nom";
 		//print $sql;
 	}
