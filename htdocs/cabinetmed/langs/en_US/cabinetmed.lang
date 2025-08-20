@@ -198,3 +198,4 @@ LesionDiagnosticsGOUTTE=Gouty Arthritis
 Patients=Patients
 Consultations=Consultations
 CABINETMED_DELAY_TO_LOCK_RECORD=Consultations can't be modified x days after their creation (use 0 to keep consultations always editable) 
+CABINETMED_SHOW_MEDICAMENTS_LIST=Show medicaments list field

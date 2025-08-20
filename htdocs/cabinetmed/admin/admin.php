@@ -86,6 +86,8 @@ if ($action == 'update') {
 		$res=dolibarr_set_const($db, 'CABINETMED_DELAY_TO_LOCK_RECORD', GETPOST("CABINETMED_DELAY_TO_LOCK_RECORD") ? 0 : 1, 'texte', 0, '', $conf->entity);
 	}
 
+	$res=dolibarr_set_const($db, 'CABINETMED_SHOW_MEDICAMENTS_LIST', GETPOST("CABINETMED_SHOW_MEDICAMENTS_LIST"), 'texte', 0, '', $conf->entity);
+
 	if ($res == 1) {
 		$mesg=$langs->trans("RecordModifiedSuccessfully");
 	} else {
@@ -170,6 +172,10 @@ print '</tr>';
 
 print '<tr class="oddeven"><td>'.$langs->trans("CABINETMED_DELAY_TO_LOCK_RECORD").'</td>';
 print '<td><input type="number" class="maxwidth50 right" min="0" name="CABINETMED_DELAY_TO_LOCK_RECORD" value="'.getDolGlobalInt('CABINETMED_DELAY_TO_LOCK_RECORD').'"></td>';
+print '</tr>';
+
+print '<tr class="oddeven"><td>'.$langs->trans("CABINETMED_SHOW_MEDICAMENTS_LIST").'</td>';
+print '<td>'.$form->selectyesno('CABINETMED_SHOW_MEDICAMENTS_LIST', getDolGlobalString('CABINETMED_SHOW_MEDICAMENTS_LIST'), 1).'</td>';
 print '</tr>';
 
 print '</table>';
