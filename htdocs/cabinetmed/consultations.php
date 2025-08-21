@@ -61,10 +61,14 @@ $contextpage= GETPOST('contextpage', 'aZ')?GETPOST('contextpage', 'aZ'):'consult
 
 // Security check
 $socid = GETPOST('socid', 'int');
-if ($user->socid) $socid=$user->socid;
+if ($user->socid) {
+	$socid=$user->socid;
+}
 $result = restrictedArea($user, 'societe', $socid, '');
 
-if (!$user->hasRight('cabinetmed', 'read')) accessforbidden();
+if (!$user->hasRight('cabinetmed', 'read')) {
+	accessforbidden();
+}
 
 $mesgarray=array();
 
@@ -100,7 +104,7 @@ $arrayfields=array(
 	't.fk_user'=>array('label'=>"CreatedBy", 'checked'=>1, 'enabled'=>1),
 	't.motifconsprinc'=>array('label'=>"MotifPrincipal", 'checked'=>1, 'enabled'=>1),
 	't.diaglesprinc'=>array('label'=>"DiagLesPrincipal", 'checked'=>1, 'enabled'=>1),
-	't.typepriseencharge'=>array('label'=>"Type prise en charge", 'checked'=>1, 'enabled'=>(empty($conf->global->CABINETMED_FRENCH_PRISEENCHARGE)?0:1)),
+	't.typepriseencharge'=>array('label'=>"Type prise en charge", 'checked'=>1, 'enabled'=>getDolGlobalString('CABINETMED_FRENCH_PRISEENCHARGE')),
 	't.typevisit'=>array('label'=>"ConsultActe", 'checked'=>1, 'enabled'=>1),
 	'amountpayment'=>array('label'=>"MontantPaiement", 'checked'=>1, 'enabled'=>1),
 	'typepayment'=>array('label'=>"TypePaiement", 'checked'=>1, 'enabled'=>1),
@@ -976,12 +980,14 @@ if (! ($socid > 0)) {
 
 		print $langs->trans("TraitementsPrescrits").':'.'<br>';
 		if (getDolGlobalInt('CABINETMED_SHOW_MEDICAMENTS_LIST')) {
-			print 'Medicaments :';
+			print $langs->trans('Medicine').':';
 			listmedicaments(1, $width, 'medicaments');
 			print ' <input type="button" class="button small" id="addmedicament" name="addmedicament" value="+">';
-		
+
+			if ($user->admin) {
+				print ' '.info_admin($langs->trans("YouCanChangeValuesForThisListFromDictionarySetup"), 1);
+			}
 		}
-		if ($user->admin) print ' '.info_admin($langs->trans("YouCanChangeValuesForThisListFromDictionarySetup"), 1);		
 		print '<textarea name="traitementprescrit" id="traitementprescrit" class="flat centpercent" rows="'.($nboflines+1).'">'.$object->traitementprescrit.'</textarea><br>';
 		print $langs->trans("Infiltrations").'<br>';
 		print '<textarea name="infiltration" id="infiltration" class="flat centpercent" rows="'.ROWS_2.'">'.$object->infiltration.'</textarea><br>';

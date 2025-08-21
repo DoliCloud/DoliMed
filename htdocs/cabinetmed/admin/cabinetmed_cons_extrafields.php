@@ -40,8 +40,9 @@ require_once '../lib/cabinetmed.lib.php';
 require_once DOL_DOCUMENT_ROOT.'/core/class/extrafields.class.php';
 
 
-if (!$user->admin)
+if (!$user->admin) {
 	accessforbidden();
+}
 
 $langs->load("admin");
 $langs->load("other");
@@ -55,7 +56,9 @@ $form = new Form($db);
 // List of supported format
 $tmptype2label=ExtraFields::$type2label;
 $type2label=array('');
-foreach ($tmptype2label as $key => $val) $type2label[$key]=$langs->transnoentitiesnoconv($val);
+foreach ($tmptype2label as $key => $val) {
+	$type2label[$key]=$langs->transnoentitiesnoconv($val);
+}
 
 $action=GETPOST('action', 'alpha');
 $attrname=GETPOST('attrname', 'alpha');
@@ -76,13 +79,12 @@ require DOL_DOCUMENT_ROOT.'/core/actions_extrafields.inc.php';
  * View
  */
 
-$textobject=$langs->transnoentitiesnoconv("CabinetMedSetup");
+$textobject = $langs->transnoentitiesnoconv("CabinetMedSetup");
 
 llxHeader('', $langs->trans("SendingsSetup"));
 
 $linkback='<a href="'.DOL_URL_ROOT.'/admin/modules.php">'.$langs->trans("BackToModuleList").'</a>';
 print load_fiche_titre($langs->trans("CabinetMedSetup"), $linkback, 'title_setup');
-print '<br>';
 
 $h=0;
 $head[$h][0] = 'admin.php';
@@ -101,7 +103,7 @@ $head[$h][2] = 'tababout';
 $h++;
 
 
-dol_fiche_head($head, 'tabconsextrafields', '', ((float) DOL_VERSION < 7.0 ? 0 : -1));
+dol_fiche_head($head, 'tabconsextrafields', '', -1);
 
 require DOL_DOCUMENT_ROOT.'/core/tpl/admin_extrafields_view.tpl.php';
 
@@ -111,7 +113,7 @@ dol_fiche_end();
 // Buttons
 if ($action != 'create' && $action != 'edit') {
 	print '<div class="tabsAction">';
-	print "<a class=\"butAction\" href=\"".$_SERVER["PHP_SELF"]."?action=create#newattrib\">".$langs->trans("NewAttribute")."</a>";
+	print '<a class="butAction" href="'.$_SERVER["PHP_SELF"].'?action=create#newattrib">'.$langs->trans("NewAttribute")."</a>";
 	print "</div>";
 }
 

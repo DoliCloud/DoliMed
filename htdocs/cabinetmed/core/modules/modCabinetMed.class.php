@@ -165,29 +165,32 @@ class modCabinetMed extends DolibarrModules
 							 "cabinetmed_diaglec",
 							 "cabinetmed_examenprescrit",
 							 "cabinetmed_c_examconclusion",
-							 "cabinetmed_c_banques"
-							 ),
+							 "cabinetmed_c_banques",
+							 "cabinetmed_c_medicaments"
+							),
 			'tablib'=>array("MotifConsultation",
 							"DiagnostiqueLesionnel",
 							"Examens",
 							"ExamenConclusion",
-							"BankNameList"
+							"BankNameList",
+							"Medicines"
 							 //,"ResultatExamBio","ResultatExamAutre"
 							 ),
 			'tabsql'=>array('SELECT f.rowid as rowid, f.code, f.label, f.active FROM '.MAIN_DB_PREFIX.'cabinetmed_motifcons as f',
 							'SELECT f.rowid as rowid, f.code, f.label, f.active, f.lang FROM '.MAIN_DB_PREFIX.'cabinetmed_diaglec as f',
 							'SELECT f.rowid as rowid, f.code, f.label, f.biorad, f.active FROM '.MAIN_DB_PREFIX.'cabinetmed_examenprescrit as f',
 							'SELECT f.rowid as rowid, f.code, f.label, f.active FROM '.MAIN_DB_PREFIX.'cabinetmed_c_examconclusion as f',
-							'SELECT f.rowid as rowid, f.code, f.label, f.active FROM '.MAIN_DB_PREFIX.'cabinetmed_c_banques as f'
+							'SELECT f.rowid as rowid, f.code, f.label, f.active FROM '.MAIN_DB_PREFIX.'cabinetmed_c_banques as f',
+							'SELECT f.rowid as rowid, f.code, f.label, f.active FROM '.MAIN_DB_PREFIX.'cabinetmed_c_medicaments as f'
 							),
-			'tabsqlsort'=>array("label ASC", "label ASC","biorad ASC, label ASC","label ASC","label ASC"),
-			'tabfield'=>array("code,label","code,label,lang","code,label,biorad","code,label","code,label"), // Nom des champs en resultat de select pour affichage du dictionnaire
-			'tabfieldvalue'=>array("code,label","code,label,lang","code,label,biorad","code,label","code,label"),  // Nom des champs d'edition pour modification d'un enregistrement
-			'tabfieldinsert'=>array("code,label","code,label,lang","code,label,biorad","code,label","code,label"),
-			'tabrowid'=>array("rowid","rowid","rowid","rowid","rowid"),
-			'tabcond'=>array(isModEnabled('cabinetmed'),isModEnabled('cabinetmed'),isModEnabled('cabinetmed'),isModEnabled('cabinetmed'),isModEnabled('cabinetmed')),
-			'tabhelp'=>array("",array("icd"=>'http://en.wikipedia.org/wiki/International_Statistical_Classification_of_Diseases_and_Related_Health_Problems'),array("biorad"=>"RADIO|BIO|OTHER")),
-			'tabfieldcheck'=>array("","",array("biorad"=>"/(RADIO|BIO|AUTRE|OTHER)/"))
+			'tabsqlsort'=>array("label ASC", "label ASC","biorad ASC, label ASC","label ASC","label ASC","label ASC"),
+			'tabfield'=>array("code,label","code,label,lang","code,label,biorad","code,label","code,label","code,label"), // Nom des champs en resultat de select pour affichage du dictionnaire
+			'tabfieldvalue'=>array("code,label","code,label,lang","code,label,biorad","code,label","code,label","code,label"),  // Nom des champs d'edition pour modification d'un enregistrement
+			'tabfieldinsert'=>array("code,label","code,label,lang","code,label,biorad","code,label","code,label","code,label"),
+			'tabrowid'=>array("rowid","rowid","rowid","rowid","rowid","rowid"),
+			'tabcond'=>array(isModEnabled('cabinetmed'),isModEnabled('cabinetmed'),isModEnabled('cabinetmed'),isModEnabled('cabinetmed'),isModEnabled('cabinetmed'),isModEnabled('cabinetmed')),
+			'tabhelp'=>array("",array("icd"=>'http://en.wikipedia.org/wiki/International_Statistical_Classification_of_Diseases_and_Related_Health_Problems'),array("biorad"=>"RADIO|BIO|OTHER"),""),
+			'tabfieldcheck'=>array("","",array("biorad"=>"/(RADIO|BIO|AUTRE|OTHER)/"),"")
 		);
 
 		// Boxes

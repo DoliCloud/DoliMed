@@ -11,7 +11,7 @@ ALTER TABLE llx_cabinetmed_examenprescrit ADD COLUMN lang varchar(12) NULL;
 
 ALTER TABLE llx_cabinetmed_c_examconclusion ADD COLUMN lang varchar(12) NULL;
 
-CREATE TABLE llx_cabinetmed_medicaments (
+CREATE TABLE llx_cabinetmed_c_medicaments (
   rowid             integer AUTO_INCREMENT PRIMARY KEY,
   code              varchar(8) NOT NULL,
   label             varchar(64) NOT NULL,

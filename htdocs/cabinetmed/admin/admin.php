@@ -105,7 +105,6 @@ llxHeader("", $langs->trans("CabinetMedSetup"), '');
 
 $linkback='<a href="'.DOL_URL_ROOT.'/admin/modules.php">'.$langs->trans("BackToModuleList").'</a>';
 print_fiche_titre($langs->trans("CabinetMedSetup"), $linkback, 'title_setup');
-print '<br>';
 
 dol_htmloutput_mesg($mesg);
 
