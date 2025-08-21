@@ -201,6 +201,44 @@ function listexamen($nboflines, $newwidth = 0, $type = '', $showtype = 0, $htmln
 
 
 /**
+ *  Show combo box with all medicaments
+ *
+ *  @param	int		$nboflines       Max nb of lines
+ *  @param  int     $newwidth        Force width
+ *  @param  string  $type            To filter on a type (Ex: "'RADIO'" or "'RADIO','OTHER'")
+ *  @param	string	$showtype        1=Show type of line after label
+ *  @param  string	$htmlname        Name of html select area
+ *  @return	void
+ */
+function listmedicaments($nboflines, $newwidth = 0, $htmlname = 'medicaments')
+{
+	global $conf,$db,$width,$langs;
+
+	if (empty($newwidth)) $newwidth=$width;
+
+	print '<select class="flat valignmiddle maxwidth200onsmartphone" id="list'.$htmlname.'" name="list'.$htmlname.'" '.(empty($conf->dol_use_jmobile)?' style="width: '.$newwidth.'px" ':'').'size="'.$nboflines.'"'.($nboflines > 1?' multiple':'').'>';
+	print '<option value="0">&nbsp;</option>';
+
+	$sql = 'SELECT s.rowid, s.label FROM '.MAIN_DB_PREFIX.'cabinetmed_medicaments as s  WHERE active = 1 ORDER BY position, label';
+	$resql=$db->query($sql);
+	dol_syslog("medicaments sql=".$sql);
+	if ($resql) {
+		$num=$db->num_rows($resql);
+		$i=0;
+
+		while ($i < $num) {
+			$obj=$db->fetch_object($resql);
+			print '<option value="'.$obj->code.'">'.$obj->label.'</option>';
+			$i++;
+		}
+	} else {
+		dol_print_error($db);
+	}
+	print '</select>'."\n";
+}
+
+
+/**
  *  Show combo box with all exam conclusions
  *
  *  @param	int		$nboflines       Max nb of lines
