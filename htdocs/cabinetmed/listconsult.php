@@ -80,6 +80,7 @@ $search_categ        = GETPOST("search_categ", "int");
 $search_motifprinc   = GETPOST("search_motifprinc", "alpha");
 $search_diaglesprinc = GETPOST("search_diaglesprinc", "alpha");
 $search_contactid    = GETPOST("search_contactid", "int");
+$search_datecons     = dol_mktime(0, 0, 0, GETPOSTINT('search_dateconsmonth'), GETPOSTINT('search_dateconsday'), GETPOSTINT('search_dateconsyear'));
 
 $object = new CabinetmedCons($db);
 $extrafields = new ExtraFields($db);
@@ -87,7 +88,7 @@ $extrafields = new ExtraFields($db);
 // fetch optionals attributes and labels
 $extrafields->fetch_name_optionals_label($object->table_element);
 
-$now=dol_now();
+$now = dol_now();
 
 $arrayfields=array(
 	'c.rowid'=>array('label'=>"IdConsultShort", 'checked'=>1, 'enabled'=>1),
@@ -97,7 +98,7 @@ $arrayfields=array(
 	'c.fk_user'=>array('label'=>"CreatedBy", 'checked'=>1, 'enabled'=>1),
 	'c.motifconsprinc'=>array('label'=>"MotifPrincipal", 'checked'=>1, 'enabled'=>1),
 	'c.diaglesprinc'=>array('label'=>"DiagLesPrincipal", 'checked'=>1, 'enabled'=>1),
-	'c.typepriseencharge'=>array('label'=>"Type prise en charge", 'checked'=>1, 'enabled'=>(empty($conf->global->CABINETMED_FRENCH_PRISEENCHARGE)?0:1)),
+	'c.typepriseencharge'=>array('label'=>"Type prise en charge", 'checked'=>1, 'enabled'=>getDolGlobalInt('CABINETMED_FRENCH_PRISEENCHARGE')),
 	'c.typevisit'=>array('label'=>"ConsultActe", 'checked'=>1, 'enabled'=>1),
 	'amountpayment'=>array('label'=>"MontantPaiement", 'checked'=>1, 'enabled'=>1),
 	'typepayment'=>array('label'=>"TypePaiement", 'checked'=>1, 'enabled'=>1),
@@ -108,14 +109,16 @@ include DOL_DOCUMENT_ROOT.'/core/tpl/extrafields_list_array_fields.tpl.php';
 $object->fields = dol_sort_array($object->fields, 'position');
 $arrayfields = dol_sort_array($arrayfields, 'position');
 
-$datecons=dol_mktime(0, 0, 0, GETPOST('consmonth', 'int'), GETPOST('consday', 'int'), GETPOST('consyear', 'int'));
-
 // Security check
-$socid = GETPOST('socid', 'int');
-if ($user->socid) $socid=$user->socid;
+$socid = GETPOSTINT('socid');
+if ($user->socid) {
+	$socid=$user->socid;
+}
 $result = restrictedArea($user, 'societe', $socid, '');
 
-if (!$user->hasRight('cabinetmed', 'read')) accessforbidden();
+if (!$user->hasRight('cabinetmed', 'read')) {
+	accessforbidden();
+}
 
 $permissiontoread = $user->rights->societe->lire;
 $permissiontodelete = $user->rights->societe->supprimer;
@@ -126,7 +129,7 @@ $permissiontodelete = $user->rights->societe->supprimer;
  */
 
 $parameters=array();
-$reshook=$hookmanager->executeHooks('doActions', $parameters, $object, $action);    // Note that $action and $object may have been modified by some hooks
+$reshook = $hookmanager->executeHooks('doActions', $parameters, $object, $action);    // Note that $action and $object may have been modified by some hooks
 if ($reshook < 0) setEventMessages($hookmanager->error, $hookmanager->errors, 'errors');
 
 if (empty($reshook)) {
@@ -140,14 +143,10 @@ if (empty($reshook)) {
 		$socname="";
 		$search_nom="";
 		$search_ville="";
-		$search_idprof1='';
-		$search_idprof2='';
-		$search_idprof3='';
-		$search_idprof4='';
 		$search_motifprinc='';
 		$search_diaglesprinc='';
 		$search_contactid='';
-		$datecons='';
+		$search_datecons='';
 		$toselect = array();
 		$search_array_options=array();
 	}
@@ -212,7 +211,9 @@ $sql.= " LEFT JOIN ".MAIN_DB_PREFIX."cabinetmed_cons_extrafields as ef ON ef.fk_
 $sql.= ", ".MAIN_DB_PREFIX."c_stcomm as st";
 $sql.= " WHERE s.fk_stcomm = st.id AND c.fk_soc = s.rowid";
 $sql.= ' AND c.entity IN ('.getEntity('societe', 1).')';
-if ($datecons > 0) $sql.=" AND c.datecons = '".$db->idate($datecons)."'";
+if ($search_datecons > 0) {
+	$sql.=" AND c.datecons = '".$db->idate($search_datecons)."'";
+}
 //if ($datecons > 0) $sql.= dolSqlDateFilter("c.datecons", GETPOST('consday', 'int'), GETPOST('consmonth', 'int'), GETPOST('consyear', 'int'));
 
 if ($search_motifprinc) {
@@ -331,7 +332,7 @@ if ($search_sale > 0)	        $param.= '&search_sale='.urlencode($search_sale);
 if ($search_motifprinc != '')	$param.= '&search_motifprinc='.urlencode($search_motifprinc);
 if ($search_diaglesprinc != '')	$param.= '&search_diaglesprinc='.urlencode($search_diaglesprinc);
 if ($search_contactid != '')	$param.= '&search_contactid='.urlencode($search_contactid);
-
+if ($search_datecons != '')	    $param.= '&search_dateconsmonth='.GETPOSTINT('search_dateconsmonth').'&search_dateconsday='.GETPOSTINT('search_dateconsday').'&search_dateconsyear='.GETPOSTINT('search_dateconsyear');
 
 print '<form method="POST" id="searchFormList" action="'.$_SERVER["PHP_SELF"].'" name="formfilter" autocomplete="off">'."\n";
 if ($optioncss != '') {
@@ -373,7 +374,7 @@ include DOL_DOCUMENT_ROOT.'/core/tpl/massactions_pre.tpl.php';
 $moreforfilter='';
 if (isModEnabled("categorie")) {
 	$moreforfilter.='<div class="divsearchfield">';
-	$moreforfilter.=img_picto('', 'category', 'class="pictofixedwidth"').$formother->select_categories(2, $search_categ, 'search_categ', 1, $langs->trans('Categories'));
+	$moreforfilter.=img_picto('', 'category', 'class="pictofixedwidth"').$formother->select_categories(2, $search_categ, 'search_categ', 1, $langs->trans('PatientCategories'));
 	$moreforfilter.='</div>';
 }
 
@@ -442,8 +443,8 @@ if (! empty($arrayfields['s.code_client']['checked'])) {
 }
 // Date
 if (! empty($arrayfields['c.datecons']['checked'])) {
-	print '<td class="liste_titre" align="center">';
-	print $form->selectDate($datecons, 'cons', 0, 0, 1, '', 1, 0);
+	print '<td class="liste_titre center">';
+	print $form->selectDate($search_datecons, 'search_datecons', 0, 0, 1, '', 1, 0);
 	print '</td>';
 }
 if (! empty($arrayfields['c.fk_user']['checked'])) {
@@ -570,7 +571,7 @@ while ($i < $imaxinloop) {
 	}
 
 	if (! empty($arrayfields['s.nom']['checked'])) {
-		print '<td class="tdoverflowmax150" title="'.dol_escape_htmltag($obj->name).'">';
+		print '<td class="tdoverflowmax150">';
 		$thirdpartystatic->id=$obj->rowid;
 		$thirdpartystatic->name=$obj->name;
 		$thirdpartystatic->client=$obj->client;
@@ -740,7 +741,6 @@ if ($num == 0) {
 	}
 	print '<tr><td colspan="'.$colspan.'"><span class="opacitymedium">'.$langs->trans("NoRecordFound").'</span></td></tr>';
 }
-
 
 
 $db->free($resql);
