@@ -61,10 +61,14 @@ $contextpage= GETPOST('contextpage', 'aZ')?GETPOST('contextpage', 'aZ'):'consult
 
 // Security check
 $socid = GETPOST('socid', 'int');
-if ($user->socid) $socid=$user->socid;
+if ($user->socid) {
+	$socid=$user->socid;
+}
 $result = restrictedArea($user, 'societe', $socid, '');
 
-if (!$user->hasRight('cabinetmed', 'read')) accessforbidden();
+if (!$user->hasRight('cabinetmed', 'read')) {
+	accessforbidden();
+}
 
 $mesgarray=array();
 
@@ -100,7 +104,7 @@ $arrayfields=array(
 	't.fk_user'=>array('label'=>"CreatedBy", 'checked'=>1, 'enabled'=>1),
 	't.motifconsprinc'=>array('label'=>"MotifPrincipal", 'checked'=>1, 'enabled'=>1),
 	't.diaglesprinc'=>array('label'=>"DiagLesPrincipal", 'checked'=>1, 'enabled'=>1),
-	't.typepriseencharge'=>array('label'=>"Type prise en charge", 'checked'=>1, 'enabled'=>(empty($conf->global->CABINETMED_FRENCH_PRISEENCHARGE)?0:1)),
+	't.typepriseencharge'=>array('label'=>"Type prise en charge", 'checked'=>1, 'enabled'=>getDolGlobalString('CABINETMED_FRENCH_PRISEENCHARGE')),
 	't.typevisit'=>array('label'=>"ConsultActe", 'checked'=>1, 'enabled'=>1),
 	'amountpayment'=>array('label'=>"MontantPaiement", 'checked'=>1, 'enabled'=>1),
 	'typepayment'=>array('label'=>"TypePaiement", 'checked'=>1, 'enabled'=>1),
@@ -755,9 +759,20 @@ if (! ($socid > 0)) {
                     var box = jQuery("#examenprescrit");
                     u=box.val() + (box.val() != \'\' ? "\n" : \'\') + t;
                     box.val(u); box.html(u);
-                    jQuery("#addexambox .ui-autocomplete-input").val("");
+					jQuery("#addexambox .ui-autocomplete-input").val("");
                     jQuery("#addexambox .ui-autocomplete-input").text("");
                     jQuery("#listexamenprescrit").get(0).selectedIndex = 0;
+ 					changed=true;
+    			}
+            });
+            jQuery("#addmedicament").click(function () {
+                var t=jQuery("#listmedicaments").children( ":selected" ).text();
+            	if (t != "" && t != " ")
+                {
+                    var box = jQuery("#traitementprescrit");
+                    u=box.val() + (box.val() != \'\' ? "\n" : \'\') + t;
+                    box.val(u); box.html(u);
+					jQuery("#listmedicaments").get(0).selectedIndex = 0;
  					changed=true;
     			}
             });
@@ -782,6 +797,7 @@ if (! ($socid > 0)) {
 		print ajax_combobox('listmotifcons');
 		print ajax_combobox('listdiagles');
 		print ajax_combobox('listexamenprescrit');
+		print ajax_combobox('listmedicaments');
 		print ajax_combobox('banque');
 
 
@@ -962,8 +978,17 @@ if (! ($socid > 0)) {
 
 		print '</div><div class="fichehalfright"><div class="ficheaddleft">';
 
-		print $langs->trans("TraitementsPrescrits").'<br>';
-		print '<textarea name="traitementprescrit" class="flat centpercent" rows="'.($nboflines+1).'">'.$object->traitementprescrit.'</textarea><br>';
+		print $langs->trans("TraitementsPrescrits").':'.'<br>';
+		if (getDolGlobalInt('CABINETMED_SHOW_MEDICAMENTS_LIST')) {
+			print $langs->trans('Medicine').':';
+			listmedicaments(1, $width, 'medicaments');
+			print ' <input type="button" class="button small" id="addmedicament" name="addmedicament" value="+">';
+
+			if ($user->admin) {
+				print ' '.info_admin($langs->trans("YouCanChangeValuesForThisListFromDictionarySetup"), 1);
+			}
+		}
+		print '<textarea name="traitementprescrit" id="traitementprescrit" class="flat centpercent" rows="'.($nboflines+1).'">'.$object->traitementprescrit.'</textarea><br>';
 		print $langs->trans("Infiltrations").'<br>';
 		print '<textarea name="infiltration" id="infiltration" class="flat centpercent" rows="'.ROWS_2.'">'.$object->infiltration.'</textarea><br>';
 
