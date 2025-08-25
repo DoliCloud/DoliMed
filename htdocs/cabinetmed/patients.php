@@ -104,7 +104,7 @@ $search_parent_name = trim(GETPOST('search_parent_name', 'alpha'));
 // Load sale and categ filters
 $search_sale = GETPOST("search_sale", "int");
 $search_categ = GETPOST("search_categ", "int");
-$search_diagles = GETPOST("search_diagles", "int");
+$search_diagles = GETPOST("search_diagles", "alphanohtml");
 $search_contactid = GETPOST("search_contactid", "int");
 
 $type = GETPOST('type', 'alpha');
@@ -371,13 +371,17 @@ $sqlfields = $sql; // $sql fields to remove for count total
 
 $sql .= " FROM ".MAIN_DB_PREFIX."c_stcomm as st";
 // We'll need this table joined to the select in order to filter by sale
-if ($search_sale > 0 || (!$user->hasRight('societe', 'client', 'voir') && !$socid)) $sql.= ", ".MAIN_DB_PREFIX."societe_commerciaux as sc";
+if ($search_sale > 0 || (!$user->hasRight('societe', 'client', 'voir') && !$socid)) {
+	$sql.= ", ".MAIN_DB_PREFIX."societe_commerciaux as sc";
+}
 // We'll need this table joined to the select in order to filter by categ
-if ($search_categ > 0) $sql.= ", ".MAIN_DB_PREFIX."categorie_societe as cs";
+if ($search_categ > 0) {
+	$sql.= ", ".MAIN_DB_PREFIX."categorie_societe as cs";
+}
 $sql .= ", ".MAIN_DB_PREFIX."societe as s";
 $sql .= " LEFT JOIN ".MAIN_DB_PREFIX."c_country as country on (country.rowid = s.fk_pays)";
-$sql .= " LEFT JOIN ".MAIN_DB_PREFIX."cabinetmed_cons as c ON c.fk_soc = s.rowid";
 $sql .= " LEFT JOIN ".MAIN_DB_PREFIX."societe_extrafields as ef ON ef.fk_object = s.rowid";
+$sql .= " LEFT JOIN ".MAIN_DB_PREFIX."cabinetmed_cons as c ON c.fk_soc = s.rowid";
 $sql .= ' WHERE s.entity IN ('.getEntity('societe', 1).')';
 $sql .= " AND s.canvas='patient@cabinetmed'";
 $sql .= " AND s.fk_stcomm = st.id";
@@ -452,6 +456,14 @@ if (!empty($searchCategorySupplierList)) {
 	}
 }
 
+if ($search_diagles && $search_diagles != '-1') {
+	$label = dol_getIdFromCode($db, $search_diagles, 'cabinetmed_diaglec', 'code', 'label');
+	$sql .= " AND EXISTS (SELECT c.rowid FROM ".MAIN_DB_PREFIX."cabinetmed_cons as c";
+	$sql .= " WHERE c.fk_soc = s.rowid";
+	$sql .= natural_search("c.diaglesprinc", $label);
+	$sql .= ")";
+}
+
 if ($search_all) {
 	$sql .= natural_search(array_keys($fieldstosearchall), $search_all);
 }
@@ -471,17 +483,27 @@ if ($search_alias) {
 if ($search_nom_only) {
 	$sql .= natural_search("s.nom", $search_nom_only);
 }
-if ($search_diagles) {
-	$label = dol_getIdFromCode($db, $search_diagles, 'cabinetmed_diaglec', 'code', 'label');
-	$sql .= natural_search("c.diaglesprinc", $label);
+if (! $user->hasRight('societe', 'client', 'voir') && ! $socid)	{
+	$sql.= " AND s.rowid = sc.fk_soc AND sc.fk_user = ".((int) $user->id);
 }
-if (! $user->hasRight('societe', 'client', 'voir') && ! $socid)	$sql.= " AND s.rowid = sc.fk_soc AND sc.fk_user = " .$user->id;
-if ($socid && empty($conf->global->MAIN_DISABLE_RESTRICTION_ON_THIRDPARTY_FOR_EXTERNAL)) $sql.= " AND s.rowid = ".$socid;
-if ($search_sale > 0)  $sql.= " AND s.rowid = sc.fk_soc";		// Join for the needed table to filter by sale
-if ($search_categ > 0) $sql.= " AND s.rowid = cs.fk_soc";	// Join for the needed table to filter by categ
-if ($search_zip) $sql.= natural_search("s.zip", $search_zip);
-if ($search_town) $sql.= natural_search("s.town", $search_town);
-if ($search_code)  $sql.= natural_search("s.code_client", $search_code);
+if ($socid && !getDolGlobalString('MAIN_DISABLE_RESTRICTION_ON_THIRDPARTY_FOR_EXTERNAL')) {
+	$sql.= " AND s.rowid = ".((int) $socid);
+}
+if ($search_sale > 0) {
+	$sql.= " AND s.rowid = sc.fk_soc";		// Join for the needed table to filter by sale
+}
+if ($search_categ > 0) {
+	$sql.= " AND s.rowid = cs.fk_soc";	// Join for the needed table to filter by categ
+}
+if ($search_zip) {
+	$sql.= natural_search("s.zip", $search_zip);
+}
+if ($search_town) {
+	$sql.= natural_search("s.town", $search_town);
+}
+if ($search_code) {
+	$sql.= natural_search("s.code_client", $search_code);
+}
 // Insert categ filter
 if ($search_categ > 0) {
 	$sql .= " AND cs.fk_categorie = ".((int) $search_categ);
@@ -525,7 +547,6 @@ $nbtotalofrecords = '';
 if (!getDolGlobalInt('MAIN_DISABLE_FULL_SCANLIST')) {
 	/* The fast and low memory method to get and count full list converts the sql into a sql count */
 	$sqlforcount = preg_replace('/^SELECT[a-zA-Z0-9\._\s\(\),=<>\:\-\']+\sFROM/Ui', 'SELECT COUNT(*) as nbtotalofrecords FROM', $sql);
-	$sqlforcount = preg_replace('/LEFT JOIN '.MAIN_DB_PREFIX.'cabinetmed_cons as c ON c.fk_soc = s.rowid/', '', $sqlforcount);
 	$sqlforcount = preg_replace('/GROUP BY .*/', '', $sqlforcount);
 	$resql = $db->query($sqlforcount);
 	if ($resql) {
@@ -616,7 +637,7 @@ if ($search_stcomm != '')  $param.='&search_stcomm='.urlencode($search_stcomm);
 //if ($search_level_from != '') $param.='&search_level_from='.urlencode($search_level_from);
 //if ($search_level_to != '')   $param.='&search_level_to='.urlencode($search_level_to);
 if ($search_import_key != '') $param.='&search_import_key='.urlencode($search_import_key);
-if ($search_diagles != '')    $param.='&search_diagles='.urlencode($search_diagles);
+if ($search_diagles != '' && $search_diagles != '-1')    $param.='&search_diagles='.urlencode($search_diagles);
 if ($type != '') $param.='&type='.urlencode($type);
 // Add $param from extra fields
 include DOL_DOCUMENT_ROOT.'/core/tpl/extrafields_list_search_param.tpl.php';
@@ -718,14 +739,14 @@ $moreforfilter='';
 if (isModEnabled("categorie")) {
 	require_once DOL_DOCUMENT_ROOT . '/categories/class/categorie.class.php';
 	$moreforfilter.='<div class="divsearchfield">';
-	$moreforfilter.=img_picto('', 'category', 'class="pictofixedwidth"').$formother->select_categories(2, $search_categ, 'search_categ', 1, $langs->trans('Categories'), 'maxwidth300 widthcentpercentminusx');
+	$moreforfilter.=img_picto('', 'category', 'class="pictofixedwidth"').$formother->select_categories(2, $search_categ, 'search_categ', 1, $langs->trans('PatientCategories'), 'minwidth150 maxwidth300 widthcentpercentminusx');
 	$moreforfilter.='</div>';
 }
 
 // If the user can view prospects other than his'
 if ($user->hasRight('societe', 'client', 'voir') || $socid) {
 	$moreforfilter.='<div class="divsearchfield">';
-	$moreforfilter.=img_picto('', 'user', 'class="pictofixedwidth"').$formother->select_salesrepresentatives($search_sale, 'search_sale', $user, 0, $langs->trans('ConsultCreatedBy'), 'maxwidth300 widthcentpercentminusx');
+	$moreforfilter.=img_picto('', 'user', 'class="pictofixedwidth"').$formother->select_salesrepresentatives($search_sale, 'search_sale', $user, 0, $langs->trans('ConsultCreatedBy'), 'minwidth150 maxwidth300 widthcentpercentminusx');
 	$moreforfilter.='</div>';
 }
 // To add filter on contact
@@ -740,10 +761,11 @@ if (method_exists($form, 'select_contact')) {
 $moreforfilter.='</div>';
 // To add filter on diagnostic
 $width="200";
-$moreforfilter.='<div class="divsearchfield">';
-$moreforfilter.=$langs->trans('DiagnostiqueLesionnel'). ': ';
-$moreforfilter.=listdiagles(1, $width, 'search_diagles', $search_diagles);
-$moreforfilter.='</div>';
+$moreforfilter .= '<div class="divsearchfield">';
+//$moreforfilter .= $langs->trans('DiagnostiqueLesionnel'). ': ';
+$moreforfilter .= img_picto('', 'briefcase-medical', 'class="pictofixedwidth"');
+$moreforfilter .= listdiagles(1, $width, 'search_diagles', $search_diagles, 'minwidth100imp maxwidth300 widthcentpercentminusx', $langs->trans('DiagnostiqueLesionnel'));
+$moreforfilter .= '</div>';
 
 $parameters=array('type'=>$type);
 $reshook=$hookmanager->executeHooks('printFieldPreListTitle', $parameters, $object, $action);    // Note that $action and $object may have been modified by hook

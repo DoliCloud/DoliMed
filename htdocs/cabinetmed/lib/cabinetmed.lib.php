@@ -106,21 +106,28 @@ function listmotifcons($nboflines, $newwidth = '', $htmlname = 'motifcons', $sel
 /**
  * List lesion diagnostic
  *
- * @param 	int		$nboflines		Nb of lines
- * @param 	int		$newwidth		Force width
- * @param	string	$htmlname		Name of HTML select field
- * @param	string	$selected		Preselected value
- * @param	string	$morecss		More CSS
+ * @param 	int			$nboflines		Nb of lines
+ * @param 	int			$newwidth		Force width
+ * @param	string		$htmlname		Name of HTML select field
+ * @param	string		$selected		Preselected value
+ * @param	string		$morecss		More CSS
+ * @param	int|string	$showempty		Show empty value (1 or text to show)
  * @return	void
 */
-function listdiagles($nboflines, $newwidth = 0, $htmlname = 'diagles', $selected = '', $morecss = '')
+function listdiagles($nboflines, $newwidth = 0, $htmlname = 'diagles', $selected = '', $morecss = '', $showempty = 1)
 {
 	global $conf,$db,$width,$langs;
 
 	if (empty($newwidth)) $newwidth=$width;
 
 	$out = '<select class="flat valignmiddle maxwidth200onsmartphone'.($morecss ? ' '.$morecss : '').'" id="list'.$htmlname.'" name="'.$htmlname.'"'.($nboflines > 1?' multiple':'').'>';
-	$out .= '<option value="0">&nbsp;</option>';
+	if ($showempty) {
+		if (is_numeric($showempty)) {
+			$out .= '<option value="0">&nbsp;</option>';
+		} else {
+			$out .= '<option value="-1">'.$showempty.'</option>';
+		}
+	}
 
 	$sql = 'SELECT s.rowid, s.code, s.label';
 	$sql .= ' FROM '.MAIN_DB_PREFIX.'cabinetmed_diaglec as s';

@@ -201,3 +201,4 @@ CABINETMED_DELAY_TO_LOCK_RECORD=Consultations can't be modified x days after the
 CABINETMED_SHOW_MEDICAMENTS_LIST=Show Medicine list field
 Medicine=Medecine
 Medicines=Medicines
+PatientCategories=Patient tags/categories
