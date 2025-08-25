@@ -640,10 +640,10 @@ class modCabinetMed extends DolibarrModules
 		// Create extrafields
 		include_once DOL_DOCUMENT_ROOT.'/core/class/extrafields.class.php';
 		$extrafields = new ExtraFields($this->db);
-		$result1=$extrafields->addExtraField('height', $langs->trans("HeightPeople"), 'varchar', 1, 128, 'thirdparty');
-		$result2=$extrafields->addExtraField('weight', $langs->trans("WeigthPeople"), 'varchar', 2, 128, 'thirdparty');
-		$result3=$extrafields->addExtraField('prof', $langs->trans("Profession"), 'varchar', 3, 128, 'thirdparty', 0, 0, '', '', 0, '', 'tdoverflowmax125');
-		$result4=$extrafields->addExtraField('birthdate', $langs->trans('DateOfBirth'), 'date', 4, 0, 'thirdparty');
+		$result1=$extrafields->addExtraField('height', $langs->trans("HeightPeople"), 'varchar', 51, 128, 'thirdparty');
+		$result2=$extrafields->addExtraField('weight', $langs->trans("WeigthPeople"), 'varchar', 52, 128, 'thirdparty');
+		$result3=$extrafields->addExtraField('prof', $langs->trans("Profession"), 'varchar', 53, 128, 'thirdparty', 0, 0, '', '', 0, '', 'tdoverflowmax125');
+		$result4=$extrafields->addExtraField('birthdate', $langs->trans('DateOfBirth'), 'date', 54, 0, 'thirdparty');
 
 		return $this->_load_tables('/cabinetmed/sql/');
 	}
