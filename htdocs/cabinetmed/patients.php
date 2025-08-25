@@ -383,9 +383,9 @@ $sql .= " LEFT JOIN ".MAIN_DB_PREFIX."c_country as country on (country.rowid = s
 $sql .= " LEFT JOIN ".MAIN_DB_PREFIX."societe_extrafields as ef ON ef.fk_object = s.rowid";
 $sql .= " LEFT JOIN ".MAIN_DB_PREFIX."cabinetmed_cons as c ON c.fk_soc = s.rowid";
 $sql .= ' WHERE s.entity IN ('.getEntity('societe', 1).')';
-$sql .= " AND s.canvas='patient@cabinetmed'";
+$sql .= " AND s.canvas = 'patient@cabinetmed'";
 $sql .= " AND s.fk_stcomm = st.id";
-$sql .= " AND s.client IN (1, 3)";
+//$sql .= " AND s.client IN (1, 3)";	// We have a filter on canvas, it is enough.
 
 if ($search_sale && $search_sale != '-1' && $search_sale != '-2') {
 	$sql .= " AND s.rowid = sc.fk_soc"; // Join for the needed table to filter by sale
@@ -529,13 +529,21 @@ $sql .= " s.client, s.fournisseur,";
 $sql .= " s.name_alias, s.barcode, s.address, s.code_fournisseur, s.logo, s.entity, s.email, s.url, s.siren, s.siret, s.ape, s.idprof4, s.idprof5, s.idprof6, s.tva_intra,";
 $sql .= " s.fk_pays, s.tms, s.import_key, s.code_compta, s.code_compta_fournisseur, s.parent, s.price_level,";
 $sql .= " country.code, country.label";
-if ($search_sale > 0) $sql .= ", sc.fk_soc, sc.fk_user";
+if ($search_sale > 0) {
+	$sql .= ", sc.fk_soc, sc.fk_user";
+}
 // We'll need these fields in order to filter by categ
-if ($search_categ_cus > 0) $sql .= ", cc.fk_categorie, cc.fk_soc";
-if ($search_categ_sup > 0) $sql .= ", cs.fk_categorie, cs.fk_soc";
+if ($search_categ_cus > 0) {
+	$sql .= ", cc.fk_categorie, cc.fk_soc";
+}
+if ($search_categ_sup > 0) {
+	$sql .= ", cs.fk_categorie, cs.fk_soc";
+}
 // Add fields from extrafields
 if (! empty($extrafields->attributes[$object->table_element]['label'])) {
-	foreach ($extrafields->attributes[$object->table_element]['label'] as $key => $val) $sql.=($extrafields->attributes[$object->table_element]['type'][$key] != 'separate' ? ", ef.".$key : '');
+	foreach ($extrafields->attributes[$object->table_element]['label'] as $key => $val) {
+		$sql .= ($extrafields->attributes[$object->table_element]['type'][$key] != 'separate' ? ", ef.".$key : '');
+	}
 }
 // Add GroupBy from hooks
 $parameters = array('fieldstosearchall' => $fieldstosearchall);
