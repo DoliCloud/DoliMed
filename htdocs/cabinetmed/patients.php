@@ -60,7 +60,6 @@ if ($user->socid) $socid=$user->socid;
 $result = restrictedArea($user, 'societe', $socid, '');
 
 $search_all=trim(GETPOST('search_all', 'alphanohtml'));
-$sall=$search_all;
 $search_cti=preg_replace('/^0+/', '', preg_replace('/[^0-9]/', '', GETPOST('search_cti', 'alphanohtml')));	// Phone number without any special chars
 
 $search_id=trim(GETPOST("search_id", "int"));
@@ -579,8 +578,7 @@ if (!empty($contextpage) && $contextpage != $_SERVER["PHP_SELF"]) {
 if ($limit > 0 && $limit != $conf->liste_limit) {
 	$param .= '&limit='.urlencode($limit);
 }
-if ($search_all != '')     $param = "&sall=".urlencode($search_all);
-if ($sall != '')           $param.= "&sall=".urlencode($sall);
+if ($search_all != '')     $param = "&search_all=".urlencode($search_all);
 if ($search_categ_cus > 0) $param.= '&search_categ_cus='.urlencode($search_categ_cus);
 if ($search_categ_sup > 0) $param.= '&search_categ_sup='.urlencode($search_categ_sup);
 if ($search_sale > 0)	   $param.= '&search_sale='.urlencode($search_sale);
