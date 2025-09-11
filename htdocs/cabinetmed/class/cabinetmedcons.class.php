@@ -661,29 +661,34 @@ class CabinetmedCons extends CommonObject
 		$sql.= " FROM ".MAIN_DB_PREFIX."cabinetmed_cons as c";
 		$sql.= " WHERE c.entity = ".((int) $conf->entity);
 
-		$resql=$this->db->query($sql);
+		$resql = $this->db->query($sql);
 		if ($resql) {
-			while ($obj=$this->db->fetch_object($resql)) {
+			while ($obj = $this->db->fetch_object($resql)) {
 				$this->nb["Cabinetmedcons"] = $obj->nb;
 			}
 
-			$sql = "SELECT count(rowid) as nb";
-			$sql.= " FROM ".MAIN_DB_PREFIX."societe WHERE canvas = 'patient@cabinetmed'";
-			$sql.= " WHERE c.entity = ".((int) $conf->entity);
+			$this->db->free($resql);
 
-			$resql2=$this->db->query($sql);
+			$sql2 = "SELECT count(rowid) as nb";
+			$sql2 .= " FROM ".MAIN_DB_PREFIX."societe as s WHERE s.canvas = 'patient@cabinetmed'";
+			$sql2 .= " AND s.entity = ".((int) $conf->entity);
+
+			$resql2 = $this->db->query($sql2);
 			if ($resql2) {
-				while ($obj=$this->db->fetch_object($resql2)) {
+				while ($obj = $this->db->fetch_object($resql2)) {
 					$this->nb["Patients"] = $obj->nb;
 				}
+			} else {
+				dol_print_error($this->db);
+				$this->error = $this->db->lasterror();
+				return -1;
 			}
 
 			$this->db->free($resql2);
-			$this->db->free($resql);
 			return 1;
 		} else {
 			dol_print_error($this->db);
-			$this->error=$this->db->error();
+			$this->error = $this->db->lasterror();
 			return -1;
 		}
 	}

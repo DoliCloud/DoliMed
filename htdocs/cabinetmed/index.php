@@ -75,17 +75,16 @@ print '<div class="fichecenter"><div class="fichethirdleft">';
 
 // Search area
 
-$rowspan=2;
 print '<form method="post" action="'.DOL_URL_ROOT.'/societe/list.php">';
 print '<input type="hidden" name="token" value="'.newToken().'">';
-print '<table class="noborder" width="100%">';
+print '<table class="noborder centpercent">';
 print '<tr class="liste_titre">';
 print '<th colspan="2" class="center"><input type="submit" class="button small" value="'.$langs->trans("Search").'"></th></tr>';
 print '<tr class="oddeven nohover"><td>';
-print $langs->trans("Name").':</td><td class="oddeven"><input class="flat" type="text" size="14" name="search_nom_only"></td>';
+print $langs->trans("Name").':</td><td class="oddeven nohover"><input class="flat" type="text" size="14" name="search_nom_only"></td>';
 print '</tr>';
 print '<tr class="oddeven nohover"><td>';
-print $langs->trans("Other").':</td><td><input class="flat" type="text" size="14" name="search_all"></td>';
+print $langs->trans("Other").':</td><td class="nohover"><input class="flat" type="text" size="14" name="search_all"></td>';
 print '</tr>';
 
 print "</table></form><br>";
@@ -96,31 +95,46 @@ print "</table></form><br>";
  */
 
 $third = array();
-$total=0;
+$search_sale = array();
 
-$sql = "SELECT s.rowid, s.client, s.fournisseur";
+$sql = "SELECT COUNT(s.rowid) as nb";
 $sql.= " FROM ".MAIN_DB_PREFIX."societe as s";
-if (! $user->hasRight('societe', 'client', 'voir') && ! $socid) $sql.= ", ".MAIN_DB_PREFIX."societe_commerciaux as sc";
 $sql.= ' WHERE s.entity IN ('.getEntity('societe', 1).')';
-$sql.= " AND s.canvas='patient@cabinetmed'";
-if (! $user->hasRight('societe', 'client', 'voir') && ! $socid) $sql.= " AND s.rowid = sc.fk_soc AND sc.fk_user = " .$user->id;
-if ($socid && empty($conf->global->MAIN_DISABLE_RESTRICTION_ON_THIRDPARTY_FOR_EXTERNAL))	$sql.= " AND s.rowid = ".$socid;
-//if (! $user->rights->fournisseur->lire) $sql.=" AND (s.fournisseur <> 1 OR s.client <> 0)";    // client=0, fournisseur=0 must be visible
-//print $sql;
+$sql.= " AND s.canvas = 'patient@cabinetmed'";
+// Force the sales representative if they don't have permissions
+if (!$user->hasRight('societe', 'client', 'voir') && !$socid) {
+	$search_sale = array($user->id);
+}
+// Search on sale representative
+if (!empty($search_sale) && $search_sale != '-1') {
+	$search_sale_req = array_filter($search_sale, function (string $value): bool {
+		$value = intval($value);
+		return $value >= 0;
+	});
+
+	$search_sale_req = implode(',', $search_sale_req);
+
+	if (count($search_sale) == 1 && in_array('-2', $search_sale)) {
+		$sql .= " AND NOT EXISTS (SELECT sc.fk_soc FROM ".MAIN_DB_PREFIX."societe_commerciaux as sc WHERE sc.fk_soc = s.rowid)";
+	} elseif (count($search_sale) > 0 && !in_array('-2', $search_sale)) {
+		$sql .= " AND EXISTS (SELECT sc.fk_soc FROM ".MAIN_DB_PREFIX."societe_commerciaux as sc WHERE sc.fk_soc = s.rowid AND sc.fk_user IN (".$db->sanitize($search_sale_req)."))";
+	} elseif (count($search_sale) > 0 && in_array('-2', $search_sale)) {
+		$sql .= " AND (EXISTS (SELECT sc.fk_soc FROM ".MAIN_DB_PREFIX."societe_commerciaux as sc WHERE sc.fk_soc = s.rowid AND sc.fk_user IN (".$db->sanitize($search_sale_req)."))";
+		$sql .= " OR NOT EXISTS (SELECT sc.fk_soc FROM ".MAIN_DB_PREFIX."societe_commerciaux as sc WHERE sc.fk_soc = s.rowid))";
+	}
+}
+if ($socid && !getDolGlobalSring('MAIN_DISABLE_RESTRICTION_ON_THIRDPARTY_FOR_EXTERNAL')) {
+	$sql.= " AND s.rowid = ".((int) $socid);
+}
+
 $resql = $db->query($sql);
 if ($resql) {
-	while ($objp = $db->fetch_object($resql)) {
-		$found=0;
-		if (isModEnabled('cabinetmed')) {
-			$found=1;
-			if (empty($third['patient'])) {
-				$third['patient'] = 0;
-			}
-			$third['patient']++;
-		}
-		if ($found) $total++;
+	if ($objp = $db->fetch_object($resql)) {
+		$third['patient'] = $objp->nb;
 	}
-} else dol_print_error($db);
+} else {
+	dol_print_error($db);
+}
 
 print '<table class="noborder centpercent">';
 print '<tr class="liste_titre"><th colspan="2">'.$langs->trans("Statistics").'</th></tr>';
@@ -131,10 +145,11 @@ if (isModEnabled('cabinetmed')) {
 	$statstring.= "</tr>";
 }
 print $statstring;
-//print $statstring2;
+/*
 print '<tr class="liste_total"><td>'.$langs->trans("UniquePatients").'</td><td align="right">';
 print $total;
 print '</td></tr>';
+*/
 print '</table>';
 
 
@@ -269,7 +284,7 @@ if ($resql) {
 		$consultation_static->ref = $objp->ref;
 		$consultation_static->fk_soc = $objp->socid;
 		$consultation_static->datecons = $db->jdate($objp->datecons);
-		
+
 		$thirdparty_static->id=$objp->socid;
 		$thirdparty_static->name=$objp->name;
 		$thirdparty_static->client=$objp->client;
@@ -289,7 +304,7 @@ if ($resql) {
 		print '<td class="nowrap">';
 		print dol_print_date($consultation_static->datecons);;
 		print "</td>\n";
-					
+
 		// Name
 		print '<td class="nowrap">';
 		print $thirdparty_static->getNomUrl(1);
@@ -302,7 +317,7 @@ if ($resql) {
 		print $thirdparty_static->getNomUrl(0, 'patient');
 		print '</td>';
 		*/
-		
+
 		// Last modified date
 		print '<td align="right">';
 		print dol_print_date($thirdparty_static->datem, 'day');
@@ -313,7 +328,7 @@ if ($resql) {
 		print $thirdparty_static->getLibStatut(3);
 		print "</td>";
 		*/
-		
+
 		print "</tr>\n";
 
 		$i++;
