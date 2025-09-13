@@ -227,7 +227,7 @@ dol_htmloutput_errors($GLOBALS['error'], $GLOBALS['errors']);
 <input type="hidden" name="private" value="0">
 <input type="hidden" name="status" value="1">
 <input type="hidden" name="client" value="<?php echo $object->client; ?>">
-<?php 
+<?php
 if ($modCodeClient->code_auto || $modCodeFournisseur->code_auto) {
 	print '<input type="hidden" name="code_auto" value="1">';
 }
@@ -283,7 +283,7 @@ print '</tr>';
 			*/
 			print '<td colspan="2"></td>';
 			print '</tr>';
-			
+
 			// Barcode
 			if (isModEnabled('barcode')) {
 				print '<tr><td>'.$form->editfieldkey('Gencod', 'barcode', '', $object, 0).'</td>';
@@ -292,9 +292,9 @@ print '</tr>';
 				print '<input type="text" class="minwidth200 maxwidth300 widthcentpercentminusx" name="barcode" id="barcode" value="'.dol_escape_htmltag($object->barcode).'">';
 				print '</td></tr>';
 			}
-			
+
 			print '<tr><td colspan="4">&nbsp;</td></tr>';
-			
+
 			// Address
 			print '<tr><td class="tdtop">';
 			print $form->editfieldkey('Address', 'address', '', $object, 0);
@@ -305,7 +305,7 @@ print '</tr>';
 			print '</textarea>';
 			print $form->widgetForTranslation("address", $object, $permissiontoadd, 'textarea', 'alphanohtml', 'quatrevingtpercent');
 			print '</td></tr>';
-			
+
 		// Zip / Town
 		print '<tr><td>'.$langs->trans('Zip').'</td><td>';
 		print $formcompany->select_ziptown($object->zip, 'zipcode', array('town','selectcountry_id','departement_id'), 0, 0, '', 'maxwidth100');
@@ -329,7 +329,7 @@ print '</tr>';
 		// State
 		if (!getDolGlobalString('SOCIETE_DISABLE_STATE')) {
 			print '<tr><td>'.$langs->trans('State').'</td><td colspan="3" class="maxwidthonsmartphone">';
-			
+
 			if ($object->country_id) {
 				print img_picto('', 'state', 'class="pictofixedwidth"');
 				print $formcompany->select_state($object->state_id, $object->country_code, 'state_id', 'minwidth200 maxwidth300 widthcentpercentminusx');
@@ -338,15 +338,15 @@ print '</tr>';
 			}
 			print '</td></tr>';
 		}
-		
+
 		// Phone / Fax
 		print '<tr><td>'.$form->editfieldkey('Phone', 'phone', '', $object, 0).'</td>';
 		print '<td'.($conf->browser->layout == 'phone' ? ' colspan="3"' : '').'>'.img_picto('', 'object_phoning', 'class="pictofixedwidth"').' <input type="text" name="phone" id="phone" class="maxwidth200 widthcentpercentminusx" value="'.(GETPOSTISSET('phone') ? GETPOST('phone', 'alpha') : $object->phone).'"></td>';
 
 		if ($conf->browser->layout == 'phone') {
 			print '</tr><tr>';
-		}		
-		
+		}
+
 		// Phone mobile
 		print '<td>'.$form->editfieldkey('PhoneMobile', 'phone_mobile', '', $object, 0).'</td>';
 		print '<td'.($conf->browser->layout == 'phone' ? ' colspan="3"' : '').'>'.img_picto('', 'object_phoning_mobile', 'class="pictofixedwidth"').' <input type="text" name="phone_mobile" id="phone_mobile" class="maxwidth200 widthcentpercentminusx" value="'.(GETPOSTISSET('phone_mobile') ? GETPOST('phone_mobile', 'alpha') : $object->phone_mobile).'"></td></tr>';
@@ -444,9 +444,9 @@ while ($i <= $NBPROFIDMAX) {
 		print '</td>';
 		print '</tr>';
 
-		if ($conf->global->MAIN_MULTILANGS) {
+		if (getDolGlobalInt('MAIN_MULTILANGS')) {
 			print '<tr><td>'.$langs->trans("DefaultLang").'</td><td colspan="3">'."\n";
-			print $formadmin->select_language(($object->default_lang?$object->default_lang:$conf->global->MAIN_LANG_DEFAULT), 'default_lang', 0, 0, 1);
+			print $formadmin->select_language(($object->default_lang ? $object->default_lang : getDolGlobalString('MAIN_LANG_DEFAULT')), 'default_lang', 0, 0, 1);
 			print '</td>';
 			print '</tr>';
 		}
