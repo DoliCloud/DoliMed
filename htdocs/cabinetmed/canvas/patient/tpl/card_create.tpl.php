@@ -15,6 +15,11 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
+/**
+ * @var Conf $conf
+ * @var DoliDB $db
+ * @var CommonObject $object
+ */
 // Protection to avoid direct call of template
 if (empty($conf) || ! is_object($conf)) {
 	print "Error, template page can't be called as URL";
@@ -24,7 +29,7 @@ if (empty($conf) || ! is_object($conf)) {
 
 $object=$GLOBALS['object'];
 
-global $db,$conf,$mysoc,$langs,$user,$hookmanager,$extrafields,$object;
+global $db,$conf,$mysoc,$langs,$user,$hookmanager,$extrafields,$object,$permissiontoadd;
 
 
 $socialnetworks = getArrayOfSocialNetworks();
@@ -228,7 +233,7 @@ dol_htmloutput_errors($GLOBALS['error'], $GLOBALS['errors']);
 <input type="hidden" name="status" value="1">
 <input type="hidden" name="client" value="<?php echo $object->client; ?>">
 <?php
-if ($modCodeClient->code_auto || $modCodeFournisseur->code_auto) {
+if ($modCodeClient->code_auto) {
 	print '<input type="hidden" name="code_auto" value="1">';
 }
 
