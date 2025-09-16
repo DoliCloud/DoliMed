@@ -63,10 +63,14 @@ function cabinetmed_completesubstitutionarray(&$substitutionarray, $langs, $obje
 		}
 
 		$substitutionarray['Correspondants']=$langs->trans("Correspondants");
-		if ($object && is_array($parameters) && $parameters['needforkey'] == 'SUBSTITUTION_Correspondants') {
+		$substitutionarray['CaregiversAndCorrespondents']=$langs->trans("CaregiversAndCorrespondents");
+		if ($object && is_array($parameters) && $parameters['needforkey'] == 'SUBSTITUTION_CaregiversAndCorrespondents') {
 			$nbChild = count($object->liste_contact(-1, 'internal')) + count($object->liste_contact(-1, 'external'));
 
-			if ($nbChild > 0) $substitutionarray['Correspondants']=$langs->trans("Correspondants").'<span class="badge marginleftonlyshort">'.$nbChild.'</span>';
+			if ($nbChild > 0) {
+				$substitutionarray['Correspondants'] = $langs->trans("Correspondants").'<span class="badge marginleftonlyshort">'.$nbChild.'</span>';
+				$substitutionarray['CaregiversAndCorrespondents'] = $langs->trans("CaregiversAndCorrespondents").'<span class="badge marginleftonlyshort">'.$nbChild.'</span>';
+			}
 		}
 
 		$substitutionarray['ConsultationsShort']=$langs->trans("ConsultationsShort");

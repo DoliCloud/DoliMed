@@ -150,19 +150,19 @@ class modCabinetMed extends DolibarrModules
 
 		// Array to add new pages in new tabs
 		$this->tabs = array(
-						'thirdparty:+tabpatientcontacts:SUBSTITUTION_Correspondants:cabinetmed@cabinetmed:$user->rights->cabinetmed->read && ($object->canvas=="patient@cabinetmed" || $soc->canvas=="patient@cabinetmed"):/cabinetmed/contact.php?socid=__ID__',
-						'thirdparty:+tabantecedents:SUBSTITUTION_TabAntecedentsShort:cabinetmed@cabinetmed:$user->rights->cabinetmed->read && ($object->canvas=="patient@cabinetmed" || $soc->canvas=="patient@cabinetmed"):/cabinetmed/antecedant.php?socid=__ID__',
+						'thirdparty:+tabpatientcontacts:SUBSTITUTION_CaregiversAndCorrespondents:cabinetmed@cabinetmed:$user->hasRight("cabinetmed","read") && ($object->canvas=="patient@cabinetmed" || $soc->canvas=="patient@cabinetmed"):/cabinetmed/contact.php?socid=__ID__',
+						'thirdparty:+tabantecedents:SUBSTITUTION_TabAntecedentsShort:cabinetmed@cabinetmed:$user->hasRight("cabinetmed","read") && ($object->canvas=="patient@cabinetmed" || $soc->canvas=="patient@cabinetmed"):/cabinetmed/antecedant.php?socid=__ID__',
 						//'thirdparty:+tabtraitetallergies:TraitEtAllergies:cabinetmed@cabinetmed:/cabinetmed/traitetallergies.php?socid=__ID__',
-						'thirdparty:+tabnotes:SUBSTITUTION_NotesPatient:cabinetmed@cabinetmed:$user->rights->cabinetmed->read && ($object->canvas=="patient@cabinetmed" || $soc->canvas=="patient@cabinetmed"):/cabinetmed/notes.php?socid=__ID__',
-						'thirdparty:+tabconsultations:SUBSTITUTION_ConsultationsShort:cabinetmed@cabinetmed:$user->rights->cabinetmed->read && ($object->canvas=="patient@cabinetmed" || $soc->canvas=="patient@cabinetmed"):/cabinetmed/consultations.php?socid=__ID__',
-						'thirdparty:+tabexambio:SUBSTITUTION_ResultExamBio:cabinetmed@cabinetmed:$user->rights->cabinetmed->read && ($object->canvas=="patient@cabinetmed" || $soc->canvas=="patient@cabinetmed"):/cabinetmed/exambio.php?socid=__ID__',
-						'thirdparty:+tabexamautre:SUBSTITUTION_ResultExamAutre:cabinetmed@cabinetmed:$user->rights->cabinetmed->read && ($object->canvas=="patient@cabinetmed" || $soc->canvas=="patient@cabinetmed"):/cabinetmed/examautre.php?socid=__ID__',
-						'thirdparty:+tabdocument:SUBSTITUTION_DocumentsPatient:cabinetmed@cabinetmed:$user->rights->cabinetmed->read && ($object->canvas=="patient@cabinetmed" || $soc->canvas=="patient@cabinetmed"):/cabinetmed/documents.php?socid=__ID__',
+						'thirdparty:+tabnotes:SUBSTITUTION_NotesPatient:cabinetmed@cabinetmed:$user->hasRight("cabinetmed","read") && ($object->canvas=="patient@cabinetmed" || $soc->canvas=="patient@cabinetmed"):/cabinetmed/notes.php?socid=__ID__',
+						'thirdparty:+tabconsultations:SUBSTITUTION_ConsultationsShort:cabinetmed@cabinetmed:$user->hasRight("cabinetmed","read") && ($object->canvas=="patient@cabinetmed" || $soc->canvas=="patient@cabinetmed"):/cabinetmed/consultations.php?socid=__ID__',
+						'thirdparty:+tabexambio:SUBSTITUTION_ResultExamBio:cabinetmed@cabinetmed:$user->hasRight("cabinetmed","read") && ($object->canvas=="patient@cabinetmed" || $soc->canvas=="patient@cabinetmed"):/cabinetmed/exambio.php?socid=__ID__',
+						'thirdparty:+tabexamautre:SUBSTITUTION_ResultExamAutre:cabinetmed@cabinetmed:$user->hasRight("cabinetmed","read") && ($object->canvas=="patient@cabinetmed" || $soc->canvas=="patient@cabinetmed"):/cabinetmed/examautre.php?socid=__ID__',
+						'thirdparty:+tabdocument:SUBSTITUTION_DocumentsPatient:cabinetmed@cabinetmed:$user->hasRight("cabinetmed","read") && ($object->canvas=="patient@cabinetmed" || $soc->canvas=="patient@cabinetmed"):/cabinetmed/documents.php?socid=__ID__',
 						'thirdparty:-contact:NU:($object->canvas=="patient@cabinetmed" || $soc->canvas=="patient@cabinetmed" || $obj->canvas=="patient@cabinetmed")',
 						'thirdparty:-document:NU:($object->canvas=="patient@cabinetmed" || $soc->canvas=="patient@cabinetmed" || $obj->canvas=="patient@cabinetmed")',
 						//'thirdparty:-notify:NU:($object->canvas=="patient@cabinetmed" || $soc->canvas=="patient@cabinetmed" || $obj->canvas=="patient@cabinetmed")',
 						'thirdparty:-note:NU:($object->canvas=="patient@cabinetmed" || $soc->canvas=="patient@cabinetmed" || $obj->canvas=="patient@cabinetmed")',
-						'contact:+tabpatient:Patients:cabinetmed@cabinetmed:$user->rights->cabinetmed->read:/cabinetmed/patients_of_contact.php?id=__ID__'
+						'contact:+tabpatient:Patients:cabinetmed@cabinetmed:$user->hasRight("cabinetmed","read"):/cabinetmed/patients_of_contact.php?id=__ID__'
 					);
 		// where entity can be
 		// 'thirdparty'       to add a tab in third party view
@@ -271,7 +271,7 @@ class modCabinetMed extends DolibarrModules
 		$r++;
 		$this->menu[$r]=array(  'fk_menu'=>0,           // Put 0 if this is a top menu
 									'type'=>'top',          // This is a Top menu entry
-									'titre'=>'Correspondants',
+									'titre'=>'CaregiversAndCorrespondents',
 									'prefix'=>img_picto('', 'user-md', 'class="pictofixedwidth"'),
 									'mainmenu'=>'contacts',
 									'url'=>'/contact/list.php',
@@ -414,7 +414,7 @@ class modCabinetMed extends DolibarrModules
 		$this->menu[$r]=array(
 			'fk_menu'=>'fk_mainmenu=contacts',
 			'type'=>'left',         // This is a Left menu entry
-			'titre'=>'Correspondants',
+			'titre'=>'CaregiversAndCorrespondents',
 			'prefix'=>img_picto('', 'user-md', 'class="paddingright pictofixedwidth valignmiddle"'),
 			'mainmenu'=>'contacts',
 			'leftmenu'=>'contacts',
