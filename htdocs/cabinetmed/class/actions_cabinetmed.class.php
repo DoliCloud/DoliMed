@@ -108,7 +108,26 @@ class ActionsCabinetmed
 		// Define cabinetmed context
 		$cabinetmedcontext=0;
 		if ((isset($parameters['id']) || isset($parameters['socid'])) && isset($parameters['currentcontext'])
-			&& in_array($parameters['currentcontext'], array('agendathirdparty','categorycard','commcard','thirdpartycard','thirdpartycontact','thirdpartyconsumption','thirdpartycontactcard','thirdpartycomm','thirdpartysupplier','projectthirdparty','thirdpartypartnership','infothirdparty','thirdpartybancard','consumptionthirdparty','thirdpartynotification','thirdpartymargins','thirdpartycustomerprice','thirdpartyticket')) && (empty($action) || $action == 'view' || $action == 'edit')) {
+			&& in_array($parameters['currentcontext'], array(
+				'agendathirdparty',
+				'categorycard',
+				'commcard',
+				'thirdpartycard',
+				'thirdpartycontact',
+				'thirdpartycontactcard',
+				'thirdpartyconsumption',
+				'thirdpartycomm',
+				'thirdpartysupplier',
+				'projectthirdparty',
+				'thirdpartypartnership',
+				'infothirdparty',
+				'thirdpartybancard',
+				'consumptionthirdparty',
+				'thirdpartynotification',
+				'thirdpartymargins',
+				'thirdpartycustomerprice',
+				'thirdpartyticket'
+			)) && (empty($action) || $action == 'view' || $action == 'edit')) {
 			$thirdparty=new Societe($db);
 			$idthirdparty = empty($parameters['id']) ? (empty($parameters['socid']) ? 0 : $parameters['socid']) : $parameters['id'];
 
