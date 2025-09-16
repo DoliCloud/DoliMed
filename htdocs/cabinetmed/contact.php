@@ -69,7 +69,7 @@ $object = new Patient($db);
 
 
 /*
- * Add new contact
+ * Actions
  */
 
 $parameters=array('id'=>$socid);
@@ -143,7 +143,9 @@ llxHeader('', $langs->trans('Contacts'), '');
 /* Mode vue et edition                                                         */
 /*                                                                             */
 /* *************************************************************************** */
-if (isset($mesg)) print $mesg;
+if (isset($mesg)) {
+	print $mesg;
+}
 
 if ($id > 0 || ! empty($ref)) {
 	$societe = new Patient($db);

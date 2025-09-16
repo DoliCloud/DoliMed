@@ -176,8 +176,8 @@ if ($socid > 0) {
 	$object->id=$socid;
 
 	/*
-	 * Affichage onglets
-	*/
+	 * Show tab
+	 */
 	if (isModEnabled("notification")) $langs->load("mails");
 
 	$head = societe_prepare_head($object);
@@ -236,7 +236,7 @@ if ($socid > 0) {
 
 	print '<div class="fichecenter"><div class="fichehalfleft">';
 
-	print '<div class="underbanner clearboth"></div>';
+	print '<div class="clearboth"></div>';
 	print '<table class="border centpercent" style="margin-bottom: 2px !important;">';
 
 	// Force disable fckeditor
@@ -249,7 +249,7 @@ if ($socid > 0) {
 	$height=120;
 
 	print '<tr height="80"><td class="tdtop titlefield">'.$langs->trans("AntecedentsMed");
-	print '<br><input type="checkbox" id="alert_antemed" name="alert_antemed"'.((isset($_POST['alert_antemed'])?GETPOST('alert_antemed'):$object->alert_antemed)?' checked="checked"':'').'"> <label for="alert_antemed">'.$langs->trans("Alert").'</label>';
+	print '<br><input type="checkbox" id="alert_antemed" name="alert_antemed"'.((isset($_POST['alert_antemed'])?GETPOST('alert_antemed'):$object->alert_antemed)?' checked="checked"':'').'"> <label class="opacitymedium" for="alert_antemed">'.$langs->trans("Alert").'</label>';
 	print '</td>';
 	print '<td class="tdtop">';
 	if ($action == 'edit' && $user->hasRight('societe', 'creer')) {
@@ -258,7 +258,7 @@ if ($socid > 0) {
 		// Editeur wysiwyg
 		require_once DOL_DOCUMENT_ROOT."/core/class/doleditor.class.php";
 		$doleditor=new DolEditor('note_antemed', $object->note_antemed, 0, $height, 'dolibarr_notes', 'In', false, false, isModEnabled("fckeditor"), 8, '95%');
-		$doleditor->Create();
+		$doleditor->Create(0, '', true, '', '', '', 'marginbottomonly');
 	} else {
 		print nl2br($object->note_antemed);
 	}
@@ -268,13 +268,13 @@ if ($socid > 0) {
 	print '</tr></table>';
 	print '</div><div class="fichehalfright">';
 
-	print '<div class="underbanner clearboth"></div>';
+	print '<div class="clearboth"></div>';
 	print '<table class="border" width="100%" style="margin-bottom: 2px !important;"><tr height="80">';
 
 	// Spec
 	//print '<tr height="80">';
 	print '<td class="tdtop titlefield">'.$langs->trans("SpecPharma");
-	print '<br><input type="checkbox" id="alert_traitspec" name="alert_traitspec"'.((isset($_POST['alert_traitspec'])?GETPOST('alert_traitspec'):$object->alert_traitspec)?' checked="checked"':'').'">  <label for="alert_traitspec">'.$langs->trans("Alert").'</label>';
+	print '<br><input type="checkbox" id="alert_traitspec" name="alert_traitspec"'.((isset($_POST['alert_traitspec'])?GETPOST('alert_traitspec'):$object->alert_traitspec)?' checked="checked"':'').'">  <label class="opacitymedium" for="alert_traitspec">'.$langs->trans("Alert").'</label>';
 	print '</td>';
 	print '<td class="tdtop">';
 	if ($action == 'edit' && $user->hasRight('societe', 'creer')) {
@@ -283,7 +283,7 @@ if ($socid > 0) {
 		// Editeur wysiwyg
 		require_once DOL_DOCUMENT_ROOT."/core/class/doleditor.class.php";
 		$doleditor=new DolEditor('note_traitspec', $object->note_traitspec, 0, $height, 'dolibarr_notes', 'In', false, false, isModEnabled("fckeditor"), 8, '95%');
-		$doleditor->Create();
+		$doleditor->Create(0, '', true, '', '', '', 'marginbottomonly');
 	} else {
 		print nl2br($object->note_traitspec);
 	}
@@ -298,7 +298,7 @@ if ($socid > 0) {
 	print '<table class="border" width="100%" style="margin-bottom: 2px !important;">';
 
 	print '<tr height="80"><td class="tdtop titlefield">'.$langs->trans("AntecedentsChirGene");
-	print '<br><input type="checkbox" id="alert_antechirgen" name="alert_antechirgen"'.((isset($_POST['alert_antechirgen'])?GETPOST('alert_antechirgen'):$object->alert_antechirgen)?' checked="checked"':'').'">  <label for="alert_antechirgen">'.$langs->trans("Alert").'</label>';
+	print '<br><input type="checkbox" id="alert_antechirgen" name="alert_antechirgen"'.((isset($_POST['alert_antechirgen'])?GETPOST('alert_antechirgen'):$object->alert_antechirgen)?' checked="checked"':'').'">  <label class="opacitymedium" for="alert_antechirgen">'.$langs->trans("Alert").'</label>';
 	print '</td>';
 	print '<td class="tdtop">';
 	if ($action == 'edit' && $user->hasRight('societe', 'creer')) {
@@ -307,7 +307,7 @@ if ($socid > 0) {
 		// Editeur wysiwyg
 		require_once DOL_DOCUMENT_ROOT."/core/class/doleditor.class.php";
 		$doleditor=new DolEditor('note_antechirgen', $object->note_antechirgen, 0, $height, 'dolibarr_notes', 'In', false, false, isModEnabled("fckeditor"), 8, '95%');
-		$doleditor->Create();
+		$doleditor->Create(0, '', true, '', '', '', 'marginbottomonly');
 	} else {
 		print nl2br($object->note_antechirgen);
 	}
@@ -322,7 +322,7 @@ if ($socid > 0) {
 	// Intolerances
 	//print '<tr height="80">';
 	print '<td class="tdtop titlefield">'.$langs->trans("Intolerances");
-	print '<br><input type="checkbox" id="alert_traitintol" name="alert_traitintol"'.((isset($_POST['alert_traitintol'])?GETPOST('alert_traitintol'):$object->alert_traitintol)?' checked="true"':'').'">  <label for="alert_traitintol">'.$langs->trans("Alert").'</label>';
+	print '<br><input type="checkbox" id="alert_traitintol" name="alert_traitintol"'.((isset($_POST['alert_traitintol'])?GETPOST('alert_traitintol'):$object->alert_traitintol)?' checked="true"':'').'">  <label class="opacitymedium" for="alert_traitintol">'.$langs->trans("Alert").'</label>';
 	print '</td>';
 	print '<td class="tdtop">';
 	if ($action == 'edit' && $user->hasRight('societe', 'creer')) {
@@ -331,7 +331,7 @@ if ($socid > 0) {
 		// Editeur wysiwyg
 		require_once DOL_DOCUMENT_ROOT."/core/class/doleditor.class.php";
 		$doleditor=new DolEditor('note_traitintol', $object->note_traitintol, 0, $height, 'dolibarr_notes', 'In', false, false, isModEnabled("fckeditor"), 8, '95%');
-		$doleditor->Create();
+		$doleditor->Create(0, '', true, '', '', '', 'marginbottomonly');
 	} else {
 		print nl2br($object->note_traitintol);
 	}
@@ -345,7 +345,7 @@ if ($socid > 0) {
 	print '<table class="border" width="100%" style="margin-bottom: 2px !important;">';
 
 	print '<tr height="80"><td class="tdtop titlefield">'.$langs->trans("AntecedentsChirOrtho");
-	print '<br><input type="checkbox" id="alert_antechirortho" name="alert_antechirortho"'.((isset($_POST['alert_antechirortho'])?GETPOST('alert_antechirortho'):$object->alert_antechirortho)?' checked="checked"':'').'">  <label for="alert_antechirortho">'.$langs->trans("Alert").'</label>';
+	print '<br><input type="checkbox" id="alert_antechirortho" name="alert_antechirortho"'.((isset($_POST['alert_antechirortho'])?GETPOST('alert_antechirortho'):$object->alert_antechirortho)?' checked="checked"':'').'">  <label class="opacitymedium" for="alert_antechirortho">'.$langs->trans("Alert").'</label>';
 	print '</td>';
 	print '<td class="tdtop">';
 	if ($action == 'edit' && $user->hasRight('societe', 'creer')) {
@@ -354,7 +354,7 @@ if ($socid > 0) {
 		// Editeur wysiwyg
 		require_once DOL_DOCUMENT_ROOT."/core/class/doleditor.class.php";
 		$doleditor=new DolEditor('note_antechirortho', $object->note_antechirortho, 0, $height, 'dolibarr_notes', 'In', false, false, isModEnabled("fckeditor"), 6, '95%');
-		$doleditor->Create();
+		$doleditor->Create(0, '', true, '', '', '', 'marginbottomonly');
 	} else {
 		print nl2br($object->note_antechirortho);
 	}
@@ -367,7 +367,7 @@ if ($socid > 0) {
 
 	//print '<tr height="80">';
 	print '<td class="tdtop titlefield">'.$langs->trans("Allergies");
-	print '<br><input type="checkbox" id="alert_traitallergie" name="alert_traitallergie"'.((isset($_POST['alert_traitallergie'])?GETPOST('alert_traitallergie'):$object->alert_traitallergie)?' checked="checked"':'').'"">  <label for="alert_traitallergie">'.$langs->trans("Alert").'</label>';
+	print '<br><input type="checkbox" id="alert_traitallergie" name="alert_traitallergie"'.((isset($_POST['alert_traitallergie'])?GETPOST('alert_traitallergie'):$object->alert_traitallergie)?' checked="checked"':'').'"">  <label class="opacitymedium" for="alert_traitallergie">'.$langs->trans("Alert").'</label>';
 	print '</td>';
 	print '<td class="tdtop">';
 	if ($action == 'edit' && $user->hasRight('societe', 'creer')) {
@@ -376,7 +376,7 @@ if ($socid > 0) {
 		// Editeur wysiwyg
 		require_once DOL_DOCUMENT_ROOT."/core/class/doleditor.class.php";
 		$doleditor=new DolEditor('note_traitallergie', $object->note_traitallergie, 0, $height, 'dolibarr_notes', 'In', false, false, isModEnabled("fckeditor"), 6, '95%');
-		$doleditor->Create();
+		$doleditor->Create(0, '', true, '', '', '', 'marginbottomonly');
 	} else {
 		print nl2br($object->note_traitallergie);
 	}
@@ -390,7 +390,7 @@ if ($socid > 0) {
 	print '<table class="border centpercent" style="margin-bottom: 2px !important;">';
 
 	print '<tr height="80"><td class="tdtop titlefield">'.$langs->trans("AntecedentsRhumato");
-	print '<br><input type="checkbox" id="alert_anterhum" name="alert_anterhum"'.((isset($_POST['alert_anterhum'])?GETPOST('alert_anterhum'):$object->alert_anterhum)?' checked="checked"':'').'">  <label for="alert_anterhum">'.$langs->trans("Alert").'</label>';
+	print '<br><input type="checkbox" id="alert_anterhum" name="alert_anterhum"'.((isset($_POST['alert_anterhum'])?GETPOST('alert_anterhum'):$object->alert_anterhum)?' checked="checked"':'').'">  <label class="opacitymedium" for="alert_anterhum">'.$langs->trans("Alert").'</label>';
 	print '</td>';
 	print '<td class="tdtop">';
 	if ($action == 'edit' && $user->hasRight('societe', 'creer')) {
@@ -399,7 +399,7 @@ if ($socid > 0) {
 		// Editeur wysiwyg
 		require_once DOL_DOCUMENT_ROOT."/core/class/doleditor.class.php";
 		$doleditor=new DolEditor('note_anterhum', $object->note_anterhum, 0, $height, 'dolibarr_notes', 'In', false, false, isModEnabled("fckeditor"), 6, '95%');
-		$doleditor->Create();
+		$doleditor->Create(0, '', true, '', '', '', 'marginbottomonly');
 	} else {
 		print nl2br($object->note_anterhum);
 	}
