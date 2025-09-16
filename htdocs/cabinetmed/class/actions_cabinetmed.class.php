@@ -98,7 +98,7 @@ class ActionsCabinetmed
 	 */
 	function doActions($parameters, &$object, &$action)
 	{
-		global $db,$langs,$conf,$backtopage;
+		global $db,$langs,$conf,$backtopage,$confirmduplicate;
 
 		$ret=0;
 		dol_syslog(get_class($this).'::executeHooks action='.$action);
@@ -112,21 +112,23 @@ class ActionsCabinetmed
 				'agendathirdparty',
 				'categorycard',
 				'commcard',
+				'thirdpartybancard',
 				'thirdpartycard',
 				'thirdpartycontact',
 				'thirdpartycontactcard',
 				'thirdpartyconsumption',
 				'thirdpartycomm',
-				'thirdpartysupplier',
-				'projectthirdparty',
-				'thirdpartypartnership',
-				'infothirdparty',
-				'thirdpartybancard',
-				'consumptionthirdparty',
 				'thirdpartynotification',
 				'thirdpartymargins',
 				'thirdpartycustomerprice',
-				'thirdpartyticket'
+				'thirdpartypartnership',
+				'thirdpartyproject',
+				'thirdpartysupplier',
+				'thirdpartyticket',
+				'thirdpartywebsite',
+				'projectthirdparty',
+				'infothirdparty',
+				'consumptionthirdparty',
 			)) && (empty($action) || $action == 'view' || $action == 'edit')) {
 			$thirdparty=new Societe($db);
 			$idthirdparty = empty($parameters['id']) ? (empty($parameters['socid']) ? 0 : $parameters['socid']) : $parameters['id'];
@@ -156,7 +158,7 @@ class ActionsCabinetmed
 
 		// Hook called when asking to add a new record
 		if ($action == 'convertintopatient' && !empty($object) && in_array($object->element, array('societe', 'thirdparty'))) {
-			$sql = 'UPDATE '.MAIN_DB_PREFIX."societe as s SET canvas = 'patient@cabinetmed' WHERE rowid = ".$object->id;
+			$sql = 'UPDATE '.MAIN_DB_PREFIX."societe as s SET canvas = 'patient@cabinetmed' WHERE rowid = ".((int) $object->id);
 
 			$resql = $db->query($sql);
 			if ($resql) {
@@ -172,15 +174,16 @@ class ActionsCabinetmed
 		// Hook called when asking to add a new record
 		if ($action == 'add') {
 			$nametocheck = GETPOST('name');
-			$date =GETPOST('options_birthdate');
+			$date = GETPOST('options_birthdate');
 			//$confirmduplicate=$_POST['confirmduplicate'];
 
 			// Check on date
-			$birthdatearray=dol_cm_strptime($date, $conf->format_date_short);
+			$birthdatearray = dol_cm_strptime($date, $conf->format_date_short);
 			$day=(int) $birthdatearray['tm_mday'];
 			$month=((int) $birthdatearray['tm_month'] + 1);
 			$year=((int) $birthdatearray['tm_year'] + 1900);
 			$birthdate=dol_mktime(0, 0, 0, $month, $day, $year, true, true);
+
 			if (GETPOST('options_birthdate') && (empty($birthdatearray['tm_year']) || (empty($birthdate) && $birthdate != '0') || ($day > 31) || ($month > 12) || ($year >( $arraytmp['year']+1)))) {
 				$langs->load("errors");
 				$this->errors[] = $langs->trans("ErrorBadDateFormat", $date);
