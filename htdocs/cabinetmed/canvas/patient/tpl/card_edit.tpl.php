@@ -102,9 +102,13 @@ if (GETPOST("name")) {
 	$object->phone					= GETPOST('phone', 'alpha');
 	$object->phone_mobile			= (string) GETPOST('phone_mobile', 'alpha');
 	$object->fax					= GETPOST('fax', 'alpha');
-	$object->email					= GETPOST('email', 'custom', 0, FILTER_SANITIZE_EMAIL);
+	$object->email					= GETPOST('email', 'email');
 	$object->no_email				= GETPOSTINT("no_email");
-	$object->url					= GETPOST('url', 'custom', 0, FILTER_SANITIZE_URL);
+	if ((float) DOL_VERSION >= 23) {
+		$object->url				= GETPOST('url', 'url');
+	} else {
+		$object->url				= GETPOST('url', 'custom', 0, FILTER_SANITIZE_URL);
+	}
 	$object->capital				= GETPOST('capital', 'alphanohtml');
 	$object->idprof1				= GETPOST('idprof1', 'alphanohtml');
 	$object->idprof2				= GETPOST('idprof2', 'alphanohtml');
