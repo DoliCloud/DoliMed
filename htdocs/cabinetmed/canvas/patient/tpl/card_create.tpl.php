@@ -109,8 +109,12 @@ if (isModEnabled('socialnetworks')) {
 $object->phone				= GETPOST('phone', 'alpha');
 $object->phone_mobile       = (string) GETPOST("phone_mobile", 'alpha');
 $object->fax				= GETPOST('fax', 'alpha');
-$object->email				= GETPOST('email', 'custom', 0, FILTER_SANITIZE_EMAIL);
-$object->url				= GETPOST('url', 'custom', 0, FILTER_SANITIZE_URL);
+$object->email				= GETPOST('email', 'email');
+if ((float) DOL_VERSION >= 23) {
+	$object->url				= GETPOST('url', 'url');
+} else {
+	$object->url				= GETPOST('url', 'custom', 0, FILTER_SANITIZE_URL);
+}
 $object->capital			= GETPOSTFLOAT('capital');
 $paymentTermId = GETPOSTINT('cond_reglement_id'); // can be set by default values on create page and not already in get or post variables
 if (empty($paymentTermId) && !GETPOSTISSET('cond_reglement_id')) {

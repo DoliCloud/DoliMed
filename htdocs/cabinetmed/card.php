@@ -393,9 +393,13 @@ if (empty($reshook)) {
 			$object->phone					= GETPOST('phone', 'alpha');
 			$object->phone_mobile 			= (string) GETPOST("phone_mobile", 'alpha');
 			$object->fax					= GETPOST('fax', 'alpha');
-			$object->email					= trim(GETPOST('email', 'custom', 0, FILTER_SANITIZE_EMAIL));
+			$object->email					= trim(GETPOST('email', 'email'));
 			$object->no_email 				= GETPOSTINT("no_email");
-			$object->url					= trim(GETPOST('url', 'custom', 0, FILTER_SANITIZE_URL));
+			if ((float) DOL_VERSION >= 23) {
+				$object->url				= GETPOST('url', 'url');
+			} else {
+				$object->url				= trim(GETPOST('url', 'custom', 0, FILTER_SANITIZE_URL));
+			}
 			$object->idprof1				= trim(GETPOST('idprof1', 'alphanohtml'));
 			$object->idprof2				= trim(GETPOST('idprof2', 'alphanohtml'));
 			$object->idprof3				= trim(GETPOST('idprof3', 'alphanohtml'));
@@ -441,7 +445,11 @@ if (empty($reshook)) {
 			$object->default_lang          = GETPOST('default_lang');
 
 			// Webservices url/key
-			$object->webservices_url		= GETPOST('webservices_url', 'custom', 0, FILTER_SANITIZE_URL);
+			if ((float) DOL_VERSION >= 23) {
+				$object->webservices_url		= GETPOST('webservices_url', 'url');
+			} else {
+				$object->webservices_url		= GETPOST('webservices_url', 'custom', 0, FILTER_SANITIZE_URL);
+			}
 			$object->webservices_key		= GETPOST('webservices_key', 'san_alpha');
 
 			// Incoterms
