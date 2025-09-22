@@ -49,7 +49,7 @@ $langs->loadLangs(array("companies", "customers", "suppliers", "commercial", "ca
 // Get parameters
 $action     = GETPOST('action', 'aZ09') ? GETPOST('action', 'aZ09') : 'view'; // The action 'create'/'add', 'edit'/'update', 'view', ...
 $massaction = GETPOST('massaction', 'alpha'); // The bulk action (combo box choice into lists)
-$toselect   = GETPOST('toselect', 'array'); // Array of ids of elements selected into a list
+$toselect   = GETPOST('toselect', 'array:int'); // Array of ids of elements selected into a list
 $optioncss = GETPOST('optioncss', 'aZ09');
 $contextpage= GETPOST('contextpage', 'aZ')?GETPOST('contextpage', 'aZ'):'consultationlist';   // To manage different context of search
 $mode       = GETPOST('mode', 'aZ'); // The output mode ('list', 'kanban', 'hierarchy', 'calendar', ...)
