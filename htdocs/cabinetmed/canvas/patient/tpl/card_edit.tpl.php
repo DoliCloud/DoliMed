@@ -20,6 +20,8 @@
  * @var Conf $conf
  * @var DoliDB $db
  * @var CommonObject $object
+ *
+ * @var string $action
  */
 // Protection to avoid direct call of template
 if (empty($conf) || ! is_object($conf)) {
@@ -73,7 +75,13 @@ if ($modCodeFournisseur->code_auto) {
 
 
 if (GETPOST("name")) {
-	$object->client = 1;
+	// Calculate the type of the thirdparty
+	$customer = (GETPOSTINT('customer') > 0 ? 1 : 0);
+	$prospect = (GETPOSTINT('prospect') > 0 ? 2 : 0);
+	$prospectcustomer = $customer + $prospect;
+
+	$object->client					= $prospectcustomer;
+	$object->fournisseur			= (GETPOSTINT('supplier') > 0 ? 1 : 0);
 
 	$object->lastname=GETPOST("name");
 	$object->firstname=GETPOST("firstname");
@@ -176,26 +184,104 @@ print '<table class="border centpercent">';
 print '<tr><td class="titlefield"><span class="fieldrequired">'.$langs->trans('PatientName').'</span></td><td colspan="3"><input type="text" size="40" maxlength="60" name="name" value="'.$object->name.'"></td>';
 
 
-// Prospect/Customer
+// Prospect/Customer/Supplier
+$selected = $object->client;
+switch ($selected) {
+	case 1:
+		$selectedcustomer = 1;
+		$selectedprospect = 0;
+		break;
+	case 2:
+		$selectedprospect = 1;
+		$selectedcustomer = 0;
+		break;
+	case 3:
+		$selectedprospect = 1;
+		$selectedcustomer = 1;
+		break;
+	default:
+		break;
+}
+$selectedprospect = ((GETPOSTISSET('prospect') && $action == 'create') ? GETPOSTINT('prospect') : $selectedprospect);
+$selectedcustomer = ((GETPOSTISSET('customer') && $action == 'create') ? GETPOSTINT('customer') : $selectedcustomer);
+$selectedsupplier = ((GETPOSTISSET('supplier') && $action == 'create') ? GETPOSTINT('supplier') : $object->fournisseur);
+
+
 print '<tr><td>'.fieldLabel('ProspectCustomer', 'customerprospect', 1).'</td>';
 print '<td class="maxwidthonsmartphone">';
-$nothingvalue=0;
-$prospectonly=2;
-if (! empty($conf->global->SOCIETE_DISABLE_PROSPECTS)) {
-	print '<input type="hidden" name="client" value="3">';
+if (getDolGlobalString('SOCIETE_DISABLE_PROSPECTS') && getDolGlobalString('SOCIETE_DISABLE_CUSTOMERS')) {
+	print '<input type="hidden" name="client" value="'.$object->client.'">';
 	print $langs->trans("Patient");
 } else {
-	if (! empty($conf->global->SOCIETE_DISABLE_CUSTOMERS)) $nothingvalue=1;  // if feature to disable customer is on, nothing will keep value 1 in database.
-	if (! empty($conf->global->SOCIETE_DISABLE_CUSTOMERS)) $prospectonly=3;  // if feature to disable customer is on, nothing will keep value 3 in database.
+	if (!getDolGlobalString('SOCIETE_DISABLE_PROSPECTS')) {
+		print '<span id="spannature1" class="spannature prospect-back paddinglarge marginrightonly"><label for="prospectinput" class="valignmiddle">'.$langs->trans("Prospect").'</label><input id="prospectinput" class="flat checkforselect marginleftonly valignmiddle" type="checkbox" name="prospect" value="2"'.($selectedprospect ? ' checked="checked"' : '').'></span>';
+	}
+
+	if (!getDolGlobalString('SOCIETE_DISABLE_CUSTOMERS')) {
+		print '<span id="spannature2" class="spannature customer-back paddinglarge marginrightonly"><label for="customerinput" class="valignmiddle">'.$langs->trans("Customer").'</label><input id="customerinput" class="flat checkforselect marginleftonly valignmiddle" type="checkbox" name="customer" value="1"'.($selectedcustomer ? ' checked="checked"' : '').'></span>';
+	}
+
+	if ((isModEnabled("fournisseur") && $user->hasRight('fournisseur', 'lire') && !getDolGlobalString('MAIN_USE_NEW_SUPPLIERMOD')) || (isModEnabled("supplier_order") && $user->hasRight('supplier_order', 'lire')) || (isModEnabled("supplier_invoice") && $user->hasRight('supplier_invoice', 'lire'))
+		|| (isModEnabled('supplier_proposal') && $user->hasRight('supplier_proposal', 'lire'))) {
+		// Supplier
+		print '<span id="spannature3" class="spannature vendor-back paddinglarge marginrightonly"><label for="supplierinput" class="valignmiddle">'.$langs->trans("Vendor").'</label><input id="supplierinput" class="flat checkforselect marginleftonly valignmiddle" type="checkbox" name="supplier" value="1"'.($selectedsupplier ? ' checked="checked"' : '').'></span>';
+	}
+	// Add js to manage the background of nature
+	if ($conf->use_javascript_ajax) {
+		print '<script>
+		function refreshNatureCss() {
+			jQuery(".spannature").each(function( index ) {
+				id = $(this).attr("id").split("spannature")[1];
+				console.log(jQuery("#spannature"+(id)+" .checkforselect").is(":checked"));
+				if (jQuery("#spannature"+(id)+" .checkforselect").is(":checked")) {
+					if (id == 1) {
+						jQuery("#spannature"+(id)).addClass("prospect-back").removeClass("nonature-back");
+					}
+					if (id == 2) {
+						jQuery("#spannature"+(id)).addClass("customer-back").removeClass("nonature-back");
+					}
+					if (id == 3) {
+						jQuery("#spannature"+(id)).addClass("vendor-back").removeClass("nonature-back");
+					}
+				} else {
+					jQuery("#spannature"+(id)).removeClass("prospect-back").removeClass("customer-back").removeClass("vendor-back").addClass("nonature-back");
+				}
+			});
+		}
+
+		function manageprospectcustomer(element) {
+			console.log("We uncheck unwanted values on a nature");
+			id = $(element).attr("id").split("spannature")[1];
+			if ( id == 1){
+				$("#spannature2 .checkforselect").prop("checked", false);
+			}
+			if ( id == 2){
+				$("#spannature1 .checkforselect").prop("checked", false);
+			}
+		}
+
+		jQuery(".spannature").click(function(){
+			console.log("We click on a nature");
+			'.(getDolGlobalString('SOCIETE_DISABLE_PROSPECTSCUSTOMERS') ? 'manageprospectcustomer($(this));' : '').'
+			refreshNatureCss();
+		});
+		refreshNatureCss();
+		</script>';
+	}
+
+	/*
+	if (getDolGlobalString('SOCIETE_DISABLE_CUSTOMERS')) $nothingvalue=1;  // if feature to disable customer is on, nothing will keep value 1 in database.
+	if (getDolGlobalString('SOCIETE_DISABLE_CUSTOMERS')) $prospectonly=3;  // if feature to disable customer is on, nothing will keep value 3 in database.
 	print '<select class="flat" name="client" id="customerprospect">';
 	if (empty($conf->global->SOCIETE_DISABLE_PROSPECTS)) print '<option value="'.$prospectonly.'"'.($object->client==$prospectonly?' selected':'').'>'.$langs->trans('Prospect').'</option>';
 	if (empty($conf->global->SOCIETE_DISABLE_PROSPECTS) && empty($conf->global->SOCIETE_DISABLE_CUSTOMERS)) print '<option value="3"'.($object->client==3?' selected':'').'>'.$langs->trans('ProspectCustomer').'</option>';
 	if (empty($conf->global->SOCIETE_DISABLE_CUSTOMERS)) print '<option value="1"'.($object->client==1?' selected':'').'>'.$langs->trans('Customer').'</option>';
 	print '<option value="'.$nothingvalue.'"'.($object->client==$nothingvalue?' selected':'').'>'.$langs->trans('NorProspectNorCustomer').'</option>';
 	print '</select>';
+	*/
 }
 print '</td>';
-print '<td width="25%">'.fieldLabel('CustomerCode', 'customer_code').'</td><td width="25%">';
+print '<td>'.fieldLabel('CustomerCode', 'customer_code').'</td><td>';
 
 print '<table class="nobordernopadding"><tr><td>';
 if ((!$object->code_client || $object->code_client == -1) && $modCodeClient->code_auto) {
@@ -220,9 +306,15 @@ print '</td></tr>';
 if (((isModEnabled("fournisseur") && $user->hasRight('fournisseur', 'lire') && !getDolGlobalString('MAIN_USE_NEW_SUPPLIERMOD')) || (isModEnabled("supplier_order") && $user->hasRight('supplier_order', 'lire')) || (isModEnabled("supplier_invoice") && $user->hasRight('supplier_invoice', 'lire')))
 || (isModEnabled('supplier_proposal') && $user->hasRight('supplier_proposal', 'lire'))) {
 	print '<tr>';
-	print '<td>'.$form->editfieldkey('Supplier', 'fournisseur', '', $object, 0, 'string', '', 1).'</td>';
+	print '<td>';
+	if (getDolGlobalString('SOCIETE_DISABLE_PROSPECTS') && getDolGlobalString('SOCIETE_DISABLE_CUSTOMERS'))	{
+		print $langs->trans("Supplier");
+	}
+	print '</td>';
 	print '<td class="maxwidthonsmartphone">';
-	print $form->selectyesno("fournisseur", $object->fournisseur, 1, false, 0, 1);
+	if (getDolGlobalString('SOCIETE_DISABLE_PROSPECTS') && getDolGlobalString('SOCIETE_DISABLE_CUSTOMERS'))	{
+		print $form->selectyesno("fournisseur", $object->fournisseur, 1, false, 0, 1);
+	}
 	print '</td>';
 	if ($conf->browser->layout == 'phone') {
 		print '</tr><tr>';

@@ -52,6 +52,7 @@ require_once DOL_DOCUMENT_ROOT.'/core/class/html.formfile.class.php';
 require_once DOL_DOCUMENT_ROOT.'/core/class/extrafields.class.php';
 require_once DOL_DOCUMENT_ROOT.'/contact/class/contact.class.php';
 require_once DOL_DOCUMENT_ROOT.'/categories/class/categorie.class.php';
+require_once DOL_DOCUMENT_ROOT.'/societe/class/societe.class.php';
 if (isModEnabled("adherent")) require_once DOL_DOCUMENT_ROOT.'/adherents/class/adherent.class.php';
 
 $langs->loadLangs(array("cabinetmed@cabinetmed", "companies","commercial","bills","banks","users","other"));
@@ -364,8 +365,8 @@ if (empty($reshook)) {
 				$object->particulier       = GETPOST("private");
 
 				$object->name              = dolGetFirstLastname(GETPOST('firstname', 'alpha'), GETPOST('name', 'alpha'));
-				$object->civilite_id       = GETPOST('civilite_id')?GETPOST('civilite_id'):GETPOST('civility_id');
-				$object->civility_id       = GETPOST('civility_id');	// Note: civility id is a code, not an int
+				$object->civilite_id       = GETPOST('civilite_id', 'alphanohtml');
+				$object->civility_code     = GETPOST('civility_id', 'alphanohtml');	// Note: civility id is a code, not an int
 				// Add non official properties
 				$object->name_bis          = GETPOST('name', 'alpha');
 				$object->firstname         = GETPOST('firstname', 'alpha');
@@ -431,8 +432,14 @@ if (empty($reshook)) {
 
 			$object->typent_code			= dol_getIdFromCode($db, $object->typent_id, 'c_typent', 'id', 'code');	// Force typent_code too so check in verify() will be done on new type
 
-			$object->client					= GETPOST('client', 'int');
-			$object->fournisseur			= GETPOST('fournisseur', 'int');
+			// Calculate the type of the thirdparty
+			$customer = (GETPOSTINT('customer') > 0 ? 1 : 0);
+			$prospect = (GETPOSTINT('prospect') > 0 ? 2 : 0);
+			$prospectcustomer = $customer + $prospect;
+
+			$object->client					= $prospectcustomer;
+			$object->fournisseur			= (GETPOSTINT('supplier') > 0 ? 1 : 0);
+
 			if ($object->client < 0) {
 				$object->client = Societe::CUSTOMER_AND_PROSPECT;
 			}
