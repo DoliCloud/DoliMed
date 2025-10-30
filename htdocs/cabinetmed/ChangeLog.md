@@ -1,5 +1,11 @@
 # ChangeLog
 
+
+# 17.0.1 unreleased
+
+- FIX edit of status prospect/customer.
+
+
 ## 17.0.0
 
 - NEW Can disable auto recording agenda with MAIN_AGENDA_ACTIONAUTO_CABINETMED_OUTCOME_CREATE 
