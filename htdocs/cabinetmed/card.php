@@ -457,7 +457,7 @@ if (empty($reshook)) {
 			} else {
 				$object->webservices_url		= GETPOST('webservices_url', 'custom', 0, FILTER_SANITIZE_URL);
 			}
-			$object->webservices_key		= GETPOST('webservices_key', 'san_alpha');
+			$object->webservices_key		= GETPOST('webservices_key', 'password');
 
 			// Incoterms
 			if (isModEnabled("incoterm")) {
