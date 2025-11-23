@@ -410,10 +410,10 @@ $reshook=$hookmanager->executeHooks('addMoreActionsButtons', $parameters, $objec
 if (empty($reshook)) {
 	if (! empty($object->email)) {
 		$langs->load("mails");
-		print '<div class="inline-block divButAction"><a class="butAction" href="'.$_SERVER['PHP_SELF'].'?socid='.$object->id.'&action=presend&token='.newToken().'&mode=init">'.$langs->trans('SendMail').'</a></div>';
+		print dolGetButtonAction('', $langs->trans('SendMail'), 'default', dolBuildUrl($_SERVER["PHP_SELF"], ['socid' => $object->id, 'action' => 'presend', 'mode' => 'init'], true).'#formmailbeforetitle', '');
 	} else {
 		$langs->load("mails");
-		print '<div class="inline-block divButAction"><a class="butActionRefused" href="#" title="'.dol_escape_htmltag($langs->trans("NoEMail")).'">'.$langs->trans('SendMail').'</a></div>';
+		print dolGetButtonAction($langs->trans('NoEMail'), $langs->trans('SendMail'), 'default', '#', '', false);
 	}
 
 	if ($user->hasRight('societe', 'creer')) {
