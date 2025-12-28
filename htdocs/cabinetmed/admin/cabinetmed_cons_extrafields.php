@@ -39,16 +39,12 @@ if (! $res) die("Include of main fails");
 require_once '../lib/cabinetmed.lib.php';
 require_once DOL_DOCUMENT_ROOT.'/core/class/extrafields.class.php';
 
-
-if (!$user->admin) {
-	accessforbidden();
-}
-
 $langs->load("admin");
 $langs->load("other");
 $langs->load("sendings");
 $langs->load("deliveries");
 
+$backtopage = GETPOST('backtopage', 'alpha');
 
 $extrafields = new ExtraFields($db);
 $form = new Form($db);
@@ -64,7 +60,9 @@ $action=GETPOST('action', 'alpha');
 $attrname=GETPOST('attrname', 'alpha');
 $elementtype='cabinetmed_cons'; //Must be the $table_element of the class that manage extrafield
 
-if (!$user->admin) accessforbidden();
+if (!$user->admin) {
+	accessforbidden();
+}
 
 
 /*
@@ -83,7 +81,8 @@ $textobject = $langs->transnoentitiesnoconv("CabinetMedSetup");
 
 llxHeader('', $langs->trans("SendingsSetup"));
 
-$linkback='<a href="'.DOL_URL_ROOT.'/admin/modules.php">'.$langs->trans("BackToModuleList").'</a>';
+$linkback = '<a href="'.($backtopage ? $backtopage : DOL_URL_ROOT.'/admin/modules.php?restore_lastsearch_values=1').'">'.img_picto($langs->trans("BackToModuleList"), 'back', 'class="pictofixedwidth"').'<span class="hideonsmartphone">'.$langs->trans("BackToModuleList").'</span></a>';
+
 print load_fiche_titre($langs->trans("CabinetMedSetup"), $linkback, 'title_setup');
 
 $h=0;

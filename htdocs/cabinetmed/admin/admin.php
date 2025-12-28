@@ -46,19 +46,16 @@ require_once DOL_DOCUMENT_ROOT."/core/lib/admin.lib.php";
 include_once DOL_DOCUMENT_ROOT."/core/lib/company.lib.php";
 include_once "../lib/cabinetmed.lib.php";
 
-$langs->load("admin");
-$langs->load("companies");
-$langs->load("bills");
-$langs->load("other");
-$langs->load("errors");
-$langs->load("cabinetmed@cabinetmed");
+$action = GETPOST("action");
+$backtopage = GETPOST('backtopage', 'alpha');
+
+$langs->loadLangs(array("admin", "companies", "bills", "other", "errors", "cabinetmed@cabinetmed"));
 
 if (!$user->admin) {
 	accessforbidden();
 }
 
-$mesg='';
-$action=GETPOST("action");
+$mesg = '';
 
 
 
@@ -102,8 +99,8 @@ if ($action == 'update') {
 
 llxHeader("", $langs->trans("CabinetMedSetup"), '');
 
+$linkback = '<a href="'.($backtopage ? $backtopage : DOL_URL_ROOT.'/admin/modules.php?restore_lastsearch_values=1').'">'.img_picto($langs->trans("BackToModuleList"), 'back', 'class="pictofixedwidth"').'<span class="hideonsmartphone">'.$langs->trans("BackToModuleList").'</span></a>';
 
-$linkback='<a href="'.DOL_URL_ROOT.'/admin/modules.php">'.$langs->trans("BackToModuleList").'</a>';
 print_fiche_titre($langs->trans("CabinetMedSetup"), $linkback, 'title_setup');
 
 dol_htmloutput_mesg($mesg);

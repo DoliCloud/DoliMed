@@ -39,6 +39,7 @@ if (! $res) die("Include of main fails");
 
 require_once DOL_DOCUMENT_ROOT."/core/lib/admin.lib.php";
 
+$backtopage = GETPOST('backtopage', 'alpha');
 
 if (!$user->admin) {
 	accessforbidden();
@@ -56,7 +57,8 @@ $langs->load("cabinetmed@cabinetmed");
 $help_url='';
 llxHeader('', '', $help_url);
 
-$linkback='<a href="'.DOL_URL_ROOT.'/admin/modules.php?restore_lastsearch_values=1">'.$langs->trans("BackToModuleList").'</a>';
+$linkback = '<a href="'.($backtopage ? $backtopage : DOL_URL_ROOT.'/admin/modules.php?restore_lastsearch_values=1').'">'.img_picto($langs->trans("BackToModuleList"), 'back', 'class="pictofixedwidth"').'<span class="hideonsmartphone">'.$langs->trans("BackToModuleList").'</span></a>';
+
 print_fiche_titre($langs->trans("CabinetMedSetup"), $linkback, 'title_setup');
 
 $head = array();
@@ -80,32 +82,40 @@ $h++;
 
 dol_fiche_head($head, 'tababout', '', -1);
 
-print $langs->trans("AboutInfo").'<br>';
+print '<div class="opacitymedium">'.$langs->trans("AboutInfo").'</div>';
 print '<br>';
 //$url='http://www.nltechno.com';
 //print '<a href="'.$url.'" target="_blank"><img border="0" width="60" src="../img/nltechno.gif"></a><br><br>';
 print '<br>';
 
+print '<div class="neutral">';
 print $langs->trans("MoreModules").'<br>';
 print '<br>';
 print $langs->trans("MoreModulesLink").'<br>';
 $url='http://www.dolistore.com/search.php?search_query=dolicloud';
-print '<a href="'.$url.'" target="_blank"><img border="0" width="180" src="'.DOL_URL_ROOT.'/theme/dolistore_logo.png"></a><br><br><br>';
+print '<a href="'.$url.'" target="_blank"><img border="0" width="180" src="'.DOL_URL_ROOT.'/theme/dolistore_logo.png"></a>';
+print '</div>';
 
 print '<br>';
+
+print '<div class="neutral">';
 print $langs->trans("MoreCloudHosting").'<br>';
 print '<br>';
 print $langs->trans("MoreCloudHostingLinkDoliMed").'<br>';
 $url='https://www.dolicloud.com?origin=dolimed';
-print '<a href="'.$url.'" target="_blank"><img border="0" width="180" src="../img/dolicloud_logo.png"></a><br><br><br>';
+print '<a href="'.$url.'" target="_blank"><img border="0" width="180" src="../img/dolicloud_logo.png"></a>';
+print '</div>';
 
 print '<br>';
+
+print '<div class="neutral">';
 print $langs->trans("CompatibleWithDoliDroid").'<br>';
 $url='https://play.google.com/store/apps/details?id=com.nltechno.dolidroidpro';
 print '<br>';
-print '<a href="'.$url.'" target="_blank"><img border="0" width="100" src="../img/dolidroid_512x512_en.png"></a><br><br>';
+print $langs->trans("MoreCloudHostingLinkDoliMed").'<br>';
+print '<a href="'.$url.'" target="_blank"><img border="0" width="60" src="../img/dolidroid_512x512_en.png"></a>';
+print '</div>';
 
-print '<br>';
 
 dol_fiche_end();
 
