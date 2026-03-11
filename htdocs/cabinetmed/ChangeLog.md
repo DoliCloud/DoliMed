@@ -4,6 +4,7 @@
 # 17.0.1 unreleased
 
 - FIX edit of status prospect/customer.
+- FIX compatibility with old dolibarr versions.
 
 
 ## 17.0.0

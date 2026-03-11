@@ -414,7 +414,6 @@ class Patient extends Societe
 		if ($ref)       $sql .= " AND s.nom = '".$this->db->escape($ref)."'";
 		if ($ref_alias) $sql .= " AND s.nom_alias = '".$this->db->escape($ref_alias)."'";
 		if ($ref_ext)   $sql .= " AND s.ref_ext = '".$this->db->escape($ref_ext)."'";
-		if ($ref_int)   $sql .= " AND s.ref_int = '".$this->db->escape($ref_int)."'";
 		if ($idprof1)   $sql .= " AND s.siren = '".$this->db->escape($idprof1)."'";
 		if ($idprof2)   $sql .= " AND s.siret = '".$this->db->escape($idprof2)."'";
 		if ($idprof3)   $sql .= " AND s.ape = '".$this->db->escape($idprof3)."'";
