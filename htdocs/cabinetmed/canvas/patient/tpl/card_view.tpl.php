@@ -66,6 +66,7 @@ $formfile=new FormFile($GLOBALS['db']);
 <?php
 
 $head = societe_prepare_head($object);
+
 $now=dol_now();
 
 /*foreach($head as $key => $val)

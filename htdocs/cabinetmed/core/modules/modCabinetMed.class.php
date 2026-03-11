@@ -145,25 +145,45 @@ class modCabinetMed extends DolibarrModules
 							20=>array('SOCIETE_DISABLE_CUSTOMERS','chaine','1','Hide customer features',1,'current',1),
 							21=>array('SOCIETE_DISABLE_PROSPECTS','chaine','1','Hide prospect features',1,'current',1),
 							22=>array('SOCIETE_DISABLE_PARENTCOMPANY','chaine','1','Hide parent company field',1,'current',1),
-							23=>array('CABINETMED_HIDETHIRPARTIESMENU','chaine','1','Hide thirdparties',0,'current',1)					// Not visible
+							23=>array('CABINETMED_HIDETHIRPARTIESMENU','chaine','1','Hide thirdparties',0,'current',1),					// Not visible
+							
+		                    99=>array('MAIN_ALLOW_OLD_VAR_OBJ_IN_DOL_EVAL','chaine','1','Compatibility of DoliMed with v23.0.0',1,'current',1)
 		);
 
 		// Array to add new pages in new tabs
-		$this->tabs = array(
-						'thirdparty:+tabpatientcontacts:SUBSTITUTION_CaregiversAndCorrespondents:cabinetmed@cabinetmed:$user->hasRight("cabinetmed","read") && ($object->canvas=="patient@cabinetmed" || $soc->canvas=="patient@cabinetmed"):/cabinetmed/contact.php?socid=__ID__',
-						'thirdparty:+tabantecedents:SUBSTITUTION_TabAntecedentsShort:cabinetmed@cabinetmed:$user->hasRight("cabinetmed","read") && ($object->canvas=="patient@cabinetmed" || $soc->canvas=="patient@cabinetmed"):/cabinetmed/antecedant.php?socid=__ID__',
-						//'thirdparty:+tabtraitetallergies:TraitEtAllergies:cabinetmed@cabinetmed:/cabinetmed/traitetallergies.php?socid=__ID__',
-						'thirdparty:+tabnotes:SUBSTITUTION_NotesPatient:cabinetmed@cabinetmed:$user->hasRight("cabinetmed","read") && ($object->canvas=="patient@cabinetmed" || $soc->canvas=="patient@cabinetmed"):/cabinetmed/notes.php?socid=__ID__',
-						'thirdparty:+tabconsultations:SUBSTITUTION_ConsultationsShort:cabinetmed@cabinetmed:$user->hasRight("cabinetmed","read") && ($object->canvas=="patient@cabinetmed" || $soc->canvas=="patient@cabinetmed"):/cabinetmed/consultations.php?socid=__ID__',
-						'thirdparty:+tabexambio:SUBSTITUTION_ResultExamBio:cabinetmed@cabinetmed:$user->hasRight("cabinetmed","read") && ($object->canvas=="patient@cabinetmed" || $soc->canvas=="patient@cabinetmed"):/cabinetmed/exambio.php?socid=__ID__',
-						'thirdparty:+tabexamautre:SUBSTITUTION_ResultExamAutre:cabinetmed@cabinetmed:$user->hasRight("cabinetmed","read") && ($object->canvas=="patient@cabinetmed" || $soc->canvas=="patient@cabinetmed"):/cabinetmed/examautre.php?socid=__ID__',
-						'thirdparty:+tabdocument:SUBSTITUTION_DocumentsPatient:cabinetmed@cabinetmed:$user->hasRight("cabinetmed","read") && ($object->canvas=="patient@cabinetmed" || $soc->canvas=="patient@cabinetmed"):/cabinetmed/documents.php?socid=__ID__',
-						'thirdparty:-contact:NU:($object->canvas=="patient@cabinetmed" || $soc->canvas=="patient@cabinetmed" || $obj->canvas=="patient@cabinetmed")',
-						'thirdparty:-document:NU:($object->canvas=="patient@cabinetmed" || $soc->canvas=="patient@cabinetmed" || $obj->canvas=="patient@cabinetmed")',
-						//'thirdparty:-notify:NU:($object->canvas=="patient@cabinetmed" || $soc->canvas=="patient@cabinetmed" || $obj->canvas=="patient@cabinetmed")',
-						'thirdparty:-note:NU:($object->canvas=="patient@cabinetmed" || $soc->canvas=="patient@cabinetmed" || $obj->canvas=="patient@cabinetmed")',
-						'contact:+tabpatient:Patients:cabinetmed@cabinetmed:$user->hasRight("cabinetmed","read"):/cabinetmed/patients_of_contact.php?id=__ID__'
-					);
+		if (version_compare(DOL_VERSION, '23.0.0', '<=')) {
+    		$this->tabs = array(
+    						'thirdparty:+tabpatientcontacts:SUBSTITUTION_CaregiversAndCorrespondents:cabinetmed@cabinetmed:$user->hasRight("cabinetmed","read") && ($object->canvas=="patient@cabinetmed" || $soc->canvas=="patient@cabinetmed"):/cabinetmed/contact.php?socid=__ID__',
+    						'thirdparty:+tabantecedents:SUBSTITUTION_TabAntecedentsShort:cabinetmed@cabinetmed:$user->hasRight("cabinetmed","read") && ($object->canvas=="patient@cabinetmed" || $soc->canvas=="patient@cabinetmed"):/cabinetmed/antecedant.php?socid=__ID__',
+    						//'thirdparty:+tabtraitetallergies:TraitEtAllergies:cabinetmed@cabinetmed:/cabinetmed/traitetallergies.php?socid=__ID__',
+    						'thirdparty:+tabnotes:SUBSTITUTION_NotesPatient:cabinetmed@cabinetmed:$user->hasRight("cabinetmed","read") && ($object->canvas=="patient@cabinetmed" || $soc->canvas=="patient@cabinetmed"):/cabinetmed/notes.php?socid=__ID__',
+    						'thirdparty:+tabconsultations:SUBSTITUTION_ConsultationsShort:cabinetmed@cabinetmed:$user->hasRight("cabinetmed","read") && ($object->canvas=="patient@cabinetmed" || $soc->canvas=="patient@cabinetmed"):/cabinetmed/consultations.php?socid=__ID__',
+    						'thirdparty:+tabexambio:SUBSTITUTION_ResultExamBio:cabinetmed@cabinetmed:$user->hasRight("cabinetmed","read") && ($object->canvas=="patient@cabinetmed" || $soc->canvas=="patient@cabinetmed"):/cabinetmed/exambio.php?socid=__ID__',
+    						'thirdparty:+tabexamautre:SUBSTITUTION_ResultExamAutre:cabinetmed@cabinetmed:$user->hasRight("cabinetmed","read") && ($object->canvas=="patient@cabinetmed" || $soc->canvas=="patient@cabinetmed"):/cabinetmed/examautre.php?socid=__ID__',
+    						'thirdparty:+tabdocument:SUBSTITUTION_DocumentsPatient:cabinetmed@cabinetmed:$user->hasRight("cabinetmed","read") && ($object->canvas=="patient@cabinetmed" || $soc->canvas=="patient@cabinetmed"):/cabinetmed/documents.php?socid=__ID__',
+    						'thirdparty:-contact:NU:($object->canvas=="patient@cabinetmed" || $soc->canvas=="patient@cabinetmed" || $obj->canvas=="patient@cabinetmed")',
+    						'thirdparty:-document:NU:($object->canvas=="patient@cabinetmed" || $soc->canvas=="patient@cabinetmed" || $obj->canvas=="patient@cabinetmed")',
+    						//'thirdparty:-notify:NU:($object->canvas=="patient@cabinetmed" || $soc->canvas=="patient@cabinetmed" || $obj->canvas=="patient@cabinetmed")',
+    						'thirdparty:-note:NU:($object->canvas=="patient@cabinetmed" || $soc->canvas=="patient@cabinetmed" || $obj->canvas=="patient@cabinetmed")',
+    						'contact:+tabpatient:Patients:cabinetmed@cabinetmed:$user->hasRight("cabinetmed","read"):/cabinetmed/patients_of_contact.php?id=__ID__'
+    					);
+		} else {
+		    $this->tabs = array(
+		        'thirdparty:+tabpatientcontacts:SUBSTITUTION_CaregiversAndCorrespondents:cabinetmed@cabinetmed:$user->hasRight("cabinetmed","read") && $objectoffield->canvas=="patient@cabinetmed":/cabinetmed/contact.php?socid=__ID__',
+		        'thirdparty:+tabantecedents:SUBSTITUTION_TabAntecedentsShort:cabinetmed@cabinetmed:$user->hasRight("cabinetmed","read") && $objectoffield->canvas=="patient@cabinetmed":/cabinetmed/antecedant.php?socid=__ID__',
+		        //'thirdparty:+tabtraitetallergies:TraitEtAllergies:cabinetmed@cabinetmed:/cabinetmed/traitetallergies.php?socid=__ID__',
+		        'thirdparty:+tabnotes:SUBSTITUTION_NotesPatient:cabinetmed@cabinetmed:$user->hasRight("cabinetmed","read") && $objectoffield->canvas=="patient@cabinetmed":/cabinetmed/notes.php?socid=__ID__',
+		        'thirdparty:+tabconsultations:SUBSTITUTION_ConsultationsShort:cabinetmed@cabinetmed:$user->hasRight("cabinetmed","read") && $objectoffield->canvas=="patient@cabinetmed":/cabinetmed/consultations.php?socid=__ID__',
+		        'thirdparty:+tabexambio:SUBSTITUTION_ResultExamBio:cabinetmed@cabinetmed:$user->hasRight("cabinetmed","read") && $objectoffield->canvas=="patient@cabinetmed":/cabinetmed/exambio.php?socid=__ID__',
+		        'thirdparty:+tabexamautre:SUBSTITUTION_ResultExamAutre:cabinetmed@cabinetmed:$user->hasRight("cabinetmed","read") && $objectoffield->canvas=="patient@cabinetmed":/cabinetmed/examautre.php?socid=__ID__',
+		        'thirdparty:+tabdocument:SUBSTITUTION_DocumentsPatient:cabinetmed@cabinetmed:$user->hasRight("cabinetmed","read") && $objectoffield->canvas=="patient@cabinetmed":/cabinetmed/documents.php?socid=__ID__',
+		        'thirdparty:-contact:NU:($objectoffield->canvas=="patient@cabinetmed")',
+		        'thirdparty:-document:NU:($objectoffield->canvas=="patient@cabinetmed")',
+		        //'thirdparty:-notify:NU:($objectoffield->canvas=="patient@cabinetmed")',
+		        'thirdparty:-note:NU:($objectoffield->canvas=="patient@cabinetmed")',
+		        'contact:+tabpatient:Patients:cabinetmed@cabinetmed:$user->hasRight("cabinetmed","read"):/cabinetmed/patients_of_contact.php?id=__ID__'
+		    );
+		}
 		// where entity can be
 		// 'thirdparty'       to add a tab in third party view
 		// 'intervention'     to add a tab in intervention view
