@@ -1,11 +1,13 @@
 # ChangeLog
 
 
-# 17.0.1 unreleased
+## 17.2
 
-- FIX edit of status prospect/customer.
 - FIX compatibility with old dolibarr versions.
 
+## 17.1
+
+- FIX edit of status prospect/customer.
 
 ## 17.0.0
 
