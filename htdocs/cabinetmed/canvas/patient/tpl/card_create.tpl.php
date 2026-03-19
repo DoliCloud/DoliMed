@@ -21,6 +21,7 @@
  * @var CommonObject $object
  *
  * @var string $action
+ * @var ?string $backtopage
  */
 // Protection to avoid direct call of template
 if (empty($conf) || ! is_object($conf)) {
@@ -250,7 +251,7 @@ dol_htmloutput_errors($GLOBALS['error'], $GLOBALS['errors']);
 <input type="hidden" name="canvas" value="<?php echo $GLOBALS['canvas'] ?>">
 <input type="hidden" name="action" value="add">
 <input type="hidden" name="token" value="<?php echo newToken(); ?>">
-<input type="hidden" name="backtopage" value="<?php echo $backtopage; ?>">
+<input type="hidden" name="backtopage" value="<?php echo empty($backtopage) ? '' : $backtopage; ?>">
 <input type="hidden" name="private" value="0">
 <input type="hidden" name="status" value="1">
 <input type="hidden" name="client" value="<?php echo $object->client; ?>">
