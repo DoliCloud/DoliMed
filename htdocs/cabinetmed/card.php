@@ -408,8 +408,7 @@ if (empty($reshook)) {
 			$object->idprof5				= trim(GETPOST('idprof5', 'alphanohtml'));
 			$object->idprof6				= trim(GETPOST('idprof6', 'alphanohtml'));
 			$object->prefix_comm			= GETPOST('prefix_comm', 'alphanohtml');
-			$object->code_client			= GETPOSTISSET('customer_code') ? GETPOST('customer_code', 'alpha') : GETPOST('code_client', 'alpha');
-			$object->code_fournisseur		= GETPOSTISSET('supplier_code') ? GETPOST('supplier_code', 'alpha') : GETPOST('code_fournisseur', 'alpha');
+
 			$object->capital				= GETPOST('capital', 'alphanohtml');
 			$object->barcode				= GETPOST('barcode', 'alphanohtml');
 
@@ -445,6 +444,16 @@ if (empty($reshook)) {
 			}
 			if ($object->fournisseur < 0) {
 				$object->fournisseur = Societe::SUPPLIER;
+			}
+
+			$object->code_client			= GETPOSTISSET('customer_code') ? GETPOST('customer_code', 'alpha') : GETPOST('code_client', 'alpha');
+			$object->code_fournisseur		= GETPOSTISSET('supplier_code') ? GETPOST('supplier_code', 'alpha') : GETPOST('code_fournisseur', 'alpha');
+
+			if ($object->code_client === '') {		// We force a customer code, if not set, even if not customer because we need it as a patient.
+				$object->code_client = 'auto';
+			}
+			if ($object->fournisseur && $object->code_fournisseur === '') {
+				$object->code_fournisseur = 'auto';
 			}
 
 			$object->commercial_id         = GETPOST('commercial_id', 'int');
@@ -515,13 +524,21 @@ if (empty($reshook)) {
 			if ($action == 'add') {
 				$error = 0;
 
+				// We force client as a customer because we need to save the customer code
+				$savclient = $object->client;
+				if (empty($object->client)) {
+					$object->client = 1;
+				}
+
 				$db->begin();
 
-				if (empty($object->client))      $object->code_client='';
-				if (empty($object->fournisseur)) $object->code_fournisseur='';
-
 				$result = $object->create($user);
+
 				if ($result >= 0) {
+					// Now update client with $savclient
+					$object->client = $savclient;
+					$object->update(0, $user, 0);
+
 					if ($object->particulier) {
 						dol_syslog("We ask to create a contact/address too", LOG_DEBUG);
 						$result=$object->create_individual($user);
@@ -622,6 +639,7 @@ if (empty($reshook)) {
 				}
 			}
 
+			// Used when thirdparty is not customer so the edit page is cabinetmed/card.php instead of societe/card.php
 			if ($action == 'update') {
 				$error = 0;
 
@@ -636,8 +654,8 @@ if (empty($reshook)) {
 				}
 
 				// To not set code if third party is not concerned. But if it had values, we keep them.
-				if (empty($object->client) && empty($object->oldcopy->code_client))          $object->code_client='';
-				if (empty($object->fournisseur)&& empty($object->oldcopy->code_fournisseur)) $object->code_fournisseur='';
+				if (empty($object->client) && empty($object->oldcopy->code_client))          $object->code_client = '';
+				if (empty($object->fournisseur)&& empty($object->oldcopy->code_fournisseur)) $object->code_fournisseur = '';
 				//var_dump($object);exit;
 
 				$result = $object->update($socid, $user, 1, $object->oldcopy->codeclient_modifiable(), $object->oldcopy->codefournisseur_modifiable(), 'update', 0);

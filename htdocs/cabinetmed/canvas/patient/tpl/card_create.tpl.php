@@ -100,7 +100,6 @@ $selectedprospect = ((GETPOSTISSET('prospect') && $action == 'create') ? GETPOST
 $selectedcustomer = ((GETPOSTISSET('customer') && $action == 'create') ? GETPOSTINT('customer') : $selectedcustomer);
 $selectedsupplier = ((GETPOSTISSET('supplier') && $action == 'create') ? GETPOSTINT('supplier') : $object->fournisseur);
 
-
 $object->name = GETPOST("name");
 $object->lastname = GETPOST("name");
 $object->firstname = GETPOST("firstname");
@@ -108,8 +107,8 @@ $object->particulier = 0;
 $object->prefix_comm = GETPOST("prefix_comm");
 $object->client = GETPOSTISSET("client")?GETPOST("client"):$object->client;
 $object->code_client = GETPOST("customer_code");
-$object->fournisseur = GETPOST("fournisseur")?GETPOST("fournisseur"):$object->fournisseur;
-$object->code_fournisseur = GETPOST("code_fournisseur") ? GETPOST("code_fournisseur"): GETPOST("supplier_code");
+$object->fournisseur = GETPOSTISSET("fournisseur") ? GETPOST("fournisseur") : $object->fournisseur;
+$object->code_fournisseur = GETPOSTISSET("code_fournisseur") ? GETPOST("code_fournisseur") : (GETPOSTISSET('supplier_code') ? GETPOST("supplier_code") : -1);
 
 $object->address = GETPOST('address', 'alphanohtml');
 $object->zip = GETPOST('zipcode', 'alphanohtml');
