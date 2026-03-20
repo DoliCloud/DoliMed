@@ -183,7 +183,6 @@ print '<table class="border centpercent">';
 // Name
 print '<tr><td class="titlefield"><span class="fieldrequired">'.$langs->trans('PatientName').'</span></td><td colspan="3"><input type="text" size="40" maxlength="60" name="name" value="'.$object->name.'"></td>';
 
-
 // Prospect/Customer/Supplier
 $selected = $object->client;
 switch ($selected) {
@@ -200,6 +199,8 @@ switch ($selected) {
 		$selectedcustomer = 1;
 		break;
 	default:
+		$selectedprospect = 0;
+		$selectedcustomer = 0;
 		break;
 }
 $selectedprospect = ((GETPOSTISSET('prospect') && $action == 'create') ? GETPOSTINT('prospect') : $selectedprospect);
