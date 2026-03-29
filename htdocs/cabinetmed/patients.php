@@ -615,7 +615,7 @@ if (!empty($contextpage) && $contextpage != $_SERVER["PHP_SELF"]) {
 	$param .= '&contextpage='.urlencode($contextpage);
 }
 if ($limit > 0 && $limit != $conf->liste_limit) {
-	$param .= '&limit='.urlencode($limit);
+	$param .= '&limit='.((int) $limit);
 }
 if ($search_all != '')     $param = "&search_all=".urlencode($search_all);
 if ($search_categ_cus > 0) $param.= '&search_categ_cus='.urlencode($search_categ_cus);
