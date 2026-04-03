@@ -531,8 +531,14 @@ print '</td></tr>';
 
 // Sexe
 print '<tr><td>'.$langs->trans("Gender").'</td><td colspan="3">';
-print $form->selectarray("typent_id", $formcompany->typent_array(0, "AND code in ('TE_UNKNOWN', 'TE_HOMME', 'TE_FEMME')"), $object->typent_id);
-if ($user->admin) print info_admin($langs->trans("YouCanChangeValuesForThisListFromDictionarySetup"), 1);
+if ((float) DOL_VERSION <= 23) {
+	print $form->selectarray("typent_id", $formcompany->typent_array(0, "AND code in ('TE_UNKNOWN', 'TE_HOMME', 'TE_FEMME')"), $object->typent_id);
+} else {
+	print $form->selectarray("typent_id", $formcompany->typent_array(0, "(code:in:'TE_UNKNOWN','TE_HOMME','TE_FEMME')"), $object->typent_id);
+}
+if ($user->admin) {
+	print info_admin($langs->trans("YouCanChangeValuesForThisListFromDictionarySetup"), 1);
+}
 print '</td>';
 print '</tr>';
 

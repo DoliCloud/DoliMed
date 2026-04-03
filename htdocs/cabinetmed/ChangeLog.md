@@ -1,5 +1,8 @@
 # ChangeLog
 
+## 24
+
+- FIX compatibility with v24
 
 ## 17.2
 
