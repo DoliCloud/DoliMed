@@ -1063,7 +1063,9 @@ if (! ($socid > 0)) {
 		print '>';
 		if (isModEnabled("banque")) {
 			print ' &nbsp; ';
-			if (((float) DOL_VERSION) >= 20.0) {
+			if (((float) DOL_VERSION) >= 24.0) {
+				$form->select_comptes(GETPOST('bankchequeto')?GETPOST('bankchequeto'):(empty($object->bank['CHQ']['account_id']) ? $defaultbankaccountchq : $object->bank['CHQ']['account_id']), 'bankchequeto', 2, '(courant:=:1)', $langs->trans("RecBank"), '', 0, 'maxwidth200');
+			} elseif (((float) DOL_VERSION) >= 20.0) {
 				$form->select_comptes(GETPOST('bankchequeto')?GETPOST('bankchequeto'):(empty($object->bank['CHQ']['account_id']) ? $defaultbankaccountchq : $object->bank['CHQ']['account_id']), 'bankchequeto', 2, 'courant = 1', $langs->trans("RecBank"), '', 0, 'maxwidth200');
 			} else {
 				print $langs->trans("RecBank").' ';
@@ -1092,12 +1094,14 @@ if (! ($socid > 0)) {
 		// Card (CB)
 		print '<tr class="cabpaymentcarte"><td class="">';
 		print $langs->trans("PaymentTypeCarte").'</td><td>';
-		print '<input type="text" class="flat" name="montant_carte" id="idmontant_carte" value="'.($object->montant_carte!=''?price($object->montant_carte):'').'" size="4"';
+		print '<input type="text" class="flat" name="montant_carte" id="idmontant_carte" value="'.($object->montant_carte != '' ? price($object->montant_carte):'').'" size="4"';
 		print ' placeholder="'.($conf->currency != $langs->getCurrencySymbol($conf->currency) ? $langs->getCurrencySymbol($conf->currency) : '').'"';
 		print '>';
 		if (isModEnabled("banque")) {
 			print ' &nbsp; ';
-			if (((float) DOL_VERSION) >= 20.0) {
+			if (((float) DOL_VERSION) >= 24.0) {
+				$form->select_comptes(GETPOST('bankcarteto')?GETPOST('bankcarteto'):(empty($object->bank['CB']['account_id']) ? $defaultbankaccountchq : $object->bank['CB']['account_id']), 'bankcarteto', 2, '(courant:=:1)', $langs->trans("RecBank"), '', 0, 'maxwidth200');
+			} elseif (((float) DOL_VERSION) >= 20.0) {
 				$form->select_comptes(GETPOST('bankcarteto')?GETPOST('bankcarteto'):(empty($object->bank['CB']['account_id']) ? $defaultbankaccountchq : $object->bank['CB']['account_id']), 'bankcarteto', 2, 'courant = 1', $langs->trans("RecBank"), '', 0, 'maxwidth200');
 			} else {
 				print $langs->trans("RecBank").' ';
@@ -1114,7 +1118,9 @@ if (! ($socid > 0)) {
 		print '>';
 		if (isModEnabled("banque")) {
 			print ' &nbsp; ';
-			if (((float) DOL_VERSION) >= 20.0) {
+			if (((float) DOL_VERSION) >= 24.0) {
+				$form->select_comptes(GETPOST('bankespeceto')?GETPOST('bankespeceto'):(empty($object->bank['LIQ']['account_id']) ? $defaultbankaccountliq : $object->bank['LIQ']['account_id']), 'bankespeceto', 2, '(courant:=:2)', $langs->trans("RecBank"));
+			} elseif (((float) DOL_VERSION) >= 20.0) {
 				$form->select_comptes(GETPOST('bankespeceto')?GETPOST('bankespeceto'):(empty($object->bank['LIQ']['account_id']) ? $defaultbankaccountliq : $object->bank['LIQ']['account_id']), 'bankespeceto', 2, 'courant = 2', $langs->trans("RecBank"));
 			} else {
 				print $langs->trans("RecBank").' ';
