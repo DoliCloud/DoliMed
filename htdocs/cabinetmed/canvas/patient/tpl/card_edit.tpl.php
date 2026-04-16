@@ -566,6 +566,21 @@ if (getDolGlobalString('ACCOUNTING_FORCE_ENABLE_VAT_REVERSE_CHARGE')) {
 					print '</td></tr>';
 				}
 
+// Legal Form
+
+		if (!empty($conf->global->CABINETMED_SHOW_LEGAL_FORM)){
+
+				print '<tr><td>'.$form->editfieldkey('JuridicalStatus', 'forme_juridique_code', '', $object, 0).'</td>';
+				print '<td colspan="3" class="maxwidthonsmartphone">';
+				if ($object->country_id) {
+					print $formcompany->select_juridicalstatus($object->forme_juridique_code, $object->country_code, '', 'forme_juridique_code');
+				} else {
+					print $countrynotdefined;
+				}
+				print '</td></tr>';
+    	}
+
+
 // Num secu
 print '<tr>';
 print '<td class="nowrap">'.$langs->trans('PatientVATIntra').'</td>';
