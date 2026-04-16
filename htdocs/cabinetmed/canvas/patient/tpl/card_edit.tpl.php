@@ -521,6 +521,51 @@ if (getDolGlobalString('ACCOUNTING_FORCE_ENABLE_VAT_REVERSE_CHARGE')) {
 	print '</td></tr>';
 }
 
+
+// VAT is used
+				print '<tr><td>'.$form->editfieldkey('VATIsUsed', 'assujtva_value', '', $object, 0).'</td><td colspan="3">';
+				print '<input id="assujtva_value" name="assujtva_value" type="checkbox" ' . ($object->tva_assuj ? 'checked="checked"' : '') . ' value="1">';
+				print '</td></tr>';
+
+// Local Taxes
+				if ($mysoc->localtax1_assuj == "1" && $mysoc->localtax2_assuj == "1") {
+					print '<tr><td>'.$form->editfieldkey($langs->transcountry("LocalTax1IsUsed", $mysoc->country_code), 'localtax1assuj_value', '', $object, 0).'</td><td>';
+					print '<input id="localtax1assuj_value" name="localtax1assuj_value" type="checkbox" ' . ($object->localtax1_assuj ? 'checked="checked"' : '') . ' value="1">';
+					if (!isOnlyOneLocalTax(1)) {
+						print '<span class="cblt1">     '.$langs->transcountry("Type", $mysoc->country_code).': ';
+						$formcompany->select_localtax(1, (float) $object->localtax1_value, "lt1");
+						print '</span>';
+					}
+					print '</td>';
+					print '</tr><tr>';
+					print '<td>'.$form->editfieldkey($langs->transcountry("LocalTax2IsUsed", $mysoc->country_code), 'localtax2assuj_value', '', $object, 0).'</td><td>';
+					print '<input id="localtax2assuj_value" name="localtax2assuj_value" type="checkbox" ' . ($object->localtax2_assuj ? 'checked="checked"' : '') . ' value="1"></td></tr>';
+					if (!isOnlyOneLocalTax(2)) {
+						print '<span class="cblt2">     '.$langs->transcountry("Type", $mysoc->country_code).': ';
+						$formcompany->select_localtax(2, (float) $object->localtax2_value, "lt2");
+						print '</span>';
+					}
+					print '</td></tr>';
+				} elseif ($mysoc->localtax1_assuj == "1" && $mysoc->localtax2_assuj != "1") {
+					print '<tr><td>'.$form->editfieldkey($langs->transcountry("LocalTax1IsUsed", $mysoc->country_code), 'localtax1assuj_value', '', $object, 0).'</td><td colspan="3">';
+					print '<input id="localtax1assuj_value" name="localtax1assuj_value" type="checkbox" ' . ($object->localtax1_assuj ? 'checked="checked"' : '') . ' value="1">';
+					if (!isOnlyOneLocalTax(1)) {
+						print '<span class="cblt1">     '.$langs->transcountry("Type", $mysoc->country_code).': ';
+						$formcompany->select_localtax(1, (float) $object->localtax1_value, "lt1");
+						print '</span>';
+					}
+					print '</td></tr>';
+				} elseif ($mysoc->localtax2_assuj == "1" && $mysoc->localtax1_assuj != "1") {
+					print '<tr><td>'.$form->editfieldkey($langs->transcountry("LocalTax2IsUsed", $mysoc->country_code), 'localtax2assuj_value', '', $object, 0).'</td><td colspan="3">';
+					print '<input id="localtax2assuj_value" name="localtax2assuj_value" type="checkbox" ' . ($object->localtax2_assuj ? 'checked="checked"' : '') . ' value="1">';
+					if (!isOnlyOneLocalTax(2)) {
+						print '<span class="cblt2">     '.$langs->transcountry("Type", $mysoc->country_code).': ';
+						$formcompany->select_localtax(2, (float) $object->localtax2_value, "lt2");
+						print '</span>';
+					}
+					print '</td></tr>';
+				}
+
 // Num secu
 print '<tr>';
 print '<td class="nowrap">'.$langs->trans('PatientVATIntra').'</td>';
