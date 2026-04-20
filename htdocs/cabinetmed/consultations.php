@@ -1192,16 +1192,17 @@ if ($action == '' || $action == 'list' || $action == 'delete') {
 
 
 if ($action == '' || $action == 'list' || $action == 'delete') {
-	if ($soc->alert_antemed)       $mesgs[]=$langs->transnoentitiesnoconv("Warning").': '.$langs->transnoentitiesnoconv("AlertTriggered", $langs->transnoentitiesnoconv("AntecedentsMed"));
-	if ($soc->alert_antechirgen)   $mesgs[]=$langs->transnoentitiesnoconv("Warning").': '.$langs->transnoentitiesnoconv("AlertTriggered", $langs->transnoentitiesnoconv("AntecedentsChirGene"));
-	if ($soc->alert_antechirortho) $mesgs[]=$langs->transnoentitiesnoconv("Warning").': '.$langs->transnoentitiesnoconv("AlertTriggered", $langs->transnoentitiesnoconv("AntecedentsChirOrtho"));
-	if ($soc->alert_anterhum)      $mesgs[]=$langs->transnoentitiesnoconv("Warning").': '.$langs->transnoentitiesnoconv("AlertTriggered", $langs->transnoentitiesnoconv("AntecedentsRhumato"));
-	if ($soc->alert_other)         $mesgs[]=$langs->transnoentitiesnoconv("Warning").': '.$langs->transnoentitiesnoconv("AlertTriggered", $langs->transnoentitiesnoconv("AntecedentsMed"));
-	if ($soc->alert_traitclass)    $mesgs[]=$langs->transnoentitiesnoconv("Warning").': '.$langs->transnoentitiesnoconv("AlertTriggered", $langs->transnoentitiesnoconv("xxx"));
-	if ($soc->alert_traitallergie) $mesgs[]=$langs->transnoentitiesnoconv("Warning").': '.$langs->transnoentitiesnoconv("AlertTriggered", $langs->transnoentitiesnoconv("Allergies"));
-	if ($soc->alert_traitintol)    $mesgs[]=$langs->transnoentitiesnoconv("Warning").': '.$langs->transnoentitiesnoconv("AlertTriggered", $langs->transnoentitiesnoconv("Intolerances"));
-	if ($soc->alert_traitspec)     $mesgs[]=$langs->transnoentitiesnoconv("Warning").': '.$langs->transnoentitiesnoconv("AlertTriggered", $langs->transnoentitiesnoconv("SpecPharma"));
+	if ($soc->alert_antemed)       $mesgs[]=$langs->transnoentitiesnoconv("Warning").': '.$langs->transnoentitiesnoconv("AlertTriggered", $langs->transnoentitiesnoconv("AntecedentsMed"), $soc->note_antemed);
+	if ($soc->alert_antechirgen)   $mesgs[]=$langs->transnoentitiesnoconv("Warning").': '.$langs->transnoentitiesnoconv("AlertTriggered", $langs->transnoentitiesnoconv("AntecedentsChirGene"), $soc->note_antechirgen);
+	if ($soc->alert_antechirortho) $mesgs[]=$langs->transnoentitiesnoconv("Warning").': '.$langs->transnoentitiesnoconv("AlertTriggered", $langs->transnoentitiesnoconv("AntecedentsChirOrtho"), $soc->note_antechirortho);
+	if ($soc->alert_anterhum)      $mesgs[]=$langs->transnoentitiesnoconv("Warning").': '.$langs->transnoentitiesnoconv("AlertTriggered", $langs->transnoentitiesnoconv("AntecedentsRhumato"), $soc->note_anterhum);
+	if ($soc->alert_other)         $mesgs[]=$langs->transnoentitiesnoconv("Warning").': '.$langs->transnoentitiesnoconv("AlertTriggered", $langs->transnoentitiesnoconv("AntecedentsMed"), $soc->note_other);
+	if ($soc->alert_traitclass)    $mesgs[]=$langs->transnoentitiesnoconv("Warning").': '.$langs->transnoentitiesnoconv("AlertTriggered", $langs->transnoentitiesnoconv("xxx"), $soc->note_traitclass);
+	if ($soc->alert_traitallergie) $mesgs[]=$langs->transnoentitiesnoconv("Warning").': '.$langs->transnoentitiesnoconv("AlertTriggered", $langs->transnoentitiesnoconv("Allergies"), $soc->note_traitallergie);
+	if ($soc->alert_traitintol)    $mesgs[]=$langs->transnoentitiesnoconv("Warning").': '.$langs->transnoentitiesnoconv("AlertTriggered", $langs->transnoentitiesnoconv("Intolerances"), $soc->note_traitintol);
+	if ($soc->alert_traitspec)     $mesgs[]=$langs->transnoentitiesnoconv("Warning").': '.$langs->transnoentitiesnoconv("AlertTriggered", $langs->transnoentitiesnoconv("SpecPharma"), $soc->note_traitspec);
 	if ($soc->alert_note)          $mesgs[]=$langs->transnoentitiesnoconv("Warning").': '.$langs->transnoentitiesnoconv("AlertTriggered", $langs->transnoentitiesnoconv("Note"));
+
 
 	// Confirm delete consultation
 	if (GETPOST("action") == 'delete') {
