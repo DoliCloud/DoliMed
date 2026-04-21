@@ -39,7 +39,13 @@ if (! $res && file_exists("../main.inc.php")) $res=@include "../main.inc.php";
 if (! $res && file_exists("../../main.inc.php")) $res=@include "../../main.inc.php";
 if (! $res && file_exists("../../../main.inc.php")) $res=@include "../../../main.inc.php";
 if (! $res) die("Include of main fails");
-
+/**
+ * @var DoliDB $db
+ * @var Translate $langs
+ * @var User $user
+ * @var Conf $conf
+ * @var HookManager $hookmanager
+ */
 include_once DOL_DOCUMENT_ROOT."/core/lib/company.lib.php";
 include_once "./class/patient.class.php";
 include_once "./lib/cabinetmed.lib.php";
@@ -263,8 +269,6 @@ if ($socid > 0) {
 		print nl2br($object->note_antemed);
 	}
 	print "</td>";
-	//print "</tr>";
-
 	print '</tr></table>';
 	print '</div><div class="fichehalfright">';
 
@@ -272,7 +276,6 @@ if ($socid > 0) {
 	print '<table class="border" width="100%" style="margin-bottom: 2px !important;"><tr height="80">';
 
 	// Spec
-	//print '<tr height="80">';
 	print '<td class="tdtop titlefield">'.$langs->trans("SpecPharma");
 	print '<br><input type="checkbox" id="alert_traitspec" name="alert_traitspec"'.((isset($_POST['alert_traitspec'])?GETPOST('alert_traitspec'):$object->alert_traitspec)?' checked="checked"':'').'">  <label class="opacitymedium" for="alert_traitspec">'.$langs->trans("Alert").'</label>';
 	print '</td>';
@@ -312,7 +315,6 @@ if ($socid > 0) {
 		print nl2br($object->note_antechirgen);
 	}
 	print "</td>";
-	//pritn "</tr>";
 
 	print '</tr></table>';
 	print '</div><div class="fichehalfright">';
@@ -320,7 +322,6 @@ if ($socid > 0) {
 	print '<table class="border" width="100%" style="margin-bottom: 2px !important;"><tr height="80">';
 
 	// Intolerances
-	//print '<tr height="80">';
 	print '<td class="tdtop titlefield">'.$langs->trans("Intolerances");
 	print '<br><input type="checkbox" id="alert_traitintol" name="alert_traitintol"'.((isset($_POST['alert_traitintol'])?GETPOST('alert_traitintol'):$object->alert_traitintol)?' checked="true"':'').'">  <label class="opacitymedium" for="alert_traitintol">'.$langs->trans("Alert").'</label>';
 	print '</td>';
@@ -359,13 +360,11 @@ if ($socid > 0) {
 		print nl2br($object->note_antechirortho);
 	}
 	print "</td>";
-	//print "</tr>";
 
 	print '</tr></table>';
 	print '</div><div class="fichehalfright">';
 	print '<table class="border" width="100%" style="margin-bottom: 2px !important;"><tr height="80">';
 
-	//print '<tr height="80">';
 	print '<td class="tdtop titlefield">'.$langs->trans("Allergies");
 	print '<br><input type="checkbox" id="alert_traitallergie" name="alert_traitallergie"'.((isset($_POST['alert_traitallergie'])?GETPOST('alert_traitallergie'):$object->alert_traitallergie)?' checked="checked"':'').'"">  <label class="opacitymedium" for="alert_traitallergie">'.$langs->trans("Alert").'</label>';
 	print '</td>';

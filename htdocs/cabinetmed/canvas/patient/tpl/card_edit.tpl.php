@@ -269,17 +269,6 @@ if (getDolGlobalString('SOCIETE_DISABLE_PROSPECTS') && getDolGlobalString('SOCIE
 		refreshNatureCss();
 		</script>';
 	}
-
-	/*
-	if (getDolGlobalString('SOCIETE_DISABLE_CUSTOMERS')) $nothingvalue=1;  // if feature to disable customer is on, nothing will keep value 1 in database.
-	if (getDolGlobalString('SOCIETE_DISABLE_CUSTOMERS')) $prospectonly=3;  // if feature to disable customer is on, nothing will keep value 3 in database.
-	print '<select class="flat" name="client" id="customerprospect">';
-	if (empty($conf->global->SOCIETE_DISABLE_PROSPECTS)) print '<option value="'.$prospectonly.'"'.($object->client==$prospectonly?' selected':'').'>'.$langs->trans('Prospect').'</option>';
-	if (empty($conf->global->SOCIETE_DISABLE_PROSPECTS) && empty($conf->global->SOCIETE_DISABLE_CUSTOMERS)) print '<option value="3"'.($object->client==3?' selected':'').'>'.$langs->trans('ProspectCustomer').'</option>';
-	if (empty($conf->global->SOCIETE_DISABLE_CUSTOMERS)) print '<option value="1"'.($object->client==1?' selected':'').'>'.$langs->trans('Customer').'</option>';
-	print '<option value="'.$nothingvalue.'"'.($object->client==$nothingvalue?' selected':'').'>'.$langs->trans('NorProspectNorCustomer').'</option>';
-	print '</select>';
-	*/
 }
 print '</td>';
 print '<td>'.fieldLabel('CustomerCode', 'customer_code').'</td><td>';
@@ -467,7 +456,7 @@ $NBPROFIDMIN = getDolGlobalInt('THIRDPARTY_MIN_NB_PROF_ID', 2);
 $NBPROFIDMAX = getDolGlobalInt('THIRDPARTY_MAX_NB_PROF_ID', 6);
 while ($i <= $NBPROFIDMAX) {
 	$key='CABINETMED_SHOW_PROFID'.$i;
-	if (empty($conf->global->$key)) { $i++; continue; }
+	if (!getDolGlobalString($key)) { $i++; continue; }
 
 	$idprof = $langs->transcountry('ProfId'.$i, $object->country_code);
 	if ($idprof != '-' && ($i <= $NBPROFIDMIN || !empty($langs->tab_translate['ProfId'.$i.$object->country_code]))) {
@@ -478,7 +467,7 @@ while ($i <= $NBPROFIDMAX) {
 		}
 
 		$idprof_mandatory = 'SOCIETE_IDPROF'.($i).'_MANDATORY';
-		print '<td>'.$form->editfieldkey($idprof, $key, '', $object, 0, 'string', '', !(empty($conf->global->$idprof_mandatory) || !$object->isACompany())).'</td><td>';
+		print '<td>'.$form->editfieldkey($idprof, $key, '', $object, 0, 'string', '', getDolGlobalString($idprof_mandatory) && $object->isACompany()).'</td><td>';
 		print $formcompany->get_input_id_prof($i, $key, $object->$key, $object->country_code);
 		print '</td>';
 		if (($j % $NBCOLS) == ($NBCOLS - 1)) {
@@ -566,10 +555,8 @@ if (getDolGlobalString('ACCOUNTING_FORCE_ENABLE_VAT_REVERSE_CHARGE')) {
 					print '</td></tr>';
 				}
 
-// Legal Form
-
-		if (!empty($conf->global->CABINETMED_SHOW_LEGAL_FORM)){
-
+		// Legal Form
+		if (getDolGlobalString('CABINETMED_SHOW_LEGAL_FORM')) {
 				print '<tr><td>'.$form->editfieldkey('JuridicalStatus', 'forme_juridique_code', '', $object, 0).'</td>';
 				print '<td colspan="3" class="maxwidthonsmartphone">';
 				if ($object->country_id) {
