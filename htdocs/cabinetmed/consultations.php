@@ -298,7 +298,12 @@ if (empty($reshook)) {
 							$invoice->socid = $soc->id;
 							$invoice->fk_soc = $soc->id;
 							$invoice->date = $datecons;
-
+                  	
+							if(getDolGlobalString('CABINETMED_FORCE_PAYMENT_TERM_FROM_SOC')){
+    							$invoice->cond_reglement_id = $soc->cond_reglement_id;
+    							$invoice->mode_reglement_id = $soc->mode_reglement_id;
+							}
+						
 							$vattouse = GETPOST('vat');
 
 							$product = new Product($db);
