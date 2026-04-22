@@ -106,7 +106,7 @@ $sql  = "SELECT f.datecons, f.fk_user, SUM(f.montant_cheque) as montant_cheque, 
 $sql.= " FROM ".MAIN_DB_PREFIX."cabinetmed_cons as f";
 $sql.= " WHERE 1 = 1";
 if ($search_sale > 0) $sql.= " AND f.fk_user = ".((int) $search_sale);
-if ($socid > 0 && empty($conf->global->MAIN_DISABLE_RESTRICTION_ON_THIRDPARTY_FOR_EXTERNAL)) $sql.= " AND f.fk_soc = ".((int) $socid);
+if ($socid > 0 && !getDolGlobalString("MAIN_DISABLE_RESTRICTION_ON_THIRDPARTY_FOR_EXTERNAL")) $sql.= " AND f.fk_soc = ".((int) $socid);
 $sql.= " GROUP BY f.datecons, f.fk_user";
 $sql.= " ORDER BY f.datecons";
 //print $sql;
@@ -198,7 +198,7 @@ print '</tr>';
 
 
 // Loop on each month
-$nb_mois_decalage = $conf->global->SOCIETE_FISCAL_MONTH_START?($conf->global->SOCIETE_FISCAL_MONTH_START-1):0;
+$nb_mois_decalage = getDolGlobalInt("SOCIETE_FISCAL_MONTH_START")?(getDolGlobalInt("SOCIETE_FISCAL_MONTH_START")-1):0;
 for ($mois = 1+$nb_mois_decalage ; $mois <= 12+$nb_mois_decalage ; $mois++) {
 	$mois_modulo = $mois;
 	if ($mois>12) {$mois_modulo = $mois-12;}

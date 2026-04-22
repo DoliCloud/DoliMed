@@ -235,7 +235,7 @@ class Patient extends Societe
 		$this->code_compta_fournisseur = trim($this->code_compta_fournisseur);
 
 		// Check parameters
-		if (! empty($conf->global->SOCIETE_EMAIL_MANDATORY) && ! isValidEMail($this->email)) {
+		if (getDolGlobalString('SOCIETE_EMAIL_MANDATORY') && ! isValidEMail($this->email)) {
 			$langs->load("errors");
 			$this->error = $langs->trans("ErrorBadEMail", $this->email);
 			return -1;

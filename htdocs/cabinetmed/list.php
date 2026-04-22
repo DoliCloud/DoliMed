@@ -366,8 +366,8 @@ if ($resql) {
 	print '<select class="flat" name="search_type">';
 	print '<option value="-1"'.($search_type==''?' selected="selected"':'').'>&nbsp;</option>';
 	print '<option value="1,3"'.($search_type=='1,3'?' selected="selected"':'').'>'.$langs->trans('Customer').'</option>';
-	if (empty($conf->global->SOCIETE_DISABLE_PROSPECTS)) print '<option value="2,3"'.($search_type=='2,3'?' selected="selected"':'').'>'.$langs->trans('Prospect').'</option>';
-	//if (empty($conf->global->SOCIETE_DISABLE_PROSPECTS)) print '<option value="3"'.($search_type=='3'?' selected="selected"':'').'>'.$langs->trans('ProspectCustomer').'</option>';
+	if (!getDolGlobalString("SOCIETE_DISABLE_PROSPECTS")) print '<option value="2,3"'.($search_type=='2,3'?' selected="selected"':'').'>'.$langs->trans('Prospect').'</option>';
+	//if (!getDolGlobalString("SOCIETE_DISABLE_PROSPECTS")) print '<option value="3"'.($search_type=='3'?' selected="selected"':'').'>'.$langs->trans('ProspectCustomer').'</option>';
 	print '<option value="4"'.($search_type=='4'?' selected="selected"':'').'>'.$langs->trans('Supplier').'</option>';
 	print '<option value="0"'.($search_type=='0'?' selected="selected"':'').'>'.$langs->trans('Others').'</option>';
 	print '</select></td>';
@@ -399,11 +399,11 @@ if ($resql) {
 		print "<td>".$obj->idprof4."</td>\n";
 		print '<td class="center">';
 		$s='';
-		if (($obj->client==1 || $obj->client==3) && empty($conf->global->SOCIETE_DISABLE_CUSTOMERS)) {
+		if (($obj->client==1 || $obj->client==3) && !getDolGlobalString("SOCIETE_DISABLE_CUSTOMERS")) {
 			$companystatic->name=$langs->trans("Customer");
 			$s.=$companystatic->getNomUrl(0, 'customer');
 		}
-		if (($obj->client==2 || $obj->client==3) && empty($conf->global->SOCIETE_DISABLE_PROSPECTS)) {
+		if (($obj->client==2 || $obj->client==3) && !getDolGlobalString("SOCIETE_DISABLE_PROSPECTS")) {
 			if ($s) $s.=" / ";
 			$companystatic->name=$langs->trans("Prospect");
 			$s.=$companystatic->getNomUrl(0, 'prospect');

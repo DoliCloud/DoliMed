@@ -216,7 +216,7 @@ if ($object->id) {
     print '<table class="border tableforfield centpercent">';
 
     // Prefix
-	if (! empty($conf->global->SOCIETE_USEPREFIX))  // Old not used prefix field
+	if (getDolGlobalString("SOCIETE_USEPREFIX"))  // Old not used prefix field
 	{
 		print '<tr><td>'.$langs->trans('Prefix').'</td><td colspan="3">'.$object->prefix_comm.'</td></tr>';
 	}

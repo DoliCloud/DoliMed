@@ -225,7 +225,7 @@ if ($search_diaglesprinc) {
 	$sql.= " AND c.diaglesprinc LIKE '%".$db->escape($label)."%'";
 }
 if (!$user->hasRight('societe', 'client', 'voir') && ! $socid) $sql.= " AND s.rowid = sc.fk_soc AND sc.fk_user = ".((int) $user->id);
-if ($socid && empty($conf->global->MAIN_DISABLE_RESTRICTION_ON_THIRDPARTY_FOR_EXTERNAL)) $sql.= " AND s.rowid = ".((int) $socid);
+if ($socid && !getDolGlobalString("MAIN_DISABLE_RESTRICTION_ON_THIRDPARTY_FOR_EXTERNAL")) $sql.= " AND s.rowid = ".((int) $socid);
 if ($search_ref)   $sql.= " AND c.rowid = ".((int) $db->escape($search_ref));
 if ($search_nom)   $sql.= natural_search("s.nom", $search_nom);
 if ($search_ville) $sql.= natural_search("s.town", $search_ville);

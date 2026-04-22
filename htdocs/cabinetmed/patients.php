@@ -177,7 +177,7 @@ if (($tmp = $langs->transnoentities("ProfId6".$mysoc->country_code)) && $tmp != 
 if (isModEnabled('barcode')) {
 	$fieldstosearchall['s.barcode'] = 'Gencod';
 }
-// Personalized search criterias. Example: $conf->global->THIRDPARTY_QUICKSEARCH_ON_FIELDS = 's.nom=ThirdPartyName;s.name_alias=AliasNameShort;s.code_client=CustomerCode'
+// Personalized search criterias. Example: Param THIRDPARTY_QUICKSEARCH_ON_FIELDS = 's.nom=ThirdPartyName;s.name_alias=AliasNameShort;s.code_client=CustomerCode'
 if (getDolGlobalString('THIRDPARTY_QUICKSEARCH_ON_FIELDS')) {
 	$fieldstosearchall = dolExplodeIntoArray(getDolGlobalString('THIRDPARTY_QUICKSEARCH_ON_FIELDS'));
 }
@@ -1060,7 +1060,7 @@ if (! empty($arrayfields['s.import_key']['checked'])) {
 	print '<input class="flat searchstring maxwidth50" type="text" name="search_import_key" value="'.dol_escape_htmltag($search_import_key).'">';
 	print '</td>';
 }
-if (empty($conf->global->MAIN_CHECKBOX_LEFT_COLUMN)) {
+if (!getDolGlobalString("MAIN_CHECKBOX_LEFT_COLUMN")) {
 	// Action column
 	print '<td class="liste_titre center actioncolumn">';
 	$searchpicto=$form->showFilterButtons();
@@ -1116,7 +1116,7 @@ if (! empty($arrayfields['s.tms']['checked']))        print_liste_field_titre($a
 if (! empty($arrayfields['s.status']['checked']))     print_liste_field_titre($arrayfields['s.status']['label'], $_SERVER["PHP_SELF"], "s.status", "", $param, '', $sortfield, $sortorder, 'center ');
 if (! empty($arrayfields['s.import_key']['checked'])) print_liste_field_titre($arrayfields['s.import_key']['label'], $_SERVER["PHP_SELF"], "s.import_key", "", $param, '', $sortfield, $sortorder, 'center ');
 // Action column
-if (empty($conf->global->MAIN_CHECKBOX_LEFT_COLUMN)) {
+if (!getDolGlobalString("MAIN_CHECKBOX_LEFT_COLUMN")) {
 	print_liste_field_titre($selectedfields, $_SERVER["PHP_SELF"], "", '', $param, '', $sortfield, $sortorder, 'center maxwidthsearch actioncolumn ');
 }
 print '</tr>'."\n";
@@ -1178,7 +1178,7 @@ while ($i < min($num, $limit)) {
 		}
 	}
 	if (! empty($arrayfields['s.nom']['checked'])) {
-		print '<td'.(empty($conf->global->MAIN_SOCIETE_SHOW_COMPLETE_NAME) ? ' class="tdoverflowmax200"' : '').' data-key="ref">';
+		print '<td'.(!getDolGlobalString("MAIN_SOCIETE_SHOW_COMPLETE_NAME") ? ' class="tdoverflowmax200"' : '').' data-key="ref">';
 		if ($contextpage == 'poslist') {
 			print dol_escape_htmltag($obj->name);
 		} else {
@@ -1395,7 +1395,7 @@ while ($i < min($num, $limit)) {
 	}
 
 	// Action column (Show the massaction button only when this page is not opend from the Extended POS)
-	if (empty($conf->global->MAIN_CHECKBOX_LEFT_COLUMN)) {
+	if (!getDolGlobalString("MAIN_CHECKBOX_LEFT_COLUMN")) {
 		print '<td class="nowrap center actioncolumn">';
 		if (($massactionbutton || $massaction) && $contextpage != 'poslist') {   // If we are in select mode (massactionbutton defined) or if we have already selected and sent an action ($massaction) defined
 			$selected=0;

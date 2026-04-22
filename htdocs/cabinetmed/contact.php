@@ -289,7 +289,7 @@ if ($id > 0 || ! empty($ref)) {
 			}
 			if ($tab[$i]['socid'] < 0)
 			{
-				print $conf->global->MAIN_INFO_SOCIETE_NOM;
+				print getDolGlobalString("MAIN_INFO_SOCIETE_NOM");
 			}
 			if (! $tab[$i]['socid'])
 			{
