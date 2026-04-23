@@ -1140,7 +1140,7 @@ if (! ($socid > 0)) {
 		print '<input type="text" class="flat" name="montant_tiers" id="idmontant_tiers" value="'.($object->montant_tiers!=''?price($object->montant_tiers):'').'" size="4"';
 		print ' placeholder="'.($conf->currency != $langs->getCurrencySymbol($conf->currency) ? $langs->getCurrencySymbol($conf->currency) : '').'"';
 		print '>';
-		if (isModEnabled("banque") and getDolGlobalString('CABINETMED_SHOW_VIR_BANK');) {
+		if (isModEnabled("banque") and getDolGlobalString('CABINETMED_SHOW_VIR_BANK')) {
 			print ' &nbsp; ';
 			if (((float) DOL_VERSION) >= 20.0) {
 				$form->select_comptes(GETPOST('banktiersto')?GETPOST('banktiersto'):(empty($object->bank['CB']['account_id']) ? $defaultbankaccountchq : $object->bank['CB']['account_id']), 'banktiersto', 2, 'courant = 1', $langs->trans("RecBank"), '', 0, 'maxwidth200');
