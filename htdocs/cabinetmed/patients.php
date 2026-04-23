@@ -177,7 +177,7 @@ if (($tmp = $langs->transnoentities("ProfId6".$mysoc->country_code)) && $tmp != 
 if (isModEnabled('barcode')) {
 	$fieldstosearchall['s.barcode'] = 'Gencod';
 }
-// Personalized search criterias. Example: $conf->global->THIRDPARTY_QUICKSEARCH_ON_FIELDS = 's.nom=ThirdPartyName;s.name_alias=AliasNameShort;s.code_client=CustomerCode'
+// Personalized search criterias. Example: Param THIRDPARTY_QUICKSEARCH_ON_FIELDS = 's.nom=ThirdPartyName;s.name_alias=AliasNameShort;s.code_client=CustomerCode'
 if (getDolGlobalString('THIRDPARTY_QUICKSEARCH_ON_FIELDS')) {
 	$fieldstosearchall = dolExplodeIntoArray(getDolGlobalString('THIRDPARTY_QUICKSEARCH_ON_FIELDS'));
 }
@@ -1178,7 +1178,7 @@ while ($i < min($num, $limit)) {
 		}
 	}
 	if (! empty($arrayfields['s.nom']['checked'])) {
-		print '<td'.(empty($conf->global->MAIN_SOCIETE_SHOW_COMPLETE_NAME) ? ' class="tdoverflowmax200"' : '').' data-key="ref">';
+		print '<td'.(!getDolGlobalString("MAIN_SOCIETE_SHOW_COMPLETE_NAME") ? ' class="tdoverflowmax200"' : '').' data-key="ref">';
 		if ($contextpage == 'poslist') {
 			print dol_escape_htmltag($obj->name);
 		} else {

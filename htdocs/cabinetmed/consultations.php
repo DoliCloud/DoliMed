@@ -249,7 +249,7 @@ if (empty($reshook)) {
 				if (! empty($_POST["montant_espece"]) && (! GETPOST('bankespeceto') || GETPOST('bankespeceto') < 0)) { $error++; $mesgarray[]=$langs->trans("ErrorFieldRequired", $langs->transnoentities("RecBank")); }
 			}
 			// Other
-			if (trim(GETPOST("montant_cheque")) != '' && ! empty($conf->global->CABINETMED_BANK_PATIENT_REQUIRED) && ! trim(GETPOST("banque"))) {
+			if (trim(GETPOST("montant_cheque")) != '' && getDolGlobalString("CABINETMED_BANK_PATIENT_REQUIRED") && ! trim(GETPOST("banque"))) {
 				$error++;
 				$mesgarray[]=$langs->trans("ErrorFieldRequired", $langs->transnoentities("ChequeBank"));
 			}
@@ -265,7 +265,7 @@ if (empty($reshook)) {
 				$error++;
 				$mesgarray[]=$langs->trans("ErrorFieldRequired", $langs->transnoentities("MotifConsultation"));
 			}
-			if (empty($object->diaglesprinc) && empty($conf->global->DIAGNOSTIC_IS_NOT_MANDATORY)) {
+			if (empty($object->diaglesprinc) && !getDolGlobalString("DIAGNOSTIC_IS_NOT_MANDATORY")) {
 				$error++;
 				$mesgarray[]=$langs->trans("ErrorFieldRequired", $langs->transnoentities("DiagnostiqueLesionnel"));
 			}
@@ -849,7 +849,7 @@ if (! ($socid > 0)) {
 
 		print '</div><div class="fichehalfright"><div class="ficheaddleft">';
 
-		if (! empty($conf->global->CABINETMED_FRENCH_PRISEENCHARGE)) {
+		if (getDolGlobalString("CABINETMED_FRENCH_PRISEENCHARGE")) {
 			print $langs->trans("Priseencharge").': &nbsp;';
 			print '<input type="radio" class="flat" name="typepriseencharge" value=""'.(empty($object->typepriseencharge)?' checked="checked"':'').'> '.$langs->trans("None");
 			print ' &nbsp; ';
@@ -916,7 +916,7 @@ if (! ($socid > 0)) {
 		print ' <input type="button" class="button small" id="adddiaglessec" name="adddiaglessec" value="+S" title="'.dol_escape_htmltag($langs->trans("ClickHereToSetSecondaryDiagnostic")).'">';
 		if ($user->admin) print ' '.info_admin($langs->trans("YouCanChangeValuesForThisListFromDictionarySetup"), 1);
 		print '</td></tr>';
-		print '<tr><td class="'.(empty($conf->global->DIAGNOSTIC_IS_NOT_MANDATORY)?'fieldrequired':'').'">'.$langs->trans("DiagLesPrincipal").':';
+		print '<tr><td class="'.(!getDolGlobalString("DIAGNOSTIC_IS_NOT_MANDATORY")?'fieldrequired':'').'">'.$langs->trans("DiagLesPrincipal").':';
 		print '</td><td>';
 		print '<input type="text" class="flat minwidth200" name="diaglesprinc" value="'.$object->diaglesprinc.'" id="diaglesprinc"><br>';
 		print '</td></tr>';
@@ -1045,7 +1045,7 @@ if (! ($socid > 0)) {
 		// Payment area
 		print '<table class="notopnoleftnoright centpercent" id="paymentsbox">';
 
-		if (empty($conf->global->SOCIETE_DISABLE_CUSTOMERS) && ! empty($conf->global->CABINETMED_AUTOGENERATE_INVOICE)) {
+		if (!getDolGlobalString("SOCIETE_DISABLE_CUSTOMERS") && getDolGlobalString("CABINETMED_AUTOGENERATE_INVOICE")) {
 			print '<tr><td></td><td>';
 			if ($object->id > 0 && ! $error) {
 				print '<input name="generateinvoice" type="checkbox" disabled="disabled"> <span class="opacitymedium">'.$langs->trans("GenerateInvoiceAndPayment").'</span><span class="hideonsmartphone"> - '.$langs->trans("YouMustEditInvoiceManually").'</span>';
@@ -1192,16 +1192,17 @@ if ($action == '' || $action == 'list' || $action == 'delete') {
 
 
 if ($action == '' || $action == 'list' || $action == 'delete') {
-	if ($soc->alert_antemed)       $mesgs[]=$langs->transnoentitiesnoconv("Warning").': '.$langs->transnoentitiesnoconv("AlertTriggered", $langs->transnoentitiesnoconv("AntecedentsMed"));
-	if ($soc->alert_antechirgen)   $mesgs[]=$langs->transnoentitiesnoconv("Warning").': '.$langs->transnoentitiesnoconv("AlertTriggered", $langs->transnoentitiesnoconv("AntecedentsChirGene"));
-	if ($soc->alert_antechirortho) $mesgs[]=$langs->transnoentitiesnoconv("Warning").': '.$langs->transnoentitiesnoconv("AlertTriggered", $langs->transnoentitiesnoconv("AntecedentsChirOrtho"));
-	if ($soc->alert_anterhum)      $mesgs[]=$langs->transnoentitiesnoconv("Warning").': '.$langs->transnoentitiesnoconv("AlertTriggered", $langs->transnoentitiesnoconv("AntecedentsRhumato"));
-	if ($soc->alert_other)         $mesgs[]=$langs->transnoentitiesnoconv("Warning").': '.$langs->transnoentitiesnoconv("AlertTriggered", $langs->transnoentitiesnoconv("AntecedentsMed"));
-	if ($soc->alert_traitclass)    $mesgs[]=$langs->transnoentitiesnoconv("Warning").': '.$langs->transnoentitiesnoconv("AlertTriggered", $langs->transnoentitiesnoconv("xxx"));
-	if ($soc->alert_traitallergie) $mesgs[]=$langs->transnoentitiesnoconv("Warning").': '.$langs->transnoentitiesnoconv("AlertTriggered", $langs->transnoentitiesnoconv("Allergies"));
-	if ($soc->alert_traitintol)    $mesgs[]=$langs->transnoentitiesnoconv("Warning").': '.$langs->transnoentitiesnoconv("AlertTriggered", $langs->transnoentitiesnoconv("Intolerances"));
-	if ($soc->alert_traitspec)     $mesgs[]=$langs->transnoentitiesnoconv("Warning").': '.$langs->transnoentitiesnoconv("AlertTriggered", $langs->transnoentitiesnoconv("SpecPharma"));
+	if ($soc->alert_antemed)       $mesgs[]=$langs->transnoentitiesnoconv("Warning").': '.$langs->transnoentitiesnoconv("AlertTriggered", $langs->transnoentitiesnoconv("AntecedentsMed"), $soc->note_antemed);
+	if ($soc->alert_antechirgen)   $mesgs[]=$langs->transnoentitiesnoconv("Warning").': '.$langs->transnoentitiesnoconv("AlertTriggered", $langs->transnoentitiesnoconv("AntecedentsChirGene"), $soc->note_antechirgen);
+	if ($soc->alert_antechirortho) $mesgs[]=$langs->transnoentitiesnoconv("Warning").': '.$langs->transnoentitiesnoconv("AlertTriggered", $langs->transnoentitiesnoconv("AntecedentsChirOrtho"), $soc->note_antechirortho);
+	if ($soc->alert_anterhum)      $mesgs[]=$langs->transnoentitiesnoconv("Warning").': '.$langs->transnoentitiesnoconv("AlertTriggered", $langs->transnoentitiesnoconv("AntecedentsRhumato"), $soc->note_anterhum);
+	if ($soc->alert_other)         $mesgs[]=$langs->transnoentitiesnoconv("Warning").': '.$langs->transnoentitiesnoconv("AlertTriggered", $langs->transnoentitiesnoconv("AntecedentsMed"), $soc->note_other);
+	if ($soc->alert_traitclass)    $mesgs[]=$langs->transnoentitiesnoconv("Warning").': '.$langs->transnoentitiesnoconv("AlertTriggered", $langs->transnoentitiesnoconv("xxx"), $soc->note_traitclass);
+	if ($soc->alert_traitallergie) $mesgs[]=$langs->transnoentitiesnoconv("Warning").': '.$langs->transnoentitiesnoconv("AlertTriggered", $langs->transnoentitiesnoconv("Allergies"), $soc->note_traitallergie);
+	if ($soc->alert_traitintol)    $mesgs[]=$langs->transnoentitiesnoconv("Warning").': '.$langs->transnoentitiesnoconv("AlertTriggered", $langs->transnoentitiesnoconv("Intolerances"), $soc->note_traitintol);
+	if ($soc->alert_traitspec)     $mesgs[]=$langs->transnoentitiesnoconv("Warning").': '.$langs->transnoentitiesnoconv("AlertTriggered", $langs->transnoentitiesnoconv("SpecPharma"), $soc->note_traitspec);
 	if ($soc->alert_note)          $mesgs[]=$langs->transnoentitiesnoconv("Warning").': '.$langs->transnoentitiesnoconv("AlertTriggered", $langs->transnoentitiesnoconv("Note"));
+
 
 	// Confirm delete consultation
 	if (GETPOST("action") == 'delete') {

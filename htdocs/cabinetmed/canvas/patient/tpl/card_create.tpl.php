@@ -479,7 +479,7 @@ $NBPROFIDMIN = getDolGlobalInt('THIRDPARTY_MIN_NB_PROF_ID', 2);
 $NBPROFIDMAX = getDolGlobalInt('THIRDPARTY_MAX_NB_PROF_ID', 6);
 while ($i <= $NBPROFIDMAX) {
 	$key='CABINETMED_SHOW_PROFID'.$i;
-	if (empty($conf->global->$key)) { $i++; continue; }
+	if (!getDolGlobalString($key)) { $i++; continue; }
 
 	$idprof=$langs->transcountry('ProfId'.$i, $object->country_code);
 	if ($idprof!='-') {
@@ -488,9 +488,11 @@ while ($i <= $NBPROFIDMAX) {
 		if (($j % 2) == 0) print '<tr>';
 
 		$idprof_mandatory ='SOCIETE_IDPROF'.($i).'_MANDATORY';
-		if (empty($conf->global->$idprof_mandatory))
+		if (!getDolGlobalString($idprof_mandatory)) {
 			print '<td><label for="'.$key.'">'.$idprof.'</label></td><td>';
-		else print '<td><span class="fieldrequired"><label for="'.$key.'">'.$idprof.'</label></td><td>';
+		} else {
+			print '<td><span class="fieldrequired"><label for="'.$key.'">'.$idprof.'</label></td><td>';
+		}
 
 		print $formcompany->get_input_id_prof($i, $key, $object->$key, $object->country_code);
 		print '</td>';
@@ -507,7 +509,6 @@ while ($i <= $NBPROFIDMAX) {
 		print '<td>'.$idprof.'</td><td colspan="3">';
 
 		print '<input type="text" name="idprof3" size="18" maxlength="32" value="'.$object->idprof3.'"> ('.$conf->format_date_short_java.')';
-		//$conf->global->MAIN_POPUP_CALENDAR='none';
 		//print $form->selectDate(-1,'birthdate');
 		print '</td>';
 		print '</tr>';
@@ -534,7 +535,11 @@ while ($i <= $NBPROFIDMAX) {
 		print '<tr><td>'.$langs->trans('ActivityBranch').'</td>';
 		print '<td colspan="3">';
 		if ($GLOBALS['mysoc']->country_id) {
-			print $formcompany->select_juridicalstatus($object->forme_juridique_code, $GLOBALS['mysoc']->country_code, "AND (f.module = 'cabinetmed' OR f.code > '100000')");	// > 100000 is the only way i found to not see other entries
+			if ((float) DOL_VERSION <= 23) {
+				print $formcompany->select_juridicalstatus($object->forme_juridique_code, $GLOBALS['mysoc']->country_code, "AND (f.module = 'cabinetmed' OR f.code > '100000')");	// > 100000 is the only way i found to not see other entries
+			} else {
+				print $formcompany->select_juridicalstatus($object->forme_juridique_code, $GLOBALS['mysoc']->country_code, "(f.module:=:'cabinetmed') OR (f.code:>:'100000')");	// > 100000 is the only way i found to not see other entries
+			}
 		} else {
 			print $GLOBALS['countrynotdefined'];
 		}

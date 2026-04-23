@@ -95,7 +95,7 @@ class box_patients extends ModeleBoxes
 			$result = $db->query($sql);
 			if ($result) {
 				$num = $db->num_rows($result);
-				if (empty($conf->global->SOCIETE_DISABLE_CUSTOMERS)) $url= DOL_URL_ROOT."/comm/card.php?socid=";
+				if (!getDolGlobalString("SOCIETE_DISABLE_CUSTOMERS")) $url= DOL_URL_ROOT."/comm/card.php?socid=";
 				else {
 					if ((float) DOL_VERSION < 6.0) $url= DOL_URL_ROOT."/societe/soc.php?socid=";
 					else $url= DOL_URL_ROOT."/societe/card.php?socid=";

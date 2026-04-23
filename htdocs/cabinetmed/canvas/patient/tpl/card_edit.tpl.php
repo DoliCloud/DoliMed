@@ -269,17 +269,6 @@ if (getDolGlobalString('SOCIETE_DISABLE_PROSPECTS') && getDolGlobalString('SOCIE
 		refreshNatureCss();
 		</script>';
 	}
-
-	/*
-	if (getDolGlobalString('SOCIETE_DISABLE_CUSTOMERS')) $nothingvalue=1;  // if feature to disable customer is on, nothing will keep value 1 in database.
-	if (getDolGlobalString('SOCIETE_DISABLE_CUSTOMERS')) $prospectonly=3;  // if feature to disable customer is on, nothing will keep value 3 in database.
-	print '<select class="flat" name="client" id="customerprospect">';
-	if (empty($conf->global->SOCIETE_DISABLE_PROSPECTS)) print '<option value="'.$prospectonly.'"'.($object->client==$prospectonly?' selected':'').'>'.$langs->trans('Prospect').'</option>';
-	if (empty($conf->global->SOCIETE_DISABLE_PROSPECTS) && empty($conf->global->SOCIETE_DISABLE_CUSTOMERS)) print '<option value="3"'.($object->client==3?' selected':'').'>'.$langs->trans('ProspectCustomer').'</option>';
-	if (empty($conf->global->SOCIETE_DISABLE_CUSTOMERS)) print '<option value="1"'.($object->client==1?' selected':'').'>'.$langs->trans('Customer').'</option>';
-	print '<option value="'.$nothingvalue.'"'.($object->client==$nothingvalue?' selected':'').'>'.$langs->trans('NorProspectNorCustomer').'</option>';
-	print '</select>';
-	*/
 }
 print '</td>';
 print '<td>'.fieldLabel('CustomerCode', 'customer_code').'</td><td>';
@@ -467,7 +456,7 @@ $NBPROFIDMIN = getDolGlobalInt('THIRDPARTY_MIN_NB_PROF_ID', 2);
 $NBPROFIDMAX = getDolGlobalInt('THIRDPARTY_MAX_NB_PROF_ID', 6);
 while ($i <= $NBPROFIDMAX) {
 	$key='CABINETMED_SHOW_PROFID'.$i;
-	if (empty($conf->global->$key)) { $i++; continue; }
+	if (!getDolGlobalString($key)) { $i++; continue; }
 
 	$idprof = $langs->transcountry('ProfId'.$i, $object->country_code);
 	if ($idprof != '-' && ($i <= $NBPROFIDMIN || !empty($langs->tab_translate['ProfId'.$i.$object->country_code]))) {
@@ -478,7 +467,7 @@ while ($i <= $NBPROFIDMAX) {
 		}
 
 		$idprof_mandatory = 'SOCIETE_IDPROF'.($i).'_MANDATORY';
-		print '<td>'.$form->editfieldkey($idprof, $key, '', $object, 0, 'string', '', !(empty($conf->global->$idprof_mandatory) || !$object->isACompany())).'</td><td>';
+		print '<td>'.$form->editfieldkey($idprof, $key, '', $object, 0, 'string', '', getDolGlobalString($idprof_mandatory) && $object->isACompany()).'</td><td>';
 		print $formcompany->get_input_id_prof($i, $key, $object->$key, $object->country_code);
 		print '</td>';
 		if (($j % $NBCOLS) == ($NBCOLS - 1)) {
@@ -520,6 +509,64 @@ if (getDolGlobalString('ACCOUNTING_FORCE_ENABLE_VAT_REVERSE_CHARGE')) {
 	print '<input type="checkbox" name="vat_reverse_charge" '.($object->vat_reverse_charge == '1' ? ' checked' : '').'>';
 	print '</td></tr>';
 }
+
+
+// VAT is used
+				print '<tr><td>'.$form->editfieldkey('VATIsUsed', 'assujtva_value', '', $object, 0).'</td><td colspan="3">';
+				print '<input id="assujtva_value" name="assujtva_value" type="checkbox" ' . ($object->tva_assuj ? 'checked="checked"' : '') . ' value="1">';
+				print '</td></tr>';
+
+// Local Taxes
+				if ($mysoc->localtax1_assuj == "1" && $mysoc->localtax2_assuj == "1") {
+					print '<tr><td>'.$form->editfieldkey($langs->transcountry("LocalTax1IsUsed", $mysoc->country_code), 'localtax1assuj_value', '', $object, 0).'</td><td>';
+					print '<input id="localtax1assuj_value" name="localtax1assuj_value" type="checkbox" ' . ($object->localtax1_assuj ? 'checked="checked"' : '') . ' value="1">';
+					if (!isOnlyOneLocalTax(1)) {
+						print '<span class="cblt1">     '.$langs->transcountry("Type", $mysoc->country_code).': ';
+						$formcompany->select_localtax(1, (float) $object->localtax1_value, "lt1");
+						print '</span>';
+					}
+					print '</td>';
+					print '</tr><tr>';
+					print '<td>'.$form->editfieldkey($langs->transcountry("LocalTax2IsUsed", $mysoc->country_code), 'localtax2assuj_value', '', $object, 0).'</td><td>';
+					print '<input id="localtax2assuj_value" name="localtax2assuj_value" type="checkbox" ' . ($object->localtax2_assuj ? 'checked="checked"' : '') . ' value="1"></td></tr>';
+					if (!isOnlyOneLocalTax(2)) {
+						print '<span class="cblt2">     '.$langs->transcountry("Type", $mysoc->country_code).': ';
+						$formcompany->select_localtax(2, (float) $object->localtax2_value, "lt2");
+						print '</span>';
+					}
+					print '</td></tr>';
+				} elseif ($mysoc->localtax1_assuj == "1" && $mysoc->localtax2_assuj != "1") {
+					print '<tr><td>'.$form->editfieldkey($langs->transcountry("LocalTax1IsUsed", $mysoc->country_code), 'localtax1assuj_value', '', $object, 0).'</td><td colspan="3">';
+					print '<input id="localtax1assuj_value" name="localtax1assuj_value" type="checkbox" ' . ($object->localtax1_assuj ? 'checked="checked"' : '') . ' value="1">';
+					if (!isOnlyOneLocalTax(1)) {
+						print '<span class="cblt1">     '.$langs->transcountry("Type", $mysoc->country_code).': ';
+						$formcompany->select_localtax(1, (float) $object->localtax1_value, "lt1");
+						print '</span>';
+					}
+					print '</td></tr>';
+				} elseif ($mysoc->localtax2_assuj == "1" && $mysoc->localtax1_assuj != "1") {
+					print '<tr><td>'.$form->editfieldkey($langs->transcountry("LocalTax2IsUsed", $mysoc->country_code), 'localtax2assuj_value', '', $object, 0).'</td><td colspan="3">';
+					print '<input id="localtax2assuj_value" name="localtax2assuj_value" type="checkbox" ' . ($object->localtax2_assuj ? 'checked="checked"' : '') . ' value="1">';
+					if (!isOnlyOneLocalTax(2)) {
+						print '<span class="cblt2">     '.$langs->transcountry("Type", $mysoc->country_code).': ';
+						$formcompany->select_localtax(2, (float) $object->localtax2_value, "lt2");
+						print '</span>';
+					}
+					print '</td></tr>';
+				}
+
+		// Legal Form
+		if (getDolGlobalString('CABINETMED_SHOW_LEGAL_FORM')) {
+				print '<tr><td>'.$form->editfieldkey('JuridicalStatus', 'forme_juridique_code', '', $object, 0).'</td>';
+				print '<td colspan="3" class="maxwidthonsmartphone">';
+				if ($object->country_id) {
+					print $formcompany->select_juridicalstatus($object->forme_juridique_code, $object->country_code, '', 'forme_juridique_code');
+				} else {
+					print $countrynotdefined;
+				}
+				print '</td></tr>';
+    	}
+
 
 // Num secu
 print '<tr>';

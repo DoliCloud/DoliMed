@@ -596,7 +596,7 @@ if ($action == '' || $action == 'delete') {
 	$totalarray['nbfield']++;
 	print_liste_field_titre($langs->trans("Result"));
 	$totalarray['nbfield']++;
-	if (! empty($conf->global->CABINETMED_RHEUMATOLOGY_ON)) {
+	if (getDolGlobalString("CABINETMED_RHEUMATOLOGY_ON")) {
 		print_liste_field_titre($langs->trans("Das28"));
 		$totalarray['nbfield']++;
 		print_liste_field_titre($langs->trans("Basdai"));

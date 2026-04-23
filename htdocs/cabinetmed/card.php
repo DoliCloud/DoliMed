@@ -627,7 +627,7 @@ if (empty($reshook)) {
 						exit;
 					} else {
 						$url=$_SERVER["PHP_SELF"]."?socid=".$object->id;
-						/*if (($object->client == 1 || $object->client == 3) && empty($conf->global->SOCIETE_DISABLE_CUSTOMERS)) $url=DOL_URL_ROOT."/comm/card.php?socid=".$object->id;
+						/*if (($object->client == 1 || $object->client == 3) && !getDolGlobalString("SOCIETE_DISABLE_CUSTOMERS")) $url=DOL_URL_ROOT."/comm/card.php?socid=".$object->id;
 						else if ($object->fournisseur == 1) $url=DOL_URL_ROOT."/fourn/card.php?socid=".$object->id;*/
 
 						header("Location: ".$url);
@@ -715,7 +715,7 @@ if (empty($reshook)) {
 								$object->addThumbs($newfile);
 
 								// Index file in database
-								if (! empty($conf->global->THIRDPARTY_LOGO_ALLOW_EXTERNAL_DOWNLOAD)) {
+								if (getDolGlobalString("THIRDPARTY_LOGO_ALLOW_EXTERNAL_DOWNLOAD")) {
 									require_once DOL_DOCUMENT_ROOT .'/core/lib/files.lib.php';
 									// the dir dirname($newfile) is directory of logo, so we should have only one file at once into index, so we delete indexes for the dir
 									deleteFilesIntoDatabaseIndex(dirname($newfile), '', '');

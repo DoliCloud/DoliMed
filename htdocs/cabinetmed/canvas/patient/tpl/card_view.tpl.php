@@ -178,7 +178,7 @@ $NBPROFIDMIN = getDolGlobalInt('THIRDPARTY_MIN_NB_PROF_ID', 2);
 $NBPROFIDMAX = getDolGlobalInt('THIRDPARTY_MAX_NB_PROF_ID', 6);
 while ($i <= $NBPROFIDMAX) {
 	$key='CABINETMED_SHOW_PROFID'.$i;
-	if (empty($conf->global->$key)) { $i++; continue; }
+	if (!getDolGlobalString($key)) { $i++; continue; }
 
 	$idprof = $langs->transcountry('ProfId'.$i, $object->country_code);
 	if (!empty($conf->dol_optimize_smallscreen)) {
@@ -324,7 +324,7 @@ if (! empty($object->array_options['options_birthdate'])) {
 }
 
 // Ban
-if (empty($conf->global->SOCIETE_DISABLE_BANKACCOUNT)) {
+if (!getDolGlobalString('SOCIETE_DISABLE_BANKACCOUNT')) {
 	print '<tr><td>';
 	print '<table class="centpercent nobordernopadding"><tr><td>';
 	print $langs->trans('RIB');
@@ -346,9 +346,9 @@ if (empty($conf->global->SOCIETE_DISABLE_BANKACCOUNT)) {
 }
 
 // Parent company
-if (empty($conf->global->SOCIETE_DISABLE_PARENTCOMPANY)) {
+if (!getDolGlobalString('SOCIETE_DISABLE_PARENTCOMPANY')) {
 	print '<tr><td>';
-	print '<table class="nobordernopadding" width="100%"><tr><td>';
+	print '<table class="nobordernopadding centpercent"><tr><td>';
 	print $langs->trans('ParentPatient');
 	print '</td>';
 	if ($action != 'editparentcompany') print '<td class="right"><a class="editfielda" href="'.$_SERVER["PHP_SELF"].'?action=editparentcompany&token='.newToken().'&socid='.$object->id.'">'.img_edit($langs->transnoentitiesnoconv('Edit'), 1).'</a></td>';
@@ -478,22 +478,24 @@ if ((float) DOL_VERSION >= 7.0) {
 	$formmail->fromname = $user->getFullName($langs);
 	$formmail->frommail = $user->email;
 	$formmail->trackid='thi'.$object->id;
-	if (! empty($conf->global->MAIN_EMAIL_ADD_TRACK_ID) && ($conf->global->MAIN_EMAIL_ADD_TRACK_ID & 2)) {	// If bit 2 is set
+	if (getDolGlobalString('MAIN_EMAIL_ADD_TRACK_ID') && (getDolGlobalInt('MAIN_EMAIL_ADD_TRACK_ID') & 2)) {	// If bit 2 is set
 		include DOL_DOCUMENT_ROOT.'/core/lib/functions2.lib.php';
 		$formmail->frommail=dolAddEmailTrackId($formmail->frommail, 'inv'.$object->id);
 	}
 	$formmail->withfrom=1;
 	$formmail->withtopic=1;
 	$liste=array();
-	foreach ($object->thirdparty_and_contact_email_array(1) as $key=>$value) $liste[$key]=$value;
-	$formmail->withto=GETPOST('sendto')?GETPOST('sendto'):$liste;
-	$formmail->withtofree=0;
-	$formmail->withtocc=$liste;
-	$formmail->withtoccc=$conf->global->MAIN_EMAIL_USECCC;
-	$formmail->withfile=2;
-	$formmail->withbody=1;
-	$formmail->withdeliveryreceipt=1;
-	$formmail->withcancel=1;
+	foreach ($object->thirdparty_and_contact_email_array(1) as $key=>$value) {
+		$liste[$key]=$value;
+	}
+	$formmail->withto = GETPOST('sendto')?GETPOST('sendto'):$liste;
+	$formmail->withtofree = 0;
+	$formmail->withtocc = $liste;
+	$formmail->withtoccc = getDolGlobalString('MAIN_EMAIL_USECCC');
+	$formmail->withfile = 2;
+	$formmail->withbody = 1;
+	$formmail->withdeliveryreceipt = 1;
+	$formmail->withcancel = 1;
 	// Tableau des substitutions
 	$formmail->substit['__SIGNATURE__']=$user->signature;
 	$formmail->substit['__USER_SIGNATURE__']=$user->signature;

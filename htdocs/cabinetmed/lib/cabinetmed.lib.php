@@ -36,11 +36,11 @@ function addAlert($db, $type, $id, $value)
 {
 	$res='';
 
-	$sql = "INSERT INTO ".MAIN_DB_PREFIX."cabinetmed_patient(rowid, ".$type.") VALUES (".$id.", ".$value.")";
+	$sql = "INSERT INTO ".MAIN_DB_PREFIX."cabinetmed_patient(rowid, ".$db->sanitize($type).") VALUES (".((int) $id).", ".((int) $value).")";
 	dol_syslog("sql=".$sql);
 	$resql1 = $db->query($sql, 1);
 
-	$sql = "UPDATE ".MAIN_DB_PREFIX."cabinetmed_patient SET ".$type."=".$value." WHERE rowid=".$id;
+	$sql = "UPDATE ".MAIN_DB_PREFIX."cabinetmed_patient SET ".$db->sanitize($type)." = ".((int) $value)." WHERE rowid = ".((int) $id);
 	dol_syslog("sql=".$sql);
 	$resql2 = $db->query($sql);
 

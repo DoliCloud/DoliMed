@@ -107,7 +107,7 @@ class FormFileCabinetmed extends FormFile
 			if ($object->element == 'project_task') $relativepath='Call_not_supported_._Call_function_using_a_defined_relative_path_.';
 		}
 		// For backward compatiblity, we detect file stored into an old path
-		if (! empty($conf->global->PRODUCT_USE_OLD_PATH_FOR_PHOTO) && $filearray[0]['level1name'] == 'photos') {
+		if (getDolGlobalString('PRODUCT_USE_OLD_PATH_FOR_PHOTO') && $filearray[0]['level1name'] == 'photos') {
 			$relativepath=preg_replace('/^.*\/produit\//', '', $filearray[0]['path']).'/';
 		}
 		// Defined relative dir to DOL_DATA_ROOT
@@ -153,7 +153,7 @@ class FormFileCabinetmed extends FormFile
 					if ($user->hasRight('service', 'creer') && $object->type == Product::TYPE_SERVICE) $permtoeditline=1;
 				}
 			}
-			if (empty($conf->global->MAIN_UPLOAD_DOC)) {
+			if (!getDolGlobalString('MAIN_UPLOAD_DOC')) {
 				$permtoeditline=0;
 				$permonobject=0;
 			}
