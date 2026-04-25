@@ -47,8 +47,7 @@ if (! $res) die("Include of main fails");
 header('Content-type: text/css');
 // Important: Following code is to avoid page request by browser and PHP CPU at
 // each Dolibarr page access.
-if (empty($dolibarr_nocache)) header('Cache-Control: max-age=3600, public, must-revalidate');
-else header('Cache-Control: no-cache');
+header('Cache-Control: max-age=3600, public, must-revalidate');
 
 //$path='/cabinetmed';    // This value may be used in future for external module to overwrite theme
 //$theme='cabinetmed';
