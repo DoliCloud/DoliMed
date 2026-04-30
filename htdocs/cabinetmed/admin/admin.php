@@ -35,7 +35,11 @@ $tmp=empty($_SERVER['SCRIPT_FILENAME'])?'':$_SERVER['SCRIPT_FILENAME'];$tmp2=rea
 while ($i > 0 && $j > 0 && isset($tmp[$i]) && isset($tmp2[$j]) && $tmp[$i]==$tmp2[$j]) { $i--; $j--; }
 if (! $res && $i > 0 && file_exists(substr($tmp, 0, ($i+1))."/main.inc.php")) $res=@include substr($tmp, 0, ($i+1))."/main.inc.php";
 if (! $res && $i > 0 && file_exists(dirname(substr($tmp, 0, ($i+1)))."/main.inc.php")) $res=@include dirname(substr($tmp, 0, ($i+1)))."/main.inc.php";
-
+/**
+ * @var Conf $conf
+ * @var DoliDB $db
+ * @var Translate $langs
+ */
 // Try main.inc.php using relative path
 if (! $res && file_exists("../main.inc.php")) $res=@include "../main.inc.php";
 if (! $res && file_exists("../../main.inc.php")) $res=@include "../../main.inc.php";
@@ -80,7 +84,7 @@ if ($action == 'update') {
 	$res=dolibarr_set_const($db, 'DIAGNOSTIC_IS_NOT_MANDATORY', GETPOST("DIAGNOSTIC_IS_NOT_MANDATORY") ? 0 : 1, 'texte', 0, '', $conf->entity);
 
 	if (GETPOSTISSET('CABINETMED_DELAY_TO_LOCK_RECORD')) {
-		$res=dolibarr_set_const($db, 'CABINETMED_DELAY_TO_LOCK_RECORD', GETPOST("CABINETMED_DELAY_TO_LOCK_RECORD") ? 0 : 1, 'texte', 0, '', $conf->entity);
+		$res=dolibarr_set_const($db, 'CABINETMED_DELAY_TO_LOCK_RECORD', GETPOSTINT("CABINETMED_DELAY_TO_LOCK_RECORD"), 'texte', 0, '', $conf->entity);
 	}
 
 	$res=dolibarr_set_const($db, 'CABINETMED_SHOW_MEDICAMENTS_LIST', GETPOST("CABINETMED_SHOW_MEDICAMENTS_LIST"), 'texte', 0, '', $conf->entity);
