@@ -138,15 +138,14 @@ class modCabinetMed extends DolibarrModules
 							 9=>array('MAIN_FORCELANGDIR','chaine','/cabinetmed','Language files are searched into this dir first',1,'current',1),
 							11=>array('MAIN_DISABLEVATCHECK','chaine','1','Disable link to VAT check',1,'current',1),
 							12=>array('MAIN_DISABLEDRAFTSTATUS','chaine','1','Disable draft status',1,'current',1),
-							16=>array('MAIN_SUPPORT_SHARED_CONTACT_BETWEEN_THIRDPARTIES','chaine','1','Can add third party type of contact',1,'current',1),
-							17=>array('MAIN_SUPPORT_CONTACT_TYPE_FOR_THIRDPARTIES','chaine','1','Can add third party type of contact',1,'current',1),	// old one. Replaced with MAIN_SUPPORT_SHARED_CONTACT_BETWEEN_THIRDPARTIES
+							//16=>array('MAIN_SUPPORT_SHARED_CONTACT_BETWEEN_THIRDPARTIES','chaine','1','Can add third party type of contact',1,'current',1),	// Don't see why we need this, we alreayd have a module page for tab "cabinetmed/contact.php", so disabled.
 							18=>array('MAIN_APPLICATION_TITLE','chaine','+DoliMed','Change software title',1,'current',1),
 							19=>array('CABINETMED_RHEUMATOLOGY_ON','chaine','0','Enable features for rheumatology',0,'current',0),		// Not visible, Do not remove if module removed
 							20=>array('SOCIETE_DISABLE_CUSTOMERS','chaine','1','Hide customer features',1,'current',1),
 							21=>array('SOCIETE_DISABLE_PROSPECTS','chaine','1','Hide prospect features',1,'current',1),
 							22=>array('SOCIETE_DISABLE_PARENTCOMPANY','chaine','1','Hide parent company field',1,'current',1),
 							23=>array('CABINETMED_HIDETHIRPARTIESMENU','chaine','1','Hide thirdparties',0,'current',1),					// Not visible
-							
+
 		                    99=>array('MAIN_ALLOW_OLD_VAR_OBJ_IN_DOL_EVAL','chaine','1','Compatibility of DoliMed with v23.0.0',1,'current',1)
 		);
 

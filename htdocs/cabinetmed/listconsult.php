@@ -695,8 +695,8 @@ while ($i < $imaxinloop) {
 			}
 			$foundamount++;
 		}
-		print '<td class="tdoverflowmax80" title="'.dol_escape_htmltag($s).'">';
-		print dol_escape_htmltag($s);
+		print '<td class="tdoverflowmax80" title="'.dolPrintHTMLForAttribute($s).'">';
+		print dolPrintHTML($s);
 		print '</td>';
 	}
 

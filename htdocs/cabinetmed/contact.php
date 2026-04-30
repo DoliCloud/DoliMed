@@ -38,7 +38,13 @@ if (! $res && file_exists("../main.inc.php")) $res=@include "../main.inc.php";
 if (! $res && file_exists("../../main.inc.php")) $res=@include "../../main.inc.php";
 if (! $res && file_exists("../../../main.inc.php")) $res=@include "../../../main.inc.php";
 if (! $res) die("Include of main fails");
-
+/**
+ * @var DoliDB $db
+ * @var User $user
+ * @var Translate $langs
+ * @var Conf $conf
+ * @var HookManager $hookmanager
+ */
 include_once DOL_DOCUMENT_ROOT."/core/lib/company.lib.php";
 include_once DOL_DOCUMENT_ROOT."/core/lib/ajax.lib.php";
 include_once DOL_DOCUMENT_ROOT."/core/lib/admin.lib.php";
@@ -138,11 +144,6 @@ $userstatic=new User($db);
 
 llxHeader('', $langs->trans('Contacts'), '');
 
-/* *************************************************************************** */
-/*                                                                             */
-/* Mode vue et edition                                                         */
-/*                                                                             */
-/* *************************************************************************** */
 if (isset($mesg)) {
 	print $mesg;
 }
@@ -165,8 +166,6 @@ if ($id > 0 || ! empty($ref)) {
             .ui-autocomplete-input { width: '.$width.'px; }
             </style>
             ';
-
-	print ajax_combobox('contactid');
 
 	print '<form method="post" action="'.$_SERVER["PHP_SELF"].'">';
 	print '<input type="hidden" name="token" value="'.newToken().'">';
@@ -234,19 +233,26 @@ if ($id > 0 || ! empty($ref)) {
 		// $contactAlreadySelected = $commande->getListContactId('external');	// On ne doit pas desactiver un contact deja selectionner car on doit pouvoir le seclectionner une deuxieme fois pour un autre type
 		if (method_exists($form, 'select_contact')) {
 			print $form->select_contact(0, GETPOSTINT('contactid'), 'contactid', 1, '', '', 1, 'minwidth100imp maxwidth400 widthcentpercentminusx', true);
+			$nbofcontacts = 1;		// Set a value to non zero, so the button to add will not be disabled.
 		} else {
+			// Old version of Dolibarr where method select_contact did not exist
 			print $form->selectcontacts(0, GETPOSTINT('contactid'), 'contactid', 1, '', '', 1);
+			$nbofcontacts = $form->num;
 		}
 
-		$nbofcontacts = $form->num;
-		print ' <a href="'.DOL_URL_ROOT.'/contact/card.php?leftmenu=contacts&action=create&backtopage='.urlencode($_SERVER["PHP_SELF"].'?socid='.$socid.'&contactid=__ID__').'">'.$langs->trans("Add").'</a>';
+		print ' <a class="valignmiddle" href="'.DOL_URL_ROOT.'/contact/card.php?leftmenu=contacts&action=create&backtopage='.urlencode($_SERVER["PHP_SELF"].'?socid='.$socid.'&contactid=__ID__').'">';
+		print '<span class="fa fa-plus-circle valignmiddle paddingleft" title="' . $langs->trans("Add") . '"></span>';
+		//print $langs->trans("Add");
+		print '</a>';
 		print '</td>';
 		print '<td>';
 		$formcompany->selectTypeContact($societe, '', 'type', 'external', 'libelle', 1);
 		//if ($user->admin) print info_admin($langs->trans("YouCanChangeValuesForThisListFromDictionarySetup"),1);
 		print '</td>';
 		print '<td align="center" colspan="3" ><input type="submit" class="button small" value="'.$langs->trans("AddLink").'"';
-		if (! $nbofcontacts) print ' disabled="disabled"';
+		if (! $nbofcontacts) {
+			print ' disabled="disabled"';
+		}
 		print '></td>';
 		print '</tr>';
 
