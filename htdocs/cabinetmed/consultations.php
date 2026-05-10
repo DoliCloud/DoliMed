@@ -298,7 +298,12 @@ if (empty($reshook)) {
 							$invoice->socid = $soc->id;
 							$invoice->fk_soc = $soc->id;
 							$invoice->date = $datecons;
-
+                  	
+							if(getDolGlobalString('CABINETMED_FORCE_PAYMENT_TERM_FROM_SOC')){
+    							$invoice->cond_reglement_id = $soc->cond_reglement_id;
+    							$invoice->mode_reglement_id = $soc->mode_reglement_id;
+							}
+						
 							$vattouse = GETPOST('vat');
 
 							$product = new Product($db);
@@ -1093,7 +1098,7 @@ if (! ($socid > 0)) {
 
 		// Card (CB)
 		print '<tr class="cabpaymentcarte"><td class="">';
-		print $langs->trans("PaymentTypeCarte").'</td><td>';
+		print $langs->trans("PaymentTypeCB").'</td><td>';
 		print '<input type="text" class="flat" name="montant_carte" id="idmontant_carte" value="'.($object->montant_carte != '' ? price($object->montant_carte):'').'" size="4"';
 		print ' placeholder="'.($conf->currency != $langs->getCurrencySymbol($conf->currency) ? $langs->getCurrencySymbol($conf->currency) : '').'"';
 		print '>';
@@ -1131,10 +1136,19 @@ if (! ($socid > 0)) {
 
 		// Other payment mode (VIR)
 		print '<tr class="cabpaymentthirdparty"><td class="">';
-		print $langs->trans("PaymentTypeOther").'</td><td>';
+		print $langs->trans("PaymentTypeVIR").'</td><td>';
 		print '<input type="text" class="flat" name="montant_tiers" id="idmontant_tiers" value="'.($object->montant_tiers!=''?price($object->montant_tiers):'').'" size="4"';
 		print ' placeholder="'.($conf->currency != $langs->getCurrencySymbol($conf->currency) ? $langs->getCurrencySymbol($conf->currency) : '').'"';
 		print '>';
+		if (isModEnabled("banque") and getDolGlobalString('CABINETMED_SHOW_VIR_BANK')) {
+			print ' &nbsp; ';
+			if (((float) DOL_VERSION) >= 20.0) {
+				$form->select_comptes(GETPOST('banktiersto')?GETPOST('banktiersto'):(empty($object->bank['CB']['account_id']) ? $defaultbankaccountchq : $object->bank['CB']['account_id']), 'banktiersto', 2, 'courant = 1', $langs->trans("RecBank"), '', 0, 'maxwidth200');
+			} else {
+				print $langs->trans("RecBank").' ';
+				$form->select_comptes(GETPOST('banktiersto')?GETPOST('banktiersto'):(empty($object->bank['CB']['account_id']) ? $defaultbankaccountchq : $object->bank['CB']['account_id']), 'banktiersto', 2, 'courant = 1', 1, '', 0, 'maxwidth200');
+			}
+		}
 		print '<span class="opacitymedium"> &nbsp; ('.$langs->trans("ZeroHereIfNoPayment").')</span>';
 		print '</td></tr>';
 
