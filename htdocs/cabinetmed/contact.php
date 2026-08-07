@@ -326,7 +326,7 @@ if ($id > 0 || ! empty($ref)) {
 			// Statut
 			print '<td class="center">';
 			// Activation desativation du contact
-			if ($societe->statut >= 0)	print '<a href="contact.php?socid='.$societe->id.'&amp;action=swapstatut&amp;ligne='.$tab[$i]['rowid'].'">';
+			if ($societe->statut >= 0)	print '<a href="contact.php?socid='.$societe->id.'&action=swapstatut&token='.newToken().'&ligne='.((int) $tab[$i]['rowid']).'">';
 			print $contactstatic->LibStatut($tab[$i]['status'], 3);
 			if ($societe->statut >= 0)	print '</a>';
 			print '</td>';
