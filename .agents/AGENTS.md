@@ -109,7 +109,7 @@ Before any modification, verify:
 - User rights enforcement (`$user->hasRights("module", "permission")` or `$user->hasRights("module", "objectname", "permission")`)
 - Multi-entity compatibility (add ` AND entity IN ('.getDolEntity("tablename").')`)
 
-If possible:
+If possible and if it was explicitely requested:
 - If doing an external module, add a PHPUnit test file in `yourmoduledir/test/phpunit/`
 - If modifying the Dolibarr code project, add a PHPUnit test file into `test/phpunit/` and add the entry into file `test/phpunit/AllTests.php`.
 
