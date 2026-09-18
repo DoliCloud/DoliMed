@@ -105,49 +105,49 @@ if (empty($reshook)) {
 		$sql.= " WHERE rowid = ".GETPOSTINT("socid");
 		$result2 = $db->query($sql);
 
-		$alert=($_POST["alert_antemed"]?'1':'0');
+		$alert = (GETPOST("alert_antemed", "alpha")?'1':'0');
 		$result3=addAlert($db, 'alert_antemed', $socid, $alert);
 		if ($result3) {
 			$error++; $mesg=$result3;
 		}
 
-		$alert=($_POST["alert_antechirgen"]?'1':'0');
+		$alert = (GETPOST("alert_antechirgen", "alpha")?'1':'0');
 		$result4=addAlert($db, 'alert_antechirgen', $socid, $alert);
 		if ($result4) {
 			$error++; $mesg=$result4;
 		}
 
-		$alert=($_POST["alert_antechirortho"]?'1':'0');
+		$alert = (GETPOST("alert_antechirortho", "alpha")?'1':'0');
 		$result5=addAlert($db, 'alert_antechirortho', $socid, $alert);
 		if ($result5) {
 			$error++; $mesg=$result5;
 		}
 
-		$alert=($_POST["alert_anterhum"]?'1':'0');
+		$alert = (GETPOST("alert_anterhum", "alpha")?'1':'0');
 		$result6=addAlert($db, 'alert_anterhum', $socid, $alert);
 		if ($result6) {
 			$error++; $mesg=$result6;
 		}
 
-		$alert=($_POST["alert_traitallergie"]?'1':'0');
+		$alert = (GETPOST("alert_traitallergie", "alpha")?'1':'0');
 		$result7=addAlert($db, 'alert_traitallergie', $socid, $alert);
 		if ($result7) {
 			$error++; $mesg=$result7;
 		}
 
-		$alert=($_POST["alert_traitclass"]?'1':'0');
+		$alert = (GETPOST("alert_traitclass", "alpha")?'1':'0');
 		$result8=addAlert($db, 'alert_traitclass', $socid, $alert);
 		if ($result8) {
 			$error++; $mesg=$result8;
 		}
 
-		$alert=($_POST["alert_traitintol"]?'1':'0');
+		$alert = (GETPOST("alert_traitintol", "alpha")?'1':'0');
 		$result9=addAlert($db, 'alert_traitintol', $socid, $alert);
 		if ($result9) {
 			$error++; $mesg=$result9;
 		}
 
-		$alert=($_POST["alert_traitspec"]?'1':'0');
+		$alert = (GETPOST("alert_traitspec", "alpha")?'1':'0');
 		$result10=addAlert($db, 'alert_traitspec', $socid, $alert);
 		if ($result10) {
 			$error++; $mesg=$result10;

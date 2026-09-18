@@ -2,7 +2,7 @@
 
 ## 24
 
-- FIX compatibility with v24
+- FIX compatibility with v24 and PHP 8.5
 
 ## 17.2
 
