@@ -177,7 +177,8 @@ class modCabinetMed extends DolibarrModules
 		        'thirdparty:+tabexamautre:SUBSTITUTION_ResultExamAutre:cabinetmed@cabinetmed:$user->hasRight("cabinetmed","read") && $objectoffield->canvas=="patient@cabinetmed":/cabinetmed/examautre.php?socid=__ID__',
 		        'thirdparty:+tabdocument:SUBSTITUTION_DocumentsPatient:cabinetmed@cabinetmed:$user->hasRight("cabinetmed","read") && $objectoffield->canvas=="patient@cabinetmed":/cabinetmed/documents.php?socid=__ID__',
 		        'thirdparty:-contact:NU:($objectoffield->canvas=="patient@cabinetmed")',
-		        'thirdparty:-document:NU:($objectoffield->canvas=="patient@cabinetmed")',
+		        'thirdparty:-contactext:NU:($objectoffield->canvas=="patient@cabinetmed")',		// old name on v23-
+		    	'thirdparty:-document:NU:($objectoffield->canvas=="patient@cabinetmed")',
 		        //'thirdparty:-notify:NU:($objectoffield->canvas=="patient@cabinetmed")',
 		        'thirdparty:-note:NU:($objectoffield->canvas=="patient@cabinetmed")',
 		        'contact:+tabpatient:Patients:cabinetmed@cabinetmed:$user->hasRight("cabinetmed","read"):/cabinetmed/patients_of_contact.php?id=__ID__'
