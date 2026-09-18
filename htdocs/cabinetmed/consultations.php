@@ -448,13 +448,13 @@ if (empty($reshook)) {
 							(price2num($oldconsult->montant_cheque, 'MT') != price2num($_POST["montant_cheque"], 'MT') ||
 							$oldconsult->banque != trim($_POST["banque"]) ||
 							$oldconsult->num_cheque != trim($_POST["num_cheque"]) ||
-							$oldconsult->bank['CHQ']['account_id'] != $_POST["bankchequeto"])) $bankmodified=1;
+							($oldconsult->bank['CHQ']['account_id'] ?? '') != $_POST["bankchequeto"])) $bankmodified=1;
 							if ($key == 'CB' &&
 							(price2num($oldconsult->montant_carte, 'MT') != price2num($_POST["montant_carte"], 'MT') ||
-							$oldconsult->bank['CB']['account_id'] != $_POST["bankcarteto"])) $bankmodified=1;
+							($oldconsult->bank['CB']['account_id'] ?? '') != $_POST["bankcarteto"])) $bankmodified=1;
 							if ($key == 'LIQ' &&
 							(price2num($oldconsult->montant_espece, 'MT') != price2num($_POST["montant_espece"], 'MT') ||
-							$oldconsult->bank['LIQ']['account_id'] != $_POST["bankespeceto"])) $bankmodified=1;
+							($oldconsult->bank['LIQ']['account_id'] ?? '') != $_POST["bankespeceto"])) $bankmodified=1;
 							if ($key == 'VIR' &&
 							(price2num($oldconsult->montant_tiers, 'MT') != price2num($_POST["montant_tiers"], 'MT'))) $bankmodified=1;
 
@@ -471,7 +471,7 @@ if (empty($reshook)) {
 							// If we changed bank informations for this key
 							if ($bankmodified) {
 								// If consult has a bank id for this key, we remove it
-								if ($object->bank[$key]['bank_id'] && ! $object->bank[$key]['rappro']) {
+								if (!empty($object->bank[$key]['bank_id']) && empty($object->bank[$key]['rappro'])) {
 									$bankaccountline=new AccountLine($db);
 									$result=$bankaccountline->fetch($object->bank[$key]['bank_id']);
 									$bank_chq=$bankaccountline->bank_chq;
@@ -1457,7 +1457,7 @@ if ($action == '' || $action == 'list' || $action == 'delete') {
 				if (price2num($obj->montant_cheque) > 0) {
 					if ($foundamount) print ' + ';
 					print $langs->trans("Cheque");
-					if (isModEnabled("banque") && $object->bank['CHQ']['account_id']) {
+					if (isModEnabled("banque") && !empty($object->bank['CHQ']['account_id'])) {
 						$bank=new Account($db);
 						$bank->fetch($object->bank['CHQ']['account_id']);
 						print '&nbsp;('.$bank->getNomUrl(0, 'transactions').')';
@@ -1467,7 +1467,7 @@ if ($action == '' || $action == 'list' || $action == 'delete') {
 				if (price2num($obj->montant_espece) > 0) {
 					if ($foundamount) print ' + ';
 					print $langs->trans("Cash");
-					if (isModEnabled("banque") && $object->bank['LIQ']['account_id']) {
+					if (isModEnabled("banque") && !empty($object->bank['LIQ']['account_id'])) {
 						$bank=new Account($db);
 						$bank->fetch($object->bank['LIQ']['account_id']);
 						print '&nbsp;('.$bank->getNomUrl(0, 'transactions').')';
@@ -1477,7 +1477,7 @@ if ($action == '' || $action == 'list' || $action == 'delete') {
 				if (price2num($obj->montant_carte) > 0) {
 					if ($foundamount) print ' + ';
 					print $langs->trans("CreditCard");
-					if (isModEnabled("banque") && $object->bank['CB']['account_id']) {
+					if (isModEnabled("banque") && !empty($object->bank['CB']['account_id'])) {
 						$bank=new Account($db);
 						$bank->fetch($object->bank['CB']['account_id']);
 						print '&nbsp;('.$bank->getNomUrl(0, 'transactions').')';
