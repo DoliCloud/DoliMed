@@ -21,6 +21,19 @@ for arg in "$@"; do
   fi
 done
 
+# Detect if the current directory is a git clone of the Dolibarr core repository
+# (github.com/Dolibarr/dolibarr, or a fork of it: any remote pointing to a
+# repository named "dolibarr"): in that case it is already mounted as the
+# working directory and no other dolibarr directory must be mounted.
+IS_DOLIBARR_CORE=0
+if git remote -v 2>/dev/null | grep origin | awk '{print $2}' | sed -e 's/\.git$//' -e 's#.*/##' | grep -ix dolibarr; then
+    IS_DOLIBARR_CORE=1
+fi
+
+echo IS_DOLIBARR_CORE="$IS_DOLIBARR_CORE"
+
+set -o errexit
+set -o nounset
 set -o pipefail
 
 # Build image
@@ -41,15 +54,6 @@ fi
 # Run image
 GIT_DIR=$(basename "$PWD")
 export GIT_DIR
-
-# Detect if the current directory is a git clone of the Dolibarr core repository
-# (github.com/Dolibarr/dolibarr, or a fork of it: any remote pointing to a
-# repository named "dolibarr"): in that case it is already mounted as the
-# working directory and no other dolibarr directory must be mounted.
-IS_DOLIBARR_CORE=0
-if git remote -v 2>/dev/null | awk '{print $2}' | sed -e 's/\.git$//' -e 's#.*/##' | grep -qix dolibarr; then
-    IS_DOLIBARR_CORE=1
-fi
 
 # When working on something else than the Dolibarr core (a module for example),
 # also mount the sibling directory dolibarr_dev or dolibarr (in this order of
