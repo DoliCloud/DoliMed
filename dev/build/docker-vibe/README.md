@@ -35,6 +35,8 @@ dev/build/docker-vibe/vibes.sh
 
 This script will build the docker image, and then run it with the current directory mounted into the container and launch vibe.
 
+When the current directory is not a git clone of the Dolibarr core repository (github.com/Dolibarr/dolibarr), the script also mounts the directory `dolibarr_dev` or `dolibarr` (in this order of preference) when it exists next to the current directory, so the Dolibarr sources are available into the container at the same path as on the host. When the current directory is the Dolibarr core itself, it is already mounted as the working directory and no other Dolibarr directory is added.
+
 Vibe is launched with the option `--yolo` by default. If you want to run vibe without this option, you can run
 ````
 vibes --no-yolo
