@@ -250,21 +250,6 @@ if ($action == 'delete' || $action == 'deletelink') {
 	);
 }
 
-// Form to upload a new file or add a link
-$formfile->form_attach_new_file(
-	$_SERVER["PHP_SELF"].'?socid='.$object->id,
-	'',
-	0,
-	0,
-	$permissiontoadd,
-	$conf->browser->layout == 'phone' ? 40 : 60,
-	$object,
-	'',
-	1,
-	'',
-	1
-);
-
 print '<a name="builddoc"></a>'; // ancre
 
 /*
@@ -279,9 +264,63 @@ $tooltipmessage = $langs->trans("EditOrAddTemplateFromSetupOfThirdPartyModule", 
 
 print $formfile->showdocuments('company', '', '', $urlsource, $genallowed, $delallowed, $object->model_pdf, 0, 0, 0, 0, 0, '', $title, '', $object->default_lang, '', $object, 0, 'remove_file', $tooltipmessage);
 
+// Get the forms to add a new file and a new link
+$tmparray = $formfile->form_attach_new_file(
+	$_SERVER["PHP_SELF"].'?socid='.$object->id,
+	'',
+	0,
+	0,
+	$permissiontoadd,
+	$conf->browser->layout == 'phone' ? 40 : 60,
+	$object,
+	'',
+	1,
+	'',
+	1,
+	'formuserfile',
+	'',
+	'',
+	0,
+	0,
+	0,
+	2
+);
+
+$formToUploadAFile = '';
+$formToAddALink = '';
+
+if (is_array($tmparray) && !empty($tmparray)) {
+	$formToUploadAFile = $tmparray['formToUploadAFile'];
+	$formToAddALink = $tmparray['formToAddALink'];
+} else {
+	// Old versions of Dolibarr return both forms into a single string
+	$formToUploadAFile = (string) $tmparray;
+}
+
+// Force displaying form to attach files and documents
+$showHideAddButtonValue = 1;
+if (getDolGlobalInt('MAIN_DOCUMENTS_SHOW_FILE_ATTACHMENT_FORM')) {
+	$showHideAddButtonValue = 0;
+}
+
 // List of documents (use the list of the module to be able to send a file by email)
 print '<br><br>';
 $disablemove = 0;
+
+// Title with the button to show/hide the form to upload a new file
+$morehtmlright = '';
+if ($showHideAddButtonValue && $conf->use_javascript_ajax) {
+	$tmpurlforbutton = 'javascript:console.log("open add file form"); if (jQuery(".divattachnewfile").is(":hidden")) { jQuery(".divattachnewfile").removeClass("hidden"); jQuery(".divattachnewfile input[type=\'file\']").first().click(); } else { jQuery(".divattachnewfile").addClass("hidden"); } void(0);';
+	$morehtmlright .= dolGetButtonTitle($langs->trans('New'), '', 'fa fa-plus-circle', $tmpurlforbutton, '', $permissiontoadd);
+}
+
+print load_fiche_titre($langs->trans("AttachedFiles"), $morehtmlright, 'file-upload', 0, '', 'table-list-of-attached-files');
+
+// Form to upload a new file, hidden until the button is clicked
+if ($formToUploadAFile) {
+	print '<!-- Add form to upload a new file -->';
+	print '<div class="divattachnewfile'.(($showHideAddButtonValue && $conf->use_javascript_ajax) ? ' hidden' : '').'">'.$formToUploadAFile.'</div>';
+}
 
 $formfilecabinetmed = new FormFileCabinetmed($db);
 $formfilecabinetmed->list_of_documents_cabinetmed(
@@ -295,7 +334,7 @@ $formfilecabinetmed->list_of_documents_cabinetmed(
 	0,
 	'',
 	0,
-	'',
+	'none',		// the title with the button to add a new file is already shown by the page
 	'',
 	0,
 	$permissiontoadd,
@@ -307,8 +346,21 @@ $formfilecabinetmed->list_of_documents_cabinetmed(
 
 print "<br>";
 
-// List of links
-$formfile->listOfLinks($object, $permissiontoadd, $action, GETPOSTINT('linkid'), $param);
+// List of links, the form to add a link is shown/hidden by the core mechanism
+$showHideAddButtonValue = 1;
+if (getDolGlobalInt('MAIN_DOCUMENTS_SHOW_FILE_LINKING_FORM')) {
+	$showHideAddButtonValue = 0;
+}
+
+$formfile->listOfLinks(
+	$object,
+	$permissiontoadd,
+	$action,
+	GETPOSTINT('linkid'),
+	$param,
+	'formaddlink',
+	array('afterlinktitle' => $formToAddALink, 'showhideaddbutton' => $showHideAddButtonValue)
+);
 
 // Presend form (to send a file by email)
 if ($action == 'presend') {
