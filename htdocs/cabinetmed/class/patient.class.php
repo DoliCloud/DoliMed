@@ -595,6 +595,12 @@ class Patient extends Societe
 		$this->town='MyTown';
 		$this->country_id=1;
 		$this->country_code='FR';
+		$this->country='France';
+		$this->address='123 rue de la Santé';
+		$this->phone='0123456789';
+		$this->fax='0698765432';
+		$this->email='patient.specimen@example.com';
+		$this->typent_code='TE_PRIVATE';
 
 		$this->code_client='CC-'.dol_print_date($now, 'dayhourlog');
 		$this->code_fournisseur='SC-'.dol_print_date($now, 'dayhourlog');
@@ -611,5 +617,26 @@ class Patient extends Societe
 		$this->idprof2='idprof2';
 		$this->idprof3='idprof3';
 		$this->idprof4='idprof4';
+
+		// Extrafields
+		$this->array_options['options_birthdate'] = dol_now() - (35 * 365.25 * 24 * 3600); // 35 years old
+		$this->array_options['options_prof'] = 'Ingénieur';
+		$this->array_options['options_height'] = '175';
+		$this->array_options['options_weight'] = '70';
+
+		// Antécédents (cabinetmed_patient fields)
+		$this->note_antemed = "Antécédents médicaux spécimen :\n- Hypertension artérielle\n- Asthme léger";
+		$this->note_antechirgen = "Appendicectomie (2010)";
+		$this->note_antechirortho = '';
+		$this->note_anterhum = '';
+		$this->note_other = "Rien à signaler";
+		$this->note_traitclass = '';
+		$this->note_traitallergie = "Allergie aux pénicillines";
+		$this->note_traitintol = "Intolérance au lactose";
+		$this->note_traitspec = '';
+
+		// Alerts
+		$this->alert_antemed = 1;
+		$this->alert_traitallergie = 1;
 	}
 }

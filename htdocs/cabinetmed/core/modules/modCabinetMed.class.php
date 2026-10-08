@@ -86,6 +86,7 @@ class modCabinetMed extends DolibarrModules
 			'triggers' => 1,
 			'substitutions' => 1,
 			'menus' => 1,
+			'models' => 1,
 			'css' => array('/cabinetmed/css/styles.css.php'),
 			'hooks' => array(
 				'customreport',
@@ -595,7 +596,7 @@ class modCabinetMed extends DolibarrModules
 	 */
 	function init($options = '')
 	{
-		global $langs;
+		global $langs, $conf;
 
 		$result=$this->load_tables();
 
@@ -631,6 +632,12 @@ class modCabinetMed extends DolibarrModules
 
 		$ignoreerror=1;
 		$sqlwithignoreerror="INSERT INTO ".MAIN_DB_PREFIX."document_model set nom='generic_odt', type='company', libelle='ODT templates', description='COMPANY_ADDON_PDF_ODT_PATH'";
+		$this->db->query($sqlwithignoreerror, $ignoreerror);
+
+		$sqlwithignoreerror="DELETE FROM ".MAIN_DB_PREFIX."document_model WHERE nom='dossiermedical' AND type='company'";
+		$this->db->query($sqlwithignoreerror, $ignoreerror);
+
+		$sqlwithignoreerror="INSERT INTO ".MAIN_DB_PREFIX."document_model (nom, type, libelle, description, entity) VALUES ('medicalrecord', 'company', 'Dossier médical', '', ".((int) $conf->entity).")";
 		$this->db->query($sqlwithignoreerror, $ignoreerror);
 
 		return $this->_init($sql, $options);
