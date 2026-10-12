@@ -257,7 +257,7 @@ class pdf_medicalrecord extends ModeleThirdPartyDoc
 			// New page
 			$pdf->AddPage();
 			$pagenb++;
-			$separator_y = $this->_pagehead($pdf, $object, 1, $outputlangs);
+			$separator_y = $this->pageHead($pdf, $object, 1, $outputlangs);
 			$pdf->SetFont('', '', $default_font_size - 1);
 			$pdf->MultiCell(0, 3, '');
 			$pdf->SetTextColor(0, 0, 0);
@@ -265,16 +265,16 @@ class pdf_medicalrecord extends ModeleThirdPartyDoc
 			$tab_top = $separator_y + 8;
 
 			// Section 1: Patient information
-			$tab_top = $this->_section_patient($pdf, $object, $outputlangs, $tab_top, $default_font_size);
+			$tab_top = $this->sectionPatient($pdf, $object, $outputlangs, $tab_top, $default_font_size);
 
 			// Section 2: Antécédents (medical history)
-			$tab_top = $this->_section_antecedents($pdf, $object, $outputlangs, $tab_top, $default_font_size);
+			$tab_top = $this->sectionAntecedents($pdf, $object, $outputlangs, $tab_top, $default_font_size);
 
 			// Section 3: Consultations
-			$tab_top = $this->_section_consultations($pdf, $object, $outputlangs, $tab_top, $default_font_size, $heightforfooter);
+			$tab_top = $this->sectionConsultations($pdf, $object, $outputlangs, $tab_top, $default_font_size, $heightforfooter);
 
 			// Page footer
-			$this->_pagefoot($pdf, $object, $outputlangs);
+			$this->pageFoot($pdf, $object, $outputlangs);
 			if (method_exists($pdf, 'AliasNbPages')) {
 				$pdf->AliasNbPages();
 			}
@@ -316,7 +316,7 @@ class pdf_medicalrecord extends ModeleThirdPartyDoc
 	 * @param  Translate $outputlangs Object lang for output
 	 * @return float                  Y position of the separator line
 	 */
-	protected function _pagehead($pdf, $object, $showaddress, $outputlangs)
+	protected function pageHead($pdf, $object, $showaddress, $outputlangs)
 	{
 		global $conf, $mysoc;
 
@@ -403,7 +403,7 @@ class pdf_medicalrecord extends ModeleThirdPartyDoc
 	 * @param  int      $hidefreetext Hide free text (0=no, 1=yes)
 	 * @return void
 	 */
-	protected function _pagefoot($pdf, $object, $outputlangs, $hidefreetext = 0)
+	protected function pageFoot($pdf, $object, $outputlangs, $hidefreetext = 0)
 	{
 		$pdf->SetY(-15);
 		$pdf->SetFont('', 'I', 8);
@@ -421,7 +421,7 @@ class pdf_medicalrecord extends ModeleThirdPartyDoc
 	 * @param  int      $default_font_size Default font size
 	 * @return float                       New Y position after the section
 	 */
-	protected function _section_patient($pdf, $object, $outputlangs, $tab_top, $default_font_size)
+	protected function sectionPatient($pdf, $object, $outputlangs, $tab_top, $default_font_size)
 	{
 		$pdf->SetFont('', 'B', $default_font_size + 2);
 		$pdf->SetXY($this->marge_gauche, $tab_top);
@@ -524,7 +524,7 @@ class pdf_medicalrecord extends ModeleThirdPartyDoc
 	 * @param  int      $default_font_size Default font size
 	 * @return float                       New Y position after the section
 	 */
-	protected function _section_antecedents($pdf, $object, $outputlangs, $tab_top, $default_font_size)
+	protected function sectionAntecedents($pdf, $object, $outputlangs, $tab_top, $default_font_size)
 	{
 		// Check if there is any antécédent data
 		$hasAntecedents = !empty($object->note_antemed) || !empty($object->note_antechirgen)
@@ -593,7 +593,7 @@ class pdf_medicalrecord extends ModeleThirdPartyDoc
 	 * @param  float    $heightforfooter  Height reserved for footer
 	 * @return float                       New Y position after the section
 	 */
-	protected function _section_consultations($pdf, $object, $outputlangs, $tab_top, $default_font_size, $heightforfooter)
+	protected function sectionConsultations($pdf, $object, $outputlangs, $tab_top, $default_font_size, $heightforfooter)
 	{
 		global $db;
 
@@ -617,7 +617,7 @@ class pdf_medicalrecord extends ModeleThirdPartyDoc
 
 		$resql = $db->query($sql);
 		if (!$resql) {
-			dol_syslog(get_class($this)."::_section_consultations SQL error: ".$db->lasterror(), LOG_ERR);
+			dol_syslog(get_class($this)."::sectionConsultations SQL error: ".$db->lasterror(), LOG_ERR);
 			$pdf->SetFont('', 'I', $default_font_size - 1);
 			$pdf->SetXY($this->marge_gauche + 2, $tab_top);
 			$pdf->MultiCell(0, 4, $outputlangs->transnoentities("ErrorLoadingConsultations"), 0, 'L');
@@ -643,9 +643,9 @@ class pdf_medicalrecord extends ModeleThirdPartyDoc
 
 			// Check if we need a new page (leave room for footer and at least 30mm of content)
 			if ($tab_top > $this->page_hauteur - $heightforfooter - 30) {
-				$this->_pagefoot($pdf, $object, $outputlangs, 1);
+				$this->pageFoot($pdf, $object, $outputlangs, 1);
 				$pdf->AddPage();
-				$separator_y = $this->_pagehead($pdf, $object, 0, $outputlangs);
+				$separator_y = $this->pageHead($pdf, $object, 0, $outputlangs);
 				$tab_top = $separator_y + 8;
 				$pdf->SetFont('', '', $default_font_size - 1);
 				$pdf->MultiCell(0, 3, '');
@@ -702,9 +702,9 @@ class pdf_medicalrecord extends ModeleThirdPartyDoc
 				}
 				// Check page break before each field
 				if ($tab_top > $this->page_hauteur - $heightforfooter - 15) {
-					$this->_pagefoot($pdf, $object, $outputlangs, 1);
+					$this->pageFoot($pdf, $object, $outputlangs, 1);
 					$pdf->AddPage();
-					$separator_y = $this->_pagehead($pdf, $object, 0, $outputlangs);
+					$separator_y = $this->pageHead($pdf, $object, 0, $outputlangs);
 					$tab_top = $separator_y + 8;
 					$pdf->SetFont('', '', $default_font_size - 1);
 					$pdf->MultiCell(0, 3, '');

@@ -71,6 +71,7 @@ class modCabinetMed extends DolibarrModules
 		// Name of image file used for this module.
 		// If file is in theme/yourtheme/img directory under name object_pictovalue.png, use this->picto='pictovalue'
 		// If file is in module/img directory under name object_pictovalue.png, use this->picto='pictovalue@module'
+		// Dolibarr 25+ no longer adds the prefix object_, so img/stetho.png is a copy of img/object_stetho.png.
 		$this->picto='stetho.png@cabinetmed';
 
 		// Data directories to create when module is enabled.
@@ -425,7 +426,7 @@ class modCabinetMed extends DolibarrModules
 								'url'=>'/categories/index.php?leftmenu=categorypatients&type=2',
 								'langs'=>'categories',  // Lang file to use (without .lang) by module. File must be in langs/code_CODE/ directory.
 								'position'=>151,
-								'enabled'=>'isModEnabled("categorie")',         // Define condition to show or hide menu entry. Use '$conf->voyage->enabled' if entry must be visible if module is enabled.
+								'enabled'=>'isModEnabled("category")',         // Define condition to show or hide menu entry. Use '$conf->voyage->enabled' if entry must be visible if module is enabled.
 								'perms'=>'$user->rights->categorie->lire',           // Use 'perms'=>'$user->rights->voyage->level1->level2' if you want your menu with a permission rules
 								'target'=>'',
 								'user'=>2);             // 0=Menu for internal users, 1=external users, 2=both
@@ -598,7 +599,7 @@ class modCabinetMed extends DolibarrModules
 	{
 		global $langs, $conf;
 
-		$result=$this->load_tables();
+		$result=$this->loadTables();
 
 		require_once DOL_DOCUMENT_ROOT.'/core/lib/files.lib.php';
 		$dirodt=DOL_DATA_ROOT.'/doctemplates/thirdparties';
@@ -684,7 +685,7 @@ class modCabinetMed extends DolibarrModules
 	 *
 	 *     @return     int     <=0 if KO, >0 if OK
 	 */
-	public function load_tables()
+	public function loadTables()
 	{
 		global $langs;
 

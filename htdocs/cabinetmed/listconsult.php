@@ -372,7 +372,7 @@ include DOL_DOCUMENT_ROOT.'/core/tpl/massactions_pre.tpl.php';
 
 // Filter on categories
 $moreforfilter='';
-if (isModEnabled("categorie")) {
+if (isModEnabled("category")) {
 	$moreforfilter.='<div class="divsearchfield">';
 	$moreforfilter.=img_picto('', 'category', 'class="pictofixedwidth"').$formother->select_categories(2, $search_categ, 'search_categ', 1, $langs->trans('PatientCategories'));
 	$moreforfilter.='</div>';
@@ -658,7 +658,7 @@ while ($i < $imaxinloop) {
 		if (price2num($obj->montant_cheque) > 0) {
 			if ($foundamount) $s .= ' + ';
 			$s .= $langs->trans("Cheque");
-			if (isModEnabled("banque") && !empty($bankid['CHQ']['account_id'])) {
+			if (isModEnabled("bank") && !empty($bankid['CHQ']['account_id'])) {
 				$bank=new Account($db);
 				$bank->fetch($bankid['CHQ']['account_id']);
 				$s .= '&nbsp;('.$bank->getNomUrl(0, 'transactions').')';
@@ -668,7 +668,7 @@ while ($i < $imaxinloop) {
 		if (price2num($obj->montant_espece) > 0) {
 			if ($foundamount) $s .= ' + ';
 			$s .= $langs->trans("Cash");
-			if (isModEnabled("banque") && !empty($bankid['LIQ']['account_id'])) {
+			if (isModEnabled("bank") && !empty($bankid['LIQ']['account_id'])) {
 				$bank=new Account($db);
 				$bank->fetch($bankid['LIQ']['account_id']);
 				$s .= '&nbsp;('.$bank->getNomUrl(0, 'transactions').')';
@@ -678,7 +678,7 @@ while ($i < $imaxinloop) {
 		if (price2num($obj->montant_carte) > 0) {
 			if ($foundamount) $s .= ' + ';
 			$s .= $langs->trans("CreditCard");
-			if (isModEnabled("banque") && !empty($bankid['CB']['account_id'])) {
+			if (isModEnabled("bank") && !empty($bankid['CB']['account_id'])) {
 				$bank=new Account($db);
 				$bank->fetch($bankid['CB']['account_id']);
 				$s .= '&nbsp;('.$bank->getNomUrl(0, 'transactions').')';
@@ -688,7 +688,7 @@ while ($i < $imaxinloop) {
 		if (price2num($obj->montant_tiers) > 0) {
 			if ($foundamount) $s .= ' + ';
 			$s .= $langs->trans("PaymentTypeThirdParty");
-			if (isModEnabled("banque") && !empty($bankid['OTH']['account_id'])) {
+			if (isModEnabled("bank") && !empty($bankid['OTH']['account_id'])) {
 				$bank=new Account($db);
 				$bank->fetch($bankid['OTH']['account_id']);
 				$s .= '&nbsp;('.$bank->getNomUrl(0, 'transactions').')';

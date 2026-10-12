@@ -173,7 +173,7 @@ class Patient extends Societe
 	 *  Update parameters of third party
 	 *
 	 *  @param     	int		$id              			id societe
-	 *  @param      User	$user            			Utilisateur qui demande la mise a jour
+	 *  @param      User	$user            			User who requests the update
 	 *  @param      int		$call_trigger    			0=non, 1=oui
 	 *	@param		int		$allowmodcodeclient			Inclut modif code client et code compta
 	 *	@param		int		$allowmodcodefournisseur	Inclut modif code fournisseur et code compta fournisseur

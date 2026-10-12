@@ -212,8 +212,6 @@ function listexamen($nboflines, $newwidth = 0, $type = '', $showtype = 0, $htmln
  *
  *  @param	int		$nboflines       Max nb of lines
  *  @param  int     $newwidth        Force width
- *  @param  string  $type            To filter on a type (Ex: "'RADIO'" or "'RADIO','OTHER'")
- *  @param	string	$showtype        1=Show type of line after label
  *  @param  string	$htmlname        Name of html select area
  *  @return	void
  */

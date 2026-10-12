@@ -186,11 +186,11 @@ if ($socname) {
  * Mode Liste
  */
 /*
- REM: Regle sur droits "Voir tous les clients"
- Utilisateur interne socid=0 + Droits voir tous clients        => Voit toute societe
- Utilisateur interne socid=0 + Pas de droits voir tous clients => Ne voit que les societes liees comme commercial
- Utilisateur externe socid=x + Droits voir tous clients        => Ne voit que lui meme
- Utilisateur externe socid=x + Pas de droits voir tous clients => Ne voit que lui meme
+ REM: Rule on permission "See all customers"
+ Internal user socid=0 + permission to see all customers        => Sees all companies
+ Internal user socid=0 + no permission to see all customers     => Sees only companies linked as sales representative
+ External user socid=x + permission to see all customers        => Sees only itself
+ External user socid=x + no permission to see all customers     => Sees only itself
  */
 $title=$langs->trans("ListOfThirdParties");
 
@@ -298,7 +298,7 @@ if ($resql) {
 	// Filter on categories
 	/* Not possible in this page because list is for ALL third parties type
 	$moreforfilter='';
-	if (isModEnabled("categorie"))
+	if (isModEnabled("category"))
 	{
 		$moreforfilter.=$langs->trans('Categories'). ': ';
 		$moreforfilter.=$htmlother->select_categories(2,$search_categ,'search_categ');

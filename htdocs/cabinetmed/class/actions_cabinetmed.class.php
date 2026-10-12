@@ -268,7 +268,7 @@ class ActionsCabinetmed
 		$langs->load("cabinetmed@cabinetmed");
 
 		$board=new Cabinetmedcons($this->db);
-		$board->load_state_board();
+		$board->loadStateBoard();
 
 		$out = '';
 

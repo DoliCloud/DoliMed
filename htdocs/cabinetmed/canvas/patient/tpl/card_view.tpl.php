@@ -52,7 +52,7 @@ global $db,$conf,$mysoc,$langs,$user,$hookmanager,$extrafields;
 require_once DOL_DOCUMENT_ROOT ."/core/class/html.formcompany.class.php";
 require_once DOL_DOCUMENT_ROOT ."/core/class/html.formfile.class.php";
 require_once DOL_DOCUMENT_ROOT ."/core/lib/date.lib.php";
-if (isModEnabled("adherent")) require_once DOL_DOCUMENT_ROOT.'/adherents/class/adherent.class.php';
+if (isModEnabled("member")) require_once DOL_DOCUMENT_ROOT.'/adherents/class/adherent.class.php';
 dol_include_once("/cabinetmed/lib/cabinetmed.lib.php");
 
 $form=new Form($GLOBALS['db']);
@@ -367,7 +367,7 @@ if (!getDolGlobalString('SOCIETE_DISABLE_PARENTCOMPANY')) {
 include DOL_DOCUMENT_ROOT.'/societe/tpl/linesalesrepresentative.tpl.php';
 
 // Module Adherent
-if (isModEnabled("adherent")) {
+if (isModEnabled("member")) {
 	$langs->load("members");
 	print '<tr><td>'.$langs->trans("LinkedToDolibarrMember").'</td>';
 	print '<td>';

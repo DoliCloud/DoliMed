@@ -47,6 +47,7 @@ if (! $res && file_exists("../../../main.inc.php")) $res=@include "../../../main
 if (! $res) die("Include of main fails");
 
 require_once DOL_DOCUMENT_ROOT."/core/lib/admin.lib.php";
+require_once DOL_DOCUMENT_ROOT."/core/lib/ajax.lib.php";
 include_once DOL_DOCUMENT_ROOT."/core/lib/company.lib.php";
 include_once "../lib/cabinetmed.lib.php";
 
@@ -67,27 +68,26 @@ $mesg = '';
  * Actions
  */
 
+// On/off options. They are switched with ajax_constantonoff(), the actions below are used only when ajax is disabled.
+$arrayofonoffconst = array('SOCIETE_DISABLE_PROSPECTS', 'SOCIETE_DISABLE_CUSTOMERS', 'DIAGNOSTIC_IS_NOT_MANDATORY', 'CABINETMED_BANK_PATIENT_REQUIRED', 'CABINETMED_AUTOGENERATE_INVOICE', 'CABINETMED_RHEUMATOLOGY_ON', 'CABINETMED_SHOW_MEDICAMENTS_LIST');
+
+$reg = array();
+if (preg_match('/^(set|del)_([A-Z0-9_]+)$/', $action, $reg) && in_array($reg[2], $arrayofonoffconst)) {
+	if ($reg[1] == 'set') {
+		$res = dolibarr_set_const($db, $reg[2], '1', 'chaine', 0, '', $conf->entity);
+	} else {
+		$res = dolibarr_del_const($db, $reg[2], $conf->entity);
+	}
+	if ($res <= 0) {
+		dol_print_error($db);
+	}
+}
+
 if ($action == 'update') {
-	$res=dolibarr_set_const($db, 'CABINETMED_RHEUMATOLOGY_ON', GETPOST("CABINETMED_RHEUMATOLOGY_ON"), 'texte', 0, '', $conf->entity);
-
-	$res=dolibarr_set_const($db, 'CABINETMED_HIDETHIRPARTIESMENU', GETPOST("CABINETMED_HIDETHIRPARTIESMENU"), 'texte', 0, '', $conf->entity);
-
-	$res=dolibarr_set_const($db, 'SOCIETE_DISABLE_CUSTOMERS', GETPOST("SOCIETE_DISABLE_CUSTOMERS"), 'texte', 1, '', $conf->entity);
-	$res=dolibarr_set_const($db, 'SOCIETE_DISABLE_PROSPECTS', GETPOST("SOCIETE_DISABLE_PROSPECTS"), 'texte', 1, '', $conf->entity);
-
-	$res=dolibarr_set_const($db, 'CABINETMED_AUTOGENERATE_INVOICE', GETPOST("CABINETMED_AUTOGENERATE_INVOICE"), 'chaine', 1, '', $conf->entity);
-
-	$res=dolibarr_set_const($db, 'MAIN_SEARCHFORM_SOCIETE', GETPOST("MAIN_SEARCHFORM_SOCIETE")?0:1, 'texte', 0, '', $conf->entity);        // We also hide search of companies
-
-	$res=dolibarr_set_const($db, 'CABINETMED_BANK_PATIENT_REQUIRED', GETPOST("CABINETMED_BANK_PATIENT_REQUIRED"), 'texte', 0, '', $conf->entity);
-
-	$res=dolibarr_set_const($db, 'DIAGNOSTIC_IS_NOT_MANDATORY', GETPOST("DIAGNOSTIC_IS_NOT_MANDATORY") ? 0 : 1, 'texte', 0, '', $conf->entity);
-
+	$res = 1;
 	if (GETPOSTISSET('CABINETMED_DELAY_TO_LOCK_RECORD')) {
 		$res=dolibarr_set_const($db, 'CABINETMED_DELAY_TO_LOCK_RECORD', GETPOSTINT("CABINETMED_DELAY_TO_LOCK_RECORD"), 'texte', 0, '', $conf->entity);
 	}
-
-	$res=dolibarr_set_const($db, 'CABINETMED_SHOW_MEDICAMENTS_LIST', GETPOST("CABINETMED_SHOW_MEDICAMENTS_LIST"), 'texte', 0, '', $conf->entity);
 
 	if ($res == 1) {
 		$mesg=$langs->trans("RecordModifiedSuccessfully");
@@ -141,25 +141,25 @@ print '<td></td>';
 print "</tr>\n";
 
 print '<tr class="oddeven"><td>'.$langs->trans("HideProspectFeatures").'</td>';
-print '<td>'.$form->selectyesno('SOCIETE_DISABLE_PROSPECTS', getDolGlobalString('SOCIETE_DISABLE_PROSPECTS'), 1).'</td>';
+print '<td>'.ajax_constantonoff('SOCIETE_DISABLE_PROSPECTS').'</td>';
 print '</tr>';
 
 print '<tr class="oddeven"><td>'.$langs->trans("HideCustomerFeatures").'</td>';
-print '<td>'.$form->selectyesno('SOCIETE_DISABLE_CUSTOMERS', getDolGlobalString('SOCIETE_DISABLE_CUSTOMERS'), 1).'</td>';
+print '<td>'.ajax_constantonoff('SOCIETE_DISABLE_CUSTOMERS', array(), null, 0, 0, 1).'</td>';	// Reload to show or hide the option CABINETMED_AUTOGENERATE_INVOICE
 print '</tr>';
 
 print '<tr class="oddeven"><td>'.$langs->trans("DiagnosticIsMandatoryOnConsultation").'</td>';
-print '<td>'.$form->selectyesno('DIAGNOSTIC_IS_NOT_MANDATORY', (getDolGlobalString('DIAGNOSTIC_IS_NOT_MANDATORY') ? 0 : 1), 1).'</td>';
+print '<td>'.ajax_constantonoff('DIAGNOSTIC_IS_NOT_MANDATORY', array(), null, 1).'</td>';
 print '</tr>';
 
 print '<tr class="oddeven"><td>'.$langs->trans("CABINETMED_BANK_PATIENT_REQUIRED").'</td>';
-print '<td>'.$form->selectyesno('CABINETMED_BANK_PATIENT_REQUIRED', getDolGlobalString('CABINETMED_BANK_PATIENT_REQUIRED'), 1).'</td>';
+print '<td>'.ajax_constantonoff('CABINETMED_BANK_PATIENT_REQUIRED').'</td>';
 print '</tr>';
 
 print '<tr class="oddeven"><td>'.$langs->trans("CABINETMED_AUTOGENERATE_INVOICE").'</td>';
 print '<td>';
 if (!getDolGlobalString('SOCIETE_DISABLE_CUSTOMERS')) {
-	print $form->selectyesno('CABINETMED_AUTOGENERATE_INVOICE', getDolGlobalString('CABINETMED_AUTOGENERATE_INVOICE'), 1);
+	print ajax_constantonoff('CABINETMED_AUTOGENERATE_INVOICE');
 } else {
 	print '<span class="opacitymedium">'.$langs->trans("FeatureForCustomerdisabled").'</span>';
 }
@@ -167,7 +167,7 @@ print '</td>';
 print '</tr>';
 
 print '<tr class="oddeven"><td>'.$langs->trans("EnableSpecificFeaturesToRheumatology").'</td>';
-print '<td>'.$form->selectyesno('CABINETMED_RHEUMATOLOGY_ON', getDolGlobalString('CABINETMED_RHEUMATOLOGY_ON'), 1).'</td>';
+print '<td>'.ajax_constantonoff('CABINETMED_RHEUMATOLOGY_ON').'</td>';
 print '</tr>';
 
 print '<tr class="oddeven"><td>'.$langs->trans("CABINETMED_DELAY_TO_LOCK_RECORD").'</td>';
@@ -175,7 +175,7 @@ print '<td><input type="number" class="maxwidth50 right" min="0" name="CABINETME
 print '</tr>';
 
 print '<tr class="oddeven"><td>'.$langs->trans("CABINETMED_SHOW_MEDICAMENTS_LIST").'</td>';
-print '<td>'.$form->selectyesno('CABINETMED_SHOW_MEDICAMENTS_LIST', getDolGlobalString('CABINETMED_SHOW_MEDICAMENTS_LIST'), 1).'</td>';
+print '<td>'.ajax_constantonoff('CABINETMED_SHOW_MEDICAMENTS_LIST').'</td>';
 print '</tr>';
 
 print '</table>';

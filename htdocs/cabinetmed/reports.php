@@ -164,7 +164,7 @@ if ($result) {
 
 	// Filter on categories
 	$moreforfilter='';
-	if (isModEnabled("categorie")) {
+	if (isModEnabled("category")) {
 		$moreforfilter.='<div class="divsearchfield">';
 		$moreforfilter.=$langs->trans('Categories'). ': ';
 		$moreforfilter.=$htmlother->select_categories(2, $search_categ, 'search_categ');

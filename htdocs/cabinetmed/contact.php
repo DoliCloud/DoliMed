@@ -215,8 +215,8 @@ if ($id > 0 || ! empty($ref)) {
 	print '<table class="noborder" width="100%">';
 
 	/*
-	* Ajouter une ligne de contact
-	* Non affiche en mode modification de ligne
+	* Add a contact line
+	* Not shown when a line is being edited
 	*/
 	if ($action != 'editline') {
 		print '<thead><tr class="liste_titre">';

@@ -346,7 +346,7 @@ class CabinetmedCons extends CommonObject
 	 *
 	 *    @return     int         <0 if KO, >0 if OK
 	 */
-	public function fetch_bankid()
+	public function fetchBankId()
 	{
 		$this->bank=array();
 
@@ -355,7 +355,7 @@ class CabinetmedCons extends CommonObject
 		$sql = "SELECT b.rowid, b.rappro, b.fk_account, b.fk_type, b.num_chq FROM ".MAIN_DB_PREFIX."bank_url as bu, ".MAIN_DB_PREFIX."bank as b";
 		$sql.= " WHERE bu.url_id = ".$this->id." AND bu.type = 'consultation'";
 		$sql.= " AND bu.fk_bank = b.rowid";
-		dol_syslog(get_class($this)."::fetch_bankid", LOG_DEBUG);
+		dol_syslog(get_class($this)."::fetchBankId", LOG_DEBUG);
 		$resql=$this->db->query($sql);
 		if ($resql) {
 			$num=$this->db->num_rows($resql);
@@ -651,7 +651,7 @@ class CabinetmedCons extends CommonObject
 	 *
 	 *   @return     int         <0 si ko, >0 si ok
 	 */
-	public function load_state_board()
+	public function loadStateBoard()
 	{
 		global $conf;
 
@@ -705,6 +705,7 @@ class CabinetmedCons extends CommonObject
 		return $this->LibStatut(1, $mode);
 	}
 
+	// phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
 	/**
 	 *	Return label of status
 	 *
@@ -714,6 +715,7 @@ class CabinetmedCons extends CommonObject
 	 */
 	public function LibStatut($statut, $mode)
 	{
+		// phpcs:enable
 		return '';
 	}
 }

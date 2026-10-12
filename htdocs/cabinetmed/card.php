@@ -52,10 +52,10 @@ require_once DOL_DOCUMENT_ROOT.'/core/class/extrafields.class.php';
 require_once DOL_DOCUMENT_ROOT.'/contact/class/contact.class.php';
 require_once DOL_DOCUMENT_ROOT.'/categories/class/categorie.class.php';
 require_once DOL_DOCUMENT_ROOT.'/societe/class/societe.class.php';
-if (isModEnabled("adherent")) require_once DOL_DOCUMENT_ROOT.'/adherents/class/adherent.class.php';
+if (isModEnabled("member")) require_once DOL_DOCUMENT_ROOT.'/adherents/class/adherent.class.php';
 
 $langs->loadLangs(array("cabinetmed@cabinetmed", "companies","commercial","bills","banks","users","other"));
-if (isModEnabled("categorie")) $langs->load("categories");
+if (isModEnabled("category")) $langs->load("categories");
 if (isModEnabled("incoterm")) $langs->load("incoterm");
 if (isModEnabled("notification")) $langs->load("mails");
 

@@ -754,7 +754,7 @@ if ($search_all) {
 
 // Filter on categories
 $moreforfilter='';
-if (isModEnabled("categorie")) {
+if (isModEnabled("category")) {
 	require_once DOL_DOCUMENT_ROOT . '/categories/class/categorie.class.php';
 	$moreforfilter.='<div class="divsearchfield">';
 	$moreforfilter.=img_picto('', 'category', 'class="pictofixedwidth"').$formother->select_categories(2, $search_categ, 'search_categ', 1, $langs->trans('PatientCategories'), 'minwidth150 maxwidth300 widthcentpercentminusx');

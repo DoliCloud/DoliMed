@@ -503,13 +503,13 @@ parameters:
 			path: ../../../htdocs/cabinetmed/class/cabinetmedcons.class.php
 
 		-
-			message: '#^Method CabinetmedCons\:\:fetch_bankid\(\) has no return type specified\.$#'
+			message: '#^Method CabinetmedCons\:\:fetchBankId\(\) has no return type specified\.$#'
 			identifier: missingType.return
 			count: 1
 			path: ../../../htdocs/cabinetmed/class/cabinetmedcons.class.php
 
 		-
-			message: '#^Method CabinetmedCons\:\:load_state_board\(\) has no return type specified\.$#'
+			message: '#^Method CabinetmedCons\:\:loadStateBoard\(\) has no return type specified\.$#'
 			identifier: missingType.return
 			count: 1
 			path: ../../../htdocs/cabinetmed/class/cabinetmedcons.class.php
@@ -1175,7 +1175,7 @@ parameters:
 			path: ../../../htdocs/cabinetmed/class/patient.class.php
 
 		-
-			message: '#^PHPDoc tag @return has invalid value \(int      			       			\<0 if KO, \>\=0 if OK\)\: Unexpected token "if", expected ''\>'' at offset 580 on line 11$#'
+			message: '#^PHPDoc tag @return has invalid value \(int      			       			\<0 if KO, \>\=0 if OK\)\: Unexpected token "if", expected ''\>'' at offset 570 on line 11$#'
 			identifier: phpDoc.parseError
 			count: 1
 			path: ../../../htdocs/cabinetmed/class/patient.class.php
@@ -1649,7 +1649,7 @@ parameters:
 			path: ../../../htdocs/cabinetmed/core/boxes/box_patients.php
 
 		-
-			message: '#^Method modCabinetMed\:\:load_tables\(\) has no return type specified\.$#'
+			message: '#^Method modCabinetMed\:\:loadTables\(\) has no return type specified\.$#'
 			identifier: missingType.return
 			count: 1
 			path: ../../../htdocs/cabinetmed/core/modules/modCabinetMed.class.php
@@ -2113,18 +2113,6 @@ parameters:
 		-
 			message: '#^Function patient_stats_prepare_head\(\) return type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
-			count: 1
-			path: ../../../htdocs/cabinetmed/lib/cabinetmed.lib.php
-
-		-
-			message: '#^PHPDoc tag @param references unknown parameter\: \$showtype$#'
-			identifier: parameter.notFound
-			count: 1
-			path: ../../../htdocs/cabinetmed/lib/cabinetmed.lib.php
-
-		-
-			message: '#^PHPDoc tag @param references unknown parameter\: \$type$#'
-			identifier: parameter.notFound
 			count: 1
 			path: ../../../htdocs/cabinetmed/lib/cabinetmed.lib.php
 

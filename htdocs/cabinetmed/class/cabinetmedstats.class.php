@@ -76,7 +76,7 @@ class CabinetMedStats extends Stats
 
 
 	/**
-	 * 	Renvoie le nombre de consult par annee
+	 * 	Return the number of consultations per year
 	 *
 	 *	@return		array	Array of values
 	 */
@@ -95,7 +95,7 @@ class CabinetMedStats extends Stats
 
 
 	/**
-	 * 	Renvoie le nombre de consult par mois pour une annee donnee
+	 * 	Return the number of consultations per month for a given year
 	 *
 	 *	@param	int		$year		Year to scan
 	 *	@param	int		$format		0=Label of absiss is a translated text, 1=Label of absiss is month number, 2=Label of absiss is first letter of month
