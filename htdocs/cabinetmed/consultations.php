@@ -46,6 +46,14 @@ require_once "./class/patient.class.php";
 require_once "./class/cabinetmedcons.class.php";
 require_once "./lib/cabinetmed.lib.php";
 
+/**
+ * @var Conf $conf
+ * @var DoliDB $db
+ * @var HookManager $hookmanager
+ * @var Translate $langs
+ * @var User $user
+ */
+
 $optioncss = GETPOST('optioncss', 'aZ09');
 
 $action=GETPOST("action");
@@ -138,6 +146,7 @@ $arrayofmassactions = array();
 
 $parameters=array('id'=>$socid, 'objcanvas'=>(empty($objcanvas) ? null : $objcanvas));
 $reshook=$hookmanager->executeHooks('doActions', $parameters, $object, $action);    // Note that $action and $object may have been modified by some hooks
+/** @var CabinetmedCons $object */
 if ($reshook < 0) setEventMessages($hookmanager->error, $hookmanager->errors, 'errors');
 
 if (empty($reshook)) {
@@ -187,7 +196,7 @@ if (empty($reshook)) {
 			if ($action == 'update') {
 				$result=$object->fetch($id);
 				if ($result <= 0) {
-					dol_print_error($db, $object);
+					dol_print_error($db, $object->error, $object->errors);
 					exit;
 				}
 

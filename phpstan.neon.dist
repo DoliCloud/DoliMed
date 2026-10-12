@@ -58,11 +58,12 @@ parameters:
 			# Third party libraries: their classes must be known (the modules extend some of them),
 			# their own code is not this repository's to fix. Same list as the phan configuration.
 			- htdocs/*/vendor/*
-			- htdocs/*/includes/*
 		analyseAndScan:
+			# Third party libraries, of the modules as of the core: neither analysed nor indexed.
+			- '*/includes/*'
 			# The PHPUnit suites run against a real instance and are not part of the delivered
 			# modules.
-			- htdocs/*/test/*
+			- '*/test/*'
 			# Entry points of the core that define DOL_DOCUMENT_ROOT as '..': once indexed, PHPStan
 			# resolves every include of the modules against it.
 			- %env.DOLIBARR_HTDOCS%/install/*

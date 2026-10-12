@@ -179,8 +179,10 @@ function cabinetmed_completesubstitutionarray(&$substitutionarray, $langs, $obje
 	$isconsult = 0;
 	$isbio = 0;
 	$isother = 0;
+	$outcome = new CabinetmedCons($db);
+	$exambio = new CabinetmedExamBio($db);
+	$examother = new CabinetmedExamOther($db);
 	if (GETPOSTINT('idconsult') > 0 && $patientid > 0) {
-		$outcome=new CabinetmedCons($db);
 		$result1=$outcome->fetch(GETPOSTINT('idconsult'));
 		if ($result1 > 0 && $outcome->fk_soc == $patientid) {
 			$result1extra=$outcome->fetch_optionals();
@@ -188,14 +190,12 @@ function cabinetmed_completesubstitutionarray(&$substitutionarray, $langs, $obje
 		}
 	}
 	if (GETPOSTINT('idbio') > 0 && $patientid > 0) {
-		$exambio=new CabinetmedExamBio($db);
 		$result2=$exambio->fetch(GETPOSTINT('idbio'));
 		if ($result2 > 0 && $exambio->fk_soc == $patientid) {
 			$isbio=1;
 		}
 	}
 	if (GETPOSTINT('idradio') > 0 && $patientid > 0) {
-		$examother=new CabinetmedExamOther($db);
 		$result3=$examother->fetch(GETPOSTINT('idradio'));
 		if ($result3 > 0 && $examother->fk_soc == $patientid) {
 			$isother=1;
