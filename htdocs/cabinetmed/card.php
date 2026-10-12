@@ -129,6 +129,7 @@ $result = restrictedArea($user, 'societe', $socid, '&societe', '', 'fk_soc', 'ro
 
 $parameters=array('id'=>$socid, 'objcanvas'=>$objcanvas);
 $reshook=$hookmanager->executeHooks('doActions', $parameters, $object, $action);    // Note that $action and $object may have been modified by some hooks
+/** @var Societe $object */
 if ($reshook < 0) {
 	setEventMessages($hookmanager->error, $hookmanager->errors, 'errors');
 }
@@ -271,6 +272,7 @@ if (empty($reshook)) {
 						'soc_origin' => $soc_origin->id,
 						'soc_dest' => $object->id
 					), $object, $action);
+					/** @var Societe $object */
 
 					if ($reshook < 0) {
 						setEventMessages($hookmanager->error, $hookmanager->errors, 'errors');
