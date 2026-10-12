@@ -625,7 +625,7 @@ class CabinetmedCons extends CommonObject
 	 *      @param  string	$more           Add more param on url
 	 *      @return string          		String with URL
 	 */
-	function getNomUrl($withpicto = 0, $more = '')
+	public function getNomUrl($withpicto = 0, $more = '')
 	{
 		global $langs;
 
