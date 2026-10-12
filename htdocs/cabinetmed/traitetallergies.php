@@ -43,6 +43,14 @@ include_once DOL_DOCUMENT_ROOT."/core/lib/company.lib.php";
 include_once "./class/patient.class.php";
 include_once "./lib/cabinetmed.lib.php";
 
+/**
+ * @var Conf $conf
+ * @var DoliDB $db
+ * @var HookManager $hookmanager
+ * @var Translate $langs
+ * @var User $user
+ */
+
 $langs->load("companies");
 $langs->load("cabinetmed@cabinetmed");
 

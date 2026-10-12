@@ -45,6 +45,14 @@ include_once "./class/patient.class.php";
 include_once "./class/cabinetmedcons.class.php";
 include_once "./class/cabinetmedexamother.class.php";
 
+/**
+ * @var Conf $conf
+ * @var DoliDB $db
+ * @var HookManager $hookmanager
+ * @var Translate $langs
+ * @var User $user
+ */
+
 $action = GETPOST("action");
 $optioncss = GETPOST('optioncss');
 
