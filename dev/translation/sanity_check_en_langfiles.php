@@ -154,6 +154,7 @@ echo "</table>";
 
 
 if (! empty($_REQUEST['unused']) && $_REQUEST['unused'] == 'true') {
+	$unused = array();
 	foreach ($langstrings_dist AS $value) {
 		$search = '\'trans("'.$value.'")\'';
 		$string =  'grep -R -m 1 -F --exclude=includes/* --include=*.php '.$search.' '.$htdocs.'*';
@@ -166,7 +167,9 @@ if (! empty($_REQUEST['unused']) && $_REQUEST['unused'] == 'true') {
 
 	echo "<h2>Strings in en_US that are never used</h2>";
 	echo "<pre>";
-	print_r($unused);
+	foreach (array_keys($unused) as $key) {
+		echo htmlspecialchars($key)."\n";
+	}
 	echo "</pre>";
 }
 
