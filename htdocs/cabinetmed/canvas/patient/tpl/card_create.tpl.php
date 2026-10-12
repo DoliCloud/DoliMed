@@ -521,60 +521,60 @@ while ($i <= $NBPROFIDMAX) {
 
 		// Genre
 		print '<tr><td>'.$langs->trans("Gender").'</td><td colspan="3">'."\n";
-		if ((float) DOL_VERSION <= 23) {
-			print $form->selectarray("typent_id", $formcompany->typent_array(0, "AND code in ('TE_UNKNOWN', 'TE_HOMME', 'TE_FEMME')"), $object->typent_id);
-		} else {
-			print $form->selectarray("typent_id", $formcompany->typent_array(0, "(code:in:'TE_UNKNOWN','TE_HOMME','TE_FEMME')"), $object->typent_id);
-		}
-		if ($user->admin) {
-			print info_admin($langs->trans("YouCanChangeValuesForThisListFromDictionarySetup"), 1);
-		}
+if ((float) DOL_VERSION <= 23) {
+	print $form->selectarray("typent_id", $formcompany->typent_array(0, "AND code in ('TE_UNKNOWN', 'TE_HOMME', 'TE_FEMME')"), $object->typent_id);
+} else {
+	print $form->selectarray("typent_id", $formcompany->typent_array(0, "(code:in:'TE_UNKNOWN','TE_HOMME','TE_FEMME')"), $object->typent_id);
+}
+if ($user->admin) {
+	print info_admin($langs->trans("YouCanChangeValuesForThisListFromDictionarySetup"), 1);
+}
 		print '</td></tr>';
 
 		// Legal Form
 		print '<tr><td>'.$langs->trans('ActivityBranch').'</td>';
 		print '<td colspan="3">';
-		if ($GLOBALS['mysoc']->country_id) {
-			if ((float) DOL_VERSION <= 23) {
-				print $formcompany->select_juridicalstatus($object->forme_juridique_code, $GLOBALS['mysoc']->country_code, "AND (f.module = 'cabinetmed' OR f.code > '100000')");	// > 100000 is the only way i found to not see other entries
-			} else {
-				print $formcompany->select_juridicalstatus($object->forme_juridique_code, $GLOBALS['mysoc']->country_code, "(f.module:=:'cabinetmed') OR (f.code:>:'100000')");	// > 100000 is the only way i found to not see other entries
-			}
-		} else {
-			print $GLOBALS['countrynotdefined'];
-		}
+if ($GLOBALS['mysoc']->country_id) {
+	if ((float) DOL_VERSION <= 23) {
+		print $formcompany->select_juridicalstatus($object->forme_juridique_code, $GLOBALS['mysoc']->country_code, "AND (f.module = 'cabinetmed' OR f.code > '100000')");	// > 100000 is the only way i found to not see other entries
+	} else {
+		print $formcompany->select_juridicalstatus($object->forme_juridique_code, $GLOBALS['mysoc']->country_code, "(f.module:=:'cabinetmed') OR (f.code:>:'100000')");	// > 100000 is the only way i found to not see other entries
+	}
+} else {
+	print $GLOBALS['countrynotdefined'];
+}
 		print '</td>';
 		print '</tr>';
 
-		if (getDolGlobalInt('MAIN_MULTILANGS')) {
-			print '<tr><td>'.$langs->trans("DefaultLang").'</td><td colspan="3">'."\n";
-			print $formadmin->select_language(($object->default_lang ? $object->default_lang : getDolGlobalString('MAIN_LANG_DEFAULT')), 'default_lang', 0, 0, 1);
-			print '</td>';
-			print '</tr>';
-		}
+if (getDolGlobalInt('MAIN_MULTILANGS')) {
+	print '<tr><td>'.$langs->trans("DefaultLang").'</td><td colspan="3">'."\n";
+	print $formadmin->select_language(($object->default_lang ? $object->default_lang : getDolGlobalString('MAIN_LANG_DEFAULT')), 'default_lang', 0, 0, 1);
+	print '</td>';
+	print '</tr>';
+}
 
 		// Categories
-		if (isModEnabled('categorie') && $user->hasRight('categorie', 'lire')) {
-			$langs->load('categories');
+if (isModEnabled('categorie') && $user->hasRight('categorie', 'lire')) {
+	$langs->load('categories');
 
-			// Customer
-			if ($object->prospect || $object->client) {
-				print '<tr><td class="toptd">' . fieldLabel('CustomersCategoriesShort', 'custcats') . '</td><td colspan="3">';
-				$cate_arbo = $form->select_all_categories(Categorie::TYPE_CUSTOMER, null, 'parent', null, null, 1);
-				print $form->multiselectarray('custcats', $cate_arbo, GETPOST('custcats', 'array'), null, null, null,
-					null, "90%");
-				print "</td></tr>";
-			}
+	// Customer
+	if ($object->prospect || $object->client) {
+		print '<tr><td class="toptd">' . fieldLabel('CustomersCategoriesShort', 'custcats') . '</td><td colspan="3">';
+		$cate_arbo = $form->select_all_categories(Categorie::TYPE_CUSTOMER, null, 'parent', null, null, 1);
+		print $form->multiselectarray('custcats', $cate_arbo, GETPOST('custcats', 'array'), null, null, null,
+			null, "90%");
+		print "</td></tr>";
+	}
 
-			// Supplier
-			if ($object->fournisseur) {
-				print '<tr><td class="toptd">' . fieldLabel('SuppliersCategoriesShort', 'suppcats') . '</td><td colspan="3">';
-				$cate_arbo = $form->select_all_categories(Categorie::TYPE_SUPPLIER, null, 'parent', null, null, 1);
-				print $form->multiselectarray('suppcats', $cate_arbo, GETPOST('suppcats', 'array'), null, null, null,
-					null, "90%");
-				print "</td></tr>";
-			}
-		}
+	// Supplier
+	if ($object->fournisseur) {
+		print '<tr><td class="toptd">' . fieldLabel('SuppliersCategoriesShort', 'suppcats') . '</td><td colspan="3">';
+		$cate_arbo = $form->select_all_categories(Categorie::TYPE_SUPPLIER, null, 'parent', null, null, 1);
+		print $form->multiselectarray('suppcats', $cate_arbo, GETPOST('suppcats', 'array'), null, null, null,
+			null, "90%");
+		print "</td></tr>";
+	}
+}
 
 		// Other attributes
 		$parameters = array('socid'=>(empty($socid) ? 0 : $socid), 'colspan' => ' colspan="3"', 'colspanvalue' => '3');

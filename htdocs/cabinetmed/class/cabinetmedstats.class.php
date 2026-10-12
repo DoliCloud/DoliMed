@@ -54,7 +54,7 @@ class CabinetMedStats extends Stats
 	 * @param   int			$userid    	Id user for filter
 	 * @param	string		$morefilter	Add filters
 	 */
-	function __construct($db, $socid, $mode, $userid = 0, $morefilter = '')
+	public function __construct($db, $socid, $mode, $userid = 0, $morefilter = '')
 	{
 		global $conf;
 
@@ -80,7 +80,7 @@ class CabinetMedStats extends Stats
 	 *
 	 *	@return		array	Array of values
 	 */
-	function getNbByYear()
+	public function getNbByYear()
 	{
 		$sql = "SELECT YEAR(datecons) as dm, COUNT(*)";
 		$sql.= " FROM ".$this->from.", ".MAIN_DB_PREFIX."societe as s";
@@ -101,7 +101,7 @@ class CabinetMedStats extends Stats
 	 *	@param	int		$format		0=Label of absiss is a translated text, 1=Label of absiss is month number, 2=Label of absiss is first letter of month
 	 *	@return	array				Array of values
 	 */
-	function getNbByMonth($year, $format = 0)
+	public function getNbByMonth($year, $format = 0)
 	{
 		$sql = "SELECT MONTH(datecons) as dm, COUNT(*)";
 		$sql.= " FROM ".$this->from.", ".MAIN_DB_PREFIX."societe as s";
@@ -125,7 +125,7 @@ class CabinetMedStats extends Stats
 	 *	@param	int		$format		0=Label of absiss is a translated text, 1=Label of absiss is month number, 2=Label of absiss is first letter of month
 	 *	@return	array				Array of values
 	 */
-	function getAmountByMonth($year, $format = 0)
+	public function getAmountByMonth($year, $format = 0)
 	{
 		$sql = "SELECT date_format(datecons,'%m') as dm, ";
 		$sql.= " SUM(";
@@ -152,7 +152,7 @@ class CabinetMedStats extends Stats
 	 *	@param	int		$year	Year to scan
 	 *	@return	array			Array of values
 	 */
-	function getAverageByMonth($year)
+	public function getAverageByMonth($year)
 	{
 		$sql = "SELECT date_format(datecons,'%m') as dm, ";
 		$sql.= " AVG(";
@@ -176,7 +176,7 @@ class CabinetMedStats extends Stats
 	 *
 	 *	@return	array	Array of values
 	 */
-	function getAllByYear()
+	public function getAllByYear()
 	{
 		$sql = "SELECT date_format(datecons,'%Y') as year, COUNT(*) as nb, ";
 		$sql.= " SUM(";

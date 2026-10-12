@@ -33,33 +33,33 @@
  */
 class CabinetmedExamBio // extends CommonObject
 {
-	var $db;							//!< To store db handler
-	var $error;							//!< To return error code (or message)
-	var $errors=array();				//!< To return several error codes (or messages)
+	public $db;							//!< To store db handler
+	public $error;							//!< To return error code (or message)
+	public $errors=array();				//!< To return several error codes (or messages)
 	//var $element='cabinetmed_exambio';			//!< Id that identify managed objects
 	//var $table_element='cabinetmed_exambio';	//!< Name of table without prefix where object is stored
 
-	var $id;
+	public $id;
 
-	var $fk_soc;
-	var $fk_user;
-	var $dateexam='';
-	var $resultat;
-	var $conclusion;
-	var $comment;
-	var $suivipr_ad;
-	var $suivipr_ag;
-	var $suivipr_vs;
-	var $suivipr_eva;
-	var $suivipr_err;
-	var $suivisa_fat;
-	var $suivisa_dax;
-	var $suivisa_dpe;
-	var $suivisa_dpa;
-	var $suivisa_rno;
-	var $suivisa_dma;
-	var $suivisa_basdai;
-	var $tms='';
+	public $fk_soc;
+	public $fk_user;
+	public $dateexam='';
+	public $resultat;
+	public $conclusion;
+	public $comment;
+	public $suivipr_ad;
+	public $suivipr_ag;
+	public $suivipr_vs;
+	public $suivipr_eva;
+	public $suivipr_err;
+	public $suivisa_fat;
+	public $suivisa_dax;
+	public $suivisa_dpe;
+	public $suivisa_dpa;
+	public $suivisa_rno;
+	public $suivisa_dma;
+	public $suivisa_basdai;
+	public $tms='';
 
 
 	/**
@@ -67,7 +67,7 @@ class CabinetmedExamBio // extends CommonObject
 	 *
 	 *  @param	DoliDB	$db		Database handler
 	 */
-	function __construct($db)
+	public function __construct($db)
 	{
 		$this->db = $db;
 		return 1;
@@ -81,7 +81,7 @@ class CabinetmedExamBio // extends CommonObject
 	 *      @param  int		$notrigger	    0=launch triggers after, 1=disable triggers
 	 *      @return int         			<0 if KO, Id of created object if OK
 	 */
-	function create($user, $notrigger = 0)
+	public function create($user, $notrigger = 0)
 	{
 		global $conf, $langs;
 		$error=0;
@@ -185,7 +185,7 @@ class CabinetmedExamBio // extends CommonObject
 	 *    @param	int		$id     id object
 	 *    @return   int        		<0 if KO, >0 if OK
 	 */
-	function fetch($id)
+	public function fetch($id)
 	{
 		global $langs;
 		$sql = "SELECT";
@@ -263,7 +263,7 @@ class CabinetmedExamBio // extends CommonObject
 	 *      @param  int		$notrigger	    0=launch triggers after, 1=disable triggers
 	 *      @return int         			<0 if KO, >0 if OK
 	 */
-	function update($user = null, $notrigger = 0)
+	public function update($user = null, $notrigger = 0)
 	{
 		global $conf, $langs;
 		$error=0;
@@ -343,7 +343,7 @@ class CabinetmedExamBio // extends CommonObject
 	 *   @param     int		$notrigger	    0=launch triggers after, 1=disable triggers
 	 *   @return	int						<0 if KO, >0 if OK
 	 */
-	function delete($user, $notrigger = 0)
+	public function delete($user, $notrigger = 0)
 	{
 		global $conf, $langs;
 		$error=0;
@@ -379,7 +379,7 @@ class CabinetmedExamBio // extends CommonObject
 	 *		@param	int		$fromid     	Id of object to clone
 	 * 	 	@return	int						New id of clone
 	 */
-	function createFromClone($fromid)
+	public function createFromClone($fromid)
 	{
 		global $user,$langs;
 
@@ -426,7 +426,7 @@ class CabinetmedExamBio // extends CommonObject
 	 *
 	 *	@return	void
 	 */
-	function initAsSpecimen()
+	public function initAsSpecimen()
 	{
 		$this->id=0;
 

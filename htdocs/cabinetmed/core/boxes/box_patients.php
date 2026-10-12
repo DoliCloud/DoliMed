@@ -31,16 +31,16 @@ include_once DOL_DOCUMENT_ROOT.'/core/boxes/modules_boxes.php';
  */
 class box_patients extends ModeleBoxes
 {
-	var $boxcode="lastpatients";
-	var $boximg="object_company";
-	var $boxlabel="BoxLastPatients";
-	var $depends = array("cabinetmed@cabinetmed");
+	public $boxcode="lastpatients";
+	public $boximg="object_company";
+	public $boxlabel="BoxLastPatients";
+	public $depends = array("cabinetmed@cabinetmed");
 
-	var $db;
-	var $enabled = 1;
+	public $db;
+	public $enabled = 1;
 
-	var $info_box_head = array();
-	var $info_box_contents = array();
+	public $info_box_head = array();
+	public $info_box_contents = array();
 
 
 	/**
@@ -49,7 +49,7 @@ class box_patients extends ModeleBoxes
 	 *  @param  DoliDB	$db      	Database handler
 	 *  @param	string	$param		More parameters
 	 */
-	function __construct($db, $param = '')
+	public function __construct($db, $param = '')
 	{
 		global $conf, $user;
 
@@ -62,7 +62,7 @@ class box_patients extends ModeleBoxes
 	 *  @param	int		$max        Maximum number of records to load
 	 *  @return	void
 	 */
-	function loadBox($max = 5)
+	public function loadBox($max = 5)
 	{
 		global $user, $langs, $db, $conf;
 		$langs->load("boxes");

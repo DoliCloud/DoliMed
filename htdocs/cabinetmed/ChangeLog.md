@@ -3,6 +3,7 @@
 ## 24
 
 - FIX compatibility with v24 and PHP 8.5. Need Dolibarr v20 min.
+- Need PHP 7.2 min.
 - NEW The document tab uses the last look and feel of Dolibarr.
 
 ## 17.2

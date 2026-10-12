@@ -37,115 +37,115 @@ require_once DOL_DOCUMENT_ROOT."/user/class/user.class.php";
  */
 class Patient extends Societe
 {
-	var $db;
-	var $error;
-	var $errors=array();
-	var $element='societe';
-	var $table_element = 'societe';
-	var $ismultientitymanaged = 1;	// 0=No test on entity, 1=Test with field entity, 2=Test with link by societe
+	public $db;
+	public $error;
+	public $errors=array();
+	public $element='societe';
+	public $table_element = 'societe';
+	public $ismultientitymanaged = 1;	// 0=No test on entity, 1=Test with field entity, 2=Test with link by societe
 
-	var $id;
-	var $nom;
-	var $nom_particulier;
-	var $firstname;
-	var $particulier;
-	var $address;
-	var $zip;
-	var $town;
+	public $id;
+	public $nom;
+	public $nom_particulier;
+	public $firstname;
+	public $particulier;
+	public $address;
+	public $zip;
+	public $town;
 
-	var $departement_id;
-	var $state_code;
-	var $departement;
+	public $departement_id;
+	public $state_code;
+	public $departement;
 
-	var $country_id;
-	var $country_code;
-	var $country;
+	public $country_id;
+	public $country_code;
+	public $country;
 
-	var $tel;
-	var $fax;
-	var $email;
-	var $url;
-	var $barcode;
+	public $tel;
+	public $fax;
+	public $email;
+	public $url;
+	public $barcode;
 
 	// 4 identifiants professionnels (leur utilisation depend du pays)
-	var $siren;		// IdProf1 - Deprecated
-	var $siret;		// IdProf2 - Deprecated
-	var $ape;		// IdProf3 - Deprecated
-	var $idprof1;	// IdProf1
-	var $idprof2;	// IdProf2
-	var $idprof3;	// IdProf3
-	var $idprof4;	// IdProf4
+	public $siren;		// IdProf1 - Deprecated
+	public $siret;		// IdProf2 - Deprecated
+	public $ape;		// IdProf3 - Deprecated
+	public $idprof1;	// IdProf1
+	public $idprof2;	// IdProf2
+	public $idprof3;	// IdProf3
+	public $idprof4;	// IdProf4
 
-	var $prefix_comm;
+	public $prefix_comm;
 
-	var $tva_assuj;
-	var $tva_intra;
+	public $tva_assuj;
+	public $tva_intra;
 
 	// Local taxes
-	var $localtax1_assuj;
-	var $localtax2_assuj;
+	public $localtax1_assuj;
+	public $localtax2_assuj;
 
-	var $capital;
-	var $typent_id;
-	var $typent_code;
-	var $effectif_id;
-	var $forme_juridique_code;
-	var $forme_juridique;
+	public $capital;
+	public $typent_id;
+	public $typent_code;
+	public $effectif_id;
+	public $forme_juridique_code;
+	public $forme_juridique;
 
-	var $remise_percent;
-	var $mode_reglement_id;
-	var $cond_reglement_id;
+	public $remise_percent;
+	public $mode_reglement_id;
+	public $cond_reglement_id;
 
-	var $client;					// 0=no customer, 1=customer, 2=prospect
-	var $prospect;					// 0=no prospect, 1=prospect
-	var $fournisseur;				// =0no supplier, 1=supplier
+	public $client;					// 0=no customer, 1=customer, 2=prospect
+	public $prospect;					// 0=no prospect, 1=prospect
+	public $fournisseur;				// =0no supplier, 1=supplier
 
-	var $code_client;
-	var $code_fournisseur;
-	var $code_compta;
-	var $code_compta_fournisseur;
+	public $code_client;
+	public $code_fournisseur;
+	public $code_compta;
+	public $code_compta_fournisseur;
 
-	var $note_public;
-	var $note_private;
+	public $note_public;
+	public $note_private;
 	//! code statut prospect
-	var $stcomm_id;
-	var $status_prospect_label;
+	public $stcomm_id;
+	public $status_prospect_label;
 
-	var $price_level;
+	public $price_level;
 
-	var $datec;
-	var $date_modification;
+	public $datec;
+	public $date_modification;
 
-	var $commercial_id; //Id du commercial affecte
-	var $default_lang;
+	public $commercial_id; //Id du commercial affecte
+	public $default_lang;
 
-	var $canvas;
+	public $canvas;
 
-	var $import_key;
+	public $import_key;
 
-	var $logo;
-	var $logo_small;
-	var $logo_mini;
+	public $logo;
+	public $logo_small;
+	public $logo_mini;
 
-	var $note_antemed;
-	var $note_antechirgen;
-	var $note_antechirortho;
-	var $note_anterhum;
-	var $note_other;
-	var $note_traitclass;
-	var $note_traitallergie;
-	var $note_traitintol;
-	var $note_traitspec;
-	var $alert_antemed;
-	var $alert_antechirgen;
-	var $alert_antechirortho;
-	var $alert_anterhum;
-	var $alert_other;
-	var $alert_traitclass;
-	var $alert_traitallergie;
-	var $alert_traitintol;
-	var $alert_traitspec;
-	var $alert_note;
+	public $note_antemed;
+	public $note_antechirgen;
+	public $note_antechirortho;
+	public $note_anterhum;
+	public $note_other;
+	public $note_traitclass;
+	public $note_traitallergie;
+	public $note_traitintol;
+	public $note_traitspec;
+	public $alert_antemed;
+	public $alert_antechirgen;
+	public $alert_antechirortho;
+	public $alert_anterhum;
+	public $alert_other;
+	public $alert_traitclass;
+	public $alert_traitallergie;
+	public $alert_traitintol;
+	public $alert_traitspec;
+	public $alert_note;
 
 
 	/**
@@ -153,7 +153,7 @@ class Patient extends Societe
 	 *
 	 *  @param		DoliDB		$db      Database handler
 	 */
-	function __construct($db)
+	public function __construct($db)
 	{
 		$this->db = $db;
 
@@ -181,7 +181,7 @@ class Patient extends Societe
 	 *	@param		int		$nosyncmember				Do not synchronize info of linked member
 	 *  @return     int      			       			<0 if KO, >=0 if OK
 	 */
-	function update($id, User $user, $call_trigger = 1, $allowmodcodeclient = 0, $allowmodcodefournisseur = 0, $action = 'update', $nosyncmember = 1)
+	public function update($id, User $user, $call_trigger = 1, $allowmodcodeclient = 0, $allowmodcodefournisseur = 0, $action = 'update', $nosyncmember = 1)
 	{
 		require_once DOL_DOCUMENT_ROOT."/core/lib/functions2.lib.php";
 
@@ -368,7 +368,7 @@ class Patient extends Societe
 	 *    @param	int		$is_supplier	Only supplier third party
 	 *    @return   $int					>0 if OK, <0 if KO or if two records found for same ref or idprof.
 	 */
-	function fetch($rowid, $ref = '', $ref_ext = '', $barcode = '', $idprof1 = '', $idprof2 = '', $idprof3 = '', $idprof4 = '', $idprof5 = '', $idprof6 = '', $email = '', $ref_alias = '', $is_client = 0, $is_supplier = 0)
+	public function fetch($rowid, $ref = '', $ref_ext = '', $barcode = '', $idprof1 = '', $idprof2 = '', $idprof3 = '', $idprof4 = '', $idprof5 = '', $idprof6 = '', $email = '', $ref_alias = '', $is_client = 0, $is_supplier = 0)
 	{
 		global $langs;
 
@@ -581,7 +581,7 @@ class Patient extends Societe
 	 *
 	 *	@return	void
 	 */
-	function initAsSpecimen()
+	public function initAsSpecimen()
 	{
 		global $user,$langs,$conf,$mysoc;
 

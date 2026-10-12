@@ -32,20 +32,20 @@ require_once DOL_DOCUMENT_ROOT.'/core/triggers/dolibarrtriggers.class.php';
  */
 class InterfaceActionsCabinetmed extends DolibarrTriggers
 {
-	var $db;
-	var $error;
+	public $db;
+	public $error;
 
-	var $date;
-	var $duree;
-	var $texte;
-	var $desc;
+	public $date;
+	public $duree;
+	public $texte;
+	public $desc;
 
 	/**
 	 *	Constructor
 	 *
 	 *  @param	DoliDB	$db		Database handler
 	 */
-	function __construct($db)
+	public function __construct($db)
 	{
 		$this->db = $db;
 
@@ -60,7 +60,7 @@ class InterfaceActionsCabinetmed extends DolibarrTriggers
 	 *
 	 *   @return     string      Name of trigger file
 	 */
-	function getName()
+	public function getName()
 	{
 		return $this->name;
 	}
@@ -70,7 +70,7 @@ class InterfaceActionsCabinetmed extends DolibarrTriggers
 	 *
 	 *   @return     string      Description of trigger file
 	 */
-	function getDesc()
+	public function getDesc()
 	{
 		return $this->description;
 	}
@@ -80,7 +80,7 @@ class InterfaceActionsCabinetmed extends DolibarrTriggers
 	 *
 	 *   @return     string      Version of trigger file
 	 */
-	function getVersion()
+	public function getVersion()
 	{
 		global $langs;
 		$langs->load("admin");
@@ -111,7 +111,7 @@ class InterfaceActionsCabinetmed extends DolibarrTriggers
 	 *      @param  Conf		$conf       Object conf
 	 *      @return int         			<0 if KO, 0 if no action are done, >0 if OK
 	 */
-	function runTrigger($action, $object, User $user, Translate $langs, Conf $conf)
+	public function runTrigger($action, $object, User $user, Translate $langs, Conf $conf)
 	{
 		$ok=0;
 

@@ -71,8 +71,7 @@ legend
 
 <?php
 if ((float) DOL_VERSION < 19) {
-
-if ((float) DOL_VERSION >= 10) { ?>
+	if ((float) DOL_VERSION >= 10) { ?>
 div.mainmenu.patients::before {
 	content: "\f728";
 }
@@ -80,7 +79,7 @@ div.mainmenu.patients::before {
 div.mainmenu.contacts::before {
 	content: "\f0f0";
 }
-<?php } else { ?>
+	<?php } else { ?>
 div.mainmenu.patients {
 	background-image: url(<?php echo dol_buildpath($path.'/theme/'.$theme.'/img/menus/members.png', 1) ?>);
 }
@@ -88,8 +87,8 @@ div.mainmenu.patients {
 div.mainmenu.contacts {
 	background-image: url(<?php echo dol_buildpath('/cabinetmed/img/menus/stethoscope.png', 1) ?>);
 }
-<?php
-}
+		<?php
+	}
 }
 ?>
 

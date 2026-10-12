@@ -33,20 +33,20 @@ require_once DOL_DOCUMENT_ROOT."/core/class/commonobject.class.php";
  */
 class CabinetmedCons extends CommonObject
 {
-	var $db;							//!< To store db handler
-	var $error;							//!< To return error code (or message)
-	var $errors=array();				//!< To return several error codes (or messages)
+	public $db;							//!< To store db handler
+	public $error;							//!< To return error code (or message)
+	public $errors=array();				//!< To return several error codes (or messages)
 
-	var $element = 'cabinetmed_cons';			//!< Id that identify managed objects
-	var $element_for_permission = 'cabinetmed';
+	public $element = 'cabinetmed_cons';			//!< Id that identify managed objects
+	public $element_for_permission = 'cabinetmed';
 
-	var $table_element = 'cabinetmed_cons';	//!< Name of table without prefix where object is stored
+	public $table_element = 'cabinetmed_cons';	//!< Name of table without prefix where object is stored
 
-	var $id;
-	var $ref;
+	public $id;
+	public $ref;
 
-	var $num_cheque;
-	var $bank;
+	public $num_cheque;
+	public $bank;
 
 
 	// BEGIN MODULEBUILDER PROPERTIES
@@ -108,7 +108,7 @@ class CabinetmedCons extends CommonObject
 	public $fk_user_m;
 	public $fk_agenda;
 	// END MODULEBUILDER PROPERTIES
-	var $date_m;
+	public $date_m;
 
 
 	/**
@@ -116,7 +116,7 @@ class CabinetmedCons extends CommonObject
 	 *
 	 *  @param	DoliDB	$db		Database handler
 	 */
-	function __construct($db)
+	public function __construct($db)
 	{
 		$this->db = $db;
 	}
@@ -129,7 +129,7 @@ class CabinetmedCons extends CommonObject
 	 *      @param 	int		$notrigger	    0=launch triggers after, 1=disable triggers
 	 *      @return int         			<0 if KO, Id of created object if OK
 	 */
-	function create($user, $notrigger = 0)
+	public function create($user, $notrigger = 0)
 	{
 		$error=0;
 
@@ -259,7 +259,7 @@ class CabinetmedCons extends CommonObject
 	 *    @param	int		$id         Id object
 	 *    @return   int 				<0 if KO, >0 if OK
 	 */
-	function fetch($id)
+	public function fetch($id)
 	{
 		$sql = "SELECT";
 		$sql.= " t.rowid,";
@@ -346,7 +346,7 @@ class CabinetmedCons extends CommonObject
 	 *
 	 *    @return     int         <0 if KO, >0 if OK
 	 */
-	function fetch_bankid()
+	public function fetch_bankid()
 	{
 		$this->bank=array();
 
@@ -385,7 +385,7 @@ class CabinetmedCons extends CommonObject
 	 *      @param  int		$notrigger	    0=launch triggers after, 1=disable triggers
 	 *      @return int         			<0 if KO, >0 if OK
 	 */
-	function update($user = null, $notrigger = 0)
+	public function update($user = null, $notrigger = 0)
 	{
 		$error=0;
 
@@ -478,7 +478,7 @@ class CabinetmedCons extends CommonObject
 	 *   @param      int	$notrigger	    0=launch triggers after, 1=disable triggers
 	 *	 @return	 int					<0 if KO, >0 if OK
 	 */
-	function delete($user, $notrigger = 0)
+	public function delete($user, $notrigger = 0)
 	{
 		$error=0;
 
@@ -539,7 +539,7 @@ class CabinetmedCons extends CommonObject
 	 *	@param		int		$fromid     	Id of object to clone
 	 * 	@return		int						New id of clone
 	 */
-	function createFromClone($fromid)
+	public function createFromClone($fromid)
 	{
 		global $user;
 
@@ -587,7 +587,7 @@ class CabinetmedCons extends CommonObject
 	 *
 	 *	 @return	void
 	 */
-	function initAsSpecimen()
+	public function initAsSpecimen()
 	{
 		$this->id=0;
 
@@ -651,7 +651,7 @@ class CabinetmedCons extends CommonObject
 	 *
 	 *   @return     int         <0 si ko, >0 si ok
 	 */
-	function load_state_board()
+	public function load_state_board()
 	{
 		global $conf;
 
@@ -700,7 +700,7 @@ class CabinetmedCons extends CommonObject
 	 *	@param      int		$mode       0=libelle long, 1=libelle court, 2=Picto + Libelle court, 3=Picto, 4=Picto + Libelle long, 5=Libelle court + Picto
 	 *	@return     string      		Libelle
 	 */
-	function getLibStatut($mode)
+	public function getLibStatut($mode)
 	{
 		return $this->LibStatut(1, $mode);
 	}
@@ -712,7 +712,7 @@ class CabinetmedCons extends CommonObject
 	 *	@param      int		$mode        	  0=libelle long, 1=libelle court, 2=Picto + Libelle court, 3=Picto, 4=Picto + Libelle long, 5=Libelle court + Picto
 	 *  @return     string					  Label of status
 	 */
-	function LibStatut($statut, $mode)
+	public function LibStatut($statut, $mode)
 	{
 		return '';
 	}

@@ -1,0 +1,424 @@
+parameters:
+	ignoreErrors:
+		-
+			message: '#^Function llxHeader invoked with 3 parameters, 0 required\.$#'
+			identifier: arguments.count
+			count: 1
+			path: ../../../htdocs/cabinetmed/admin/about.php
+
+		-
+			message: '#^Parameter \#1 \$links of function dol_fiche_head expects array\<string, array\<int\<0, 5\>, string\>\>, array\{array\{''admin\.php'', string, ''tabsetup''\}, array\{''cabinetmed_cons…'', non\-falsy\-string, ''tabconsextrafields''\}, array\{mixed, string, ''tababout''\}\} given\.$#'
+			identifier: argument.type
+			count: 1
+			path: ../../../htdocs/cabinetmed/admin/about.php
+
+		-
+			message: '#^Function llxHeader invoked with 3 parameters, 0 required\.$#'
+			identifier: arguments.count
+			count: 1
+			path: ../../../htdocs/cabinetmed/admin/admin.php
+
+		-
+			message: '#^Parameter \#3 \$value of function dolibarr_set_const expects string, int given\.$#'
+			identifier: argument.type
+			count: 3
+			path: ../../../htdocs/cabinetmed/admin/admin.php
+
+		-
+			message: '#^Function llxHeader invoked with 2 parameters, 0 required\.$#'
+			identifier: arguments.count
+			count: 1
+			path: ../../../htdocs/cabinetmed/admin/cabinetmed_cons_extrafields.php
+
+		-
+			message: '#^Function llxHeader invoked with 2 parameters, 0 required\.$#'
+			identifier: arguments.count
+			count: 1
+			path: ../../../htdocs/cabinetmed/antecedant.php
+
+		-
+			message: '#^Parameter \#1 \$links of function dol_fiche_head expects array\<string, array\<int\<0, 5\>, string\>\>, '''' given\.$#'
+			identifier: argument.type
+			count: 1
+			path: ../../../htdocs/cabinetmed/canvas/patient/tpl/card_edit.tpl.php
+
+		-
+			message: '#^Function llxHeader invoked with 3 parameters, 0 required\.$#'
+			identifier: arguments.count
+			count: 1
+			path: ../../../htdocs/cabinetmed/card.php
+
+		-
+			message: '#^Property Societe\:\:\$entity \(int\) in isset\(\) is not nullable\.$#'
+			identifier: isset.property
+			count: 1
+			path: ../../../htdocs/cabinetmed/card.php
+
+		-
+			message: '#^Call to function is_array\(\) with array\<mixed\> will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/actions_cabinetmed.class.php
+
+		-
+			message: '#^Property CabinetmedCons\:\:\$fields type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/cabinetmedcons.class.php
+
+		-
+			message: '#^Property CabinetMedStats\:\:\$db has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/cabinetmedstats.class.php
+
+		-
+			message: '#^Property FormFileCabinetmed\:\:\$numoffiles has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/html.formfilecabinetmed.class.php
+
+		-
+			message: '#^Parameter \#1 \$str of function trim expects string, float given\.$#'
+			identifier: argument.type
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/patient.class.php
+
+		-
+			message: '#^Property Patient\:\:\$capital \(float\) does not accept string\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/patient.class.php
+
+		-
+			message: '#^Property Patient\:\:\$effectif_id has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/patient.class.php
+
+		-
+			message: '#^Property Patient\:\:\$forme_juridique has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/patient.class.php
+
+		-
+			message: '#^Property Patient\:\:\$forme_juridique_code has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/patient.class.php
+
+		-
+			message: '#^Property Patient\:\:\$localtax1_assuj has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/patient.class.php
+
+		-
+			message: '#^Property Patient\:\:\$localtax2_assuj has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/patient.class.php
+
+		-
+			message: '#^Property Patient\:\:\$remise_percent has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/patient.class.php
+
+		-
+			message: '#^Property Patient\:\:\$typent_code has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/patient.class.php
+
+		-
+			message: '#^Function llxHeader invoked with 2 parameters, 0 required\.$#'
+			identifier: arguments.count
+			count: 1
+			path: ../../../htdocs/cabinetmed/compta.php
+
+		-
+			message: '#^Function llxHeader invoked with 2 parameters, 0 required\.$#'
+			identifier: arguments.count
+			count: 1
+			path: ../../../htdocs/cabinetmed/consultations.php
+
+		-
+			message: '#^Parameter \#4 \$month of function dol_mktime expects int, array\|string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: ../../../htdocs/cabinetmed/consultations.php
+
+		-
+			message: '#^Parameter \#5 \$day of function dol_mktime expects int, array\|string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: ../../../htdocs/cabinetmed/consultations.php
+
+		-
+			message: '#^Parameter \#6 \$year of function dol_mktime expects int, array\|string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: ../../../htdocs/cabinetmed/consultations.php
+
+		-
+			message: '#^Variable \$oldconsult might not be defined\.$#'
+			identifier: variable.undefined
+			count: 6
+			path: ../../../htdocs/cabinetmed/consultations.php
+
+		-
+			message: '#^Function llxHeader invoked with 3 parameters, 0 required\.$#'
+			identifier: arguments.count
+			count: 1
+			path: ../../../htdocs/cabinetmed/contact.php
+
+		-
+			message: '#^Property box_patients\:\:\$boximg has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: ../../../htdocs/cabinetmed/core/boxes/box_patients.php
+
+		-
+			message: '#^Property box_patients\:\:\$boxlabel has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: ../../../htdocs/cabinetmed/core/boxes/box_patients.php
+
+		-
+			message: '#^Property box_patients\:\:\$depends has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: ../../../htdocs/cabinetmed/core/boxes/box_patients.php
+
+		-
+			message: '#^Property box_patients\:\:\$info_box_contents type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: ../../../htdocs/cabinetmed/core/boxes/box_patients.php
+
+		-
+			message: '#^Property box_patients\:\:\$info_box_head type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: ../../../htdocs/cabinetmed/core/boxes/box_patients.php
+
+		-
+			message: '#^Access to an undefined property pdf_medicalrecord\:\:\$warnings\.$#'
+			identifier: property.notFound
+			count: 1
+			path: ../../../htdocs/cabinetmed/core/modules/societe/doc/pdf_medicalrecord.modules.php
+
+		-
+			message: '#^Parameter \#1 \$format of function pdf_getInstance expects string, array\<int, float\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: ../../../htdocs/cabinetmed/core/modules/societe/doc/pdf_medicalrecord.modules.php
+
+		-
+			message: '#^Parameter \#3 \$page_height of function pdf_pagehead expects int, float given\.$#'
+			identifier: argument.type
+			count: 1
+			path: ../../../htdocs/cabinetmed/core/modules/societe/doc/pdf_medicalrecord.modules.php
+
+		-
+			message: '#^Property Societe\:\:\$entity \(int\) in isset\(\) is not nullable\.$#'
+			identifier: isset.property
+			count: 1
+			path: ../../../htdocs/cabinetmed/core/modules/societe/doc/pdf_medicalrecord.modules.php
+
+		-
+			message: '#^Function llxHeader invoked with 10 parameters, 0 required\.$#'
+			identifier: arguments.count
+			count: 1
+			path: ../../../htdocs/cabinetmed/documents.php
+
+		-
+			message: '#^Function llxHeader invoked with 2 parameters, 0 required\.$#'
+			identifier: arguments.count
+			count: 1
+			path: ../../../htdocs/cabinetmed/examautre.php
+
+		-
+			message: '#^Function llxHeader invoked with 2 parameters, 0 required\.$#'
+			identifier: arguments.count
+			count: 1
+			path: ../../../htdocs/cabinetmed/exambio.php
+
+		-
+			message: '#^Parameter \#1 \$year of function dol_get_first_day expects int, array\|string given\.$#'
+			identifier: argument.type
+			count: 2
+			path: ../../../htdocs/cabinetmed/export.php
+
+		-
+			message: '#^Parameter \#1 \$year of function dol_get_last_day expects int, array\|string given\.$#'
+			identifier: argument.type
+			count: 2
+			path: ../../../htdocs/cabinetmed/export.php
+
+		-
+			message: '#^Parameter \#2 \$month of function dol_get_first_day expects int, array\|string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: ../../../htdocs/cabinetmed/export.php
+
+		-
+			message: '#^Parameter \#2 \$month of function dol_get_last_day expects int, array\|string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: ../../../htdocs/cabinetmed/export.php
+
+		-
+			message: '#^Unable to resolve the template type T in call to function dol_clone$#'
+			identifier: argument.templateType
+			count: 2
+			path: ../../../htdocs/cabinetmed/export.php
+
+		-
+			message: '#^Function llxHeader invoked with 3 parameters, 0 required\.$#'
+			identifier: arguments.count
+			count: 1
+			path: ../../../htdocs/cabinetmed/index.php
+
+		-
+			message: '#^Function llxHeader invoked with 3 parameters, 0 required\.$#'
+			identifier: arguments.count
+			count: 1
+			path: ../../../htdocs/cabinetmed/list.php
+
+		-
+			message: '#^Function llxHeader invoked with 3 parameters, 0 required\.$#'
+			identifier: arguments.count
+			count: 1
+			path: ../../../htdocs/cabinetmed/listconsult.php
+
+		-
+			message: '#^Function llxHeader invoked with 3 parameters, 0 required\.$#'
+			identifier: arguments.count
+			count: 1
+			path: ../../../htdocs/cabinetmed/notes.php
+
+		-
+			message: '#^Parameter \#2 \$b of function dol_html_entity_decode expects string, int given\.$#'
+			identifier: argument.type
+			count: 1
+			path: ../../../htdocs/cabinetmed/notes.php
+
+		-
+			message: '#^Function llxHeader invoked with 3 parameters, 0 required\.$#'
+			identifier: arguments.count
+			count: 1
+			path: ../../../htdocs/cabinetmed/patients.php
+
+		-
+			message: '#^Parameter \#4 \$addlink of function dol_print_email expects int, string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: ../../../htdocs/cabinetmed/patients.php
+
+		-
+			message: '#^Function llxHeader invoked with 3 parameters, 0 required\.$#'
+			identifier: arguments.count
+			count: 1
+			path: ../../../htdocs/cabinetmed/patients_of_contact.php
+
+		-
+			message: '#^Function llxHeader invoked with 7 parameters, 0 required\.$#'
+			identifier: arguments.count
+			count: 1
+			path: ../../../htdocs/cabinetmed/stats/geo.php
+
+		-
+			message: '#^Parameter \#3 \$mode of class CabinetMedStats constructor expects int, array\|string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: ../../../htdocs/cabinetmed/stats/index.php
+
+		-
+			message: '#^Function llxHeader invoked with 2 parameters, 0 required\.$#'
+			identifier: arguments.count
+			count: 1
+			path: ../../../htdocs/cabinetmed/traitetallergies.php
+		-
+			message: '#^Property CommonObject\:\:\$country_id \(int\) does not accept array\<mixed\>\|string\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: ../../../htdocs/cabinetmed/card.php
+
+		-
+			message: '#^Property CommonObject\:\:\$state_id \(int\) does not accept array\<mixed\>\|string\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: ../../../htdocs/cabinetmed/card.php
+
+		-
+			message: '#^Property CabinetmedCons\:\:\$fields \(array\<string, array\{type\: string, label\: string, enabled\: int\<0, 2\>\|string, position\: int, notnull\?\: int, visible\: int\<\-6, 5\>\|string, alwayseditable\?\: int\<0, 1\>, noteditable\?\: int\<0, 1\>, \.\.\.\}\>\) does not accept default value of type array\{rowid\: array\{type\: ''integer'', label\: ''TechnicalID'', picto\: ''fa\-file'', enabled\: ''1'', position\: 10, notnull\: 1, visible\: ''\-1''\}, entity\: array\{type\: ''integer'', label\: ''Entity'', picto\: ''fa\-file'', enabled\: ''1'', position\: 15, notnull\: 1, visible\: ''\-2'', default\: ''1'', \.\.\.\}, fk_soc\: array\{type\: ''integer\:Societe…'', label\: ''ThirdParty'', picto\: ''company'', enabled\: ''1'', position\: 20, notnull\: 0, visible\: ''\-1'', css\: ''maxwidth500…'', \.\.\.\}, datecons\: array\{type\: ''date'', label\: ''Date'', picto\: ''company'', enabled\: ''1'', position\: 25, notnull\: 1, visible\: ''\-1''\}, typepriseencharge\: array\{type\: ''varchar\(8\)'', label\: ''TypePriseEnCharge'', picto\: ''company'', enabled\: ''1'', position\: 30, notnull\: 0, visible\: ''\-1''\}, motifconsprinc\: array\{type\: ''varchar\(64\)'', label\: ''MotifPrincipal'', picto\: ''company'', enabled\: ''1'', position\: 35, notnull\: 0, visible\: ''\-1''\}, diaglesprinc\: array\{type\: ''varchar\(64\)'', label\: ''DiagLesPrincipal'', picto\: ''company'', enabled\: ''1'', position\: 40, notnull\: 0, visible\: ''\-1''\}, motifconssec\: array\{type\: ''text'', label\: ''MotifSecondaires'', picto\: ''company'', enabled\: ''1'', position\: 45, notnull\: 0, visible\: ''\-1''\}, \.\.\.\}\.$#'
+			identifier: property.defaultValue
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/cabinetmedcons.class.php
+
+		-
+			message: '#^Property Patient\:\:\$code_compta has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/patient.class.php
+
+		-
+			message: '#^Parameter \#4 \$month of function dol_mktime expects int, array\<mixed\>\|string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: ../../../htdocs/cabinetmed/consultations.php
+
+		-
+			message: '#^Parameter \#5 \$day of function dol_mktime expects int, array\<mixed\>\|string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: ../../../htdocs/cabinetmed/consultations.php
+
+		-
+			message: '#^Parameter \#6 \$year of function dol_mktime expects int, array\<mixed\>\|string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: ../../../htdocs/cabinetmed/consultations.php
+
+		-
+			message: '#^Parameter \#1 \$year of function dol_get_first_day expects int, array\<mixed\>\|string given\.$#'
+			identifier: argument.type
+			count: 2
+			path: ../../../htdocs/cabinetmed/export.php
+
+		-
+			message: '#^Parameter \#1 \$year of function dol_get_last_day expects int, array\<mixed\>\|string given\.$#'
+			identifier: argument.type
+			count: 2
+			path: ../../../htdocs/cabinetmed/export.php
+
+		-
+			message: '#^Parameter \#2 \$month of function dol_get_first_day expects int, array\<mixed\>\|string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: ../../../htdocs/cabinetmed/export.php
+
+		-
+			message: '#^Parameter \#2 \$month of function dol_get_last_day expects int, array\<mixed\>\|string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: ../../../htdocs/cabinetmed/export.php
+
+		-
+			message: '#^Parameter \#3 \$mode of class CabinetMedStats constructor expects int, array\<mixed\>\|string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: ../../../htdocs/cabinetmed/stats/index.php
+		-
+			message: '#^Property CabinetmedCons\:\:\$fields \(array\<string, array\{type\: string, label\: string, langfile\?\: string, enabled\: int\<0, 2\>\|string, position\: int, notnull\?\: int, visible\: int\<\-6, 6\>\|string, alwayseditable\?\: int\<0, 1\>, \.\.\.\}\>\) does not accept default value of type array\{rowid\: array\{type\: ''integer'', label\: ''TechnicalID'', picto\: ''fa\-file'', enabled\: ''1'', position\: 10, notnull\: 1, visible\: ''\-1''\}, entity\: array\{type\: ''integer'', label\: ''Entity'', picto\: ''fa\-file'', enabled\: ''1'', position\: 15, notnull\: 1, visible\: ''\-2'', default\: ''1'', \.\.\.\}, fk_soc\: array\{type\: ''integer\:Societe…'', label\: ''ThirdParty'', picto\: ''company'', enabled\: ''1'', position\: 20, notnull\: 0, visible\: ''\-1'', css\: ''maxwidth500…'', \.\.\.\}, datecons\: array\{type\: ''date'', label\: ''Date'', picto\: ''company'', enabled\: ''1'', position\: 25, notnull\: 1, visible\: ''\-1''\}, typepriseencharge\: array\{type\: ''varchar\(8\)'', label\: ''TypePriseEnCharge'', picto\: ''company'', enabled\: ''1'', position\: 30, notnull\: 0, visible\: ''\-1''\}, motifconsprinc\: array\{type\: ''varchar\(64\)'', label\: ''MotifPrincipal'', picto\: ''company'', enabled\: ''1'', position\: 35, notnull\: 0, visible\: ''\-1''\}, diaglesprinc\: array\{type\: ''varchar\(64\)'', label\: ''DiagLesPrincipal'', picto\: ''company'', enabled\: ''1'', position\: 40, notnull\: 0, visible\: ''\-1''\}, motifconssec\: array\{type\: ''text'', label\: ''MotifSecondaires'', picto\: ''company'', enabled\: ''1'', position\: 45, notnull\: 0, visible\: ''\-1''\}, \.\.\.\}\.$#'
+			identifier: property.defaultValue
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/cabinetmedcons.class.php
+		-
+			message: '#^Property CabinetmedCons\:\:\$fields \(array\<string, array\{type\: string, label\: string, langfile\?\: string, enabled\: int\<0, 2\>\|string, position\: int, notnull\?\: int, visible\: int\<\-6, 6\>\|string, alwayseditable\?\: int\<0, 1\>\|string, \.\.\.\}\>\) does not accept default value of type array\{rowid\: array\{type\: ''integer'', label\: ''TechnicalID'', picto\: ''fa\-file'', enabled\: ''1'', position\: 10, notnull\: 1, visible\: ''\-1''\}, entity\: array\{type\: ''integer'', label\: ''Entity'', picto\: ''fa\-file'', enabled\: ''1'', position\: 15, notnull\: 1, visible\: ''\-2'', default\: ''1'', \.\.\.\}, fk_soc\: array\{type\: ''integer\:Societe…'', label\: ''ThirdParty'', picto\: ''company'', enabled\: ''1'', position\: 20, notnull\: 0, visible\: ''\-1'', css\: ''maxwidth500…'', \.\.\.\}, datecons\: array\{type\: ''date'', label\: ''Date'', picto\: ''company'', enabled\: ''1'', position\: 25, notnull\: 1, visible\: ''\-1''\}, typepriseencharge\: array\{type\: ''varchar\(8\)'', label\: ''TypePriseEnCharge'', picto\: ''company'', enabled\: ''1'', position\: 30, notnull\: 0, visible\: ''\-1''\}, motifconsprinc\: array\{type\: ''varchar\(64\)'', label\: ''MotifPrincipal'', picto\: ''company'', enabled\: ''1'', position\: 35, notnull\: 0, visible\: ''\-1''\}, diaglesprinc\: array\{type\: ''varchar\(64\)'', label\: ''DiagLesPrincipal'', picto\: ''company'', enabled\: ''1'', position\: 40, notnull\: 0, visible\: ''\-1''\}, motifconssec\: array\{type\: ''text'', label\: ''MotifSecondaires'', picto\: ''company'', enabled\: ''1'', position\: 45, notnull\: 0, visible\: ''\-1''\}, \.\.\.\}\.$#'
+			identifier: property.defaultValue
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/cabinetmedcons.class.php

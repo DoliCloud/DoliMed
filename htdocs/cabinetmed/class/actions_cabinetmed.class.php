@@ -32,9 +32,9 @@ dol_include_once("/cabinetmed/class/cabinetmedcons.class.php");
  */
 class ActionsCabinetmed
 {
-	var $db;
-	var $error;
-	var $errors=array();
+	public $db;
+	public $error;
+	public $errors=array();
 
 	/**
 	 * @var array Hook results. Propagated to $hookmanager->resArray for later reuse
@@ -57,7 +57,7 @@ class ActionsCabinetmed
 	 *
 	 *  @param		DoliDB		$db      Database handler
 	 */
-	function __construct($db)
+	public function __construct($db)
 	{
 		$this->db = $db;
 	}
@@ -69,7 +69,7 @@ class ActionsCabinetmed
 	 * @param	array	$parameters		Array of parameters
 	 * @return	string					HTML content to add by hook
 	 */
-	function addSearchEntry($parameters)
+	public function addSearchEntry($parameters)
 	{
 		global $langs;
 
@@ -96,7 +96,7 @@ class ActionsCabinetmed
 	 *                              		=0 if OK but we want to process standard actions too,
 	 *                              		>0 if OK and we want to replace standard actions.
 	 */
-	function doActions($parameters, &$object, &$action)
+	public function doActions($parameters, &$object, &$action)
 	{
 		global $db,$langs,$conf,$backtopage,$confirmduplicate;
 
@@ -262,7 +262,7 @@ class ActionsCabinetmed
 	 * @param	array	$parameters		Array of parameters
 	 * @return	void
 	 */
-	function addStatisticLine($parameters)
+	public function addStatisticLine($parameters)
 	{
 		global $langs;
 		$langs->load("cabinetmed@cabinetmed");
@@ -315,7 +315,7 @@ class ActionsCabinetmed
 	 * @param	array	$parameters		Array of parameters
 	 * @return	void
 	 */
-	function addDemoProfile($parameters)
+	public function addDemoProfile($parameters)
 	{
 		global $conf;
 
@@ -368,7 +368,7 @@ class ActionsCabinetmed
 	 * @param   string	$hookmanager  	'add', 'update', 'view'
 	 * @return	string					HTML content to add by hook
 	 */
-	function formObjectOptions($parameters, &$object, &$action, &$hookmanager)
+	public function formObjectOptions($parameters, &$object, &$action, &$hookmanager)
 	{
 		//global $langs, $user, $conf;
 	}
@@ -383,7 +383,7 @@ class ActionsCabinetmed
 	 * @param   string	$hookmanager  	'add', 'update', 'view'
 	 * @return	string					HTML content to add by hook
 	 */
-	function addMoreActionsButtons($parameters, &$object, &$action, &$hookmanager)
+	public function addMoreActionsButtons($parameters, &$object, &$action, &$hookmanager)
 	{
 		global $langs, $user;
 
@@ -410,7 +410,7 @@ class ActionsCabinetmed
 	 * @param	Object	$object			Object
 	 * @return	int						0 if nothing done, 1 to replace, -1 if KO
 	 */
-	function formBuilddocOptions($parameters, $object)
+	public function formBuilddocOptions($parameters, $object)
 	{
 		global $langs, $user, $conf, $form;
 
@@ -532,7 +532,7 @@ class ActionsCabinetmed
 	 * @param   string	$hookmanager  	'add', 'update', 'view'
 	 * @return	string					HTML content to add by hook
 	 */
-	function showLinkToObjectBlock($parameters, &$object, &$action, &$hookmanager)
+	public function showLinkToObjectBlock($parameters, &$object, &$action, &$hookmanager)
 	{
 		global $langs, $user, $conf, $db;
 
@@ -549,7 +549,7 @@ class ActionsCabinetmed
 	 * @param   string	$hookmanager  	'add', 'update', 'view'
 	 * @return	string					HTML content to add by hook
 	 */
-	function showLinkedObjectBlock($parameters, &$object, &$action, &$hookmanager)
+	public function showLinkedObjectBlock($parameters, &$object, &$action, &$hookmanager)
 	{
 		global $langs, $user, $conf, $db;
 
@@ -578,7 +578,7 @@ class ActionsCabinetmed
 	 * @param   string	$hookmanager  	'add', 'update', 'view'
 	 * @return	string					HTML content to add by hook
 	 */
-	function beforePDFCreation($parameters, &$object, &$action, &$hookmanager)
+	public function beforePDFCreation($parameters, &$object, &$action, &$hookmanager)
 	{
 		global $langs, $user, $conf, $db;
 
@@ -598,7 +598,7 @@ class ActionsCabinetmed
 	 * @param   string	$hookmanager  	'add', 'update', 'view'
 	 * @return bool						True=SQL success, False=SQL error
 	 */
-	function replaceThirdparty($parameters, &$object, &$action, &$hookmanager)
+	public function replaceThirdparty($parameters, &$object, &$action, &$hookmanager)
 	{
 		global $db;
 

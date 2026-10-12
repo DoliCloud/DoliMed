@@ -33,22 +33,22 @@
  */
 class CabinetmedExamOther // extends CommonObject
 {
-	var $db;							//!< To store db handler
-	var $error;							//!< To return error code (or message)
-	var $errors=array();				//!< To return several error codes (or messages)
+	public $db;							//!< To store db handler
+	public $error;							//!< To return error code (or message)
+	public $errors=array();				//!< To return several error codes (or messages)
 	//var $element='cabinetmed_examaut';			//!< Id that identify managed objects
 	//var $table_element='cabinetmed_examaut';	//!< Name of table without prefix where object is stored
 
-	var $id;
+	public $id;
 
-	var $fk_soc;
-	var $fk_user;
-	var $dateexam='';
-	var $examprinc;
-	var $examsec;
-	var $concprinc;
-	var $concsec;
-	var $tms='';
+	public $fk_soc;
+	public $fk_user;
+	public $dateexam='';
+	public $examprinc;
+	public $examsec;
+	public $concprinc;
+	public $concsec;
+	public $tms='';
 
 
 
@@ -57,7 +57,7 @@ class CabinetmedExamOther // extends CommonObject
 	 *
 	 *  @param	DoliDB	$db		Database handler
 	 */
-	function __construct($db)
+	public function __construct($db)
 	{
 		$this->db = $db;
 		return 1;
@@ -71,7 +71,7 @@ class CabinetmedExamOther // extends CommonObject
 	 *      @param  int		$notrigger	    0=launch triggers after, 1=disable triggers
 	 *      @return int         			<0 if KO, Id of created object if OK
 	 */
-	function create($user, $notrigger = 0)
+	public function create($user, $notrigger = 0)
 	{
 		global $conf, $langs;
 		$error=0;
@@ -138,7 +138,7 @@ class CabinetmedExamOther // extends CommonObject
 	 *    @param	int		$id         id object
 	 *    @return   int         		<0 if KO, >0 if OK
 	 */
-	function fetch($id)
+	public function fetch($id)
 	{
 		global $langs;
 		$sql = "SELECT";
@@ -189,7 +189,7 @@ class CabinetmedExamOther // extends CommonObject
 	 *      @param  int		$notrigger	    0=launch triggers after, 1=disable triggers
 	 *      @return int         			<0 if KO, >0 if OK
 	 */
-	function update($user = null, $notrigger = 0)
+	public function update($user = null, $notrigger = 0)
 	{
 		global $conf, $langs;
 		$error=0;
@@ -249,7 +249,7 @@ class CabinetmedExamOther // extends CommonObject
 	 *   @param     int		$notrigger	    0=launch triggers after, 1=disable triggers
 	 *   @return	int						<0 if KO, >0 if OK
 	 */
-	function delete($user, $notrigger = 0)
+	public function delete($user, $notrigger = 0)
 	{
 		global $conf, $langs;
 		$error=0;
@@ -285,7 +285,7 @@ class CabinetmedExamOther // extends CommonObject
 	 *		@param	int		$fromid     	Id of object to clone
 	 * 	 	@return	int						New id of clone
 	 */
-	function createFromClone($fromid)
+	public function createFromClone($fromid)
 	{
 		global $user,$langs;
 
@@ -332,7 +332,7 @@ class CabinetmedExamOther // extends CommonObject
 	 *
 	 *	@return	void
 	 */
-	function initAsSpecimen()
+	public function initAsSpecimen()
 	{
 		$this->id=0;
 

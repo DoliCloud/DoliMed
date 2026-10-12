@@ -1,0 +1,2741 @@
+parameters:
+	ignoreErrors:
+		-
+			message: '#^Negated boolean expression is always true\.$#'
+			identifier: booleanNot.alwaysTrue
+			count: 1
+			path: ../../../htdocs/cabinetmed/admin/about.php
+
+		-
+			message: '#^Negated boolean expression is always true\.$#'
+			identifier: booleanNot.alwaysTrue
+			count: 1
+			path: ../../../htdocs/cabinetmed/admin/admin.php
+
+		-
+			message: '#^Variable \$form might not be defined\.$#'
+			identifier: variable.undefined
+			count: 7
+			path: ../../../htdocs/cabinetmed/admin/admin.php
+
+		-
+			message: '#^Variable \$user might not be defined\.$#'
+			identifier: variable.undefined
+			count: 1
+			path: ../../../htdocs/cabinetmed/admin/admin.php
+
+		-
+			message: '#^Negated boolean expression is always true\.$#'
+			identifier: booleanNot.alwaysTrue
+			count: 1
+			path: ../../../htdocs/cabinetmed/admin/cabinetmed_cons_extrafields.php
+
+		-
+			message: '#^Variable \$db might not be defined\.$#'
+			identifier: variable.undefined
+			count: 3
+			path: ../../../htdocs/cabinetmed/admin/cabinetmed_cons_extrafields.php
+
+		-
+			message: '#^Variable \$langs might not be defined\.$#'
+			identifier: variable.undefined
+			count: 17
+			path: ../../../htdocs/cabinetmed/admin/cabinetmed_cons_extrafields.php
+
+		-
+			message: '#^Variable \$user might not be defined\.$#'
+			identifier: variable.undefined
+			count: 1
+			path: ../../../htdocs/cabinetmed/admin/cabinetmed_cons_extrafields.php
+
+		-
+			message: '#^Negated boolean expression is always true\.$#'
+			identifier: booleanNot.alwaysTrue
+			count: 1
+			path: ../../../htdocs/cabinetmed/antecedant.php
+
+		-
+			message: '#^Variable \$mesg might not be defined\.$#'
+			identifier: variable.undefined
+			count: 1
+			path: ../../../htdocs/cabinetmed/antecedant.php
+
+		-
+			message: '#^Call to function newToken\(\) with incorrect case\: newtoken$#'
+			identifier: function.nameCase
+			count: 1
+			path: ../../../htdocs/cabinetmed/cabinetmedcons/tpl/linkedobjectblock.tpl.php
+
+		-
+			message: '#^Variable \$object might not be defined\.$#'
+			identifier: variable.undefined
+			count: 2
+			path: ../../../htdocs/cabinetmed/cabinetmedcons/tpl/linkedobjectblock.tpl.php
+
+		-
+			message: '#^Ternary operator condition is always true\.$#'
+			identifier: ternary.alwaysTrue
+			count: 1
+			path: ../../../htdocs/cabinetmed/canvas/patient/tpl/card_create.tpl.php
+
+		-
+			message: '#^Variable \$countrynotdefined might not be defined\.$#'
+			identifier: variable.undefined
+			count: 1
+			path: ../../../htdocs/cabinetmed/canvas/patient/tpl/card_create.tpl.php
+
+		-
+			message: '#^Comparison operation "\>" between 1\|2 and 0 is always true\.$#'
+			identifier: greater.alwaysTrue
+			count: 1
+			path: ../../../htdocs/cabinetmed/canvas/patient/tpl/card_edit.tpl.php
+
+		-
+			message: '#^Function dolibarr_error not found\.$#'
+			identifier: function.notFound
+			count: 1
+			path: ../../../htdocs/cabinetmed/canvas/patient/tpl/card_edit.tpl.php
+
+		-
+			message: '#^If condition is always true\.$#'
+			identifier: if.alwaysTrue
+			count: 1
+			path: ../../../htdocs/cabinetmed/canvas/patient/tpl/card_edit.tpl.php
+
+		-
+			message: '#^Parameter \#1 \$links of function dol_fiche_head expects array\<int, array\<int\<0, 5\>, string\>\>, '''' given\.$#'
+			identifier: argument.type
+			count: 1
+			path: ../../../htdocs/cabinetmed/canvas/patient/tpl/card_edit.tpl.php
+
+		-
+			message: '#^Variable \$countrynotdefined might not be defined\.$#'
+			identifier: variable.undefined
+			count: 1
+			path: ../../../htdocs/cabinetmed/canvas/patient/tpl/card_edit.tpl.php
+
+		-
+			message: '#^Variable \$file might not be defined\.$#'
+			identifier: variable.undefined
+			count: 3
+			path: ../../../htdocs/cabinetmed/canvas/patient/tpl/card_view.tpl.php
+
+		-
+			message: '#^Variable \$myafm might not be defined\.$#'
+			identifier: variable.undefined
+			count: 1
+			path: ../../../htdocs/cabinetmed/canvas/patient/tpl/card_view.tpl.php
+
+		-
+			message: '#^Variable \$newlang in empty\(\) always exists and is always falsy\.$#'
+			identifier: empty.variable
+			count: 1
+			path: ../../../htdocs/cabinetmed/canvas/patient/tpl/card_view.tpl.php
+
+		-
+			message: '#^Variable \$p might not be defined\.$#'
+			identifier: variable.undefined
+			count: 1
+			path: ../../../htdocs/cabinetmed/canvas/patient/tpl/card_view.tpl.php
+
+		-
+			message: '#^Variable \$permissiontoadd might not be defined\.$#'
+			identifier: variable.undefined
+			count: 1
+			path: ../../../htdocs/cabinetmed/canvas/patient/tpl/card_view.tpl.php
+
+		-
+			message: '#^Call to function isValidEmail\(\) with incorrect case\: isValidEMail$#'
+			identifier: function.nameCase
+			count: 1
+			path: ../../../htdocs/cabinetmed/card.php
+
+		-
+			message: '#^Call to function method_exists\(\) with Societe and ''set_parent'' will always evaluate to false\.$#'
+			identifier: function.impossibleType
+			count: 1
+			path: ../../../htdocs/cabinetmed/card.php
+
+		-
+			message: '#^Comparison operation "\<" between 0\|1 and 0 is always false\.$#'
+			identifier: smaller.alwaysFalse
+			count: 1
+			path: ../../../htdocs/cabinetmed/card.php
+
+		-
+			message: '#^Comparison operation "\<" between 0\|1\|2\|3 and 0 is always false\.$#'
+			identifier: smaller.alwaysFalse
+			count: 1
+			path: ../../../htdocs/cabinetmed/card.php
+
+		-
+			message: '#^Negated boolean expression is always true\.$#'
+			identifier: booleanNot.alwaysTrue
+			count: 2
+			path: ../../../htdocs/cabinetmed/card.php
+
+		-
+			message: '#^Parameter \#1 \$db of function dol_print_error expects DoliDB\|null, string given\.$#'
+			identifier: argument.type
+			count: 2
+			path: ../../../htdocs/cabinetmed/card.php
+
+		-
+			message: '#^Property CommonObject\:\:\$state_id \(int\) does not accept string\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: ../../../htdocs/cabinetmed/card.php
+
+		-
+			message: '#^Property Societe\:\:\$commercial_id \(int\) does not accept string\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: ../../../htdocs/cabinetmed/card.php
+
+		-
+			message: '#^Property Societe\:\:\$country_id \(int\) does not accept string\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: ../../../htdocs/cabinetmed/card.php
+
+		-
+			message: '#^Property Societe\:\:\$effectif_id \(int\) does not accept string\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: ../../../htdocs/cabinetmed/card.php
+
+		-
+			message: '#^Property Societe\:\:\$fk_incoterms \(int\) does not accept string\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: ../../../htdocs/cabinetmed/card.php
+
+		-
+			message: '#^Property Societe\:\:\$forme_juridique_code \(int\) does not accept string\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: ../../../htdocs/cabinetmed/card.php
+
+		-
+			message: '#^Property Societe\:\:\$localtax1_assuj \(int\) does not accept string\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: ../../../htdocs/cabinetmed/card.php
+
+		-
+			message: '#^Property Societe\:\:\$localtax2_assuj \(int\) does not accept string\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: ../../../htdocs/cabinetmed/card.php
+
+		-
+			message: '#^Property Societe\:\:\$particulier \(int\) does not accept string\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: ../../../htdocs/cabinetmed/card.php
+
+		-
+			message: '#^Property Societe\:\:\$status \(int\) does not accept string\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: ../../../htdocs/cabinetmed/card.php
+
+		-
+			message: '#^Property Societe\:\:\$status \(int\) in isset\(\) is not nullable\.$#'
+			identifier: isset.property
+			count: 1
+			path: ../../../htdocs/cabinetmed/card.php
+
+		-
+			message: '#^Property Societe\:\:\$tva_assuj \(int\) does not accept string\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: ../../../htdocs/cabinetmed/card.php
+
+		-
+			message: '#^Property Societe\:\:\$typent_id \(int\) does not accept string\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: ../../../htdocs/cabinetmed/card.php
+
+		-
+			message: '#^Variable \$conf might not be defined\.$#'
+			identifier: variable.undefined
+			count: 6
+			path: ../../../htdocs/cabinetmed/card.php
+
+		-
+			message: '#^Variable \$db might not be defined\.$#'
+			identifier: variable.undefined
+			count: 20
+			path: ../../../htdocs/cabinetmed/card.php
+
+		-
+			message: '#^Variable \$hookmanager might not be defined\.$#'
+			identifier: variable.undefined
+			count: 7
+			path: ../../../htdocs/cabinetmed/card.php
+
+		-
+			message: '#^Variable \$id might not be defined\.$#'
+			identifier: variable.undefined
+			count: 1
+			path: ../../../htdocs/cabinetmed/card.php
+
+		-
+			message: '#^Variable \$langs might not be defined\.$#'
+			identifier: variable.undefined
+			count: 27
+			path: ../../../htdocs/cabinetmed/card.php
+
+		-
+			message: '#^Variable \$mysoc might not be defined\.$#'
+			identifier: variable.undefined
+			count: 1
+			path: ../../../htdocs/cabinetmed/card.php
+
+		-
+			message: '#^Variable \$user might not be defined\.$#'
+			identifier: variable.undefined
+			count: 29
+			path: ../../../htdocs/cabinetmed/card.php
+
+		-
+			message: '#^Class CabinetmedCons referenced with incorrect case\: Cabinetmedcons\.$#'
+			identifier: class.nameCase
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/actions_cabinetmed.class.php
+
+		-
+			message: '#^If condition is always true\.$#'
+			identifier: if.alwaysTrue
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/actions_cabinetmed.class.php
+
+		-
+			message: '#^Method ActionsCabinetmed\:\:addDemoProfile\(\) has parameter \$parameters with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/actions_cabinetmed.class.php
+
+		-
+			message: '#^Method ActionsCabinetmed\:\:addMoreActionsButtons\(\) has parameter \$parameters with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/actions_cabinetmed.class.php
+
+		-
+			message: '#^Method ActionsCabinetmed\:\:addMoreActionsButtons\(\) should return string but return statement is missing\.$#'
+			identifier: return.missing
+			count: 2
+			path: ../../../htdocs/cabinetmed/class/actions_cabinetmed.class.php
+
+		-
+			message: '#^Method ActionsCabinetmed\:\:addSearchEntry\(\) has parameter \$parameters with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/actions_cabinetmed.class.php
+
+		-
+			message: '#^Method ActionsCabinetmed\:\:addSearchEntry\(\) should return string but returns int\.$#'
+			identifier: return.type
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/actions_cabinetmed.class.php
+
+		-
+			message: '#^Method ActionsCabinetmed\:\:addStatisticLine\(\) has parameter \$parameters with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/actions_cabinetmed.class.php
+
+		-
+			message: '#^Method ActionsCabinetmed\:\:addStatisticLine\(\) with return type void returns int but should not return anything\.$#'
+			identifier: return.void
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/actions_cabinetmed.class.php
+
+		-
+			message: '#^Method ActionsCabinetmed\:\:beforePDFCreation\(\) has parameter \$parameters with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/actions_cabinetmed.class.php
+
+		-
+			message: '#^Method ActionsCabinetmed\:\:beforePDFCreation\(\) should return string but return statement is missing\.$#'
+			identifier: return.missing
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/actions_cabinetmed.class.php
+
+		-
+			message: '#^Method ActionsCabinetmed\:\:doActions\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/actions_cabinetmed.class.php
+
+		-
+			message: '#^Method ActionsCabinetmed\:\:doActions\(\) has parameter \$parameters with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/actions_cabinetmed.class.php
+
+		-
+			message: '#^Method ActionsCabinetmed\:\:formBuilddocOptions\(\) has parameter \$parameters with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/actions_cabinetmed.class.php
+
+		-
+			message: '#^Method ActionsCabinetmed\:\:formObjectOptions\(\) has parameter \$parameters with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/actions_cabinetmed.class.php
+
+		-
+			message: '#^Method ActionsCabinetmed\:\:formObjectOptions\(\) should return string but return statement is missing\.$#'
+			identifier: return.missing
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/actions_cabinetmed.class.php
+
+		-
+			message: '#^Method ActionsCabinetmed\:\:loadDataForCustomReports\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/actions_cabinetmed.class.php
+
+		-
+			message: '#^Method ActionsCabinetmed\:\:loadDataForCustomReports\(\) has parameter \$parameters with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/actions_cabinetmed.class.php
+
+		-
+			message: '#^Method ActionsCabinetmed\:\:replaceThirdparty\(\) has parameter \$parameters with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/actions_cabinetmed.class.php
+
+		-
+			message: '#^Method ActionsCabinetmed\:\:showLinkToObjectBlock\(\) has parameter \$parameters with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/actions_cabinetmed.class.php
+
+		-
+			message: '#^Method ActionsCabinetmed\:\:showLinkToObjectBlock\(\) should return string but return statement is missing\.$#'
+			identifier: return.missing
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/actions_cabinetmed.class.php
+
+		-
+			message: '#^Method ActionsCabinetmed\:\:showLinkedObjectBlock\(\) has parameter \$parameters with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/actions_cabinetmed.class.php
+
+		-
+			message: '#^Method ActionsCabinetmed\:\:showLinkedObjectBlock\(\) should return string but returns int\.$#'
+			identifier: return.type
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/actions_cabinetmed.class.php
+
+		-
+			message: '''
+				#^PHPDoc tag @return has invalid value \(int         			\<0 if KO,
+				                             		\=0 if OK but we want to process standard actions too,
+				                             		\>0 if OK and we want to replace standard actions\.\)\: Unexpected token "if", expected '\>' at offset 252 on line 7$#
+			'''
+			identifier: phpDoc.parseError
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/actions_cabinetmed.class.php
+
+		-
+			message: '#^PHPDoc tag @return has invalid value \(int                             \< 0 on error, 0 on success, 1 to replace standard code\)\: Unexpected token "on", expected ''\>'' at offset 440 on line 7$#'
+			identifier: phpDoc.parseError
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/actions_cabinetmed.class.php
+
+		-
+			message: '#^Parameter \#8 \$check of function dol_mktime expects int, true given\.$#'
+			identifier: argument.type
+			count: 2
+			path: ../../../htdocs/cabinetmed/class/actions_cabinetmed.class.php
+
+		-
+			message: '#^Property ActionsCabinetmed\:\:\$db has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/actions_cabinetmed.class.php
+
+		-
+			message: '#^Property ActionsCabinetmed\:\:\$error has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/actions_cabinetmed.class.php
+
+		-
+			message: '#^Property ActionsCabinetmed\:\:\$errors has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/actions_cabinetmed.class.php
+
+		-
+			message: '#^Property ActionsCabinetmed\:\:\$results type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/actions_cabinetmed.class.php
+
+		-
+			message: '#^Method CabinetmedCons\:\:create\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/cabinetmedcons.class.php
+
+		-
+			message: '#^Method CabinetmedCons\:\:delete\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/cabinetmedcons.class.php
+
+		-
+			message: '#^Method CabinetmedCons\:\:fetch\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/cabinetmedcons.class.php
+
+		-
+			message: '#^Method CabinetmedCons\:\:fetch_bankid\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/cabinetmedcons.class.php
+
+		-
+			message: '#^Method CabinetmedCons\:\:load_state_board\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/cabinetmedcons.class.php
+
+		-
+			message: '#^Method CabinetmedCons\:\:update\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/cabinetmedcons.class.php
+
+		-
+			message: '#^Negated boolean expression is always true\.$#'
+			identifier: booleanNot.alwaysTrue
+			count: 2
+			path: ../../../htdocs/cabinetmed/class/cabinetmedcons.class.php
+
+		-
+			message: '#^PHPDoc tag @return has invalid value \(int					\<0 if KO, \>0 if OK\)\: Unexpected token "if", expected ''\>'' at offset 199 on line 6$#'
+			identifier: phpDoc.parseError
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/cabinetmedcons.class.php
+
+		-
+			message: '#^PHPDoc tag @return has invalid value \(int 				\<0 if KO, \>0 if OK\)\: Unexpected token "if", expected ''\>'' at offset 120 on line 5$#'
+			identifier: phpDoc.parseError
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/cabinetmedcons.class.php
+
+		-
+			message: '#^PHPDoc tag @return has invalid value \(int         			\<0 if KO, \>0 if OK\)\: Unexpected token "if", expected ''\>'' at offset 201 on line 6$#'
+			identifier: phpDoc.parseError
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/cabinetmedcons.class.php
+
+		-
+			message: '#^PHPDoc tag @return has invalid value \(int         			\<0 if KO, Id of created object if OK\)\: Unexpected token "if", expected ''\>'' at offset 213 on line 6$#'
+			identifier: phpDoc.parseError
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/cabinetmedcons.class.php
+
+		-
+			message: '#^PHPDoc tag @return has invalid value \(int         \<0 if KO, \>0 if OK\)\: Unexpected token "if", expected ''\>'' at offset 106 on line 4$#'
+			identifier: phpDoc.parseError
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/cabinetmedcons.class.php
+
+		-
+			message: '#^PHPDoc tag @return has invalid value \(int         \<0 si ko, \>0 si ok\)\: Unexpected token "si", expected ''\>'' at offset 94 on line 4$#'
+			identifier: phpDoc.parseError
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/cabinetmedcons.class.php
+
+		-
+			message: '#^Property CabinetmedCons\:\:\$bank has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/cabinetmedcons.class.php
+
+		-
+			message: '#^Property CabinetmedCons\:\:\$banque has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/cabinetmedcons.class.php
+
+		-
+			message: '#^Property CabinetmedCons\:\:\$comment has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/cabinetmedcons.class.php
+
+		-
+			message: '#^Property CabinetmedCons\:\:\$date_c has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/cabinetmedcons.class.php
+
+		-
+			message: '#^Property CabinetmedCons\:\:\$date_m has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/cabinetmedcons.class.php
+
+		-
+			message: '#^Property CabinetmedCons\:\:\$datecons has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/cabinetmedcons.class.php
+
+		-
+			message: '#^Property CabinetmedCons\:\:\$diaglesprinc has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/cabinetmedcons.class.php
+
+		-
+			message: '#^Property CabinetmedCons\:\:\$diaglessec has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/cabinetmedcons.class.php
+
+		-
+			message: '#^Property CabinetmedCons\:\:\$examenclinique has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/cabinetmedcons.class.php
+
+		-
+			message: '#^Property CabinetmedCons\:\:\$examenprescrit has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/cabinetmedcons.class.php
+
+		-
+			message: '#^Property CabinetmedCons\:\:\$fields \(array\<string, array\{type\: string, label\: string, enabled\: int\<0, 2\>\|string, position\: int, visible\: int\<\-6, 6\>\|string, langfile\?\: string, notnull\?\: int\<\-1, 1\>, noteditable\?\: int\<0, 1\>, \.\.\.\}\>\) does not accept default value of type array\{rowid\: array\{type\: ''integer'', label\: ''TechnicalID'', picto\: ''fa\-file'', enabled\: ''1'', position\: 10, notnull\: 1, visible\: ''\-1''\}, entity\: array\{type\: ''integer'', label\: ''Entity'', picto\: ''fa\-file'', enabled\: ''1'', position\: 15, notnull\: 1, visible\: ''\-2'', default\: ''1'', \.\.\.\}, fk_soc\: array\{type\: ''integer\:Societe…'', label\: ''ThirdParty'', picto\: ''company'', enabled\: ''1'', position\: 20, notnull\: 0, visible\: ''\-1'', css\: ''maxwidth500…'', \.\.\.\}, datecons\: array\{type\: ''date'', label\: ''Date'', picto\: ''company'', enabled\: ''1'', position\: 25, notnull\: 1, visible\: ''\-1''\}, typepriseencharge\: array\{type\: ''varchar\(8\)'', label\: ''TypePriseEnCharge'', picto\: ''company'', enabled\: ''1'', position\: 30, notnull\: 0, visible\: ''\-1''\}, motifconsprinc\: array\{type\: ''varchar\(64\)'', label\: ''MotifPrincipal'', picto\: ''company'', enabled\: ''1'', position\: 35, notnull\: 0, visible\: ''\-1''\}, diaglesprinc\: array\{type\: ''varchar\(64\)'', label\: ''DiagLesPrincipal'', picto\: ''company'', enabled\: ''1'', position\: 40, notnull\: 0, visible\: ''\-1''\}, motifconssec\: array\{type\: ''text'', label\: ''MotifSecondaires'', picto\: ''company'', enabled\: ''1'', position\: 45, notnull\: 0, visible\: ''\-1''\}, \.\.\.\}\.$#'
+			identifier: property.defaultValue
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/cabinetmedcons.class.php
+
+		-
+			message: '#^Property CabinetmedCons\:\:\$fk_agenda has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/cabinetmedcons.class.php
+
+		-
+			message: '#^Property CabinetmedCons\:\:\$fk_soc has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/cabinetmedcons.class.php
+
+		-
+			message: '#^Property CabinetmedCons\:\:\$fk_user has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/cabinetmedcons.class.php
+
+		-
+			message: '#^Property CabinetmedCons\:\:\$fk_user_creation has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/cabinetmedcons.class.php
+
+		-
+			message: '#^Property CabinetmedCons\:\:\$fk_user_m has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/cabinetmedcons.class.php
+
+		-
+			message: '#^Property CabinetmedCons\:\:\$hdm has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/cabinetmedcons.class.php
+
+		-
+			message: '#^Property CabinetmedCons\:\:\$infiltration has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/cabinetmedcons.class.php
+
+		-
+			message: '#^Property CabinetmedCons\:\:\$motifconsprinc has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/cabinetmedcons.class.php
+
+		-
+			message: '#^Property CabinetmedCons\:\:\$motifconssec has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/cabinetmedcons.class.php
+
+		-
+			message: '#^Property CabinetmedCons\:\:\$num_cheque has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/cabinetmedcons.class.php
+
+		-
+			message: '#^Property CabinetmedCons\:\:\$rowid has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/cabinetmedcons.class.php
+
+		-
+			message: '#^Property CabinetmedCons\:\:\$traitementprescrit has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/cabinetmedcons.class.php
+
+		-
+			message: '#^Property CabinetmedCons\:\:\$typepriseencharge has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/cabinetmedcons.class.php
+
+		-
+			message: '#^Property CabinetmedCons\:\:\$typevisit has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/cabinetmedcons.class.php
+
+		-
+			message: '#^Result of && is always true\.$#'
+			identifier: booleanAnd.alwaysTrue
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/cabinetmedcons.class.php
+
+		-
+			message: '#^Undefined variable\: \$sql$#'
+			identifier: variable.undefined
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/cabinetmedcons.class.php
+
+		-
+			message: '#^Access to an undefined property CabinetmedExamBio\:\:\$suivipr_das28\.$#'
+			identifier: property.notFound
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/cabinetmedexambio.class.php
+
+		-
+			message: '#^Instantiated class Cabinetmed_exambio not found\.$#'
+			identifier: class.notFound
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/cabinetmedexambio.class.php
+
+		-
+			message: '#^Method CabinetmedExamBio\:\:__construct\(\) with return type void returns int but should not return anything\.$#'
+			identifier: return.void
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/cabinetmedexambio.class.php
+
+		-
+			message: '#^Method CabinetmedExamBio\:\:create\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/cabinetmedexambio.class.php
+
+		-
+			message: '#^Method CabinetmedExamBio\:\:delete\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/cabinetmedexambio.class.php
+
+		-
+			message: '#^Method CabinetmedExamBio\:\:fetch\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/cabinetmedexambio.class.php
+
+		-
+			message: '#^Method CabinetmedExamBio\:\:update\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/cabinetmedexambio.class.php
+
+		-
+			message: '#^PHPDoc tag @return has invalid value \(int						\<0 if KO, \>0 if OK\)\: Unexpected token "if", expected ''\>'' at offset 196 on line 6$#'
+			identifier: phpDoc.parseError
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/cabinetmedexambio.class.php
+
+		-
+			message: '#^PHPDoc tag @return has invalid value \(int        		\<0 if KO, \>0 if OK\)\: Unexpected token "if", expected ''\>'' at offset 121 on line 5$#'
+			identifier: phpDoc.parseError
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/cabinetmedexambio.class.php
+
+		-
+			message: '#^PHPDoc tag @return has invalid value \(int         			\<0 if KO, \>0 if OK\)\: Unexpected token "if", expected ''\>'' at offset 213 on line 6$#'
+			identifier: phpDoc.parseError
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/cabinetmedexambio.class.php
+
+		-
+			message: '#^PHPDoc tag @return has invalid value \(int         			\<0 if KO, Id of created object if OK\)\: Unexpected token "if", expected ''\>'' at offset 213 on line 6$#'
+			identifier: phpDoc.parseError
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/cabinetmedexambio.class.php
+
+		-
+			message: '#^Property CabinetmedExamBio\:\:\$comment has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/cabinetmedexambio.class.php
+
+		-
+			message: '#^Property CabinetmedExamBio\:\:\$conclusion has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/cabinetmedexambio.class.php
+
+		-
+			message: '#^Property CabinetmedExamBio\:\:\$dateexam has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/cabinetmedexambio.class.php
+
+		-
+			message: '#^Property CabinetmedExamBio\:\:\$db has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/cabinetmedexambio.class.php
+
+		-
+			message: '#^Property CabinetmedExamBio\:\:\$error has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/cabinetmedexambio.class.php
+
+		-
+			message: '#^Property CabinetmedExamBio\:\:\$errors has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/cabinetmedexambio.class.php
+
+		-
+			message: '#^Property CabinetmedExamBio\:\:\$fk_soc has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/cabinetmedexambio.class.php
+
+		-
+			message: '#^Property CabinetmedExamBio\:\:\$fk_user has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/cabinetmedexambio.class.php
+
+		-
+			message: '#^Property CabinetmedExamBio\:\:\$id has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/cabinetmedexambio.class.php
+
+		-
+			message: '#^Property CabinetmedExamBio\:\:\$resultat has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/cabinetmedexambio.class.php
+
+		-
+			message: '#^Property CabinetmedExamBio\:\:\$suivipr_ad has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/cabinetmedexambio.class.php
+
+		-
+			message: '#^Property CabinetmedExamBio\:\:\$suivipr_ag has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/cabinetmedexambio.class.php
+
+		-
+			message: '#^Property CabinetmedExamBio\:\:\$suivipr_err has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/cabinetmedexambio.class.php
+
+		-
+			message: '#^Property CabinetmedExamBio\:\:\$suivipr_eva has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/cabinetmedexambio.class.php
+
+		-
+			message: '#^Property CabinetmedExamBio\:\:\$suivipr_vs has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/cabinetmedexambio.class.php
+
+		-
+			message: '#^Property CabinetmedExamBio\:\:\$suivisa_basdai has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/cabinetmedexambio.class.php
+
+		-
+			message: '#^Property CabinetmedExamBio\:\:\$suivisa_dax has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/cabinetmedexambio.class.php
+
+		-
+			message: '#^Property CabinetmedExamBio\:\:\$suivisa_dma has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/cabinetmedexambio.class.php
+
+		-
+			message: '#^Property CabinetmedExamBio\:\:\$suivisa_dpa has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/cabinetmedexambio.class.php
+
+		-
+			message: '#^Property CabinetmedExamBio\:\:\$suivisa_dpe has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/cabinetmedexambio.class.php
+
+		-
+			message: '#^Property CabinetmedExamBio\:\:\$suivisa_fat has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/cabinetmedexambio.class.php
+
+		-
+			message: '#^Property CabinetmedExamBio\:\:\$suivisa_rno has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/cabinetmedexambio.class.php
+
+		-
+			message: '#^Property CabinetmedExamBio\:\:\$tms has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/cabinetmedexambio.class.php
+
+		-
+			message: '#^Instantiated class Cabinetmed_examaut not found\.$#'
+			identifier: class.notFound
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/cabinetmedexamother.class.php
+
+		-
+			message: '#^Method CabinetmedExamOther\:\:__construct\(\) with return type void returns int but should not return anything\.$#'
+			identifier: return.void
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/cabinetmedexamother.class.php
+
+		-
+			message: '#^Method CabinetmedExamOther\:\:create\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/cabinetmedexamother.class.php
+
+		-
+			message: '#^Method CabinetmedExamOther\:\:delete\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/cabinetmedexamother.class.php
+
+		-
+			message: '#^Method CabinetmedExamOther\:\:fetch\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/cabinetmedexamother.class.php
+
+		-
+			message: '#^Method CabinetmedExamOther\:\:update\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/cabinetmedexamother.class.php
+
+		-
+			message: '#^PHPDoc tag @return has invalid value \(int						\<0 if KO, \>0 if OK\)\: Unexpected token "if", expected ''\>'' at offset 196 on line 6$#'
+			identifier: phpDoc.parseError
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/cabinetmedexamother.class.php
+
+		-
+			message: '#^PHPDoc tag @return has invalid value \(int         			\<0 if KO, \>0 if OK\)\: Unexpected token "if", expected ''\>'' at offset 213 on line 6$#'
+			identifier: phpDoc.parseError
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/cabinetmedexamother.class.php
+
+		-
+			message: '#^PHPDoc tag @return has invalid value \(int         			\<0 if KO, Id of created object if OK\)\: Unexpected token "if", expected ''\>'' at offset 213 on line 6$#'
+			identifier: phpDoc.parseError
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/cabinetmedexamother.class.php
+
+		-
+			message: '#^PHPDoc tag @return has invalid value \(int         		\<0 if KO, \>0 if OK\)\: Unexpected token "if", expected ''\>'' at offset 126 on line 5$#'
+			identifier: phpDoc.parseError
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/cabinetmedexamother.class.php
+
+		-
+			message: '#^Property CabinetmedExamOther\:\:\$concprinc has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/cabinetmedexamother.class.php
+
+		-
+			message: '#^Property CabinetmedExamOther\:\:\$concsec has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/cabinetmedexamother.class.php
+
+		-
+			message: '#^Property CabinetmedExamOther\:\:\$dateexam has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/cabinetmedexamother.class.php
+
+		-
+			message: '#^Property CabinetmedExamOther\:\:\$db has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/cabinetmedexamother.class.php
+
+		-
+			message: '#^Property CabinetmedExamOther\:\:\$error has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/cabinetmedexamother.class.php
+
+		-
+			message: '#^Property CabinetmedExamOther\:\:\$errors has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/cabinetmedexamother.class.php
+
+		-
+			message: '#^Property CabinetmedExamOther\:\:\$examprinc has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/cabinetmedexamother.class.php
+
+		-
+			message: '#^Property CabinetmedExamOther\:\:\$examsec has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/cabinetmedexamother.class.php
+
+		-
+			message: '#^Property CabinetmedExamOther\:\:\$fk_soc has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/cabinetmedexamother.class.php
+
+		-
+			message: '#^Property CabinetmedExamOther\:\:\$fk_user has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/cabinetmedexamother.class.php
+
+		-
+			message: '#^Property CabinetmedExamOther\:\:\$id has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/cabinetmedexamother.class.php
+
+		-
+			message: '#^Property CabinetmedExamOther\:\:\$tms has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/cabinetmedexamother.class.php
+
+		-
+			message: '#^Constructor of class CabinetMedStats has an unused parameter \$mode\.$#'
+			identifier: constructor.unusedParameter
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/cabinetmedstats.class.php
+
+		-
+			message: '#^Method CabinetMedStats\:\:getAllByYear\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/cabinetmedstats.class.php
+
+		-
+			message: '#^Method CabinetMedStats\:\:getAmountByMonth\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/cabinetmedstats.class.php
+
+		-
+			message: '#^Method CabinetMedStats\:\:getAverageByMonth\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/cabinetmedstats.class.php
+
+		-
+			message: '#^Method CabinetMedStats\:\:getNbByMonth\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/cabinetmedstats.class.php
+
+		-
+			message: '#^Method CabinetMedStats\:\:getNbByYear\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/cabinetmedstats.class.php
+
+		-
+			message: '#^Property CabinetMedStats\:\:\$socid has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/cabinetmedstats.class.php
+
+		-
+			message: '#^Property CabinetMedStats\:\:\$table_element has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/cabinetmedstats.class.php
+
+		-
+			message: '#^Property CabinetMedStats\:\:\$userid has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/cabinetmedstats.class.php
+
+		-
+			message: '#^If condition is always false\.$#'
+			identifier: if.alwaysFalse
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/html.formfilecabinetmed.class.php
+
+		-
+			message: '#^Method FormFileCabinetmed\:\:__construct\(\) with return type void returns int but should not return anything\.$#'
+			identifier: return.void
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/html.formfilecabinetmed.class.php
+
+		-
+			message: '#^Method FormFileCabinetmed\:\:list_of_documents_cabinetmed\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/html.formfilecabinetmed.class.php
+
+		-
+			message: '#^Method FormFileCabinetmed\:\:list_of_documents_cabinetmed\(\) has parameter \$filearray with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/html.formfilecabinetmed.class.php
+
+		-
+			message: '#^PHPDoc tag @return has invalid value \(int                 		\<0 if KO, nb of files shown if OK\)\: Unexpected token "if", expected ''\>'' at offset 2744 on line 31$#'
+			identifier: phpDoc.parseError
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/html.formfilecabinetmed.class.php
+
+		-
+			message: '#^Property FormFileCabinetmed\:\:\$db has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/html.formfilecabinetmed.class.php
+
+		-
+			message: '#^Ternary operator condition is always false\.$#'
+			identifier: ternary.alwaysFalse
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/html.formfilecabinetmed.class.php
+
+		-
+			message: '#^Call to function isValidEmail\(\) with incorrect case\: isValidEMail$#'
+			identifier: function.nameCase
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/patient.class.php
+
+		-
+			message: '#^Method Patient\:\:__construct\(\) with return type void returns int but should not return anything\.$#'
+			identifier: return.void
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/patient.class.php
+
+		-
+			message: '#^PHPDoc tag @return has invalid value \(\$int					\>0 if OK, \<0 if KO or if two records found for same ref or idprof\.\)\: Unexpected token "\$int", expected type at offset 1275 on line 18$#'
+			identifier: phpDoc.parseError
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/patient.class.php
+
+		-
+			message: '#^PHPDoc tag @return has invalid value \(int      			       			\<0 if KO, \>\=0 if OK\)\: Unexpected token "if", expected ''\>'' at offset 580 on line 11$#'
+			identifier: phpDoc.parseError
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/patient.class.php
+
+		-
+			message: '#^Parameter \#1 \$objsoc of method Societe\:\:get_codeclient\(\) expects Societe\|null, string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/patient.class.php
+
+		-
+			message: '#^Parameter \#1 \$objsoc of method Societe\:\:get_codefournisseur\(\) expects Societe\|null, string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/patient.class.php
+
+		-
+			message: '#^Parameter \#1 \$str of function trim expects string, int given\.$#'
+			identifier: argument.type
+			count: 7
+			path: ../../../htdocs/cabinetmed/class/patient.class.php
+
+		-
+			message: '#^Property CommonObject\:\:\$state_id \(int\) does not accept string\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/patient.class.php
+
+		-
+			message: '#^Property Patient\:\:\$alert_antechirgen has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/patient.class.php
+
+		-
+			message: '#^Property Patient\:\:\$alert_antechirortho has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/patient.class.php
+
+		-
+			message: '#^Property Patient\:\:\$alert_antemed has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/patient.class.php
+
+		-
+			message: '#^Property Patient\:\:\$alert_anterhum has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/patient.class.php
+
+		-
+			message: '#^Property Patient\:\:\$alert_note has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/patient.class.php
+
+		-
+			message: '#^Property Patient\:\:\$alert_other has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/patient.class.php
+
+		-
+			message: '#^Property Patient\:\:\$alert_traitallergie has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/patient.class.php
+
+		-
+			message: '#^Property Patient\:\:\$alert_traitclass has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/patient.class.php
+
+		-
+			message: '#^Property Patient\:\:\$alert_traitintol has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/patient.class.php
+
+		-
+			message: '#^Property Patient\:\:\$alert_traitspec has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/patient.class.php
+
+		-
+			message: '#^Property Patient\:\:\$country_id \(int\) does not accept string\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/patient.class.php
+
+		-
+			message: '#^Property Patient\:\:\$datec has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/patient.class.php
+
+		-
+			message: '#^Property Patient\:\:\$departement_id has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/patient.class.php
+
+		-
+			message: '#^Property Patient\:\:\$effectif_id \(int\) does not accept string\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/patient.class.php
+
+		-
+			message: '#^Property Patient\:\:\$forme_juridique_code \(int\) does not accept string\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/patient.class.php
+
+		-
+			message: '#^Property Patient\:\:\$localtax1_assuj \(int\) does not accept string\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/patient.class.php
+
+		-
+			message: '#^Property Patient\:\:\$localtax2_assuj \(int\) does not accept string\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/patient.class.php
+
+		-
+			message: '#^Property Patient\:\:\$nom_particulier has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/patient.class.php
+
+		-
+			message: '#^Property Patient\:\:\$note_antechirgen has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/patient.class.php
+
+		-
+			message: '#^Property Patient\:\:\$note_antechirortho has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/patient.class.php
+
+		-
+			message: '#^Property Patient\:\:\$note_antemed has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/patient.class.php
+
+		-
+			message: '#^Property Patient\:\:\$note_anterhum has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/patient.class.php
+
+		-
+			message: '#^Property Patient\:\:\$note_other has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/patient.class.php
+
+		-
+			message: '#^Property Patient\:\:\$note_traitallergie has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/patient.class.php
+
+		-
+			message: '#^Property Patient\:\:\$note_traitclass has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/patient.class.php
+
+		-
+			message: '#^Property Patient\:\:\$note_traitintol has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/patient.class.php
+
+		-
+			message: '#^Property Patient\:\:\$note_traitspec has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/patient.class.php
+
+		-
+			message: '#^Property Patient\:\:\$tel has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/patient.class.php
+
+		-
+			message: '#^Property Patient\:\:\$tva_assuj \(int\) does not accept string\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/patient.class.php
+
+		-
+			message: '#^Return type \(void\) of method Patient\:\:initAsSpecimen\(\) should be compatible with return type \(int\) of method Societe\:\:initAsSpecimen\(\)$#'
+			identifier: method.childReturnType
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/patient.class.php
+
+		-
+			message: '#^Variable \$error might not be defined\.$#'
+			identifier: variable.undefined
+			count: 1
+			path: ../../../htdocs/cabinetmed/class/patient.class.php
+
+		-
+			message: '#^Negated boolean expression is always true\.$#'
+			identifier: booleanNot.alwaysTrue
+			count: 1
+			path: ../../../htdocs/cabinetmed/compta.php
+
+		-
+			message: '#^Variable \$annee might not be defined\.$#'
+			identifier: variable.undefined
+			count: 3
+			path: ../../../htdocs/cabinetmed/compta.php
+
+		-
+			message: '#^Variable \$conf might not be defined\.$#'
+			identifier: variable.undefined
+			count: 1
+			path: ../../../htdocs/cabinetmed/compta.php
+
+		-
+			message: '#^Variable \$db might not be defined\.$#'
+			identifier: variable.undefined
+			count: 10
+			path: ../../../htdocs/cabinetmed/compta.php
+
+		-
+			message: '#^Variable \$langs might not be defined\.$#'
+			identifier: variable.undefined
+			count: 17
+			path: ../../../htdocs/cabinetmed/compta.php
+
+		-
+			message: '#^Variable \$user might not be defined\.$#'
+			identifier: variable.undefined
+			count: 5
+			path: ../../../htdocs/cabinetmed/compta.php
+
+		-
+			message: '#^Call to function is_array\(\) with array\{\} will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
+			count: 1
+			path: ../../../htdocs/cabinetmed/consultations.php
+
+		-
+			message: '#^Constant societe_acheteuse not found\.$#'
+			identifier: constant.notFound
+			count: 1
+			path: ../../../htdocs/cabinetmed/consultations.php
+
+		-
+			message: '#^Constant societe_vendeuse not found\.$#'
+			identifier: constant.notFound
+			count: 1
+			path: ../../../htdocs/cabinetmed/consultations.php
+
+		-
+			message: '#^If condition is always false\.$#'
+			identifier: if.alwaysFalse
+			count: 2
+			path: ../../../htdocs/cabinetmed/consultations.php
+
+		-
+			message: '#^Loose comparison using \=\= between ''CB''\|''CHQ''\|''LIQ''\|''THIRD'' and ''VIR'' will always evaluate to false\.$#'
+			identifier: equal.alwaysFalse
+			count: 1
+			path: ../../../htdocs/cabinetmed/consultations.php
+
+		-
+			message: '#^Loose comparison using \=\= between ''create'' and ''update'' will always evaluate to false\.$#'
+			identifier: equal.alwaysFalse
+			count: 4
+			path: ../../../htdocs/cabinetmed/consultations.php
+
+		-
+			message: '#^Loose comparison using \=\= between 1 and 1 will always evaluate to true\.$#'
+			identifier: equal.alwaysTrue
+			count: 1
+			path: ../../../htdocs/cabinetmed/consultations.php
+
+		-
+			message: '#^Negated boolean expression is always true\.$#'
+			identifier: booleanNot.alwaysTrue
+			count: 1
+			path: ../../../htdocs/cabinetmed/consultations.php
+
+		-
+			message: '#^Parameter \#1 \$db of function dol_print_error expects DoliDB\|null, string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: ../../../htdocs/cabinetmed/consultations.php
+
+		-
+			message: '#^Parameter \#2 \$error of function dol_print_error expects array\<string\>\|string, CabinetmedCons given\.$#'
+			identifier: argument.type
+			count: 1
+			path: ../../../htdocs/cabinetmed/consultations.php
+
+		-
+			message: '#^Parameter \#2 \$newwidth of function listdiagles expects int, string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: ../../../htdocs/cabinetmed/consultations.php
+
+		-
+			message: '#^Parameter \#2 \$newwidth of function listexamen expects int, string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: ../../../htdocs/cabinetmed/consultations.php
+
+		-
+			message: '#^Parameter \#2 \$newwidth of function listmedicaments expects int, string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: ../../../htdocs/cabinetmed/consultations.php
+
+		-
+			message: '#^Parameter \#3 \$idprod of function get_default_tva expects int, Product given\.$#'
+			identifier: argument.type
+			count: 1
+			path: ../../../htdocs/cabinetmed/consultations.php
+
+		-
+			message: '#^Parameter \#4 \$month of function dol_mktime expects int, string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: ../../../htdocs/cabinetmed/consultations.php
+
+		-
+			message: '#^Parameter \#4 \$showtype of function listexamen expects string, int given\.$#'
+			identifier: argument.type
+			count: 1
+			path: ../../../htdocs/cabinetmed/consultations.php
+
+		-
+			message: '#^Parameter \#5 \$day of function dol_mktime expects int, string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: ../../../htdocs/cabinetmed/consultations.php
+
+		-
+			message: '#^Parameter \#6 \$year of function dol_mktime expects int, string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: ../../../htdocs/cabinetmed/consultations.php
+
+		-
+			message: '#^Result of && is always false\.$#'
+			identifier: booleanAnd.alwaysFalse
+			count: 1
+			path: ../../../htdocs/cabinetmed/consultations.php
+
+		-
+			message: '#^Result of function listdiagles \(void\) is used\.$#'
+			identifier: function.void
+			count: 1
+			path: ../../../htdocs/cabinetmed/consultations.php
+
+		-
+			message: '#^Variable \$conf might not be defined\.$#'
+			identifier: variable.undefined
+			count: 17
+			path: ../../../htdocs/cabinetmed/consultations.php
+
+		-
+			message: '#^Variable \$contextpage in empty\(\) always exists and is not falsy\.$#'
+			identifier: empty.variable
+			count: 1
+			path: ../../../htdocs/cabinetmed/consultations.php
+
+		-
+			message: '#^Variable \$db might not be defined\.$#'
+			identifier: variable.undefined
+			count: 43
+			path: ../../../htdocs/cabinetmed/consultations.php
+
+		-
+			message: '#^Variable \$error might not be defined\.$#'
+			identifier: variable.undefined
+			count: 1
+			path: ../../../htdocs/cabinetmed/consultations.php
+
+		-
+			message: '#^Variable \$hookmanager might not be defined\.$#'
+			identifier: variable.undefined
+			count: 15
+			path: ../../../htdocs/cabinetmed/consultations.php
+
+		-
+			message: '#^Variable \$langs might not be defined\.$#'
+			identifier: variable.undefined
+			count: 162
+			path: ../../../htdocs/cabinetmed/consultations.php
+
+		-
+			message: '#^Variable \$lines might not be defined\.$#'
+			identifier: variable.undefined
+			count: 1
+			path: ../../../htdocs/cabinetmed/consultations.php
+
+		-
+			message: '#^Variable \$massaction might not be defined\.$#'
+			identifier: variable.undefined
+			count: 1
+			path: ../../../htdocs/cabinetmed/consultations.php
+
+		-
+			message: '#^Variable \$mesg might not be defined\.$#'
+			identifier: variable.undefined
+			count: 1
+			path: ../../../htdocs/cabinetmed/consultations.php
+
+		-
+			message: '#^Variable \$mesgs might not be defined\.$#'
+			identifier: variable.undefined
+			count: 1
+			path: ../../../htdocs/cabinetmed/consultations.php
+
+		-
+			message: '#^Variable \$user might not be defined\.$#'
+			identifier: variable.undefined
+			count: 28
+			path: ../../../htdocs/cabinetmed/consultations.php
+
+		-
+			message: '#^Call to function header\(\) with incorrect case\: Header$#'
+			identifier: function.nameCase
+			count: 2
+			path: ../../../htdocs/cabinetmed/contact.php
+
+		-
+			message: '#^Call to function method_exists\(\) with Form and ''select_contact'' will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
+			count: 1
+			path: ../../../htdocs/cabinetmed/contact.php
+
+		-
+			message: '#^Negated boolean expression is always true\.$#'
+			identifier: booleanNot.alwaysTrue
+			count: 1
+			path: ../../../htdocs/cabinetmed/contact.php
+
+		-
+			message: '#^Constructor of class box_patients has an unused parameter \$param\.$#'
+			identifier: constructor.unusedParameter
+			count: 1
+			path: ../../../htdocs/cabinetmed/core/boxes/box_patients.php
+
+		-
+			message: '#^Method box_patients\:\:showBox\(\) has parameter \$contents with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: ../../../htdocs/cabinetmed/core/boxes/box_patients.php
+
+		-
+			message: '#^Method box_patients\:\:showBox\(\) has parameter \$head with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: ../../../htdocs/cabinetmed/core/boxes/box_patients.php
+
+		-
+			message: '#^Method modCabinetMed\:\:load_tables\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: ../../../htdocs/cabinetmed/core/modules/modCabinetMed.class.php
+
+		-
+			message: '#^PHPDoc tag @return has invalid value \(int     \<\=0 if KO, \>0 if OK\)\: Unexpected token "\=", expected type at offset 307 on line 7$#'
+			identifier: phpDoc.parseError
+			count: 1
+			path: ../../../htdocs/cabinetmed/core/modules/modCabinetMed.class.php
+
+		-
+			message: '#^Parameter \#3 \$newmask of function dol_copy expects string, int given\.$#'
+			identifier: argument.type
+			count: 2
+			path: ../../../htdocs/cabinetmed/core/modules/modCabinetMed.class.php
+
+		-
+			message: '#^Property DolibarrModules\:\:\$boxes \(array\<array\{file\?\: string, note\?\: string, enabledbydefaulton\: string, 1\?\: string\}\>\) does not accept array\{array\{file\: ''box_patients…'', enabledbydefaulton\: 1\}\}\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: ../../../htdocs/cabinetmed/core/modules/modCabinetMed.class.php
+
+		-
+			message: '#^Property DolibarrModules\:\:\$dictionaries \(array\{\}\|array\{langs\: string, tabname\: array\<string\>, tablib\: array\<string\>, tabsql\: array\<string\>, tabsqlsort\: array\<string\>, tabfield\: array\<string\>, tabfieldvalue\: array\<string\>, tabfieldinsert\: array\<string\>, \.\.\.\}\) does not accept array\{langs\: ''cabinetmed…'', tabname\: array\{''cabinetmed_motifcons'', ''cabinetmed_diaglec'', ''cabinetmed…'', ''cabinetmed_c…'', ''cabinetmed_c_banques'', ''cabinetmed_c…''\}, tablib\: array\{''MotifConsultation'', ''DiagnostiqueLesionn…'', ''Examens'', ''ExamenConclusion'', ''BankNameList'', ''Medicines''\}, tabsql\: array\{''SELECT f\.rowid as…'', ''SELECT f\.rowid as…'', ''SELECT f\.rowid as…'', ''SELECT f\.rowid as…'', ''SELECT f\.rowid as…'', ''SELECT f\.rowid as…''\}, tabsqlsort\: array\{''label ASC'', ''label ASC'', ''biorad ASC, label…'', ''label ASC'', ''label ASC'', ''label ASC''\}, tabfield\: array\{''code,label'', ''code,label,lang'', ''code,label,biorad'', ''code,label'', ''code,label'', ''code,label''\}, tabfieldvalue\: array\{''code,label'', ''code,label,lang'', ''code,label,biorad'', ''code,label'', ''code,label'', ''code,label''\}, tabfieldinsert\: array\{''code,label'', ''code,label,lang'', ''code,label,biorad'', ''code,label'', ''code,label'', ''code,label''\}, \.\.\.\}\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: ../../../htdocs/cabinetmed/core/modules/modCabinetMed.class.php
+
+		-
+			message: '#^Ternary operator condition is always false\.$#'
+			identifier: ternary.alwaysFalse
+			count: 1
+			path: ../../../htdocs/cabinetmed/core/modules/societe/doc/pdf_medicalrecord.modules.php
+
+		-
+			message: '#^Function cabinetmed_completesubstitutionarray\(\) has parameter \$substitutionarray with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: ../../../htdocs/cabinetmed/core/substitutions/functions_cabinetmed.lib.php
+
+		-
+			message: '#^Variable \$nbChild might not be defined\.$#'
+			identifier: variable.undefined
+			count: 3
+			path: ../../../htdocs/cabinetmed/core/substitutions/functions_cabinetmed.lib.php
+
+		-
+			message: '#^Variable \$user might not be defined\.$#'
+			identifier: variable.undefined
+			count: 1
+			path: ../../../htdocs/cabinetmed/core/substitutions/functions_cabinetmed.lib.php
+
+		-
+			message: '#^If condition is always true\.$#'
+			identifier: if.alwaysTrue
+			count: 1
+			path: ../../../htdocs/cabinetmed/core/triggers/interface_50_modCabinetmed_ActionsCabinetmed.class.php
+
+		-
+			message: '#^PHPDoc tag @return has invalid value \(int         			\<0 if KO, 0 if no action are done, \>0 if OK\)\: Unexpected token "if", expected ''\>'' at offset 861 on line 19$#'
+			identifier: phpDoc.parseError
+			count: 1
+			path: ../../../htdocs/cabinetmed/core/triggers/interface_50_modCabinetmed_ActionsCabinetmed.class.php
+
+		-
+			message: '#^Property InterfaceActionsCabinetmed\:\:\$date has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: ../../../htdocs/cabinetmed/core/triggers/interface_50_modCabinetmed_ActionsCabinetmed.class.php
+
+		-
+			message: '#^Property InterfaceActionsCabinetmed\:\:\$desc has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: ../../../htdocs/cabinetmed/core/triggers/interface_50_modCabinetmed_ActionsCabinetmed.class.php
+
+		-
+			message: '#^Property InterfaceActionsCabinetmed\:\:\$duree has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: ../../../htdocs/cabinetmed/core/triggers/interface_50_modCabinetmed_ActionsCabinetmed.class.php
+
+		-
+			message: '#^Property InterfaceActionsCabinetmed\:\:\$texte has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: ../../../htdocs/cabinetmed/core/triggers/interface_50_modCabinetmed_ActionsCabinetmed.class.php
+
+		-
+			message: '#^Unreachable statement \- code above always terminates\.$#'
+			identifier: deadCode.unreachable
+			count: 1
+			path: ../../../htdocs/cabinetmed/core/triggers/interface_50_modCabinetmed_ActionsCabinetmed.class.php
+
+		-
+			message: '#^Negated boolean expression is always true\.$#'
+			identifier: booleanNot.alwaysTrue
+			count: 1
+			path: ../../../htdocs/cabinetmed/css/styles.css.php
+
+		-
+			message: '#^Parameter \#1 \$new_cache_limiter of function session_cache_limiter expects string, false given\.$#'
+			identifier: argument.type
+			count: 1
+			path: ../../../htdocs/cabinetmed/css/styles.css.php
+
+		-
+			message: '#^Variable \$conf might not be defined\.$#'
+			identifier: variable.undefined
+			count: 5
+			path: ../../../htdocs/cabinetmed/css/styles.css.php
+
+		-
+			message: '#^Negated boolean expression is always true\.$#'
+			identifier: booleanNot.alwaysTrue
+			count: 1
+			path: ../../../htdocs/cabinetmed/documents.php
+
+		-
+			message: '#^Call to function header\(\) with incorrect case\: Header$#'
+			identifier: function.nameCase
+			count: 1
+			path: ../../../htdocs/cabinetmed/examautre.php
+
+		-
+			message: '#^Loose comparison using \=\= between ''create'' and ''update'' will always evaluate to false\.$#'
+			identifier: equal.alwaysFalse
+			count: 1
+			path: ../../../htdocs/cabinetmed/examautre.php
+
+		-
+			message: '#^Negated boolean expression is always true\.$#'
+			identifier: booleanNot.alwaysTrue
+			count: 1
+			path: ../../../htdocs/cabinetmed/examautre.php
+
+		-
+			message: '#^Parameter \#2 \$error of function dol_print_error expects array\<string\>\|string, CabinetmedExamOther given\.$#'
+			identifier: argument.type
+			count: 1
+			path: ../../../htdocs/cabinetmed/examautre.php
+
+		-
+			message: '#^Parameter \#2 \$newwidth of function listexamconclusion expects int, string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: ../../../htdocs/cabinetmed/examautre.php
+
+		-
+			message: '#^Parameter \#2 \$newwidth of function listexamen expects int, string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: ../../../htdocs/cabinetmed/examautre.php
+
+		-
+			message: '#^Parameter \#4 \$showtype of function listexamen expects string, int given\.$#'
+			identifier: argument.type
+			count: 1
+			path: ../../../htdocs/cabinetmed/examautre.php
+
+		-
+			message: '#^Variable \$conf might not be defined\.$#'
+			identifier: variable.undefined
+			count: 1
+			path: ../../../htdocs/cabinetmed/examautre.php
+
+		-
+			message: '#^Variable \$db might not be defined\.$#'
+			identifier: variable.undefined
+			count: 17
+			path: ../../../htdocs/cabinetmed/examautre.php
+
+		-
+			message: '#^Variable \$hookmanager might not be defined\.$#'
+			identifier: variable.undefined
+			count: 4
+			path: ../../../htdocs/cabinetmed/examautre.php
+
+		-
+			message: '#^Variable \$langs might not be defined\.$#'
+			identifier: variable.undefined
+			count: 49
+			path: ../../../htdocs/cabinetmed/examautre.php
+
+		-
+			message: '#^Variable \$massaction might not be defined\.$#'
+			identifier: variable.undefined
+			count: 1
+			path: ../../../htdocs/cabinetmed/examautre.php
+
+		-
+			message: '#^Variable \$mesg might not be defined\.$#'
+			identifier: variable.undefined
+			count: 1
+			path: ../../../htdocs/cabinetmed/examautre.php
+
+		-
+			message: '#^Variable \$societe might not be defined\.$#'
+			identifier: variable.undefined
+			count: 1
+			path: ../../../htdocs/cabinetmed/examautre.php
+
+		-
+			message: '#^Variable \$user might not be defined\.$#'
+			identifier: variable.undefined
+			count: 14
+			path: ../../../htdocs/cabinetmed/examautre.php
+
+		-
+			message: '#^Call to function header\(\) with incorrect case\: Header$#'
+			identifier: function.nameCase
+			count: 1
+			path: ../../../htdocs/cabinetmed/exambio.php
+
+		-
+			message: '#^Loose comparison using \=\= between ''create'' and ''update'' will always evaluate to false\.$#'
+			identifier: equal.alwaysFalse
+			count: 1
+			path: ../../../htdocs/cabinetmed/exambio.php
+
+		-
+			message: '#^Negated boolean expression is always true\.$#'
+			identifier: booleanNot.alwaysTrue
+			count: 1
+			path: ../../../htdocs/cabinetmed/exambio.php
+
+		-
+			message: '#^Parameter \#2 \$error of function dol_print_error expects array\<string\>\|string, CabinetmedExamBio given\.$#'
+			identifier: argument.type
+			count: 1
+			path: ../../../htdocs/cabinetmed/exambio.php
+
+		-
+			message: '#^Variable \$conf might not be defined\.$#'
+			identifier: variable.undefined
+			count: 1
+			path: ../../../htdocs/cabinetmed/exambio.php
+
+		-
+			message: '#^Variable \$db might not be defined\.$#'
+			identifier: variable.undefined
+			count: 17
+			path: ../../../htdocs/cabinetmed/exambio.php
+
+		-
+			message: '#^Variable \$hookmanager might not be defined\.$#'
+			identifier: variable.undefined
+			count: 4
+			path: ../../../htdocs/cabinetmed/exambio.php
+
+		-
+			message: '#^Variable \$langs might not be defined\.$#'
+			identifier: variable.undefined
+			count: 58
+			path: ../../../htdocs/cabinetmed/exambio.php
+
+		-
+			message: '#^Variable \$massaction might not be defined\.$#'
+			identifier: variable.undefined
+			count: 1
+			path: ../../../htdocs/cabinetmed/exambio.php
+
+		-
+			message: '#^Variable \$mesg might not be defined\.$#'
+			identifier: variable.undefined
+			count: 1
+			path: ../../../htdocs/cabinetmed/exambio.php
+
+		-
+			message: '#^Variable \$societe might not be defined\.$#'
+			identifier: variable.undefined
+			count: 1
+			path: ../../../htdocs/cabinetmed/exambio.php
+
+		-
+			message: '#^Variable \$user might not be defined\.$#'
+			identifier: variable.undefined
+			count: 12
+			path: ../../../htdocs/cabinetmed/exambio.php
+
+		-
+			message: '#^Access to constant BORDER_THIN on an unknown class PHPExcel_Style_Border\.$#'
+			identifier: class.notFound
+			count: 4
+			path: ../../../htdocs/cabinetmed/export.php
+
+		-
+			message: '#^Access to constant FILL_GRADIENT_LINEAR on an unknown class PHPExcel_Style_Fill\.$#'
+			identifier: class.notFound
+			count: 3
+			path: ../../../htdocs/cabinetmed/export.php
+
+		-
+			message: '#^Access to constant ORIENTATION_PORTRAIT on an unknown class PHPExcel_Worksheet_PageSetup\.$#'
+			identifier: class.notFound
+			count: 1
+			path: ../../../htdocs/cabinetmed/export.php
+
+		-
+			message: '#^Class ExportExcel2007 referenced with incorrect case\: Exportexcel2007\.$#'
+			identifier: class.nameCase
+			count: 1
+			path: ../../../htdocs/cabinetmed/export.php
+
+		-
+			message: '#^If condition is always true\.$#'
+			identifier: if.alwaysTrue
+			count: 1
+			path: ../../../htdocs/cabinetmed/export.php
+
+		-
+			message: '#^Instantiated class Exportexcel2007new not found\.$#'
+			identifier: class.notFound
+			count: 1
+			path: ../../../htdocs/cabinetmed/export.php
+
+		-
+			message: '#^Negated boolean expression is always true\.$#'
+			identifier: booleanNot.alwaysTrue
+			count: 1
+			path: ../../../htdocs/cabinetmed/export.php
+
+		-
+			message: '#^Parameter \#1 \$db of function dol_print_error expects DoliDB\|null, string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: ../../../htdocs/cabinetmed/export.php
+
+		-
+			message: '#^Parameter \#1 \$year of function dol_get_first_day expects int, string given\.$#'
+			identifier: argument.type
+			count: 2
+			path: ../../../htdocs/cabinetmed/export.php
+
+		-
+			message: '#^Parameter \#1 \$year of function dol_get_last_day expects int, string given\.$#'
+			identifier: argument.type
+			count: 2
+			path: ../../../htdocs/cabinetmed/export.php
+
+		-
+			message: '#^Parameter \#2 \$month of function dol_get_first_day expects int, string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: ../../../htdocs/cabinetmed/export.php
+
+		-
+			message: '#^Parameter \#2 \$month of function dol_get_last_day expects int, string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: ../../../htdocs/cabinetmed/export.php
+
+		-
+			message: '#^Ternary operator condition is always false\.$#'
+			identifier: ternary.alwaysFalse
+			count: 1
+			path: ../../../htdocs/cabinetmed/export.php
+
+		-
+			message: '#^Variable \$conf might not be defined\.$#'
+			identifier: variable.undefined
+			count: 2
+			path: ../../../htdocs/cabinetmed/export.php
+
+		-
+			message: '#^Variable \$consult might not be defined\.$#'
+			identifier: variable.undefined
+			count: 28
+			path: ../../../htdocs/cabinetmed/export.php
+
+		-
+			message: '#^Variable \$d might not be defined\.$#'
+			identifier: variable.undefined
+			count: 48
+			path: ../../../htdocs/cabinetmed/export.php
+
+		-
+			message: '#^Variable \$db might not be defined\.$#'
+			identifier: variable.undefined
+			count: 18
+			path: ../../../htdocs/cabinetmed/export.php
+
+		-
+			message: '#^Variable \$langs might not be defined\.$#'
+			identifier: variable.undefined
+			count: 29
+			path: ../../../htdocs/cabinetmed/export.php
+
+		-
+			message: '#^Variable \$user might not be defined\.$#'
+			identifier: variable.undefined
+			count: 5
+			path: ../../../htdocs/cabinetmed/export.php
+
+		-
+			message: '#^Function getDolGlobalSring not found\.$#'
+			identifier: function.notFound
+			count: 1
+			path: ../../../htdocs/cabinetmed/index.php
+
+		-
+			message: '#^Negated boolean expression is always true\.$#'
+			identifier: booleanNot.alwaysTrue
+			count: 1
+			path: ../../../htdocs/cabinetmed/index.php
+
+		-
+			message: '#^Variable \$db might not be defined\.$#'
+			identifier: variable.undefined
+			count: 25
+			path: ../../../htdocs/cabinetmed/index.php
+
+		-
+			message: '#^Variable \$langs might not be defined\.$#'
+			identifier: variable.undefined
+			count: 15
+			path: ../../../htdocs/cabinetmed/index.php
+
+		-
+			message: '#^Variable \$user might not be defined\.$#'
+			identifier: variable.undefined
+			count: 11
+			path: ../../../htdocs/cabinetmed/index.php
+
+		-
+			message: '#^Comparison operation "\>\=" between int\<0, max\>\|false and 0 is always true\.$#'
+			identifier: greaterOrEqual.alwaysTrue
+			count: 3
+			path: ../../../htdocs/cabinetmed/lib/cabinetmed.lib.php
+
+		-
+			message: '#^Default value of the parameter \#4 \$showtype \(int\) of function listexamen\(\) is incompatible with type string\.$#'
+			identifier: parameter.defaultValue
+			count: 1
+			path: ../../../htdocs/cabinetmed/lib/cabinetmed.lib.php
+
+		-
+			message: '#^Function contact_patient_stats_prepare_head\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: ../../../htdocs/cabinetmed/lib/cabinetmed.lib.php
+
+		-
+			message: '#^Function dol_cm_strptime\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: ../../../htdocs/cabinetmed/lib/cabinetmed.lib.php
+
+		-
+			message: '#^Function listcontacts\(\) with return type void returns string but should not return anything\.$#'
+			identifier: return.void
+			count: 1
+			path: ../../../htdocs/cabinetmed/lib/cabinetmed.lib.php
+
+		-
+			message: '#^Function listdiagles\(\) with return type void returns string but should not return anything\.$#'
+			identifier: return.void
+			count: 1
+			path: ../../../htdocs/cabinetmed/lib/cabinetmed.lib.php
+
+		-
+			message: '#^Function patient_stats_prepare_head\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: ../../../htdocs/cabinetmed/lib/cabinetmed.lib.php
+
+		-
+			message: '#^PHPDoc tag @param references unknown parameter\: \$showtype$#'
+			identifier: parameter.notFound
+			count: 1
+			path: ../../../htdocs/cabinetmed/lib/cabinetmed.lib.php
+
+		-
+			message: '#^PHPDoc tag @param references unknown parameter\: \$type$#'
+			identifier: parameter.notFound
+			count: 1
+			path: ../../../htdocs/cabinetmed/lib/cabinetmed.lib.php
+
+		-
+			message: '#^Negated boolean expression is always true\.$#'
+			identifier: booleanNot.alwaysTrue
+			count: 1
+			path: ../../../htdocs/cabinetmed/list.php
+
+		-
+			message: '#^Parameter \#2 \$mesgarray of function dol_htmloutput_mesg expects array\<string\>, string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: ../../../htdocs/cabinetmed/list.php
+
+		-
+			message: '#^Variable \$bc might not be defined\.$#'
+			identifier: variable.undefined
+			count: 1
+			path: ../../../htdocs/cabinetmed/list.php
+
+		-
+			message: '#^Variable \$conf might not be defined\.$#'
+			identifier: variable.undefined
+			count: 5
+			path: ../../../htdocs/cabinetmed/list.php
+
+		-
+			message: '#^Variable \$db might not be defined\.$#'
+			identifier: variable.undefined
+			count: 36
+			path: ../../../htdocs/cabinetmed/list.php
+
+		-
+			message: '#^Variable \$langs might not be defined\.$#'
+			identifier: variable.undefined
+			count: 29
+			path: ../../../htdocs/cabinetmed/list.php
+
+		-
+			message: '#^Variable \$moreforfilter might not be defined\.$#'
+			identifier: variable.undefined
+			count: 1
+			path: ../../../htdocs/cabinetmed/list.php
+
+		-
+			message: '#^Variable \$mysoc might not be defined\.$#'
+			identifier: variable.undefined
+			count: 3
+			path: ../../../htdocs/cabinetmed/list.php
+
+		-
+			message: '#^Variable \$user might not be defined\.$#'
+			identifier: variable.undefined
+			count: 13
+			path: ../../../htdocs/cabinetmed/list.php
+
+		-
+			message: '#^Call to function method_exists\(\) with Form and ''select_contact'' will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
+			count: 1
+			path: ../../../htdocs/cabinetmed/listconsult.php
+
+		-
+			message: '#^If condition is always false\.$#'
+			identifier: if.alwaysFalse
+			count: 2
+			path: ../../../htdocs/cabinetmed/listconsult.php
+
+		-
+			message: '#^Left side of \|\| is always false\.$#'
+			identifier: booleanOr.leftAlwaysFalse
+			count: 2
+			path: ../../../htdocs/cabinetmed/listconsult.php
+
+		-
+			message: '#^Negated boolean expression is always true\.$#'
+			identifier: booleanNot.alwaysTrue
+			count: 1
+			path: ../../../htdocs/cabinetmed/listconsult.php
+
+		-
+			message: '#^Offset ''CB'' on array\{\} in empty\(\) does not exist\.$#'
+			identifier: empty.offset
+			count: 1
+			path: ../../../htdocs/cabinetmed/listconsult.php
+
+		-
+			message: '#^Offset ''CHQ'' on array\{\} in empty\(\) does not exist\.$#'
+			identifier: empty.offset
+			count: 1
+			path: ../../../htdocs/cabinetmed/listconsult.php
+
+		-
+			message: '#^Offset ''LIQ'' on array\{\} in empty\(\) does not exist\.$#'
+			identifier: empty.offset
+			count: 1
+			path: ../../../htdocs/cabinetmed/listconsult.php
+
+		-
+			message: '#^Offset ''OTH'' on array\{\} in empty\(\) does not exist\.$#'
+			identifier: empty.offset
+			count: 1
+			path: ../../../htdocs/cabinetmed/listconsult.php
+
+		-
+			message: '#^Parameter \#2 \$newwidth of function listdiagles expects int, string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: ../../../htdocs/cabinetmed/listconsult.php
+
+		-
+			message: '#^Result of && is always false\.$#'
+			identifier: booleanAnd.alwaysFalse
+			count: 4
+			path: ../../../htdocs/cabinetmed/listconsult.php
+
+		-
+			message: '#^Result of function listdiagles \(void\) is used\.$#'
+			identifier: function.void
+			count: 1
+			path: ../../../htdocs/cabinetmed/listconsult.php
+
+		-
+			message: '#^Result of function listmotifcons \(void\) is used\.$#'
+			identifier: function.void
+			count: 1
+			path: ../../../htdocs/cabinetmed/listconsult.php
+
+		-
+			message: '#^Variable \$conf might not be defined\.$#'
+			identifier: variable.undefined
+			count: 11
+			path: ../../../htdocs/cabinetmed/listconsult.php
+
+		-
+			message: '#^Variable \$contextpage in empty\(\) always exists and is not falsy\.$#'
+			identifier: empty.variable
+			count: 1
+			path: ../../../htdocs/cabinetmed/listconsult.php
+
+		-
+			message: '#^Variable \$db might not be defined\.$#'
+			identifier: variable.undefined
+			count: 32
+			path: ../../../htdocs/cabinetmed/listconsult.php
+
+		-
+			message: '#^Variable \$hookmanager might not be defined\.$#'
+			identifier: variable.undefined
+			count: 19
+			path: ../../../htdocs/cabinetmed/listconsult.php
+
+		-
+			message: '#^Variable \$langs might not be defined\.$#'
+			identifier: variable.undefined
+			count: 14
+			path: ../../../htdocs/cabinetmed/listconsult.php
+
+		-
+			message: '#^Variable \$newcardbutton might not be defined\.$#'
+			identifier: variable.undefined
+			count: 1
+			path: ../../../htdocs/cabinetmed/listconsult.php
+
+		-
+			message: '#^Variable \$user might not be defined\.$#'
+			identifier: variable.undefined
+			count: 11
+			path: ../../../htdocs/cabinetmed/listconsult.php
+
+		-
+			message: '#^Negated boolean expression is always true\.$#'
+			identifier: booleanNot.alwaysTrue
+			count: 1
+			path: ../../../htdocs/cabinetmed/notes.php
+
+		-
+			message: '#^Variable \$db might not be defined\.$#'
+			identifier: variable.undefined
+			count: 7
+			path: ../../../htdocs/cabinetmed/notes.php
+
+		-
+			message: '#^Variable \$hookmanager might not be defined\.$#'
+			identifier: variable.undefined
+			count: 4
+			path: ../../../htdocs/cabinetmed/notes.php
+
+		-
+			message: '#^Variable \$langs might not be defined\.$#'
+			identifier: variable.undefined
+			count: 20
+			path: ../../../htdocs/cabinetmed/notes.php
+
+		-
+			message: '#^Variable \$user might not be defined\.$#'
+			identifier: variable.undefined
+			count: 7
+			path: ../../../htdocs/cabinetmed/notes.php
+
+		-
+			message: '#^Call to function method_exists\(\) with Form and ''select_contact'' will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
+			count: 1
+			path: ../../../htdocs/cabinetmed/patients.php
+
+		-
+			message: '#^If condition is always false\.$#'
+			identifier: if.alwaysFalse
+			count: 2
+			path: ../../../htdocs/cabinetmed/patients.php
+
+		-
+			message: '#^Loose comparison using \=\= between 0 and 0 will always evaluate to true\.$#'
+			identifier: equal.alwaysTrue
+			count: 2
+			path: ../../../htdocs/cabinetmed/patients.php
+
+		-
+			message: '#^Loose comparison using \=\= between 0 and 1 will always evaluate to false\.$#'
+			identifier: equal.alwaysFalse
+			count: 2
+			path: ../../../htdocs/cabinetmed/patients.php
+
+		-
+			message: '#^Negated boolean expression is always true\.$#'
+			identifier: booleanNot.alwaysTrue
+			count: 1
+			path: ../../../htdocs/cabinetmed/patients.php
+
+		-
+			message: '#^Parameter \#2 \$newwidth of function listdiagles expects int, string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: ../../../htdocs/cabinetmed/patients.php
+
+		-
+			message: '#^Parameter \#3 \$max of function dol_print_url expects int, string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: ../../../htdocs/cabinetmed/patients.php
+
+		-
+			message: '#^Result of function listdiagles \(void\) is used\.$#'
+			identifier: function.void
+			count: 1
+			path: ../../../htdocs/cabinetmed/patients.php
+
+		-
+			message: '#^Ternary operator condition is always false\.$#'
+			identifier: ternary.alwaysFalse
+			count: 2
+			path: ../../../htdocs/cabinetmed/patients.php
+
+		-
+			message: '#^Variable \$contextpage in empty\(\) always exists and is not falsy\.$#'
+			identifier: empty.variable
+			count: 1
+			path: ../../../htdocs/cabinetmed/patients.php
+
+		-
+			message: '#^Variable \$search_level might not be defined\.$#'
+			identifier: variable.undefined
+			count: 1
+			path: ../../../htdocs/cabinetmed/patients.php
+
+		-
+			message: '#^Variable \$search_price_level might not be defined\.$#'
+			identifier: variable.undefined
+			count: 1
+			path: ../../../htdocs/cabinetmed/patients.php
+
+		-
+			message: '#^Variable \$search_staff might not be defined\.$#'
+			identifier: variable.undefined
+			count: 1
+			path: ../../../htdocs/cabinetmed/patients.php
+
+		-
+			message: '#^Variable \$tab_level might not be defined\.$#'
+			identifier: variable.undefined
+			count: 1
+			path: ../../../htdocs/cabinetmed/patients.php
+
+		-
+			message: '#^Variable \$typenArray might not be defined\.$#'
+			identifier: variable.undefined
+			count: 1
+			path: ../../../htdocs/cabinetmed/patients.php
+
+		-
+			message: '#^Negated boolean expression is always true\.$#'
+			identifier: booleanNot.alwaysTrue
+			count: 1
+			path: ../../../htdocs/cabinetmed/patients_of_contact.php
+
+		-
+			message: '#^Variable \$conf might not be defined\.$#'
+			identifier: variable.undefined
+			count: 1
+			path: ../../../htdocs/cabinetmed/patients_of_contact.php
+
+		-
+			message: '#^Variable \$consult might not be defined\.$#'
+			identifier: variable.undefined
+			count: 3
+			path: ../../../htdocs/cabinetmed/patients_of_contact.php
+
+		-
+			message: '#^Variable \$db might not be defined\.$#'
+			identifier: variable.undefined
+			count: 9
+			path: ../../../htdocs/cabinetmed/patients_of_contact.php
+
+		-
+			message: '#^Variable \$langs might not be defined\.$#'
+			identifier: variable.undefined
+			count: 20
+			path: ../../../htdocs/cabinetmed/patients_of_contact.php
+
+		-
+			message: '#^Variable \$user might not be defined\.$#'
+			identifier: variable.undefined
+			count: 10
+			path: ../../../htdocs/cabinetmed/patients_of_contact.php
+
+		-
+			message: '#^Negated boolean expression is always true\.$#'
+			identifier: booleanNot.alwaysTrue
+			count: 1
+			path: ../../../htdocs/cabinetmed/reports.php
+
+		-
+			message: '#^Variable \$action might not be defined\.$#'
+			identifier: variable.undefined
+			count: 1
+			path: ../../../htdocs/cabinetmed/reports.php
+
+		-
+			message: '#^Variable \$bc might not be defined\.$#'
+			identifier: variable.undefined
+			count: 1
+			path: ../../../htdocs/cabinetmed/reports.php
+
+		-
+			message: '#^Variable \$conf might not be defined\.$#'
+			identifier: variable.undefined
+			count: 6
+			path: ../../../htdocs/cabinetmed/reports.php
+
+		-
+			message: '#^Variable \$db might not be defined\.$#'
+			identifier: variable.undefined
+			count: 17
+			path: ../../../htdocs/cabinetmed/reports.php
+
+		-
+			message: '#^Variable \$hookmanager might not be defined\.$#'
+			identifier: variable.undefined
+			count: 2
+			path: ../../../htdocs/cabinetmed/reports.php
+
+		-
+			message: '#^Variable \$langs might not be defined\.$#'
+			identifier: variable.undefined
+			count: 19
+			path: ../../../htdocs/cabinetmed/reports.php
+
+		-
+			message: '#^Variable \$object might not be defined\.$#'
+			identifier: variable.undefined
+			count: 1
+			path: ../../../htdocs/cabinetmed/reports.php
+
+		-
+			message: '#^Variable \$socname might not be defined\.$#'
+			identifier: variable.undefined
+			count: 1
+			path: ../../../htdocs/cabinetmed/reports.php
+
+		-
+			message: '#^Variable \$user might not be defined\.$#'
+			identifier: variable.undefined
+			count: 9
+			path: ../../../htdocs/cabinetmed/reports.php
+
+		-
+			message: '#^Negated boolean expression is always true\.$#'
+			identifier: booleanNot.alwaysTrue
+			count: 1
+			path: ../../../htdocs/cabinetmed/stats/geo.php
+
+		-
+			message: '#^Parameter \#1 \$object of function patient_stats_prepare_head expects object, null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: ../../../htdocs/cabinetmed/stats/geo.php
+
+		-
+			message: '#^Variable \$conf might not be defined\.$#'
+			identifier: variable.undefined
+			count: 1
+			path: ../../../htdocs/cabinetmed/stats/geo.php
+
+		-
+			message: '#^Variable \$data might not be defined\.$#'
+			identifier: variable.undefined
+			count: 4
+			path: ../../../htdocs/cabinetmed/stats/geo.php
+
+		-
+			message: '#^Variable \$db might not be defined\.$#'
+			identifier: variable.undefined
+			count: 9
+			path: ../../../htdocs/cabinetmed/stats/geo.php
+
+		-
+			message: '#^Variable \$dir might not be defined\.$#'
+			identifier: variable.undefined
+			count: 1
+			path: ../../../htdocs/cabinetmed/stats/geo.php
+
+		-
+			message: '#^Variable \$label might not be defined\.$#'
+			identifier: variable.undefined
+			count: 1
+			path: ../../../htdocs/cabinetmed/stats/geo.php
+
+		-
+			message: '#^Variable \$label2 might not be defined\.$#'
+			identifier: variable.undefined
+			count: 1
+			path: ../../../htdocs/cabinetmed/stats/geo.php
+
+		-
+			message: '#^Variable \$langs might not be defined\.$#'
+			identifier: variable.undefined
+			count: 31
+			path: ../../../htdocs/cabinetmed/stats/geo.php
+
+		-
+			message: '#^Variable \$socid might not be defined\.$#'
+			identifier: variable.undefined
+			count: 2
+			path: ../../../htdocs/cabinetmed/stats/geo.php
+
+		-
+			message: '#^Variable \$sql might not be defined\.$#'
+			identifier: variable.undefined
+			count: 5
+			path: ../../../htdocs/cabinetmed/stats/geo.php
+
+		-
+			message: '#^Variable \$tab might not be defined\.$#'
+			identifier: variable.undefined
+			count: 1
+			path: ../../../htdocs/cabinetmed/stats/geo.php
+
+		-
+			message: '#^Variable \$theme_datacolor might not be defined\.$#'
+			identifier: variable.undefined
+			count: 2
+			path: ../../../htdocs/cabinetmed/stats/geo.php
+
+		-
+			message: '#^Variable \$user might not be defined\.$#'
+			identifier: variable.undefined
+			count: 2
+			path: ../../../htdocs/cabinetmed/stats/geo.php
+
+		-
+			message: '#^Negated boolean expression is always true\.$#'
+			identifier: booleanNot.alwaysTrue
+			count: 1
+			path: ../../../htdocs/cabinetmed/stats/index.php
+
+		-
+			message: '#^Parameter \#1 \$object of function patient_stats_prepare_head expects object, null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: ../../../htdocs/cabinetmed/stats/index.php
+
+		-
+			message: '#^Parameter \#2 \$defaultsize of static method DolGraph\:\:getDefaultGraphSizeForStats\(\) expects string, int given\.$#'
+			identifier: argument.type
+			count: 2
+			path: ../../../htdocs/cabinetmed/stats/index.php
+
+		-
+			message: '#^Parameter \#3 \$mode of class CabinetMedStats constructor expects int, string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: ../../../htdocs/cabinetmed/stats/index.php
+
+		-
+			message: '#^Variable \$conf might not be defined\.$#'
+			identifier: variable.undefined
+			count: 1
+			path: ../../../htdocs/cabinetmed/stats/index.php
+
+		-
+			message: '#^Variable \$db might not be defined\.$#'
+			identifier: variable.undefined
+			count: 5
+			path: ../../../htdocs/cabinetmed/stats/index.php
+
+		-
+			message: '#^Variable \$langs might not be defined\.$#'
+			identifier: variable.undefined
+			count: 18
+			path: ../../../htdocs/cabinetmed/stats/index.php
+
+		-
+			message: '#^Variable \$legend might not be defined\.$#'
+			identifier: variable.undefined
+			count: 2
+			path: ../../../htdocs/cabinetmed/stats/index.php
+
+		-
+			message: '#^Variable \$user might not be defined\.$#'
+			identifier: variable.undefined
+			count: 2
+			path: ../../../htdocs/cabinetmed/stats/index.php
+
+		-
+			message: '#^Negated boolean expression is always true\.$#'
+			identifier: booleanNot.alwaysTrue
+			count: 1
+			path: ../../../htdocs/cabinetmed/stats/index_contacts.php
+
+		-
+			message: '#^Parameter \#1 \$object of function contact_patient_stats_prepare_head expects object, null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: ../../../htdocs/cabinetmed/stats/index_contacts.php
+
+		-
+			message: '#^Variable \$conf might not be defined\.$#'
+			identifier: variable.undefined
+			count: 2
+			path: ../../../htdocs/cabinetmed/stats/index_contacts.php
+
+		-
+			message: '#^Variable \$db might not be defined\.$#'
+			identifier: variable.undefined
+			count: 8
+			path: ../../../htdocs/cabinetmed/stats/index_contacts.php
+
+		-
+			message: '#^Variable \$langs might not be defined\.$#'
+			identifier: variable.undefined
+			count: 10
+			path: ../../../htdocs/cabinetmed/stats/index_contacts.php
+
+		-
+			message: '#^Variable \$mesg might not be defined\.$#'
+			identifier: variable.undefined
+			count: 1
+			path: ../../../htdocs/cabinetmed/stats/index_contacts.php
+
+		-
+			message: '#^Variable \$user might not be defined\.$#'
+			identifier: variable.undefined
+			count: 3
+			path: ../../../htdocs/cabinetmed/stats/index_contacts.php
+
+		-
+			message: '#^Negated boolean expression is always true\.$#'
+			identifier: booleanNot.alwaysTrue
+			count: 1
+			path: ../../../htdocs/cabinetmed/traitetallergies.php
+
+		-
+			message: '#^Variable \$conf might not be defined\.$#'
+			identifier: variable.undefined
+			count: 1
+			path: ../../../htdocs/cabinetmed/traitetallergies.php
+
+		-
+			message: '#^Variable \$db might not be defined\.$#'
+			identifier: variable.undefined
+			count: 12
+			path: ../../../htdocs/cabinetmed/traitetallergies.php
+
+		-
+			message: '#^Variable \$error might not be defined\.$#'
+			identifier: variable.undefined
+			count: 2
+			path: ../../../htdocs/cabinetmed/traitetallergies.php
+
+		-
+			message: '#^Variable \$langs might not be defined\.$#'
+			identifier: variable.undefined
+			count: 18
+			path: ../../../htdocs/cabinetmed/traitetallergies.php
+
+		-
+			message: '#^Variable \$mesg might not be defined\.$#'
+			identifier: variable.undefined
+			count: 1
+			path: ../../../htdocs/cabinetmed/traitetallergies.php
+
+		-
+			message: '#^Variable \$object might not be defined\.$#'
+			identifier: variable.undefined
+			count: 1
+			path: ../../../htdocs/cabinetmed/traitetallergies.php
+
+		-
+			message: '#^Variable \$user might not be defined\.$#'
+			identifier: variable.undefined
+			count: 8
+			path: ../../../htdocs/cabinetmed/traitetallergies.php

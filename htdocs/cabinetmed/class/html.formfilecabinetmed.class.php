@@ -32,10 +32,10 @@ include_once DOL_DOCUMENT_ROOT.'/core/class/html.formfile.class.php';
  */
 class FormFileCabinetmed extends FormFile
 {
-	var $db;
-	var $error;
+	public $db;
+	public $error;
 
-	var $numoffiles;
+	public $numoffiles;
 
 
 	/**
@@ -43,7 +43,7 @@ class FormFileCabinetmed extends FormFile
 	 *
 	 *  @param	DoliDB	$db		Database handler
 	 */
-	function __construct($db)
+	public function __construct($db)
 	{
 		$this->db = $db;
 
