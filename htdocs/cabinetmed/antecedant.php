@@ -78,13 +78,13 @@ $reshook=$hookmanager->executeHooks('doActions', $parameters, $object, $action);
 if ($reshook < 0) setEventMessages($hookmanager->error, $hookmanager->errors, 'errors');
 
 if (empty($reshook)) {
-	if ($action == 'addupdate') {
+	if ($action == 'addupdate' && $socid > 0 && $user->hasRight('cabinetmed', 'write') && $user->hasRight('societe', 'creer')) {
 		$error=0;
 
 		$db->begin();
 
 		$sql = "INSERT INTO ".MAIN_DB_PREFIX."cabinetmed_patient(rowid, note_antemed, note_antechirgen, note_antechirortho, note_anterhum, note_other, note_traitallergie, note_traitclass, note_traitintol, note_traitspec)";
-		$sql.= " VALUES(".GETPOSTINT("socid").",";
+		$sql.= " VALUES(".((int) $socid).",";
 		$sql.= " '".$db->escape(GETPOST("note_antemed"))."','".$db->escape(GETPOST("note_antechirgen"))."',";
 		$sql.= " '".$db->escape(GETPOST("note_antechirortho"))."','".$db->escape(GETPOST("note_anterhum"))."','".$db->escape(GETPOST("note_other"))."',";
 		$sql.= " '".$db->escape(GETPOST("note_traitallergie"))."','".$db->escape(GETPOST("note_traitclass"))."','".$db->escape(GETPOST("note_traitintol"))."','".$db->escape(GETPOST("note_traitspec"))."'";
@@ -102,7 +102,7 @@ if (empty($reshook)) {
 		$sql.= " note_traitclass='".$db->escape(GETPOST("note_traitclass"))."',";
 		$sql.= " note_traitintol='".$db->escape(GETPOST("note_traitintol"))."',";
 		$sql.= " note_traitspec='".$db->escape(GETPOST("note_traitspec"))."'";
-		$sql.= " WHERE rowid = ".GETPOSTINT("socid");
+		$sql.= " WHERE rowid = ".((int) $socid);
 		$result2 = $db->query($sql);
 
 		$alert = (GETPOST("alert_antemed", "alpha")?'1':'0');
@@ -266,7 +266,7 @@ if ($socid > 0) {
 		$doleditor=new DolEditor('note_antemed', $object->note_antemed, 0, $height, 'dolibarr_notes', 'In', false, false, isModEnabled("fckeditor"), 8, '95%');
 		$doleditor->Create(0, '', true, '', '', '', 'marginbottomonly');
 	} else {
-		print nl2br($object->note_antemed);
+		print nl2br(dol_escape_htmltag($object->note_antemed));
 	}
 	print "</td>";
 	print '</tr></table>';
@@ -288,7 +288,7 @@ if ($socid > 0) {
 		$doleditor=new DolEditor('note_traitspec', $object->note_traitspec, 0, $height, 'dolibarr_notes', 'In', false, false, isModEnabled("fckeditor"), 8, '95%');
 		$doleditor->Create(0, '', true, '', '', '', 'marginbottomonly');
 	} else {
-		print nl2br($object->note_traitspec);
+		print nl2br(dol_escape_htmltag($object->note_traitspec));
 	}
 	print "</td></tr>";
 
@@ -312,7 +312,7 @@ if ($socid > 0) {
 		$doleditor=new DolEditor('note_antechirgen', $object->note_antechirgen, 0, $height, 'dolibarr_notes', 'In', false, false, isModEnabled("fckeditor"), 8, '95%');
 		$doleditor->Create(0, '', true, '', '', '', 'marginbottomonly');
 	} else {
-		print nl2br($object->note_antechirgen);
+		print nl2br(dol_escape_htmltag($object->note_antechirgen));
 	}
 	print "</td>";
 
@@ -334,7 +334,7 @@ if ($socid > 0) {
 		$doleditor=new DolEditor('note_traitintol', $object->note_traitintol, 0, $height, 'dolibarr_notes', 'In', false, false, isModEnabled("fckeditor"), 8, '95%');
 		$doleditor->Create(0, '', true, '', '', '', 'marginbottomonly');
 	} else {
-		print nl2br($object->note_traitintol);
+		print nl2br(dol_escape_htmltag($object->note_traitintol));
 	}
 	print "</td></tr>";
 
@@ -357,7 +357,7 @@ if ($socid > 0) {
 		$doleditor=new DolEditor('note_antechirortho', $object->note_antechirortho, 0, $height, 'dolibarr_notes', 'In', false, false, isModEnabled("fckeditor"), 6, '95%');
 		$doleditor->Create(0, '', true, '', '', '', 'marginbottomonly');
 	} else {
-		print nl2br($object->note_antechirortho);
+		print nl2br(dol_escape_htmltag($object->note_antechirortho));
 	}
 	print "</td>";
 
@@ -377,7 +377,7 @@ if ($socid > 0) {
 		$doleditor=new DolEditor('note_traitallergie', $object->note_traitallergie, 0, $height, 'dolibarr_notes', 'In', false, false, isModEnabled("fckeditor"), 6, '95%');
 		$doleditor->Create(0, '', true, '', '', '', 'marginbottomonly');
 	} else {
-		print nl2br($object->note_traitallergie);
+		print nl2br(dol_escape_htmltag($object->note_traitallergie));
 	}
 	print "</td></tr>";
 
@@ -400,7 +400,7 @@ if ($socid > 0) {
 		$doleditor=new DolEditor('note_anterhum', $object->note_anterhum, 0, $height, 'dolibarr_notes', 'In', false, false, isModEnabled("fckeditor"), 6, '95%');
 		$doleditor->Create(0, '', true, '', '', '', 'marginbottomonly');
 	} else {
-		print nl2br($object->note_anterhum);
+		print nl2br(dol_escape_htmltag($object->note_anterhum));
 	}
 	print "</td>";
 

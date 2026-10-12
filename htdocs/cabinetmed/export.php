@@ -49,9 +49,9 @@ require_once DOL_DOCUMENT_ROOT."/core/lib/files.lib.php";
 
 $langs->load("bills");
 
-$year=GETPOST("year");
-$month=GETPOST("month");
-$search_sale=GETPOST('search_sale');
+$year=GETPOSTINT("year");
+$month=GETPOSTINT("month");
+$search_sale=GETPOSTINT('search_sale');
 
 // Security check
 $socid =GETPOST('socid', 'int');
@@ -86,8 +86,12 @@ $sql = "SELECT f.rowid as cid, f.datecons, f.fk_user, f.typevisit, f.codageccam,
 $sql.= " s.nom as name";
 $sql.= " FROM ".MAIN_DB_PREFIX."cabinetmed_cons as f, ".MAIN_DB_PREFIX."societe as s";
 $sql.= " WHERE f.fk_soc = s.rowid";
-if ($search_sale) $sql.= " AND f.fk_user = ".$search_sale;
-if ($socid)       $sql.= " AND f.fk_soc = ".$socid;
+$sql.= " AND s.entity IN (".getEntity('societe').")";
+if (!$user->hasRight('societe', 'client', 'voir')) {
+	$sql.= " AND EXISTS (SELECT sc.fk_soc FROM ".MAIN_DB_PREFIX."societe_commerciaux as sc WHERE sc.fk_soc = s.rowid AND sc.fk_user = ".((int) $user->id).")";
+}
+if ($search_sale) $sql.= " AND f.fk_user = ".((int) $search_sale);
+if ($socid)       $sql.= " AND f.fk_soc = ".((int) $socid);
 if ($month && $year) $sql.= " AND f.datecons BETWEEN '".$db->idate(dol_get_first_day($year, $month))."' AND '".$db->idate(dol_get_last_day($year, $month))."'";
 elseif ($year)        $sql.= " AND f.datecons BETWEEN '".$db->idate(dol_get_first_day($year, 1))."' AND '".$db->idate(dol_get_last_day($year, 12))."'";
 elseif ($month) {

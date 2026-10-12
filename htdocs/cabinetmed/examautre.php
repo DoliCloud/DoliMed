@@ -59,7 +59,7 @@ $mesgarray=array();
 
 // Load variable for pagination
 $limit = GETPOST('limit', 'int')?GETPOST('limit', 'int'):$conf->liste_limit;
-$sortfield = GETPOST("sortfield", 'alpha');
+$sortfield = GETPOST("sortfield", 'aZ09comma');
 $sortorder = GETPOST('sortorder', 'aZ09comma');
 $page = GETPOSTISSET('pageplusone') ? (GETPOST('pageplusone') - 1) : GETPOST("page", 'int');
 if (empty($page) || $page == -1 || GETPOST('button_search', 'alpha') || GETPOST('button_removefilter', 'alpha') || (empty($toselect) && $massaction === '0')) { $page = 0; }     // If $page is not defined, or '' or -1 or if we click on clear filters or if we select empty mass action
@@ -82,7 +82,19 @@ $result = restrictedArea($user, 'societe', $socid);
 
 if (!$user->hasRight('cabinetmed', 'read')) accessforbidden();
 
-$usercanupdate = $user->hasRight('societe', 'write');
+$usercanupdate = $user->hasRight('cabinetmed', 'write');
+
+// Security check on the exam: it must belong to the patient and the patient must be accessible by user
+if ($id > 0) {
+	$result = $examother->fetch($id);
+	if ($result <= 0 || ($socid > 0 && $examother->fk_soc != $socid)) {
+		accessforbidden();
+	}
+	$result = restrictedArea($user, 'societe', $examother->fk_soc);
+}
+if (in_array($action, array('add', 'update', 'confirm_delete')) && (!$user->hasRight('cabinetmed', 'write') || !($socid > 0))) {
+	accessforbidden();
+}
 $usercandelete = $user->hasRight('societe', 'supprimer');
 
 
@@ -114,7 +126,7 @@ if (empty($reshook)) {
 		if (! GETPOST('cancel', 'alpha')) {
 			$error=0;
 
-			$dateexam=dol_mktime(0, 0, 0, $_POST["exammonth"], $_POST["examday"], $_POST["examyear"]);
+			$dateexam=dol_mktime(0, 0, 0, GETPOSTINT("exammonth"), GETPOSTINT("examday"), GETPOSTINT("examyear"));
 
 			if ($action == 'update') {
 				$result=$examother->fetch($id);
@@ -123,12 +135,12 @@ if (empty($reshook)) {
 					exit;
 				}
 			}
-			$examother->fk_soc=$_POST["socid"];
+			$examother->fk_soc=$socid;
 			$examother->dateexam=$dateexam;
-			$examother->examprinc=trim($_POST["examprinc"]);
-			$examother->examsec=trim($_POST["examsec"]);
-			$examother->concprinc=$_POST["examconcprinc"];
-			$examother->concsec=$_POST["examconcsec"];
+			$examother->examprinc=trim(GETPOST("examprinc", 'alphanohtml'));
+			$examother->examsec=trim(GETPOST("examsec", 'alphanohtml'));
+			$examother->concprinc=GETPOST("examconcprinc", 'alphanohtml');
+			$examother->concsec=GETPOST("examconcsec", 'alphanohtml');
 
 			if (empty($examother->examprinc)) {
 				$error++;
@@ -382,12 +394,12 @@ if ($socid > 0) {
 		print '</td></tr>';
 		print '<tr><td class="fieldrequired">'.$langs->trans("Principal").':';
 		print '</td><td>';
-		print '<input type="text" size="48" class="flat" name="examprinc" value="'.$examother->examprinc.'" id="examprinc"><br>';
+		print '<input type="text" size="48" class="flat" name="examprinc" value="'.dol_escape_htmltag($examother->examprinc).'" id="examprinc"><br>';
 		print '</td></tr>';
 		print '<tr><td class="tdtop">'.$langs->trans("Secondaires").':';
 		print '</td><td>';
 		print '<textarea class="flat" name="examsec" id="examsec" cols="46" rows="'.ROWS_5.'">';
-		print $examother->examsec;
+		print dol_htmlentities($examother->examsec);
 		print '</textarea>';
 		print '</td>';
 		print '</tr>';
@@ -405,12 +417,12 @@ if ($socid > 0) {
 		print '</td></tr>';
 		print '<tr><td class="fieldrequired">'.$langs->trans("Principal").':';
 		print '</td><td>';
-		print '<input type="text" size="48" class="flat" name="examconcprinc" value="'.$examother->concprinc.'" id="examconcprinc"><br>';
+		print '<input type="text" size="48" class="flat" name="examconcprinc" value="'.dol_escape_htmltag($examother->concprinc).'" id="examconcprinc"><br>';
 		print '</td></tr>';
 		print '<tr><td class="tdtop">'.$langs->trans("Secondaires").':';
 		print '</td><td>';
 		print '<textarea class="flat" name="examconcsec" id="examconcsec" cols="46" rows="'.ROWS_5.'">';
-		print $examother->concsec;
+		print dol_htmlentities($examother->concsec);
 		print '</textarea>';
 		print '</td>';
 		print '</tr>';
@@ -503,7 +515,7 @@ if ($action == '' || $action == 'delete') {
 	$sql.= " t.tms";
 	$sql.= " FROM ".MAIN_DB_PREFIX."cabinetmed_examaut as t";
 	$sql.= " WHERE t.fk_soc = ".$socid;
-	$sql.= " ORDER BY ".$sortfield." ".$sortorder.", t.rowid DESC";
+	$sql.= $db->order($sortfield.",t.rowid", $sortorder.",DESC");
 
 	$resql=$db->query($sql);
 	if ($resql) {

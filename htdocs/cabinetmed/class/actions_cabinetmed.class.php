@@ -98,7 +98,7 @@ class ActionsCabinetmed
 	 */
 	public function doActions($parameters, &$object, &$action)
 	{
-		global $db,$langs,$conf,$backtopage,$confirmduplicate;
+		global $db, $langs, $conf, $user, $backtopage, $confirmduplicate;
 
 		$ret=0;
 		dol_syslog(get_class($this).'::executeHooks action='.$action);
@@ -157,7 +157,7 @@ class ActionsCabinetmed
 		require_once dol_buildpath('/cabinetmed/lib/cabinetmed.lib.php', 0);
 
 		// Hook called when asking to add a new record
-		if ($action == 'convertintopatient' && !empty($object) && in_array($object->element, array('societe', 'thirdparty'))) {
+		if ($action == 'convertintopatient' && !empty($object) && in_array($object->element, array('societe', 'thirdparty')) && $user->hasRight('societe', 'creer')) {
 			$sql = 'UPDATE '.MAIN_DB_PREFIX."societe as s SET canvas = 'patient@cabinetmed' WHERE rowid = ".((int) $object->id);
 
 			$resql = $db->query($sql);
@@ -449,7 +449,7 @@ class ActionsCabinetmed
 		$firstid=0;
 		$out.='<font class="fieldrequired">'.$langs->trans("Consultation").':</font> ';
 		$array_consult=array();
-		$sql='SELECT rowid, datecons as date FROM '.MAIN_DB_PREFIX.'cabinetmed_cons where fk_soc='.$parameters['socid'];
+		$sql='SELECT rowid, datecons as date FROM '.MAIN_DB_PREFIX.'cabinetmed_cons where fk_soc='.((int) $parameters['socid']);
 		$sql.=' ORDER BY datecons DESC, rowid DESC';
 		$resql=$this->db->query($sql);
 		if ($resql) {
@@ -470,7 +470,7 @@ class ActionsCabinetmed
 
 		$out.=$langs->trans("ResultExamBio").': ';
 		$array_consult=array();
-		$sql='SELECT rowid, dateexam as date FROM '.MAIN_DB_PREFIX.'cabinetmed_exambio where fk_soc='.$parameters['socid'];
+		$sql='SELECT rowid, dateexam as date FROM '.MAIN_DB_PREFIX.'cabinetmed_exambio where fk_soc='.((int) $parameters['socid']);
 		$sql.=' ORDER BY dateexam DESC, rowid DESC';
 		$resql=$this->db->query($sql);
 		if ($resql) {
@@ -490,7 +490,7 @@ class ActionsCabinetmed
 
 		$out.=$langs->trans("ResultExamAutre").': ';
 		$array_consult=array();
-		$sql='SELECT rowid, dateexam as date FROM '.MAIN_DB_PREFIX.'cabinetmed_examaut where fk_soc='.$parameters['socid'];
+		$sql='SELECT rowid, dateexam as date FROM '.MAIN_DB_PREFIX.'cabinetmed_examaut where fk_soc='.((int) $parameters['socid']);
 		$sql.=' ORDER BY dateexam DESC, rowid DESC';
 		$resql=$this->db->query($sql);
 		if ($resql) {
@@ -537,7 +537,7 @@ class ActionsCabinetmed
 		global $langs, $user, $conf, $db;
 
 		$langs->load("cabinetmed@cabinetmed");
-		$this->results = array('cabinetmed_cabinetmedcons'=>array('enabled'=>isModEnabled('cabinetmed'), 'perms'=>1, 'label'=>'LinkToConsultation', 'sql'=>"SELECT s.rowid as socid, s.nom as name, t.rowid, t.rowid as ref, '' as ref_supplier, (".$db->ifsql('t.montant_cheque IS NULL', '0', 't.montant_cheque')." + ".$db->ifsql('t.montant_carte IS NULL', '0', 't.montant_carte')." + ".$db->ifsql('t.montant_espece IS NULL', '0', 't.montant_espece')." + ".$db->ifsql('t.montant_tiers IS NULL', '0', 't.montant_tiers').") as total_ht FROM ".MAIN_DB_PREFIX."societe as s, ".MAIN_DB_PREFIX."cabinetmed_cons as t WHERE t.fk_soc = s.rowid AND t.fk_soc = ".$object->thirdparty->id));
+		$this->results = array('cabinetmed_cabinetmedcons'=>array('enabled'=>isModEnabled('cabinetmed'), 'perms'=>(int) $user->hasRight('cabinetmed', 'read'), 'label'=>'LinkToConsultation', 'sql'=>"SELECT s.rowid as socid, s.nom as name, t.rowid, t.rowid as ref, '' as ref_supplier, (".$db->ifsql('t.montant_cheque IS NULL', '0', 't.montant_cheque')." + ".$db->ifsql('t.montant_carte IS NULL', '0', 't.montant_carte')." + ".$db->ifsql('t.montant_espece IS NULL', '0', 't.montant_espece')." + ".$db->ifsql('t.montant_tiers IS NULL', '0', 't.montant_tiers').") as total_ht FROM ".MAIN_DB_PREFIX."societe as s, ".MAIN_DB_PREFIX."cabinetmed_cons as t WHERE t.fk_soc = s.rowid AND t.fk_soc = ".((int) $object->thirdparty->id)));
 	}
 
 	/**
@@ -633,13 +633,13 @@ class ActionsCabinetmed
 		}
 
 		if ($ok) {
-			$sql = "UPDATE ".MAIN_DB_PREFIX."cabinetmed_patient SET note_antemed = '".$db->escape($oldpatienttodelete->note_antemed)."' WHERE note_antemed IS NULL OR note_antemed = ''";
+			$sql = "UPDATE ".MAIN_DB_PREFIX."cabinetmed_patient SET note_antemed = '".$db->escape($oldpatienttodelete->note_antemed)."' WHERE rowid = ".((int) $dest_id)." AND (note_antemed IS NULL OR note_antemed = '')";
 			if (!$db->query($sql)) {
 				$ok=0;
 			}
 		}
 		if ($ok) {
-			$sql = "UPDATE ".MAIN_DB_PREFIX."cabinetmed_patient SET note_traitspec = '".$db->escape($oldpatienttodelete->note_traitspec)."' WHERE note_traitspec IS NULL OR note_traitspec = ''";
+			$sql = "UPDATE ".MAIN_DB_PREFIX."cabinetmed_patient SET note_traitspec = '".$db->escape($oldpatienttodelete->note_traitspec)."' WHERE rowid = ".((int) $dest_id)." AND (note_traitspec IS NULL OR note_traitspec = '')";
 			if (!$db->query($sql)) {
 				$ok=0;
 			}

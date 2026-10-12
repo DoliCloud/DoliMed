@@ -98,7 +98,7 @@ class CabinetmedExamOther // extends CommonObject
 		$sql.= "concprinc,";
 		$sql.= "concsec";
 		$sql.= ") VALUES (";
-		$sql.= " ".(! isset($this->fk_soc)?'NULL':"'".$this->fk_soc."'").",";
+		$sql.= " ".(! isset($this->fk_soc)?'NULL':((int) $this->fk_soc)).",";
 		$sql.= " ".$user->id.",";
 		$sql.= " ".(! isset($this->dateexam) || dol_strlen($this->dateexam)==0?'NULL':"'".$this->db->idate($this->dateexam))."',";
 		$sql.= " ".(! isset($this->examprinc)?'NULL':"'".$this->db->escape($this->examprinc)."'").",";
@@ -210,7 +210,7 @@ class CabinetmedExamOther // extends CommonObject
 		// Update request
 		$sql = "UPDATE ".MAIN_DB_PREFIX."cabinetmed_examaut SET";
 
-		$sql.= " fk_soc=".(isset($this->fk_soc)?$this->fk_soc:"null").",";
+		$sql.= " fk_soc=".(isset($this->fk_soc)?((int) $this->fk_soc):"null").",";
 		$sql.= " dateexam=".(dol_strlen($this->dateexam)!=0 ? "'".$this->db->idate($this->dateexam)."'" : 'null').",";
 		$sql.= " examprinc=".(isset($this->examprinc)?"'".$this->db->escape($this->examprinc)."'":"null").",";
 		$sql.= " examsec=".(isset($this->examsec)?"'".$this->db->escape($this->examsec)."'":"null").",";

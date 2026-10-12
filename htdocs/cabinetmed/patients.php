@@ -296,9 +296,10 @@ if (empty($reshook)) {
 	$uploaddir = $conf->societe->dir_output;
 	include DOL_DOCUMENT_ROOT.'/core/actions_massactions.inc.php';
 
-	if ($action == 'setstcomm') {
+	if ($action == 'setstcomm' && $user->hasRight('societe', 'creer')) {
+		restrictedArea($user, 'societe', GETPOSTINT('stcommsocid'));
 		$object = new Client($db);
-		$result = $object->fetch(GETPOST('stcommsocid'));
+		$result = $object->fetch(GETPOSTINT('stcommsocid'));
 		$object->stcomm_id = dol_getIdFromCode($db, GETPOST('stcomm', 'alpha'), 'c_stcomm');
 		$result = $object->update($object->id, $user);
 		if ($result < 0) {

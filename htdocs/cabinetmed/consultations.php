@@ -91,6 +91,18 @@ $extrafields = new ExtraFields($db);
 // fetch optionals attributes and labels
 $extrafields->fetch_name_optionals_label($object->table_element);
 
+// Security check on the consultation: it must belong to the patient and the patient must be accessible by user
+if ($id > 0) {
+	$result = $object->fetch($id);
+	if ($result <= 0 || ($socid > 0 && $object->fk_soc != $socid)) {
+		accessforbidden();
+	}
+	$result = restrictedArea($user, 'societe', $object->fk_soc, '');
+}
+if (in_array($action, array('add', 'update', 'confirm_delete')) && !$user->hasRight('cabinetmed', 'write')) {
+	accessforbidden();
+}
+
 // Initialize technical object to manage hooks of page. Note that conf->hooks_modules contains array array
 $hookmanager->initHooks(array('thirdpartycard','consultationcard','globalcard'));
 
@@ -195,9 +207,9 @@ if (empty($reshook)) {
 			if (! empty($_POST["montant_espece"])) $amount['LIQ'] = price2num(GETPOST("montant_espece"), 'MT', 2);
 			if (! empty($_POST["montant_tiers"]))  $amount['VIR'] = price2num(GETPOST("montant_tiers"), 'MT', 2);
 			$banque=array();
-			if (! empty($_POST["bankchequeto"]))   $banque['CHQ'] = GETPOST("bankchequeto");
-			if (! empty($_POST["bankcarteto"]))    $banque['CB'] = GETPOST("bankcarteto");
-			if (! empty($_POST["bankespeceto"]))   $banque['LIQ'] = GETPOST("bankespeceto");
+			if (! empty($_POST["bankchequeto"]))   $banque['CHQ'] = GETPOSTINT("bankchequeto");
+			if (! empty($_POST["bankcarteto"]))    $banque['CB'] = GETPOSTINT("bankcarteto");
+			if (! empty($_POST["bankespeceto"]))   $banque['LIQ'] = GETPOSTINT("bankespeceto");
 			if (! empty($_POST["banktiersto"]))    $banque['VIR'] = GETPOST("banktiersto");  // Should be always empty
 
 			unset($object->montant_carte);
@@ -407,8 +419,8 @@ if (empty($reshook)) {
 									//var_dump($key.' '.$banque[$key].' '.$soc->name.' '.$object->banque);exit;
 									$bankaccount=new Account($db);
 									$result=$bankaccount->fetch($banque[$key]);
-									if ($result < 0) {
-										dol_print_error($db, $bankaccount->error);
+									if ($result <= 0 || !in_array($bankaccount->entity, explode(',', getEntity('bank_account')))) {
+										accessforbidden('Bank account not allowed');
 									}
 									if ($key == 'CHQ') {
 										$lineid=$bankaccount->addline($datecons, $key, $langs->trans("CustomerInvoicePayment"), $amount[$key], $object->num_cheque, '', $user, $soc->name, $object->banque);
@@ -482,7 +494,9 @@ if (empty($reshook)) {
 								if (isModEnabled("bank") && isset($banque[$key]) && $banque[$key] > 0) {
 									$bankaccount=new Account($db);
 									$result=$bankaccount->fetch($banque[$key]);
-									if ($result < 0) dol_print_error($db, $bankaccount->error);
+									if ($result <= 0 || !in_array($bankaccount->entity, explode(',', getEntity('bank_account')))) {
+										accessforbidden('Bank account not allowed');
+									}
 									if ($key == 'CHQ') $lineid=$bankaccount->addline($object->datecons, $key, $langs->trans("CustomerInvoicePayment"), $amount[$key], $object->num_cheque, '', $user, $soc->name, $object->banque);
 									else $lineid=$bankaccount->addline($object->datecons, $key, $langs->trans("CustomerInvoicePayment"), $amount[$key], '', '', $user, $soc->name, '');
 									$result1=$bankaccount->add_url_line($lineid, $object->id, dol_buildpath('/cabinetmed/consultations.php', 1).'?action=edit&token='.newToken().'&socid='.$object->fk_soc.'&id=', 'Consultation', 'consultation');

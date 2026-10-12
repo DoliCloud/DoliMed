@@ -62,8 +62,8 @@ $search_idprof3=trim(GETPOST('search_idprof3'));
 $search_idprof4=trim(GETPOST('search_idprof4'));
 $search_idprof5=trim(GETPOST('search_idprof5'));
 $search_idprof6=trim(GETPOST('search_idprof6'));
-$search_sale=trim(GETPOST("search_sale"));
-$search_categ=trim(GETPOST("search_categ"));
+$search_sale=GETPOSTINT("search_sale");
+$search_categ=GETPOSTINT("search_categ");
 $mode=GETPOST("mode");
 $modesearch=GETPOST("mode_search");
 $search_type=trim(GETPOST('search_type'));
@@ -128,11 +128,11 @@ if ($mode == 'search') {
 	}
 	// Insert sale filter
 	if ($search_sale) {
-		$sql .= " AND sc.fk_user = ".$search_sale;
+		$sql .= " AND sc.fk_user = ".((int) $search_sale);
 	}
 	// Insert categ filter
 	if ($search_categ) {
-		$sql .= " AND cs.fk_categorie = ".$search_categ;
+		$sql .= " AND cs.fk_categorie = ".((int) $search_categ);
 	}
 	// Filter on type of thirdparty
 	if ($search_type > 0 && in_array($search_type, array('1,3','2,3'))) $sql .= " AND s.client IN (".$db->escape($search_type).")";
@@ -216,11 +216,11 @@ if ($search_categ) $sql.= " AND s.rowid = cs.fk_soc";   // Join for the needed t
 if (! $user->hasRight('fournisseur', 'lire')) $sql.=" AND (s.fournisseur <> 1 OR s.client <> 0)";    // client=0, fournisseur=0 must be visible
 // Insert sale filter
 if ($search_sale) {
-	$sql .= " AND sc.fk_user = ".$search_sale;
+	$sql .= " AND sc.fk_user = ".((int) $search_sale);
 }
 // Insert categ filter
 if ($search_categ) {
-	$sql .= " AND cs.fk_categorie = ".$search_categ;
+	$sql .= " AND cs.fk_categorie = ".((int) $search_categ);
 }
 if ($search_nom_only) {
 	$sql.= " AND s.nom LIKE '%".$db->escape($search_nom_only)."%'";
@@ -341,9 +341,9 @@ if ($resql) {
 	print '<input type="hidden" name="sortorder" value="'.$sortorder.'">';
 	print '<input type="hidden" name="page" value="'.$page.'">';
 	if (! empty($search_nom_only) && empty($search_nom)) $search_nom=$search_nom_only;
-	print '<input class="flat" type="text" name="search_nom" value="'.$search_nom.'">';
+	print '<input class="flat" type="text" name="search_nom" value="'.dol_escape_htmltag($search_nom).'">';
 	print '</td><td class="liste_titre">';
-	print '<input class="flat" size="10" type="text" name="search_ville" value="'.$search_ville.'">';
+	print '<input class="flat" size="10" type="text" name="search_ville" value="'.dol_escape_htmltag($search_ville).'">';
 	print '</td>';
 	// IdProf1
 	print '<td class="liste_titre">';

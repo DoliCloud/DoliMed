@@ -61,30 +61,28 @@ if (!$user->hasRight('cabinetmed', 'read')) accessforbidden();
  * Actions
  */
 
-if ($action == 'addupdate') {
+if ($action == 'addupdate' && $socid > 0 && $user->hasRight('cabinetmed', 'write') && $user->hasRight('societe', 'creer')) {
 	$db->begin();
 
 	$sql = "INSERT INTO ".MAIN_DB_PREFIX."cabinetmed_patient(rowid, note_traitclass, note_traitallergie, note_traitintol, note_traitspec)";
-	$sql.= " VALUES('".$_POST["socid"]."','".addslashes($_POST["note_traitclass"])."','".addslashes($_POST["note_traitallergie"])."','".addslashes($_POST["note_traitintol"])."',";
-	$sql.= " '".addslashes($_POST["note_traitspec"])."')";
+	$sql.= " VALUES(".((int) $socid).",'".$db->escape(GETPOST("note_traitclass", 'alphanohtml'))."','".$db->escape(GETPOST("note_traitallergie", 'alphanohtml'))."','".$db->escape(GETPOST("note_traitintol", 'alphanohtml'))."',";
+	$sql.= " '".$db->escape(GETPOST("note_traitspec", 'alphanohtml'))."')";
 	$result1 = $db->query($sql, 1);
 	//if (! $result) dol_print_error($db);
 
 	$sql = "UPDATE ".MAIN_DB_PREFIX."cabinetmed_patient SET";
-	//$sql.= " note_traitclass='".addslashes($_POST["note_traitclass"])."',";
-	//$sql.= " note_traitallergie='".addslashes($_POST["note_traitallergie"])."',";
-	$sql.= " note_traitintol='".addslashes($_POST["note_traitintol"])."',";
-	$sql.= " note_traitspec='".addslashes($_POST["note_traitspec"])."'";
-	$sql.= " WHERE rowid=".$_POST["socid"];
+	$sql.= " note_traitintol='".$db->escape(GETPOST("note_traitintol", 'alphanohtml'))."',";
+	$sql.= " note_traitspec='".$db->escape(GETPOST("note_traitspec", 'alphanohtml'))."'";
+	$sql.= " WHERE rowid=".((int) $socid);
 	$result2 = $db->query($sql);
 
-	$alert=($_POST["alert_traitspec"]?'1':'0');
+	$alert=(GETPOST("alert_traitspec", "alpha")?'1':'0');
 	$result3=addAlert($db, 'alert_traitspec', $socid, $alert);
 	if ($result3) {
 		$error++; $mesg=$result3;
 	}
 
-	$alert=($_POST["alert_traitintol"]?'1':'0');
+	$alert=(GETPOST("alert_traitintol", "alpha")?'1':'0');
 	$result4=addAlert($db, 'alert_traitintol', $socid, $alert);
 	if ($result4) {
 		$error++; $mesg=$result4;
@@ -193,7 +191,7 @@ if ($socid > 0) {
 		$doleditor=new DolEditor('note_traitspec', $object->note_traitspec, 0, $height, 'dolibarr_notes', 'In', false, false, isModEnabled("fckeditor") && getDolGlobalInt('FCKEDITOR_ENABLE_SOCIETE'), 8, '90%');
 		$doleditor->Create();
 	} else {
-		print nl2br($object->note_traitspec);
+		print nl2br(dol_escape_htmltag($object->note_traitspec));
 	}
 	print "</td></tr>";
 
@@ -213,7 +211,7 @@ if ($socid > 0) {
 	}
 	else
 	{
-		print nl2br($object->note_traitclass);
+		print nl2br(dol_escape_htmltag($object->note_traitclass));
 	}
 	print "</td></tr>";
 	*/
@@ -231,7 +229,7 @@ if ($socid > 0) {
 		$doleditor=new DolEditor('note_traitintol', $object->note_traitintol, 0, $height, 'dolibarr_notes', 'In', false, false, isModEnabled("fckeditor") && getDolGlobalInt('FCKEDITOR_ENABLE_SOCIETE'), 8, '90%');
 		$doleditor->Create();
 	} else {
-		print nl2br($object->note_traitintol);
+		print nl2br(dol_escape_htmltag($object->note_traitintol));
 	}
 	print "</td></tr>";
 

@@ -59,6 +59,8 @@ $socid = GETPOST('socid', 'int');
 if ($user->socid) $socid=$user->socid;
 $result = restrictedArea($user, 'societe', $socid, '&societe');
 
+if (!$user->hasRight('cabinetmed', 'read')) accessforbidden();
+
 $object = new Patient($db);
 if ($socid > 0) $object->fetch($socid);
 
@@ -72,12 +74,12 @@ $reshook=$hookmanager->executeHooks('doActions', $parameters, $object, $action);
 if ($reshook < 0) setEventMessages($hookmanager->error, $hookmanager->errors, 'errors');
 
 if (empty($reshook)) {
-	if ($action == 'add' && ! GETPOST('cancel', 'alpha')) {
+	if ($action == 'add' && ! GETPOST('cancel', 'alpha') && $socid > 0 && $user->hasRight('cabinetmed', 'write') && $user->hasRight('societe', 'creer')) {
 		$error=0;
 
 		$db->begin();
 
-		$result=$object->update_note(dol_html_entity_decode(dol_htmlcleanlastbr(GETPOST('note_private', 'none')?GETPOST('note_private', 'none'):GETPOST('note', 'none')), ENT_QUOTES), '_private');
+		$result=$object->update_note(dol_html_entity_decode(dol_htmlcleanlastbr(GETPOST('note_private', 'restricthtml')?GETPOST('note_private', 'restricthtml'):GETPOST('note', 'restricthtml')), ENT_QUOTES), '_private');
 		if ($result < 0) {
 			$error++;
 			$errors[]=$object->errors;
@@ -192,7 +194,7 @@ if ($socid > 0) {
 		$doleditor->Create(0, '.on( \'key\', function(e) { console.log("changed"); changed=true; }) ');  // Add on to detect changes with key pressed
 		print '<br>';
 	} else {
-		print dol_textishtml($note)?$note:dol_nl2br($note, 1, true);
+		print dolPrintHTML($note);
 	}
 	print "</td></tr>";
 

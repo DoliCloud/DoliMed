@@ -76,7 +76,7 @@ $pagenext = $page + 1;
 if (! $sortfield) $sortfield='nb';
 if (! $sortorder) $sortorder='DESC';
 
-if (!isModEnabled('cabinetmed')) {
+if (!isModEnabled('cabinetmed') || !$user->hasRight('cabinetmed', 'read')) {
 	accessforbidden();
 }
 

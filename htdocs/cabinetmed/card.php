@@ -108,6 +108,9 @@ $permissiondellink 	= $user->hasRight('societe', 'creer'); // Used by the includ
 $upload_dir 		= $conf->societe->multidir_output[isset($object->entity) ? $object->entity : 1];
 
 // Security check
+if ($user->socid > 0 && in_array($action, array('add', 'update', 'merge', 'confirm_merge', 'delete', 'confirm_delete'))) {
+	accessforbidden();
+}
 $result = restrictedArea($user, 'societe', $socid, '&societe', '', 'fk_soc', 'rowid', 0);
 
 
@@ -131,10 +134,15 @@ if (empty($reshook)) {
 		}
 	}
 
-	if ($action == 'confirm_merge' && $confirm == 'yes' && $user->hasRight('societe', 'creer')) {
+	if ($action == 'confirm_merge' && $confirm == 'yes' && $user->hasRight('societe', 'creer') && $user->hasRight('societe', 'supprimer')) {
 		$error = 0;
 		$soc_origin_id = GETPOST('soc_origin', 'int');
 		$soc_origin = new Societe($db);
+
+		// The origin thirdparty will be deleted, so user must also have access to it
+		if ($soc_origin_id > 0) {
+			restrictedArea($user, 'societe', $soc_origin_id, '&societe', '', 'fk_soc', 'rowid', 0);
+		}
 
 		if ($soc_origin_id <= 0) {
 			$langs->load('errors');

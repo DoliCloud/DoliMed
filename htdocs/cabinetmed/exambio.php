@@ -62,7 +62,7 @@ $mesgarray=array();
 
 // Load variable for pagination
 $limit = GETPOST('limit', 'int')?GETPOST('limit', 'int'):$conf->liste_limit;
-$sortfield = GETPOST("sortfield", 'alpha');
+$sortfield = GETPOST("sortfield", 'aZ09comma');
 $sortorder = GETPOST('sortorder', 'aZ09comma');
 $page = GETPOSTISSET('pageplusone') ? (GETPOST('pageplusone') - 1) : GETPOST("page", 'int');
 if (empty($page) || $page == -1 || GETPOST('button_search', 'alpha') || GETPOST('button_removefilter', 'alpha') || (empty($toselect) && $massaction === '0')) { $page = 0; }     // If $page is not defined, or '' or -1 or if we click on clear filters or if we select empty mass action
@@ -87,7 +87,19 @@ if (!$user->hasRight('cabinetmed', 'read')) {
 	accessforbidden();
 }
 
-$usercanupdate = $user->hasRight('societe', 'write');
+$usercanupdate = $user->hasRight('cabinetmed', 'write');
+
+// Security check on the exam: it must belong to the patient and the patient must be accessible by user
+if ($id > 0) {
+	$result = $exambio->fetch($id);
+	if ($result <= 0 || ($socid > 0 && $exambio->fk_soc != $socid)) {
+		accessforbidden();
+	}
+	$result = restrictedArea($user, 'societe', $exambio->fk_soc);
+}
+if (in_array($action, array('add', 'update', 'confirm_delete')) && (!$user->hasRight('cabinetmed', 'write') || !($socid > 0))) {
+	accessforbidden();
+}
 $usercandelete = $user->hasRight('societe', 'supprimer');
 
 
@@ -121,7 +133,7 @@ if (empty($reshook)) {
 		if (! GETPOST('cancel', 'alpha')) {
 			$error=0;
 
-			$dateexam=dol_mktime(0, 0, 0, $_POST["exammonth"], $_POST["examday"], $_POST["examyear"]);
+			$dateexam=dol_mktime(0, 0, 0, GETPOSTINT("exammonth"), GETPOSTINT("examday"), GETPOSTINT("examyear"));
 
 			if ($action == 'update') {
 				$result=$exambio->fetch($id);
@@ -131,24 +143,24 @@ if (empty($reshook)) {
 				}
 			}
 
-			$exambio->fk_soc=$_POST["socid"];
+			$exambio->fk_soc=$socid;
 			$exambio->dateexam=$dateexam;
-			$exambio->resultat=trim($_POST["resultat"]);
-			$exambio->conclusion=trim($_POST["conclusion"]);
-			$exambio->comment=trim($_POST["comment"]);
-			$exambio->suivipr_ad=trim($_POST["suivipr_ad"]);
-			$exambio->suivipr_ag=trim($_POST["suivipr_ag"]);
-			$exambio->suivipr_vs=trim($_POST["suivipr_vs"]);
-			$exambio->suivipr_eva=trim($_POST["suivipr_eva"]);
-			$exambio->suivipr_err=trim($_POST["suivipr_err"]);
-			$exambio->suivipr_das28=trim($_POST["suivipr_das28"]);
-			$exambio->suivisa_fat=trim($_POST["suivisa_fat"]);
-			$exambio->suivisa_dax=trim($_POST["suivisa_dax"]);
-			$exambio->suivisa_dpe=trim($_POST["suivisa_dpe"]);
-			$exambio->suivisa_dpa=trim($_POST["suivisa_dpa"]);
-			$exambio->suivisa_rno=trim($_POST["suivisa_rno"]);
-			$exambio->suivisa_dma=trim($_POST["suivisa_dma"]);
-			$exambio->suivisa_basdai=trim($_POST["suivisa_basdai"]);
+			$exambio->resultat=trim(GETPOST("resultat", 'restricthtml'));
+			$exambio->conclusion=trim(GETPOST("conclusion", 'restricthtml'));
+			$exambio->comment=trim(GETPOST("comment", 'restricthtml'));
+			$exambio->suivipr_ad=trim(GETPOST("suivipr_ad", 'alpha'));
+			$exambio->suivipr_ag=trim(GETPOST("suivipr_ag", 'alpha'));
+			$exambio->suivipr_vs=trim(GETPOST("suivipr_vs", 'alpha'));
+			$exambio->suivipr_eva=trim(GETPOST("suivipr_eva", 'alpha'));
+			$exambio->suivipr_err=trim(GETPOST("suivipr_err", 'alpha'));
+			$exambio->suivipr_das28=trim(GETPOST("suivipr_das28", 'alpha'));
+			$exambio->suivisa_fat=trim(GETPOST("suivisa_fat", 'alpha'));
+			$exambio->suivisa_dax=trim(GETPOST("suivisa_dax", 'alpha'));
+			$exambio->suivisa_dpe=trim(GETPOST("suivisa_dpe", 'alpha'));
+			$exambio->suivisa_dpa=trim(GETPOST("suivisa_dpa", 'alpha'));
+			$exambio->suivisa_rno=trim(GETPOST("suivisa_rno", 'alpha'));
+			$exambio->suivisa_dma=trim(GETPOST("suivisa_dma", 'alpha'));
+			$exambio->suivisa_basdai=trim(GETPOST("suivisa_basdai", 'alpha'));
 
 			if (empty($dateexam)) {
 				$error++;
@@ -454,7 +466,7 @@ if ($socid > 0) {
 		print '<tr><td valign="top" width="160">';
 		print $langs->trans("Result").':<br>';
 		print '<textarea class="flat" name="resultat" id="resultat" cols="60" rows="'.ROWS_9.'">';
-		print $exambio->resultat;
+		print dol_htmlentities($exambio->resultat);
 		print '</textarea>';
 		print '</td>';
 		print '</tr>';
@@ -465,14 +477,14 @@ if ($socid > 0) {
 
 		print $langs->trans("Conclusion").':<br>';
 		print '<textarea class="flat" name="conclusion" id="conclusion" cols="60" rows="'.ROWS_4.'">';
-		print $exambio->conclusion;
+		print dol_htmlentities($exambio->conclusion);
 		print '</textarea>';
 
 		print '<br>';
 
 		print $langs->trans("Comment").':<br>';
 		print '<textarea class="flat" name="comment" id="comment" cols="60" rows="'.ROWS_4.'">';
-		print $exambio->comment;
+		print dol_htmlentities($exambio->comment);
 		print '</textarea>';
 
 		//print '</td></tr>';
@@ -619,7 +631,7 @@ if ($action == '' || $action == 'delete') {
 	$sql.= " t.suivisa_basdai";
 	$sql.= " FROM ".MAIN_DB_PREFIX."cabinetmed_exambio as t";
 	$sql.= " WHERE t.fk_soc = ".$socid;
-	$sql.= " ORDER BY ".$sortfield." ".$sortorder.", t.rowid DESC";
+	$sql.= $db->order($sortfield.",t.rowid", $sortorder.",DESC");
 
 	$resql=$db->query($sql);
 	if ($resql) {

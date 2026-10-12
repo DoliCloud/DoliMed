@@ -165,22 +165,41 @@ function cabinetmed_completesubstitutionarray(&$substitutionarray, $langs, $obje
 	}
 
 	// Consultation + Exams
+	// The consultation and exams must belong to the patient of the document, to avoid disclosure of data of another patient
+	$patientid = 0;
+	if (is_object($object)) {
+		if (in_array($object->element, array('societe', 'thirdparty'))) {
+			$patientid = (int) $object->id;
+		} elseif (!empty($object->socid)) {
+			$patientid = (int) $object->socid;
+		} elseif (!empty($object->fk_soc)) {
+			$patientid = (int) $object->fk_soc;
+		}
+	}
 	$isconsult = 0;
-	if (GETPOST('idconsult') > 0) {
+	$isbio = 0;
+	$isother = 0;
+	if (GETPOSTINT('idconsult') > 0 && $patientid > 0) {
 		$outcome=new CabinetmedCons($db);
-		$result1=$outcome->fetch(GETPOST('idconsult', 'int'));
-		$result1extra=$outcome->fetch_optionals();
-		$isconsult = 1;
+		$result1=$outcome->fetch(GETPOSTINT('idconsult'));
+		if ($result1 > 0 && $outcome->fk_soc == $patientid) {
+			$result1extra=$outcome->fetch_optionals();
+			$isconsult = 1;
+		}
 	}
-	if (GETPOST('idbio') > 0) {
+	if (GETPOSTINT('idbio') > 0 && $patientid > 0) {
 		$exambio=new CabinetmedExamBio($db);
-		$result2=$exambio->fetch(GETPOST('idbio', 'int'));
-		$isbio=1;
+		$result2=$exambio->fetch(GETPOSTINT('idbio'));
+		if ($result2 > 0 && $exambio->fk_soc == $patientid) {
+			$isbio=1;
+		}
 	}
-	if (GETPOST('idradio') > 0) {
+	if (GETPOSTINT('idradio') > 0 && $patientid > 0) {
 		$examother=new CabinetmedExamOther($db);
-		$result3=$examother->fetch(GETPOST('idradio', 'int'));
-		$isother=1;
+		$result3=$examother->fetch(GETPOSTINT('idradio'));
+		if ($result3 > 0 && $examother->fk_soc == $patientid) {
+			$isother=1;
+		}
 	}
 
 	if ($isother || $isbio) $substitutionarray['examshows']=$langs->transnoentitiesnoconv("ExamsShow");

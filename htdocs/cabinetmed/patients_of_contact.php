@@ -89,19 +89,6 @@ $now=dol_now();
  * Actions
 */
 
-// Delete consultation
-if (GETPOST("action") == 'confirm_delete' && GETPOST("confirm") == 'yes' && $user->hasRight('societe', 'supprimer')) {
-	$consult->fetch($id);
-	$result = $consult->delete($user);
-	if ($result >= 0) {
-		header("Location: ".$_SERVER["PHP_SELF"].'?socid='.$socid);
-		exit;
-	} else {
-		$langs->load("errors");
-		$mesg=$langs->trans($consult->error);
-		$action='';
-	}
-}
 
 
 /*
@@ -197,11 +184,15 @@ $sql.= " tc.code, tc.libelle as label_type";
 $sql.= " FROM ".MAIN_DB_PREFIX."societe as s LEFT JOIN ".MAIN_DB_PREFIX."societe_extrafields as se on se.fk_object = s.rowid,";
 $sql.= " ".MAIN_DB_PREFIX."element_contact as ec,";
 $sql.= " ".MAIN_DB_PREFIX."c_type_contact as tc";
-$sql.= " WHERE ec.fk_socpeople = ".$id;
+$sql.= " WHERE ec.fk_socpeople = ".((int) $id);
+$sql.= " AND s.entity IN (".getEntity('societe').")";
+if (!$user->hasRight('societe', 'client', 'voir')) {
+	$sql.= " AND EXISTS (SELECT sc.fk_soc FROM ".MAIN_DB_PREFIX."societe_commerciaux as sc WHERE sc.fk_soc = s.rowid AND sc.fk_user = ".((int) $user->id).")";
+}
 $sql.= " AND ec.element_id = s.rowid";
 $sql.= " AND ec.fk_c_type_contact = tc.rowid";
 $sql.= " AND tc.element = 'societe'";
-$sql.= " ORDER BY ".$sortfield." ".$sortorder.", s.rowid DESC";
+$sql.= $db->order($sortfield.",s.rowid", $sortorder.",DESC");
 
 //print $sql;
 $resql=$db->query($sql);

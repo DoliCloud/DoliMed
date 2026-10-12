@@ -62,7 +62,7 @@ $mode=GETPOST("mode")?GETPOST("mode"):'customer';
 $codageccam=GETPOST('codageccam');
 $typevisit=GETPOST('typevisit');
 
-if (!isModEnabled('cabinetmed')) {
+if (!isModEnabled('cabinetmed') || !$user->hasRight('cabinetmed', 'read')) {
 	accessforbidden();
 }
 

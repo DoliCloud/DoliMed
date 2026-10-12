@@ -55,23 +55,23 @@ $result = restrictedArea($user, 'societe', $socid, '');
 
 if (!$user->hasRight('cabinetmed', 'read')) accessforbidden();
 
-$sortfield = isset($_GET["sortfield"])?$_GET["sortfield"]:$_POST["sortfield"];
-$sortorder = isset($_GET["sortorder"])?$_GET["sortorder"]:$_POST["sortorder"];
-$page=isset($_GET["page"])?$_GET["page"]:$_POST["page"];
-if ($page == -1) { $page = 0 ; }
+$sortfield = GETPOST("sortfield", 'aZ09comma');
+$sortorder = GETPOST("sortorder", 'aZ09comma');
+$page = GETPOSTINT("page");
+if ($page < 0) { $page = 0 ; }
 $offset = $conf->liste_limit * $page;
 $pageprev = $page - 1;
 $pagenext = $page + 1;
 if (! $sortorder) $sortorder="DESC";
 if (! $sortfield) $sortfield="c.datecons,c.rowid";
 
-$search_nom=isset($_GET["search_nom"])?$_GET["search_nom"]:$_POST["search_nom"];
-$search_ville=isset($_GET["search_ville"])?$_GET["search_ville"]:$_POST["search_ville"];
-$search_code=isset($_GET["search_code"])?$_GET["search_code"]:$_POST["search_code"];
+$search_nom = GETPOST("search_nom", 'alphanohtml');
+$search_ville = GETPOST("search_ville", 'alphanohtml');
+$search_code = GETPOST("search_code", 'alphanohtml');
 
 // Load sale and categ filters
-$search_sale = GETPOST("search_sale");
-$search_categ = GETPOST("search_categ");
+$search_sale = GETPOSTINT("search_sale");
+$search_categ = GETPOSTINT("search_categ");
 
 
 /*
@@ -123,11 +123,11 @@ if ($search_ville) $sql.= " AND s.town like '%".$db->escape(strtolower($search_v
 if ($search_code)  $sql.= " AND s.code_client like '%".$db->escape(strtolower($search_code))."%'";
 // Insert sale filter
 if ($search_sale) {
-	$sql .= " AND sc.fk_user = ".$search_sale;
+	$sql .= " AND sc.fk_user = ".((int) $search_sale);
 }
 // Insert categ filter
 if ($search_categ) {
-	$sql .= " AND cs.fk_categorie = ".$search_categ;
+	$sql .= " AND cs.fk_categorie = ".((int) $search_categ);
 }
 if ($socname) {
 	$sql.= " AND s.nom like '%".$db->escape(strtolower($socname))."%'";
@@ -149,7 +149,7 @@ $result = $db->query($sql);
 if ($result) {
 	$num = $db->num_rows($result);
 
-	$param = "&amp;search_nom=".$search_nom."&amp;search_code=".$search_code."&amp;search_ville=".$search_ville;
+	$param = "&amp;search_nom=".urlencode($search_nom)."&amp;search_code=".urlencode($search_code)."&amp;search_ville=".urlencode($search_ville);
 	if ($search_categ != '') $param.='&amp;search_categ='.$search_categ;
 	if ($search_sale != '') $param.='&amp;search_sale='.$search_sale;
 
@@ -203,9 +203,9 @@ if ($result) {
 
 	print '<tr class="liste_titre">';
 	print '<td class="liste_titre">';
-	print '<input type="text" class="flat" size="8" name="search_nom" value="'.$search_nom.'">';
+	print '<input type="text" class="flat" size="8" name="search_nom" value="'.dol_escape_htmltag($search_nom).'">';
 	print '</td><td class="liste_titre">';
-	print '<input type="text" class="flat" size="8" name="search_code" value="'.$search_code.'">';
+	print '<input type="text" class="flat" size="8" name="search_code" value="'.dol_escape_htmltag($search_code).'">';
 	print '</td>';
 	print '<td class="liste_titre">';
 	print '&nbsp;';

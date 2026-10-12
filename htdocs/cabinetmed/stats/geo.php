@@ -52,7 +52,7 @@ if ($user->socid > 0) {
 	$socid = $user->socid;
 }
 
-if (!isModEnabled('cabinetmed')) {
+if (!isModEnabled('cabinetmed') || !$user->hasRight('cabinetmed', 'read')) {
 	accessforbidden();
 }
 
