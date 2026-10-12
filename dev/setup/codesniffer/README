@@ -15,6 +15,6 @@ To fix with phpcbf:
 > phpcbf --standard=dev/setup/codesniffer/ruleset.xml --extensions=php --parallel=8 .
 
 
-Note with Eclipse: You must setup the PTI plugin of Eclipse into PHPCodeSniffer menu with:
+Note with Eclipse: You must set up the PTI plugin of Eclipse in the PHPCodeSniffer menu with:
 * tab value to 4
 * path of code sniffer standard to dev/codesniffer

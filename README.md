@@ -2,16 +2,16 @@
 
 ## Features
 
-Turn your Dolibarr ERP CRM into a medical office manager (dictionaries of pathology, patient management, history, directory of referents doctors, following consultations, examinations/radios, generation of consultation documents, statistics of your consultations, monitoring money input, check receipts, etc ...)
+Turn your Dolibarr ERP CRM into a medical office manager (dictionaries of pathology, patient management, history, directory of referring doctors, follow-up consultations, examinations/X-rays, generation of consultation documents, statistics of your consultations, monitoring money input, check receipts, etc ...)
 
 
-More information <a href="https://wiki.dolibarr.org/index.php/Module_Medical_Center" target="_new">this wiki page</a>.
+More information on <a href="https://wiki.dolibarr.org/index.php/Module_Medical_Center" target="_new">this wiki page</a>.
 
 
 
 ## Screenshots
 
-Fiew samples of screenshosts...
+Few samples of screenshots...
  
 ### List of consultations
 

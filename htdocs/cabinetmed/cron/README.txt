@@ -3,7 +3,7 @@
 # database dump and automatic backup of dolibarr directories into another disk.
 # We assume that database is called 'dolimed'
 
-# This is example of command to connect to mysql through socket (MAC OS MAMP)
+# This is an example of command to connect to mysql through socket (MAC OS MAMP)
 mysql -u root -p'mypassword' -h localhost -P 8889 --socket=/Applications/MAMP/tmp/mysql/mysql.sock
 # Same using TCP
 mysql -u root -p'mypassword' -h localhost -P 8889 -h 127.0.0.1
@@ -11,7 +11,7 @@ mysql -u root -p'mypassword' -h localhost -P 8889 -h 127.0.0.1
 # This is a command to synchronize to another directory
 rsync -a --delete --stats /Applications/MAMP/dolibarr* /Volumes/SCM34_OSX/Backups_Dolimed >/Applications/MAMP/dolibarr_logs/backup_dolimed.log 2>&1
 
-# This is example of command to synchronize with other servers
+# This is an example of command to synchronize with other servers
 # rsync -a --stats --exclude conf.php --exclude htdocs/index.html backup_user@apollon1.nltechno.com:/home/rhumato/wwwroot/dolibarr/* /Applications/MAMP/dolibarr 
 # rsync -a --stats /Applications/MAMP/dolibarr backup_user@apollon1.nltechno.com:/home/rhumato/backup_scm
 # rsync -a --stats /Applications/MAMP/dolibarrmodsf backup_user@apollon1.nltechno.com:/home/rhumato/backup_scm

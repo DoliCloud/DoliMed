@@ -3,7 +3,7 @@
 ## 24
 
 - FIX compatibility with v24 and PHP 8.5. Need Dolibarr v20 min.
-- NEW The document tab use the last look and feel of Dolibarr.
+- NEW The document tab uses the last look and feel of Dolibarr.
 
 ## 17.2
 
@@ -60,17 +60,17 @@
 - NEW Add option DIAGNOSTIC_IS_NOT_MANDATORY.
 - NEW Add tags for extrafields in ODT templates {patient_options_xxx} and {outcome_options_xxx}.
 - FIX phone and zip.
-- FIX Do not loose name of banque if the bank was renamed with a different case.
+- FIX Do not lose name of bank if the bank was renamed with a different case.
 
 ## 7.0.1
 
-- NEW Compatibilty with Dolibarr v8.
+- NEW Compatibility with Dolibarr v8.
 - Fix disable of old contact tab on patient only.
 - Fix group by error in stats page of contacts.
 - Enable document template when enabling module
 - Fix attachment not sent when sending email from documents tab.
 - Fix edit of sale representative (following doctor) on patient.
-- Dolivarr v6+ required.
+- Dolibarr v6+ required.
 - Support extrafields on list of patients.
  
 ## 7.0.0
@@ -79,7 +79,7 @@
 - NEW Can filter on contact on list of patients
 - NEW Better menu organization
 - NEW Add substitution key outcome_id and patient_id
-- External users (care giveers contacts) can have an external account to see patient and consultations by adding option MAIN_DISABLE_RESTRICTION_ON_THIRDPARTY_FOR_EXTERNAL to 1
+- External users (caregivers contacts) can have an external account to see patient and consultations by adding option MAIN_DISABLE_RESTRICTION_ON_THIRDPARTY_FOR_EXTERNAL to 1
 
 ## 5.0.1
 
@@ -104,22 +104,22 @@
 - Work with 3.7
 - Add filter on sale representative
 - Can send email to patient from patient card.
-- Fields Profession, birthdate, weight, heigth are not extrafields. 
+- Fields Profession, birthdate, weight, height are not extrafields. 
 - Added nb of notes into badge of tabs.
 
 ## 3.6.0
-- Add position into databse for combo list.
+- Add position into database for combo list.
 - CABINETMED_DELAY_TO_LOCK_RECORD option is not visible into setup.
 
 ## 3.5.2
 - Add hidden option CABINETMED_DELAY_TO_LOCK_RECORD to lock edition of all 
   consultations older than CABINETMED_DELAY_TO_LOCK_RECORD days.
 - Add a button to create a consultation from an event linked to a patient.
-- Fix: Pb with textarea on small screen. 
+- Fix: Problem with textarea on small screen. 
 - Compatible with Dolibarr 3.5.* and 3.6.*
 
 ## 3.5.1
 - Minor fixes into translation.
 - Prepare compatibility with Dolibarr 3.6.
-- Added filter on birthdate into list of patient.
-- Fix: Bug when you close an account. Closed account must appears into list.
+- Added filter on birthdate into list of patients.
+- Fix: Bug when you close an account. Closed accounts must appear in the list.
