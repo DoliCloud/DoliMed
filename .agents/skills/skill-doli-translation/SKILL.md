@@ -1,6 +1,6 @@
 ---
 name: skill-doli-translation
-description: Use when synchronizing translations with Transifex (running the scripts dev/translation/txpull.sh and dev/translation/txpush.sh). Explains the Transifex workflow: en_US is the only editable source, all other locales are pulled from Transifex.
+description: "Use when asking question on translation or synchronizing translations with Transifex (running the scripts dev/translation/txpull.sh and dev/translation/txpush.sh). Explains the Transifex workflow: en_US is the only editable source, all other locales are pulled from Transifex."
 license: MIT
 user-invocable: true
 allowed-tools:
@@ -33,6 +33,7 @@ allowed-tools:
     - `type = MOZILLAPROPERTIES` (the .lang format `key=value`)
 - The scripts refuse to run if `.tx/` does not exist at the repository root (they assume the root as working directory).
 - Transifex client installation / update (see `dev/translation/README`): `sudo pip install --upgrade transifex-client`
+- The direct transifex URL to make translations is: https://app.transifex.com/`organizationname`/`projectname`/translate/
 
 ## dev/translation/txpush.sh — push local files to Transifex
 
