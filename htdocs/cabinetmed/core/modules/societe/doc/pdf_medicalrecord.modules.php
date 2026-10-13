@@ -441,10 +441,10 @@ class pdf_medicalrecord extends ModeleThirdPartyDoc
 			}
 			$pdf->SetFont('', 'B', $default_font_size);
 			$pdf->SetXY($this->marge_gauche + 2, $tab_top);
-			$pdf->Cell(50, 4, $outputlangs->transnoentities($label).':', 0, 0, 'L');
+			$pdf->Cell(70, 4, $outputlangs->transnoentities($label).':', 0, 0, 'L');
 			$pdf->SetFont('', '', $default_font_size);
-			$pdf->SetXY($this->marge_gauche + 54, $tab_top);
-			$pdf->MultiCell($this->page_largeur - $this->marge_droite - $this->marge_gauche - 54, 4, $outputlangs->convToOutputCharset($value), 0, 'L');
+			$pdf->SetXY($this->marge_gauche + 74, $tab_top);
+			$pdf->MultiCell($this->page_largeur - $this->marge_droite - $this->marge_gauche - 74, 4, $outputlangs->convToOutputCharset($value), 0, 'L');
 			$tab_top = $pdf->GetY() + 1;
 		};
 
@@ -562,10 +562,10 @@ class pdf_medicalrecord extends ModeleThirdPartyDoc
 			}
 			$pdf->SetFont('', 'B', $default_font_size);
 			$pdf->SetXY($this->marge_gauche + 2, $tab_top);
-			$pdf->Cell(50, 4, $outputlangs->transnoentities($label).':', 0, 0, 'L');
+			$pdf->Cell(70, 4, $outputlangs->transnoentities($label).':', 0, 0, 'L');
 			$pdf->SetFont('', '', $default_font_size);
-			$pdf->SetXY($this->marge_gauche + 54, $tab_top);
-			$pdf->MultiCell($this->page_largeur - $this->marge_droite - $this->marge_gauche - 54, 4, $outputlangs->convToOutputCharset($value), 0, 'L');
+			$pdf->SetXY($this->marge_gauche + 74, $tab_top);
+			$pdf->MultiCell($this->page_largeur - $this->marge_droite - $this->marge_gauche - 74, 4, $outputlangs->convToOutputCharset($value), 0, 'L');
 			$tab_top = $pdf->GetY() + 1;
 		}
 
@@ -714,10 +714,10 @@ class pdf_medicalrecord extends ModeleThirdPartyDoc
 
 				$pdf->SetFont('', 'B', $default_font_size);
 				$pdf->SetXY($this->marge_gauche + 2, $tab_top);
-				$pdf->Cell(50, 4, $outputlangs->transnoentities($label).':', 0, 0, 'L');
+				$pdf->Cell(70, 4, $outputlangs->transnoentities($label).':', 0, 0, 'L');
 				$pdf->SetFont('', '', $default_font_size);
-				$pdf->SetXY($this->marge_gauche + 54, $tab_top);
-				$pdf->MultiCell($this->page_largeur - $this->marge_droite - $this->marge_gauche - 54, 4, $outputlangs->convToOutputCharset($value), 0, 'L');
+				$pdf->SetXY($this->marge_gauche + 74, $tab_top);
+				$pdf->MultiCell($this->page_largeur - $this->marge_droite - $this->marge_gauche - 74, 4, $outputlangs->convToOutputCharset($value), 0, 'L');
 				$tab_top = $pdf->GetY() + 1;
 			}
 
