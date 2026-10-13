@@ -206,7 +206,6 @@ CABINETMED_SHOW_MEDICAMENTS_LIST=Show Medicine list field
 Medicine=Medecine
 Medicines=Medicines
 PatientCategories=Patient tags/categories
-DossierMedical=Medical record
 PatientInformations=Patient information
 DateGeneration=Generation date
 ErrorLoadingConsultations=Error loading consultations

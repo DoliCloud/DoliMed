@@ -243,11 +243,11 @@ class pdf_medicalrecord extends ModeleThirdPartyDoc
 			$pagenb = 0;
 			$pdf->SetDrawColor(128, 128, 128);
 
-			$pdf->SetTitle($outputlangs->convToOutputCharset($object->name)." - ".$outputlangs->transnoentities("DossierMedical"));
-			$pdf->SetSubject($outputlangs->transnoentities("DossierMedical"));
+			$pdf->SetTitle($outputlangs->convToOutputCharset($object->name)." - ".$outputlangs->transnoentities("MedicalRecord"));
+			$pdf->SetSubject($outputlangs->transnoentities("MedicalRecord"));
 			$pdf->SetCreator("Dolibarr ".DOL_VERSION);
 			$pdf->SetAuthor($outputlangs->convToOutputCharset($user->getAnonymisableFullName($outputlangs)));
-			$pdf->SetKeyWords($outputlangs->convToOutputCharset($object->name)." ".$outputlangs->transnoentities("DossierMedical"));
+			$pdf->SetKeyWords($outputlangs->convToOutputCharset($object->name)." ".$outputlangs->transnoentities("MedicalRecord"));
 			if (getDolGlobalString('MAIN_DISABLE_PDF_COMPRESSION')) {
 				$pdf->SetCompression(false);
 			}
@@ -374,7 +374,7 @@ class pdf_medicalrecord extends ModeleThirdPartyDoc
 		// Document title on the right
 		$pdf->SetFont('', 'B', $default_font_size + 4);
 		$pdf->SetXY($this->page_largeur - $this->marge_droite - 80, 5);
-		$pdf->MultiCell(80, 4, $outputlangs->transnoentities("DossierMedical"), 0, 'R');
+		$pdf->MultiCell(80, 4, $outputlangs->transnoentities("MedicalRecord"), 0, 'R');
 		$pdf->SetFont('', '', $default_font_size);
 		$pdf->SetXY($this->page_largeur - $this->marge_droite - 80, $pdf->GetY() + 1);
 		$pdf->MultiCell(80, 3, $outputlangs->transnoentities("DateGeneration").': '.dol_print_date(dol_now(), 'day', 'auto', $outputlangs), 0, 'R');
@@ -407,7 +407,7 @@ class pdf_medicalrecord extends ModeleThirdPartyDoc
 	{
 		$pdf->SetY(-15);
 		$pdf->SetFont('', 'I', 8);
-		$pdf->MultiCell(0, 3, $outputlangs->transnoentities("DossierMedical").' - '.$outputlangs->convToOutputCharset($object->name).' - '.$outputlangs->transnoentities("Page").' '.$pdf->getAliasNumPage().'/'.$pdf->getAliasNbPages(), 0, 'C');
+		$pdf->MultiCell(0, 3, $outputlangs->transnoentities("MedicalRecord").' - '.$outputlangs->convToOutputCharset($object->name).' - '.$outputlangs->transnoentities("Page").' '.$pdf->getAliasNumPage().'/'.$pdf->getAliasNbPages(), 0, 'C');
 	}
 
 
