@@ -27,7 +27,6 @@ PatientIndividual=Patient aussi médecin
 PatientToCreateContactWithSameName=Créera automatiquement la fiche correspondant en plus de la fiche patient
 ReportByCustomers=Rapport par patient
 ParentPatient=Fils ou fille de
-PostOrFunction=Spécialité
 WrongCustomerCode=Code patient incorrect
 CustomerCodeModel=Modèle de code patient
 CompanyList=Liste des patients
