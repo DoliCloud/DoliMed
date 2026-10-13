@@ -451,9 +451,16 @@ class pdf_medicalrecord extends ModeleThirdPartyDoc
 		// Name
 		$writeLine("PatientName", $object->name);
 
-		// Gender
+		// Gender (typent code: use translation key if it exists, like typent_array() does, otherwise use dictionary label)
 		if (!empty($object->typent_code)) {
-			$writeLine("Gender", $outputlangs->transnoentities($object->typent_code));
+			$gender = $outputlangs->transnoentities($object->typent_code);
+			if ($gender == $object->typent_code) {
+				// No translation key found, fall back on label of the dictionary table
+				$gender = dol_getIdFromCode($this->db, $object->typent_code, 'c_typent', 'code', 'libelle');
+			}
+			if ($gender !== '' && $gender !== '-' && $gender !== null) {
+				$writeLine("Gender", $gender);
+			}
 		}
 
 		// Birthdate + Age

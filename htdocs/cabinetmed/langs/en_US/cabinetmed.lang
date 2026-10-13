@@ -215,3 +215,6 @@ Mobile=Mobile
 Profession=Profession
 MedicalRecord=Medical Record
 YearsUnit=years
+TE_HOMME=Man
+TE_FEMME=Woman
+TE_OTHER=Other
