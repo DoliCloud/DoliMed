@@ -428,7 +428,8 @@ if (empty($reshook)) {
 									//var_dump($key.' '.$banque[$key].' '.$soc->name.' '.$object->banque);exit;
 									$bankaccount=new Account($db);
 									$result=$bankaccount->fetch($banque[$key]);
-									if ($result <= 0 || !in_array($bankaccount->entity, explode(',', getEntity('bank_account')))) {
+									// fetch() returns 0 if bank account is not visible into current entity
+									if ($result <= 0) {
 										accessforbidden('Bank account not allowed');
 									}
 									if ($key == 'CHQ') {
@@ -503,7 +504,8 @@ if (empty($reshook)) {
 								if (isModEnabled("bank") && isset($banque[$key]) && $banque[$key] > 0) {
 									$bankaccount=new Account($db);
 									$result=$bankaccount->fetch($banque[$key]);
-									if ($result <= 0 || !in_array($bankaccount->entity, explode(',', getEntity('bank_account')))) {
+									// fetch() returns 0 if bank account is not visible into current entity
+									if ($result <= 0) {
 										accessforbidden('Bank account not allowed');
 									}
 									if ($key == 'CHQ') $lineid=$bankaccount->addline($object->datecons, $key, $langs->trans("CustomerInvoicePayment"), $amount[$key], $object->num_cheque, '', $user, $soc->name, $object->banque);

@@ -79,7 +79,7 @@ print '<form method="post" action="'.DOL_URL_ROOT.'/societe/list.php">';
 print '<input type="hidden" name="token" value="'.newToken().'">';
 print '<table class="noborder centpercent">';
 print '<tr class="liste_titre">';
-print '<th colspan="2" class="center"><input type="submit" class="button small" value="'.$langs->trans("Search").'"></th></tr>';
+print '<th colspan="2" class="center"><input type="submit" class="button smallpaddingimp" value="'.$langs->trans("Search").'"></th></tr>';
 print '<tr class="oddeven nohover"><td>';
 print $langs->trans("Name").':</td><td class="oddeven nohover"><input class="flat" type="text" size="14" name="search_nom_only"></td>';
 print '</tr>';
