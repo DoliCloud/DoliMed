@@ -105,6 +105,11 @@ if ($id > 0) {
 	if ($result <= 0 || ($socid > 0 && $object->fk_soc != $socid)) {
 		accessforbidden();
 	}
+	// Load the bank lines of payments, so deposit account is known when page is rendered
+	$result = $object->fetchBankId();
+	if ($result <= 0) {
+		dol_print_error($db, $object->error);
+	}
 	$result = restrictedArea($user, 'societe', $object->fk_soc, '');
 }
 if (in_array($action, array('add', 'update', 'confirm_delete')) && !$user->hasRight('cabinetmed', 'write')) {
@@ -571,14 +576,6 @@ if (! ($socid > 0)) {
 } else {
 	$result=$soc->fetch($socid);
 	if ($result < 0) { dol_print_error('', $soc->error); }
-
-	if ($id && ! ($object->id > 0)) {
-		$result=$object->fetch($id);
-		if ($result < 0) dol_print_error($db, $object->error);
-
-		$result=$object->fetchBankId();
-		if ($result < 0) dol_print_error($db, $object->error);
-	}
 
 	/*
 	 * Affichage onglets

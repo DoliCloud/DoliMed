@@ -486,8 +486,8 @@ class CabinetmedCons extends CommonObject
 
 		// Search if there is a bank line
 		$bid=0;
-		$sql.= "SELECT b.rowid FROM ".MAIN_DB_PREFIX."bank_url as bu, ".MAIN_DB_PREFIX."bank as b";
-		$sql.= " WHERE bu.url_id = ".$this->id." AND type = 'consultation'";
+		$sql = "SELECT b.rowid FROM ".MAIN_DB_PREFIX."bank_url as bu, ".MAIN_DB_PREFIX."bank as b";
+		$sql.= " WHERE bu.url_id = ".((int) $this->id)." AND type = 'consultation'";
 		$sql.= " AND bu.fk_bank = b.rowid";
 		dol_syslog($sql);
 		$resql=$this->db->query($sql);
