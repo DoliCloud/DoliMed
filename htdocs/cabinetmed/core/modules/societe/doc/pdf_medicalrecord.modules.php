@@ -273,6 +273,12 @@ class pdf_medicalrecord extends ModeleThirdPartyDoc
 			// Section 3: Consultations
 			$tab_top = $this->sectionConsultations($pdf, $object, $outputlangs, $tab_top, $default_font_size, $heightforfooter);
 
+			// Section 4: Biology events
+			$tab_top = $this->sectionExams($pdf, $object, $outputlangs, $tab_top, $default_font_size, $heightforfooter, 'exambio');
+
+			// Section 5: Explorations
+			$tab_top = $this->sectionExams($pdf, $object, $outputlangs, $tab_top, $default_font_size, $heightforfooter, 'examaut');
+
 			// Page footer
 			$this->pageFoot($pdf, $object, $outputlangs);
 			if (method_exists($pdf, 'AliasNbPages')) {
@@ -740,5 +746,131 @@ class pdf_medicalrecord extends ModeleThirdPartyDoc
 		$db->free($resql);
 
 		return $tab_top;
+	}
+
+
+	/**
+	 * Show the list of biology events (exambio) or explorations (examaut) of the patient
+	 *
+	 * @param  TCPDF    $pdf              Object PDF
+	 * @param  Societe  $object           Patient object
+	 * @param  Translate $outputlangs     Object lang for output
+	 * @param  float    $tab_top          Current Y position
+	 * @param  int      $default_font_size Default font size
+	 * @param  float    $heightforfooter  Height reserved for footer
+	 * @param  string   $type             'exambio' (biology) or 'examaut' (explorations)
+	 * @return float                       New Y position after the section
+	 */
+	protected function sectionExams($pdf, $object, $outputlangs, $tab_top, $default_font_size, $heightforfooter, $type)
+	{
+		global $db;
+
+		if ($type == 'exambio') {
+			$title = "ResultExamBio";
+			$sqlFields = "t.resultat, t.conclusion, t.comment";
+			$fieldsDef = array('resultat' => 'Result', 'conclusion' => 'Conclusion', 'comment' => 'Commentaires');
+		} else {
+			$type = 'examaut';
+			$title = "ResultExamAutre";
+			$sqlFields = "t.examprinc, t.examsec, t.concprinc, t.concsec";
+			$fieldsDef = array('examprinc' => 'ExamenPrescrit', 'examsec' => 'ExamenPrescrit', 'concprinc' => 'ExamenResultat', 'concsec' => 'ExamenResultat');
+		}
+
+		// Leave room for the section title and at least one line
+		if ($tab_top > $this->page_hauteur - $heightforfooter - 30) {
+			$tab_top = $this->addContinuationPage($pdf, $object, $outputlangs, $default_font_size);
+		}
+
+		// Space before the section title
+		$tab_top += 6;
+
+		$pdf->SetFont('', 'B', $default_font_size + 2);
+		$pdf->SetXY($this->marge_gauche, $tab_top);
+		$pdf->MultiCell(0, 5, $outputlangs->transnoentities($title), 0, 'L');
+		$tab_top = $pdf->GetY() + 1;
+
+		$pdf->SetDrawColor(192, 192, 192);
+		$pdf->line($this->marge_gauche, $tab_top, $this->page_largeur - $this->marge_droite, $tab_top);
+		$tab_top += 3;
+
+		$sqlExams = "SELECT t.rowid, t.dateexam, ".$sqlFields;
+		$sqlExams .= " FROM ".MAIN_DB_PREFIX."cabinetmed_".$type." as t";
+		$sqlExams .= " WHERE t.fk_soc = ".((int) $object->id);
+		$sqlExams .= " ORDER BY t.dateexam DESC, t.rowid DESC";
+
+		$resql = $db->query($sqlExams);
+		if (!$resql) {
+			dol_syslog(get_class($this)."::sectionExams SQL error: ".$db->lasterror(), LOG_ERR);
+			$pdf->SetFont('', 'I', $default_font_size - 1);
+			$pdf->SetXY($this->marge_gauche + 2, $tab_top);
+			$pdf->MultiCell(0, 4, $outputlangs->transnoentities("Error"), 0, 'L');
+			return $pdf->GetY() + 3;
+		}
+
+		if ($db->num_rows($resql) == 0) {
+			$pdf->SetFont('', 'I', $default_font_size - 1);
+			$pdf->SetXY($this->marge_gauche + 2, $tab_top);
+			$pdf->MultiCell(0, 4, $outputlangs->transnoentities("None"), 0, 'L');
+			return $pdf->GetY() + 3;
+		}
+
+		$valueWidth = $this->page_largeur - $this->marge_droite - $this->marge_gauche - 74;
+		while ($obj = $db->fetch_object($resql)) {
+			if ($tab_top > $this->page_hauteur - $heightforfooter - 30) {
+				$tab_top = $this->addContinuationPage($pdf, $object, $outputlangs, $default_font_size);
+			}
+
+			$pdf->SetFillColor(230, 230, 230);
+			$pdf->SetFont('', 'B', $default_font_size + 1);
+			$pdf->SetXY($this->marge_gauche, $tab_top);
+			$pdf->MultiCell(0, 5, dol_print_date($db->jdate($obj->dateexam), 'day', 'auto', $outputlangs), 0, 'L', true);
+			$tab_top = $pdf->GetY() + 1;
+
+			foreach ($fieldsDef as $field => $label) {
+				if (empty($obj->$field)) {
+					continue;
+				}
+				if ($tab_top > $this->page_hauteur - $heightforfooter - 15) {
+					$tab_top = $this->addContinuationPage($pdf, $object, $outputlangs, $default_font_size);
+				}
+				$pdf->SetFont('', 'B', $default_font_size);
+				$pdf->SetXY($this->marge_gauche + 2, $tab_top);
+				$pdf->Cell(70, 4, $outputlangs->transnoentities($label).':', 0, 0, 'L');
+				$pdf->SetFont('', '', $default_font_size);
+				$pdf->SetXY($this->marge_gauche + 74, $tab_top);
+				$pdf->MultiCell($valueWidth, 4, $outputlangs->convToOutputCharset($obj->$field), 0, 'L');
+				$tab_top = $pdf->GetY() + 1;
+			}
+
+			$tab_top += 1;
+			$pdf->SetDrawColor(192, 192, 192);
+			$pdf->line($this->marge_gauche, $tab_top, $this->page_largeur - $this->marge_droite, $tab_top);
+			$tab_top += 4;
+		}
+
+		$db->free($resql);
+
+		return $tab_top;
+	}
+
+	/**
+	 * Close the current page and open a new one with the header
+	 *
+	 * @param  TCPDF    $pdf              Object PDF
+	 * @param  Societe  $object           Patient object
+	 * @param  Translate $outputlangs     Object lang for output
+	 * @param  int      $default_font_size Default font size
+	 * @return float                       Y position where content can start
+	 */
+	protected function addContinuationPage($pdf, $object, $outputlangs, $default_font_size)
+	{
+		$this->pageFoot($pdf, $object, $outputlangs, 1);
+		$pdf->AddPage();
+		$separator_y = $this->pageHead($pdf, $object, 0, $outputlangs);
+		$pdf->SetFont('', '', $default_font_size - 1);
+		$pdf->MultiCell(0, 3, '');
+		$pdf->SetTextColor(0, 0, 0);
+
+		return $separator_y + 8;
 	}
 }
