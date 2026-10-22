@@ -104,7 +104,7 @@ $subtotal_ttc = 0;
 $encaiss_chq = $encaiss_esp = $encaiss_tie = $encaiss_car = array();
 $sql  = "SELECT f.datecons, f.fk_user, SUM(f.montant_cheque) as montant_cheque, SUM(f.montant_espece) as montant_espece, SUM(f.montant_tiers) as montant_tiers, SUM(f.montant_carte) as montant_carte";
 $sql.= " FROM ".MAIN_DB_PREFIX."cabinetmed_cons as f";
-$sql.= " WHERE 1 = 1";
+$sql.= " WHERE f.entity IN (".getEntity('cabinetmed_cons').")";
 if ($search_sale > 0) $sql.= " AND f.fk_user = ".((int) $search_sale);
 if ($socid > 0 && !getDolGlobalString("MAIN_DISABLE_RESTRICTION_ON_THIRDPARTY_FOR_EXTERNAL")) $sql.= " AND f.fk_soc = ".((int) $socid);
 $sql.= " GROUP BY f.datecons, f.fk_user";

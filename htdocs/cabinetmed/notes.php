@@ -191,7 +191,8 @@ if ($socid > 0) {
 	print '<br><input type="checkbox" id="alert_note" name="alert_note"'.((isset($_POST['alert_note'])?GETPOST('alert_note'):$object->alert_note)?' checked="checked"':'').'"> <label for="alert_note">'.$langs->trans("Alert").'</label>';
 	print '</td>';
 	print '<td class="tdtop">';
-	$note = GETPOSTISSET('note') ? GETPOST('note') : ($object->note_private?$object->note_private:$object->note);
+	// Reuse the posted value only on error. After a successful save, show the cleaned value stored in the object.
+	$note = (GETPOSTISSET('note') && !empty($error)) ? GETPOST('note', 'restricthtml') : ($object->note_private?$object->note_private:$object->note);
 	if ($user->hasRight('societe', 'creer')) {
 		print '<input type="hidden" name="action" value="add" />';
 		print '<input type="hidden" name="socid" value="'.$object->id.'" />';

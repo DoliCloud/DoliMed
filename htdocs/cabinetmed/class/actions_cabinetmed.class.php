@@ -193,7 +193,7 @@ class ActionsCabinetmed
 			// Check duplicate
 			if (! $ret) {
 				$sql = 'SELECT s.rowid, s.nom, s.entity, s.ape FROM '.MAIN_DB_PREFIX.'societe as s';
-				$sql.= ' WHERE s.entity = '.((int) $conf->entity);
+				$sql.= ' WHERE s.entity IN ('.getEntity('societe').')';
 				$sql.= " AND s.nom = '".trim($this->db->escape($nametocheck))."'";
 				if (! empty($date)) {
 					$sql.= " AND (s.ape IS NULL OR s.ape = '' OR s.ape = '".trim($this->db->escape($date))."')";

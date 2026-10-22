@@ -42,6 +42,8 @@ class CabinetmedCons extends CommonObject
 
 	public $table_element = 'cabinetmed_cons';	//!< Name of table without prefix where object is stored
 
+	public $ismultientitymanaged = 1;	// 0=No test on entity, 1=Test with field entity, 2=Test with link by societe
+
 	public $id;
 	public $ref;
 
@@ -659,7 +661,7 @@ class CabinetmedCons extends CommonObject
 
 		$sql = "SELECT count(c.rowid) as nb";
 		$sql.= " FROM ".MAIN_DB_PREFIX."cabinetmed_cons as c";
-		$sql.= " WHERE c.entity = ".((int) $conf->entity);
+		$sql.= " WHERE c.entity IN (".getEntity('cabinetmed_cons').")";
 
 		$resql = $this->db->query($sql);
 		if ($resql) {
@@ -671,7 +673,7 @@ class CabinetmedCons extends CommonObject
 
 			$sql2 = "SELECT count(rowid) as nb";
 			$sql2 .= " FROM ".MAIN_DB_PREFIX."societe as s WHERE s.canvas = 'patient@cabinetmed'";
-			$sql2 .= " AND s.entity = ".((int) $conf->entity);
+			$sql2 .= " AND s.entity IN (".getEntity('societe').")";
 
 			$resql2 = $this->db->query($sql2);
 			if ($resql2) {
