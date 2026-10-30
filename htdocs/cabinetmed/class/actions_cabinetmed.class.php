@@ -727,4 +727,215 @@ class ActionsCabinetmed
 
 		return 0;
 	}
+
+
+	/**
+	 * Declare the methods of the REST API of the module (class/api_cabinetmed.class.php) that the AI assistant
+	 * may use as tools (hook 'addMcpApiBridgeEnrichments' of the 'aimcp' context).
+	 *
+	 * @param   array           $parameters     Hook metadatas (db, user, conf)
+	 * @param   ToolApiBridge   $object         The AI API bridge
+	 * @param   string          $action         Current action
+	 * @param   HookManager     $hookmanager    Hook manager propagated to allow calling another hook
+	 * @return  int                             0 on success
+	 */
+	public function addMcpApiBridgeEnrichments($parameters, &$object, &$action, $hookmanager)
+	{
+		global $langs;
+
+		// Translation keys of the write confirmations are read from the module language file
+		$langs->load("cabinetmed@cabinetmed");
+
+		$readright = array('cabinetmed', 'read');
+		$writeright = array('cabinetmed', 'write');
+		$patientparam = "Patient: rowid, or the name of the patient.";
+		$listparams = array(
+			'socid' => "Rowid of the patient to restrict to. Omit (0) for all patients.",
+		);
+		$datesdoc = " Dates are returned as Unix timestamps.";
+
+		$methods = array(
+			'listPatients' => array(
+				'suffix' => 'patients_list',
+				'right' => $readright,
+				'default_properties' => 'id,name,code_client,zip,town,phone,phone_mobile,email',
+				'description' => "List / search the patients of the medical office. Search by name with sqlfilters \"(t.nom:like:'%smith%')\". The rowid ('id') of a patient is needed by the other cabinetmed tools.".$datesdoc,
+			),
+			'getPatient' => array(
+				'suffix' => 'patient_get',
+				'right' => $readright,
+				'description' => "Get one patient of the medical office with its contact details and its antecedents.",
+				'params' => array('id' => "Rowid of the patient."),
+			),
+			'createPatient' => array(
+				'suffix' => 'patient_create',
+				'description' => "Create a patient in the medical office. Give at least its name. The user confirms before anything is written.",
+				'write' => array(
+					'preview' => 'CabinetmedAIPreviewCreatePatient',
+					'required' => array('name'),
+					'args' => array('name'),
+					'right' => $writeright,
+					'read_right' => array('societe', 'creer'),
+				),
+				'params' => array(
+					'name' => "Full name of the patient (last name and first name).",
+					'address' => "Street address.",
+					'zip' => "Postal code.",
+					'town' => "Town.",
+					'phone' => "Phone.",
+					'phone_mobile' => "Mobile phone.",
+					'email' => "Email.",
+					'tva_intra' => "Social security number.",
+					'idprof1' => "Height.",
+					'idprof2' => "Weight.",
+					'note_private' => "Private note.",
+				),
+			),
+			'getAntecedents' => array(
+				'suffix' => 'antecedents_get',
+				'right' => $readright,
+				'description' => "Get the antecedents of a patient: medical (note_antemed), general surgery (note_antechirgen), orthopedic surgery (note_antechirortho), rheumatology (note_anterhum), allergies (note_traitallergie), current treatments (note_traitclass), intolerances (note_traitintol), specific treatments (note_traitspec), each with its alert flag (alert_xxx).",
+				'params' => array('id' => "Rowid of the patient."),
+			),
+			'updateAntecedents' => array(
+				'suffix' => 'antecedents_set',
+				'description' => "Create or modify the antecedents of a patient. Give 'id' (rowid of the patient) and ONLY the fields to change, with their full new text (read them first with the antecedents_get tool to append to an existing text). The user confirms before anything is written.",
+				'write' => array(
+					'preview' => 'CabinetmedAIPreviewSetAntecedents',
+					'required' => array('id'),
+					'args' => array('id'),
+					'args_objects' => array('id' => 'Societe'),
+					'right' => $writeright,
+					'read_right' => array('societe', 'creer'),
+				),
+				'params' => array(
+					'id' => "Rowid of the patient.",
+					'note_antemed' => "Medical antecedents.",
+					'note_antechirgen' => "General surgery antecedents.",
+					'note_antechirortho' => "Orthopedic surgery antecedents.",
+					'note_anterhum' => "Rheumatology antecedents.",
+					'note_traitallergie' => "Allergies.",
+					'note_traitclass' => "Current treatments.",
+					'note_traitintol' => "Intolerances.",
+					'note_traitspec' => "Specific treatments.",
+					'alert_antemed' => "1 to show an alert on the medical antecedents, 0 for none.",
+					'alert_traitallergie' => "1 to show an alert on the allergies, 0 for none.",
+					'alert_traitintol' => "1 to show an alert on the intolerances, 0 for none.",
+				),
+			),
+			'listConsultations' => array(
+				'suffix' => 'consultations_list',
+				'right' => $readright,
+				'default_properties' => 'id,socid,patient_name,datecons,typevisit,motifconsprinc,diaglesprinc,traitementprescrit',
+				'description' => "List the consultations, of one patient (socid) or of all patients, latest first.".$datesdoc,
+				'params' => $listparams,
+			),
+			'getConsultation' => array(
+				'suffix' => 'consultation_get',
+				'right' => $readright,
+				'description' => "Get one consultation: reasons, diagnoses, history of the disease, clinical examination, prescribed examinations and treatments.".$datesdoc,
+				'params' => array('id' => "Rowid of the consultation."),
+			),
+			'createConsultation' => array(
+				'suffix' => 'consultation_create',
+				'description' => "Record a consultation for a patient. Give socid (rowid or name of the patient) and datecons. The user confirms before anything is written.",
+				'write' => array(
+					'preview' => 'CabinetmedAIPreviewAddConsultation',
+					'required' => array('socid', 'datecons'),
+					'thirdparty' => 'socid',
+					'args' => array('socid', 'datecons'),
+					'right' => $writeright,
+				),
+				'params' => array(
+					'socid' => $patientparam,
+					'datecons' => "Date of the consultation, YYYY-MM-DD.",
+					'typevisit' => "Type of visit: CS (consultation, default), CS2 (second consultation), CCAM (technical act).",
+					'motifconsprinc' => "Main reason for the consultation.",
+					'motifconssec' => "Other reasons for the consultation.",
+					'diaglesprinc' => "Main diagnosis.",
+					'diaglessec' => "Other diagnoses.",
+					'hdm' => "History of the disease.",
+					'examenclinique' => "Clinical examination.",
+					'examenprescrit' => "Prescribed examinations.",
+					'traitementprescrit' => "Prescribed treatment.",
+					'comment' => "Comment.",
+				),
+			),
+			'listBiologies' => array(
+				'suffix' => 'biologies_list',
+				'right' => $readright,
+				'default_properties' => 'id,socid,patient_name,dateexam,resultat,conclusion',
+				'description' => "List the biological examinations (biologies), of one patient (socid) or of all patients, latest first.".$datesdoc,
+				'params' => $listparams,
+			),
+			'getBiology' => array(
+				'suffix' => 'biology_get',
+				'right' => $readright,
+				'description' => "Get one biological examination (biology) with its results and conclusion.".$datesdoc,
+				'params' => array('id' => "Rowid of the biology."),
+			),
+			'createBiology' => array(
+				'suffix' => 'biology_create',
+				'description' => "Record a biological examination (biology) for a patient. Give socid (rowid or name of the patient) and dateexam. The user confirms before anything is written.",
+				'write' => array(
+					'preview' => 'CabinetmedAIPreviewAddBiology',
+					'required' => array('socid', 'dateexam'),
+					'thirdparty' => 'socid',
+					'args' => array('socid', 'dateexam'),
+					'right' => $writeright,
+				),
+				'params' => array(
+					'socid' => $patientparam,
+					'dateexam' => "Date of the examination, YYYY-MM-DD.",
+					'resultat' => "Results.",
+					'conclusion' => "Conclusion.",
+					'comment' => "Comment.",
+				),
+			),
+			'listExplorations' => array(
+				'suffix' => 'exams_list',
+				'right' => $readright,
+				'default_properties' => 'id,socid,patient_name,dateexam,examprinc,concprinc',
+				'description' => "List the examinations (explorations: radiology, scanner, MRI, ECG, other non biological exams), of one patient (socid) or of all patients, latest first.".$datesdoc,
+				'params' => $listparams,
+			),
+			'getExploration' => array(
+				'suffix' => 'exam_get',
+				'right' => $readright,
+				'description' => "Get one examination (exploration: radiology or other non biological exam) with its conclusions.".$datesdoc,
+				'params' => array('id' => "Rowid of the examination."),
+			),
+			'createExploration' => array(
+				'suffix' => 'exam_create',
+				'description' => "Record an examination (exploration: radiology or other non biological exam) for a patient. Give socid (rowid or name of the patient) and dateexam. The user confirms before anything is written.",
+				'write' => array(
+					'preview' => 'CabinetmedAIPreviewAddExploration',
+					'required' => array('socid', 'dateexam'),
+					'thirdparty' => 'socid',
+					'args' => array('socid', 'dateexam'),
+					'right' => $writeright,
+				),
+				'params' => array(
+					'socid' => $patientparam,
+					'dateexam' => "Date of the examination, YYYY-MM-DD.",
+					'examprinc' => "Main examination.",
+					'examsec' => "Other examinations.",
+					'concprinc' => "Main conclusion.",
+					'concsec' => "Other conclusions.",
+				),
+			),
+		);
+
+		// Keyed by module, so the bridge reads one list of endpoint entries per module
+		$this->results = array(
+			'cabinetmed' => array(
+				'cabinetmed' => array(
+					'label' => 'medical office (patients, antecedents, consultations, biologies, examinations)',
+					'methods' => $methods,
+				),
+			),
+		);
+
+		return 0;
+	}
 }

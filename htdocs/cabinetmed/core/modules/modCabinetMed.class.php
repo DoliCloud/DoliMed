@@ -116,7 +116,8 @@ class modCabinetMed extends DolibarrModules
 				'consumptionthirdparty',
 				'documentcabinetmed',
 				'searchform',
-				'demo'),
+				'demo',
+				'aimcp'),
 			'moduleforexternal' => 1
 		);
 
