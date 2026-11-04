@@ -27,7 +27,6 @@ PatientIndividual=Pazientea ere medikua
 PatientToCreateContactWithSameName=Sortu automatikoki kontaktu-txartel bat pazientearen txartelarekin
 ReportByCustomers=Pazientearen txostena
 ParentPatient=Seme edo alaba
-PostOrFunction=Espezialitatea
 WrongCustomerCode=Pazientearen kode okerra
 CustomerCodeModel=Pazientearen kodearen txantiloia
 CompanyList=Pazienteen zerrenda

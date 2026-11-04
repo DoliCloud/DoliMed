@@ -1,6 +1,6 @@
-# Dolibarr language file - fr_FR - other
+# Dolibarr language file - en_US - other
 CHARSET=UTF-8
-Notify_NOTIFY_VAL_FAC=Patvirtinimo konsultacijos pacientas
-ProfIdShortDesc=<b>Id prof. %s</b> yra informacija, kuri priklauso nuo paciento mokėjimo.TXPROTECT-39, TXPROTECT-39 moka ><b>%sTXPROTECT-9a4b739f17f8-TXilEND kodas <</span', du class='notranslate'><b>%s</b>.
-NewCompanyToDolibarr=Pacientas %s ajouté
-CustomerPaymentDoneInDolibarr=Mokėjimo pacientas %s
+Notify_NOTIFY_VAL_FAC=Validation of patient consultation
+ProfIdShortDesc=<b>Id prof. %s</b> is an information that depends on the patient country.<br>For example, for the country <b>%s</b>, it is the code <b>%s</b>.
+NewCompanyToDolibarr=Patient %s added
+CustomerPaymentDoneInDolibarr=Payment patient %s

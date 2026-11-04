@@ -27,7 +27,6 @@ PatientIndividual=بیمار همچنین پزشک
 PatientToCreateContactWithSameName=ایجاد خودکار کارت تماس با کارت بیمار
 ReportByCustomers=گزارش توسط بیمار
 ParentPatient=پسر یا دخترِ
-PostOrFunction=تخصص
 WrongCustomerCode=کد بیمار نادرست است
 CustomerCodeModel=الگوی کد بیمار
 CompanyList=فهرست بیماران

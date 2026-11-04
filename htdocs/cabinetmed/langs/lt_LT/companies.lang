@@ -27,7 +27,6 @@ PatientIndividual=Pacientas taip pat gydytojas
 PatientToCreateContactWithSameName=Automatiškai sukurti kontaktinę kortelę su paciento kortele
 ReportByCustomers=Paciento ataskaita
 ParentPatient=Sūnus ar dukra
-PostOrFunction=Specialybė
 WrongCustomerCode=Neteisingas paciento kodas
 CustomerCodeModel=Paciento kodo šablonas
 CompanyList=Pacientų sąrašas

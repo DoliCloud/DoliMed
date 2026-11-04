@@ -27,7 +27,6 @@ PatientIndividual=Patienten är även läkare
 PatientToCreateContactWithSameName=Skapa automatiskt ett kontaktkort med patientkort
 ReportByCustomers=Rapport från patienten
 ParentPatient=Son eller dotter till
-PostOrFunction=Specialitet
 WrongCustomerCode=Felaktig patientkod
 CustomerCodeModel=Mall för patientkod
 CompanyList=Lista över patienter

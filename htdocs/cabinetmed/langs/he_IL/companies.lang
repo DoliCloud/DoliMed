@@ -27,7 +27,6 @@ PatientIndividual=מטופל גם רופא
 PatientToCreateContactWithSameName=צור כרטיס איש קשר באופן אוטומטי עם כרטיס מטופל
 ReportByCustomers=דוח על ידי המטופל
 ParentPatient=בן או בת של
-PostOrFunction=הִתמַחוּת
 WrongCustomerCode=קוד מטופל שגוי
 CustomerCodeModel=תבנית של קוד מטופל
 CompanyList=רשימת חולים

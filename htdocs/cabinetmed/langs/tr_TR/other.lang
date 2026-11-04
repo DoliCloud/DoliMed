@@ -1,6 +1,6 @@
-# Dolibarr language file - fr_FR - other
+# Dolibarr language file - en_US - other
 CHARSET=UTF-8
-Notify_NOTIFY_VAL_FAC=Doğrulama konsültasyonu hastası
-ProfIdShortDesc=<b>Kimlik prof. %s</b>, hastaya ödeyeceğiniz ödemeye bağlı bir bilgidir.<br>Par Örneğin, <b>%s</b> için ödeme yapın, <span kodunu kullanın class='notranslate'><b>%s</b>.
-NewCompanyToDolibarr=Hasta %s eklendi
-CustomerPaymentDoneInDolibarr=Hasta %s
+Notify_NOTIFY_VAL_FAC=Validation of patient consultation
+ProfIdShortDesc=<b>Id prof. %s</b> is an information that depends on the patient country.<br>For example, for the country <b>%s</b>, it is the code <b>%s</b>.
+NewCompanyToDolibarr=Patient %s added
+CustomerPaymentDoneInDolibarr=Payment patient %s

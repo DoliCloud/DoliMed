@@ -6,7 +6,7 @@ UseSearchToSelectCompany= ರೋಗಿಯನ್ನು ಆಯ್ಕೆ ಮಾಡ�
 ActivityStateToSelectCompany= ಅನುಸರಿಸಲ್ಪಡುವ ಅಥವಾ ಅನುಸರಿಸದ ರೋಗಿಗಳನ್ನು ಮರೆಮಾಡಲು/ತೋರಿಸಲು ಫಿಲ್ಟರಿಂಗ್ ಆಯ್ಕೆಯನ್ನು ಸೇರಿಸಿ.
 ViewFullDateActions= ರೋಗಿಯ ಕಾರ್ಡ್‌ನಲ್ಲಿ ಕ್ರಿಯೆಗಳ ಪೂರ್ಣ ದಿನಾಂಕವನ್ನು ವೀಕ್ಷಿಸಿ
 ModuleFamilyCrm=ಗ್ರಾಹಕ ಅಥವಾ ರೋಗಿ ಸಂಬಂಧ ನಿರ್ವಹಣೆ (CRM)
-GenericMaskCodes2=<b>{cccc}TXPROTECT-9f7f7f7f7 ಕ್ಲೈಂಟ್/ರೋಗಿಯ ಕೋಡ್ n ಅಕ್ಷರಗಳಲ್ಲಿ><br><b>{cccc000}</b> n ಅಕ್ಷರಗಳಲ್ಲಿ ಕ್ಲೈಂಟ್/ರೋಗಿ ಕೋಡ್ ಗ್ರಾಹಕರಿಗಾಗಿ ಮೀಸಲಾದ ಕೌಂಟರ್ ನಂತರ ಬರುತ್ತದೆ. ಗ್ರಾಹಕರಿಗೆ ಮೀಸಲಾಗಿರುವ ಈ ಕೌಂಟರ್ ಅನ್ನು ಜಾಗತಿಕ ಕೌಂಟರ್‌ನ ಅದೇ ಸಮಯದಲ್ಲಿ ಮರುಹೊಂದಿಸಲಾಗುತ್ತದೆ.<br><b>{tttt}</b> n ಅಕ್ಷರಗಳ ಮೇಲೆ ಮೂರನೇ ವ್ಯಕ್ತಿಯ ಪ್ರಕಾರದ ಕೋಡ್ (ನಿಘಂಟು-ಮೂರನೇ ಪಕ್ಷದ ಪ್ರಕಾರಗಳನ್ನು ನೋಡಿ).<br>
+GenericMaskCodes2=<b>{cccc}</b> the client/patient code on n characters<br><b>{cccc000}</b> the client/patient code on n characters is followed by a counter dedicated for customer. This counter dedicated to customer is reset at same time than global counter.<br><b>{tttt}</b> The code of third party type on n characters (see dictionary-thirdparty types).<br>
 
 # Modules= undefined
 Module1Name= ಮೂರನೇ ವ್ಯಕ್ತಿಗಳು/ರೋಗಿಗಳು

@@ -27,7 +27,6 @@ PatientIndividual=রোগীও ডাক্তার
 PatientToCreateContactWithSameName=রোগীর কার্ড দিয়ে স্বয়ংক্রিয়ভাবে একটি যোগাযোগ কার্ড তৈরি করুন
 ReportByCustomers=রোগীর রিপোর্ট
 ParentPatient=পুত্র বা কন্যা
-PostOrFunction=বিশেষত্ব
 WrongCustomerCode=ভুল রোগীর কোড
 CustomerCodeModel=রোগীর কোডের টেমপ্লেট
 CompanyList=রোগীদের তালিকা

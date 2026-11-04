@@ -27,7 +27,6 @@ PatientIndividual=Pacient aj lekár
 PatientToCreateContactWithSameName=Automaticky vytvoriť kontaktnú kartu s kartou pacienta
 ReportByCustomers=Správa od pacienta
 ParentPatient=Syn alebo dcéra
-PostOrFunction=Špecialita
 WrongCustomerCode=Nesprávny kód pacienta
 CustomerCodeModel=Šablóna kódu pacienta
 CompanyList=Zoznam pacientov

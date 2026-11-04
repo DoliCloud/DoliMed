@@ -27,7 +27,6 @@ PatientIndividual=Hasta aynı zamanda doktor
 PatientToCreateContactWithSameName=Hasta kartıyla otomatik olarak bir kişi kartı oluşturun
 ReportByCustomers=Hasta bazında rapor
 ParentPatient=Oğlu veya kızı
-PostOrFunction=Uzmanlık
 WrongCustomerCode=Yanlış hasta kodu
 CustomerCodeModel=Hasta kodu şablonu
 CompanyList=Hasta listesi

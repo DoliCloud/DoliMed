@@ -6,7 +6,7 @@ UseSearchToSelectCompany= রোগী নির্বাচন করতে (�
 ActivityStateToSelectCompany= অনুসরণ করা হচ্ছে বা অনুসরণ করা হচ্ছে না এমন রোগীদের লুকানোর/দেখানোর জন্য একটি ফিল্টারিং বিকল্প যোগ করুন।
 ViewFullDateActions= রোগীর কার্ডে কর্মের সম্পূর্ণ তারিখ দেখুন
 ModuleFamilyCrm=গ্রাহক বা রোগীর সম্পর্ক ব্যবস্থাপনা (CRM)
-GenericMaskCodes2=<b>{cccc}TXPROTECT-9a4b739f17f17f8-এ ক্লায়েন্ট কোডএ ক্লায়েন্ট কোড/TXpati class='notranslate'><br><b>{cccc000} class='notranslate'></b> n অক্ষরের উপর ক্লায়েন্ট/রোগীর কোডের পরে গ্রাহকের জন্য নিবেদিত একটি কাউন্টার থাকে। গ্রাহকের জন্য নিবেদিত এই কাউন্টারটি গ্লোবাল কাউন্টারের সাথে একই সময়ে রিসেট করা হয়।<br><b>{tttt}</b> n অক্ষরের উপর তৃতীয় পক্ষের ধরণের কোড (অভিধান-তৃতীয় পক্ষের ধরণের কোড দেখুন)।<br>
+GenericMaskCodes2=<b>{cccc}</b> the client/patient code on n characters<br><b>{cccc000}</b> the client/patient code on n characters is followed by a counter dedicated for customer. This counter dedicated to customer is reset at same time than global counter.<br><b>{tttt}</b> The code of third party type on n characters (see dictionary-thirdparty types).<br>
 
 # Modules= undefined
 Module1Name= তৃতীয় পক্ষ/রোগী

@@ -1,12 +1,12 @@
 # Dolibarr language file - en_US - admin
-CHARSET=یوتی‌اف-۸
+CHARSET=UTF-8
 ExtraFieldsThirdParties=ویژگی‌های مکمل (شخص ثالث/بیمار)
 ExtraFieldsContacts=ویژگی‌های مکمل (مخاطبین)
 UseSearchToSelectCompany= برای انتخاب بیمار (به جای لیست ترکیبی) از فیلدی با قابلیت تکمیل خودکار استفاده کنید.
 ActivityStateToSelectCompany= یک گزینه فیلتر برای مخفی کردن/نمایش بیمارانی که دنبال می‌شوند یا نمی‌شوند اضافه کنید
 ViewFullDateActions= مشاهده تاریخ کامل اقدامات در کارت بیمار
 ModuleFamilyCrm=مدیریت ارتباط با مشتری یا بیمار (CRM)
-GenericMaskCodes2=<b>{cccc}TXPROTECT-9a4patients-9-TXPROTECT-9a4patient-89 روی n نویسه><br><b><br> class='notranslate'></b> کد کلاینت/بیمار روی n کاراکتر با یک شمارنده اختصاصی برای مشتری دنبال می‌شود. این شمارنده اختصاصی برای مشتری همزمان با شمارنده سراسری بازنشانی می‌شود.<br><b>{tttt}</b> کد نوع شخص ثالث روی n کاراکتر (به dictionary-thirdparty types مراجعه کنید).<br>
+GenericMaskCodes2=<b>{cccc}</b> the client/patient code on n characters<br><b>{cccc000}</b> the client/patient code on n characters is followed by a counter dedicated for customer. This counter dedicated to customer is reset at same time than global counter.<br><b>{tttt}</b> The code of third party type on n characters (see dictionary-thirdparty types).<br>
 
 # Modules= undefined
 Module1Name= اشخاص ثالث/بیماران

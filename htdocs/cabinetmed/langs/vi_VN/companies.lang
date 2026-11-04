@@ -27,7 +27,6 @@ PatientIndividual=Bệnh nhân cũng là bác sĩ
 PatientToCreateContactWithSameName=Tự động tạo thẻ liên lạc với thẻ bệnh nhân
 ReportByCustomers=Báo cáo của bệnh nhân
 ParentPatient=Con trai hoặc con gái của
-PostOrFunction=Chuyên ngành
 WrongCustomerCode=Mã bệnh nhân không đúng
 CustomerCodeModel=Mẫu mã bệnh nhân
 CompanyList=Danh sách bệnh nhân

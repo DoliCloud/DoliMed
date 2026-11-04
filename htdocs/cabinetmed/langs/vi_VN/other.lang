@@ -1,6 +1,6 @@
-# Dolibarr language file - fr_FR - other
+# Dolibarr language file - en_US - other
 CHARSET=UTF-8
 Notify_NOTIFY_VAL_FAC=Xác nhận tư vấn bệnh nhân
-ProfIdShortDesc=<b>Id prof. %s</b> là một thông tin đáng tin cậy mà bạn sẽ trả tiền cho bệnh nhân.<br>Ví dụ, hãy trình bày thanh toán <b>%s</b>, bằng cách sử dụng mã <span> class='notranslate'><b>%s</b>.
-NewCompanyToDolibarr=Bệnh nhân %s thường lệ
-CustomerPaymentDoneInDolibarr=Bệnh nhân thanh toán %s
+ProfIdShortDesc=<b>Id prof. %s</b> là thông tin phụ thuộc vào quốc gia của bệnh nhân.<br>Ví dụ, đối với quốc gia <b>%s</b>, mã là <b>%s</b>.
+NewCompanyToDolibarr=Bệnh nhân %s đã được thêm vào
+CustomerPaymentDoneInDolibarr=Thanh toán cho bệnh nhân %s
