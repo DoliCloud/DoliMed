@@ -167,7 +167,7 @@ $sql.= ' WHERE s.entity IN ('.getEntity('societe', 1).')';
 $sql.= " AND s.canvas='patient@cabinetmed'";
 if (! $user->hasRight('societe', 'client', 'voir') && ! $socid) $sql.= " AND s.rowid = sc.fk_soc AND sc.fk_user = " .$user->id;
 if ($socid)	$sql.= " AND s.rowid = ".$socid;
-//if (! $user->rights->fournisseur->lire) $sql.=" AND (s.fournisseur <> 1 OR s.client <> 0)";
+//if (!$user->hasRight('fournisseur', 'lire')) $sql.=" AND (s.fournisseur <> 1 OR s.client <> 0)";
 $sql.= $db->order("s.tms", "DESC");
 $sql.= $db->plimit($max, 0);
 
@@ -251,7 +251,7 @@ if (! $user->hasRight('societe', 'client', 'voir') && ! $socid) $sql.= ", ".MAIN
 $sql.= ' WHERE c.fk_soc = s.rowid AND c.entity IN ('.getEntity('societe', 1).')';
 if (! $user->hasRight('societe', 'client', 'voir') && ! $socid) $sql.= " AND s.rowid = sc.fk_soc AND sc.fk_user = " .$user->id;
 if ($socid)	$sql.= " AND s.rowid = ".$socid;
-//if (! $user->rights->fournisseur->lire) $sql.=" AND (s.fournisseur <> 1 OR s.client <> 0)";
+//if (!$user->hasRight('fournisseur', 'lire')) $sql.=" AND (s.fournisseur <> 1 OR s.client <> 0)";
 $sql.= $db->order("c.tms", "DESC");
 $sql.= $db->plimit($max, 0);
 

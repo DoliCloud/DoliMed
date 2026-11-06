@@ -116,7 +116,7 @@ if ($mode) {
 		$sql.=" LEFT JOIN ".MAIN_DB_PREFIX."c_regions as r on c.fk_region = r.code_region";
 		$sql.=" LEFT JOIN ".MAIN_DB_PREFIX."c_country as p on d.country = p.rowid";
 		$sql.=" WHERE d.statut = 1";
-		//if (!$user->rights->societe->client->voir && ! $socid) $sql.= " AND s.rowid = sc.fk_soc AND sc.fk_user = " .$user->id;
+		//if (!$user->hasRight('societe', 'client', 'voir') && ! $socid) $sql.= " AND s.rowid = sc.fk_soc AND sc.fk_user = " .$user->id;
 		if ($socid && !getDolGlobalString('MAIN_DISABLE_RESTRICTION_ON_THIRDPARTY_FOR_EXTERNAL')) {
 			$sql.= " AND s.rowid = ".((int) $socid);
 		}
@@ -134,7 +134,7 @@ if ($mode) {
 		$sql.=" LEFT JOIN ".MAIN_DB_PREFIX.$countrytable." as p on s.fk_pays = p.rowid";
 		$sql.=" WHERE d.fk_soc = s.rowid";
 		$sql.=' AND s.entity IN ('.getEntity('societe', 1).')';
-		//if (!$user->rights->societe->client->voir && ! $socid) $sql.= " AND s.rowid = sc.fk_soc AND sc.fk_user = " .$user->id;
+		//if (!$user->hasRight('societe', 'client', 'voir') && ! $socid) $sql.= " AND s.rowid = sc.fk_soc AND sc.fk_user = " .$user->id;
 		if ($socid && !getDolGlobalString("MAIN_DISABLE_RESTRICTION_ON_THIRDPARTY_FOR_EXTERNAL")) $sql.= " AND s.rowid = ".((int) $socid);
 		$sql.=" GROUP BY p.label, p.code, s.town";
 		//print $sql;
