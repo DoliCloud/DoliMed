@@ -70,6 +70,7 @@ $ref= GETPOST('ref');
 $socid = GETPOST('socid', 'int');
 if ($user->socid) $socid=$user->socid;
 $result = restrictedArea($user, 'societe', $socid);
+if (!$user->hasRight('cabinetmed', 'read')) accessforbidden();
 
 $object = new Patient($db);
 

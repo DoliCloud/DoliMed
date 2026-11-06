@@ -50,6 +50,7 @@ $langs->load("suppliers");
 $socid = GETPOST('socid', 'int');
 if ($user->socid) $socid=$user->socid;
 $result = restrictedArea($user, 'societe', $socid, '');
+if (!$user->hasRight('cabinetmed', 'read')) accessforbidden();
 
 $search_all=trim(GETPOST('search_all', 'alphanohtml'));
 $search_nom=trim(GETPOST("search_nom"));
@@ -305,7 +306,7 @@ if ($resql) {
 		$moreforfilter.=' &nbsp; &nbsp; &nbsp; ';
 	}
 	// If the user can view prospects other than his'
-	if ($user->rights->societe->client->voir || $socid)
+	if ($user->hasRight('societe', 'client', 'voir') || $socid)
 	{
 		$moreforfilter.=$langs->trans('SalesRepresentatives'). ': ';
 		$moreforfilter.=$htmlother->select_salesrepresentatives($search_sale,'search_sale',$user, 0, 1, 'maxwidth300');
