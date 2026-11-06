@@ -378,7 +378,7 @@ $trackid = 'thi'.$object->id;
 if (!empty(GETPOST('urlfile'))) {
 	$fullpathfile = $upload_dir.'/'.GETPOST('urlfile', 'alpha');
 	if (dol_is_file($fullpathfile)) {
-		$original_last_main_doc = $object->last_main_doc ?? '';
+		$original_last_main_doc = (string) $object->last_main_doc;
 		$object->last_main_doc = dol_sanitizePathName(str_replace(DOL_DATA_ROOT.'/', '', $fullpathfile));
 		$file = $fullpathfile;
 	}
