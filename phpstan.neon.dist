@@ -144,6 +144,12 @@ parameters:
 		-
 			message: '#^Path in require_once\(\) ".*/core/(class/commonhookactions\.class|class/commonnumrefgenerator\.class|modules/security/captcha/modules_captcha)\.php" is not a file or it does not exist\.$#'
 
+		# Restler of Dolibarr < 21 documents the HTTP status code of RestException as a string. It is
+		# an int, as fixed by the core in 21.0.0 (#31262).
+		-
+			identifier: argument.type
+			message: '#^Parameter \#1 \$httpStatusCode of class Luracast\\Restler\\RestException constructor expects string, int given\.$#'
+
 		# The export of cabinetmed falls back to the excel2007new model on Dolibarr < 13 only, a
 		# branch no supported core reaches. The message holds the path of the core checkout, so a
 		# baseline can not carry it.
