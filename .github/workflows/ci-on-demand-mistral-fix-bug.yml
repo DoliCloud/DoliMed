@@ -1,11 +1,16 @@
 ---
 # Take the oldest open issue of type/label "Bug", send it to the Mistral API
 # and open a pull request with the proposed fix.
+#
 # Requires the repository secret MISTRAL_API_KEY and the setting
 # "Settings > Actions > General > Allow GitHub Actions to create and approve pull requests".
-# Optional secret AI_PUSH_TOKEN: a token of a maintainer (classic PAT with "public_repo"). When defined, the branch
-# is pushed and the PR created with it, so the CI of the PR starts at once. Without it, they are done with
+#
+# Optional secret AI_PUSH_TOKEN: a token of a maintainer (classic PAT with "public_repo" or a fine-grained
+# token created from https://github.com/settings/personal-access-tokens/new with owner of the repo and permissions: Content:Read/Write, Pull requests:Read/Write, Issues:Read/Write).
+# When defined, the branch is pushed and the PR created with it, so the CI of the PR starts at once. Without it, they are done with
 # GITHUB_TOKEN and the CI of the PR waits for the approval of a maintainer ("Approve and run" button).
+#
+
 name: "Mistral - Fix oldest open bug"
 
 on:
