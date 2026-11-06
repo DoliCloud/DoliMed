@@ -374,7 +374,25 @@ $defaulttopic = 'SendConsultationRef';
 $diroutput = $conf->societe->multidir_output[empty($object->entity) ? $conf->entity : $object->entity];
 $trackid = 'thi'.$object->id;
 
+// Fix for Dolibarr 21.0.1+: Preserve the file to attach when sending email from document
+if (!empty(GETPOST('urlfile'))) {
+	$fullpathfile = $upload_dir.'/'.GETPOST('urlfile', 'alpha');
+	if (dol_is_file($fullpathfile)) {
+		$original_last_main_doc = (string) $object->last_main_doc;
+		$object->last_main_doc = dol_sanitizePathName(str_replace(DOL_DATA_ROOT.'/', '', $fullpathfile));
+		$file = $fullpathfile;
+	}
+}
+
 include DOL_DOCUMENT_ROOT.'/core/tpl/card_presend.tpl.php';
+
+// Restore original value
+if (!empty(GETPOST('urlfile'))) {
+	$fullpathfile = $upload_dir.'/'.GETPOST('urlfile', 'alpha');
+	if (dol_is_file($fullpathfile)) {
+		$object->last_main_doc = $original_last_main_doc ?? '';
+	}
+}
 
 // End of page
 llxFooter();
