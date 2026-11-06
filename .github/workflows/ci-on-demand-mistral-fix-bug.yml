@@ -23,7 +23,7 @@ on:
       model:
         description: "Mistral model"
         required: false
-        default: "mistral-large-latest"
+        default: "devstral-medium-latest"
         type: string
       base_branch:
         description: "Base branch of the PR (empty = default branch)"
@@ -43,10 +43,13 @@ concurrency:
   cancel-in-progress: false
 
 env:
+  PROJECT_DESCRIPTION: "DoliMed, an external module for the Dolibarr ERP/CRM to manage medical offices (patients, consultations, prescriptions...). The module lives in htdocs/cabinetmed/."
   # Directory with one subdirectory per module (empty = the repository is a single module)
   MODULES_DIR: "htdocs"
   DONE_LABEL: ai-pr
   FAILED_LABEL: ai-pr-failed
+  # Dolibarr core the fix is checked against with PHPStan (oldest version supported by the modules)
+  DOLIBARR_CORE: "20.0.0"
 
 jobs:
   fix-bug:
@@ -63,6 +66,28 @@ jobs:
         with:
           python-version: "3.12"
 
+      # PHP, phpcs and a Dolibarr core are used to check the fix before it is proposed (php -l, phpcs, PHPStan).
+      # The oldest supported core finds the calls to functions that only exist in newer versions.
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+          tools: phpcs
+          extensions: mbstring, intl, dom, simplexml, zip, curl
+
+      - name: Checkout Dolibarr ${{ env.DOLIBARR_CORE }}
+        uses: actions/checkout@v7
+        with:
+          repository: Dolibarr/dolibarr
+          ref: ${{ env.DOLIBARR_CORE }}
+          path: .dolibarr-core
+          persist-credentials: false
+
+      # The core is checked out inside the repository: keep it out of the commit of the fix
+      - name: Exclude the Dolibarr core from git
+        run: echo "/.dolibarr-core/" >> .git/info/exclude
+
       # Only the first 8 chars of each token are shown, to check which secret is used
       - name: Show configuration
         env:
@@ -77,7 +102,7 @@ jobs:
             val="${!v}"
             if [ -n "$val" ]; then echo "$v=${val:0:8}... (${#val} chars)"; else echo "$v=(empty)"; fi
           done
-          for v in GITHUB_EVENT_NAME GITHUB_REPOSITORY GITHUB_REF_NAME BASE_BRANCH MISTRAL_MODEL ISSUE_NUMBER MODULES_DIR DONE_LABEL FAILED_LABEL; do
+          for v in GITHUB_EVENT_NAME GITHUB_REPOSITORY GITHUB_REF_NAME BASE_BRANCH MISTRAL_MODEL ISSUE_NUMBER PROJECT_DESCRIPTION MODULES_DIR DONE_LABEL FAILED_LABEL; do
             echo "$v=${!v}"
           done
 
@@ -88,6 +113,7 @@ jobs:
           MISTRAL_API_KEY: ${{ secrets.MISTRAL_API_KEY }}
           MISTRAL_MODEL: ${{ inputs.model }}
           ISSUE_NUMBER: ${{ inputs.issue_number }}
+          DOLIBARR_HTDOCS: ${{ github.workspace }}/.dolibarr-core/htdocs
         run: python3 .github/scripts/mistral_fix_bug.py
 
       - name: Create pull request
