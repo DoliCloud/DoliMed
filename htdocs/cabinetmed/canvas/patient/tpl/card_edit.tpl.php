@@ -579,7 +579,12 @@ print '</td></tr>';
 // Sexe
 print '<tr><td>'.$langs->trans("Gender").'</td><td colspan="3">';
 if ((float) DOL_VERSION <= 23) {
-	print $form->selectarray("typent_id", $formcompany->typent_array(0, "AND code in ('TE_UNKNOWN', 'TE_HOMME', 'TE_FEMME')"), $object->typent_id);
+			$genderOptions = array(
+				'TE_UNKNOWN' => $langs->trans('TE_UNKNOWN'),
+				'TE_HOMME' => $langs->trans('TE_HOMME'),
+				'TE_FEMME' => $langs->trans('TE_FEMME')
+			);
+			print $form->selectarray("typent_id", $formcompany->typent_array(0, "AND code in ('TE_UNKNOWN', 'TE_HOMME', 'TE_FEMME')"), $object->typent_id, 0, 0, 0, '', 0, 0, 0, '', '', 1, $genderOptions);
 } else {
 	print $form->selectarray("typent_id", $formcompany->typent_array(0, "(code:in:'TE_UNKNOWN','TE_HOMME','TE_FEMME')"), $object->typent_id);
 }
