@@ -369,12 +369,27 @@ if ($action == 'presend') {
 	print '<br>';
 }
 
-$modelmail = 'thirdparty';
-$defaulttopic = 'SendConsultationRef';
-$diroutput = $conf->societe->multidir_output[empty($object->entity) ? $conf->entity : $object->entity];
-$trackid = 'thi'.$object->id;
+	$modelmail = 'thirdparty';
+	$defaulttopic = 'SendConsultationRef';
+	$diroutput = $conf->societe->multidir_output[empty($object->entity) ? $conf->entity : $object->entity];
+	$trackid = 'thi'.$object->id;
 
-include DOL_DOCUMENT_ROOT.'/core/tpl/card_presend.tpl.php';
+	// Fix for file attachments in email form (Patient objects have no last_main_doc)
+	$urlfile = GETPOST('urlfile', 'alpha');
+	if ($action == 'presend' && !empty($urlfile)) {
+		$fullpathfile = $diroutput.'/'.$urlfile;
+		if (file_exists($fullpathfile)) {
+			$original_last_main_doc = $object->last_main_doc ?? '';
+			$object->last_main_doc = str_replace(DOL_DATA_ROOT.'/', '', $fullpathfile);
+		}
+	}
+
+	include DOL_DOCUMENT_ROOT.'/core/tpl/card_presend.tpl.php';
+
+	// Restore original last_main_doc
+	if ($action == 'presend' && !empty($urlfile) && isset($original_last_main_doc)) {
+		$object->last_main_doc = $original_last_main_doc;
+	}
 
 // End of page
 llxFooter();
