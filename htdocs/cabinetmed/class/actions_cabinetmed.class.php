@@ -733,11 +733,11 @@ class ActionsCabinetmed
 	 * Declare the methods of the REST API of the module (class/api_cabinetmed.class.php) that the AI assistant
 	 * may use as tools (hook 'addMcpApiBridgeEnrichments' of the 'aimcp' context).
 	 *
-	 * @param   array           $parameters     Hook metadatas (db, user, conf)
-	 * @param   ToolApiBridge   $object         The AI API bridge
-	 * @param   string          $action         Current action
-	 * @param   HookManager     $hookmanager    Hook manager propagated to allow calling another hook
-	 * @return  int                             0 on success
+	 * @param   array<string,mixed> $parameters 	Hook metadatas (db, user, conf)
+	 * @param   ToolApiBridge   	$object         The AI API bridge
+	 * @param   string          	$action         Current action
+	 * @param   HookManager     	$hookmanager    Hook manager propagated to allow calling another hook
+	 * @return  int                 	            0 on success
 	 */
 	public function addMcpApiBridgeEnrichments($parameters, &$object, &$action, $hookmanager)
 	{

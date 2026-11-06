@@ -566,7 +566,13 @@ class CabinetmedApi extends DolibarrApi
 		if (DolibarrApiAccess::$user->socid > 0) {
 			$sql .= " AND ".$socidfield." = ".((int) DolibarrApiAccess::$user->socid);
 		} elseif (!DolibarrApiAccess::$user->hasRight('societe', 'client', 'voir')) {
-			$sql .= " AND ".getSalesRepresentativeSqlFilter($socidfield, (int) DolibarrApiAccess::$user->id);
+			if (function_exists('getSalesRepresentativeSqlFilter')) {
+				$sql .= " AND ".getSalesRepresentativeSqlFilter($socidfield, (int) DolibarrApiAccess::$user->id);
+			} else {
+				// Dolibarr < 25 has no getSalesRepresentativeSqlFilter()
+				$sql .= " AND EXISTS (SELECT sc.fk_soc FROM ".$this->db->prefix()."societe_commerciaux as sc";
+				$sql .= " WHERE sc.fk_soc = ".$this->db->sanitize($socidfield)." AND sc.fk_user = ".((int) DolibarrApiAccess::$user->id).")";
+			}
 		}
 
 		return $sql;
