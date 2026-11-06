@@ -6,7 +6,7 @@
 # to push on PRs from forks (GITHUB_TOKEN can't push on a fork). Without it, PRs from forks are skipped
 # and only PRs whose branch is in this repository are processed. The fix pushed with it also starts the CI of the
 # PR at once, while a fix pushed with GITHUB_TOKEN waits for the approval of a maintainer ("Approve and run" button).
-name: "Mistral - Fix CI of oldest PR"
+name: "Mistral - Fix oldest PR in error"
 
 on:
   workflow_dispatch:
@@ -56,6 +56,23 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+
+      # Only the first 3 chars of each token are shown, to check which secret is used
+      - name: Show configuration
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          MISTRAL_API_KEY: ${{ secrets.MISTRAL_API_KEY }}
+          AI_PUSH_TOKEN: ${{ secrets.AI_PUSH_TOKEN }}
+          MISTRAL_MODEL: ${{ inputs.model }}
+          PR_NUMBER: ${{ inputs.pr_number }}
+        run: |
+          for v in GITHUB_TOKEN MISTRAL_API_KEY AI_PUSH_TOKEN; do
+            val="${!v}"
+            if [ -n "$val" ]; then echo "$v=${val:0:3}... (${#val} chars)"; else echo "$v=(empty)"; fi
+          done
+          for v in GITHUB_EVENT_NAME GITHUB_REPOSITORY GITHUB_REF_NAME MISTRAL_MODEL PR_NUMBER PROJECT_DESCRIPTION MODULES_DIR FAILED_LABEL IGNORED_CHECKS; do
+            echo "$v=${!v}"
+          done
 
       - name: Select the PR
         id: select
