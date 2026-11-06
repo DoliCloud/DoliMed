@@ -322,7 +322,19 @@ function cabinetmed_completesubstitutionarray(&$substitutionarray, $langs, $obje
 		}
 		$substitutionarray['patient_profession']=$object->array_options['options_prof'];
 
-		$substitutionarray['patient_gender']=$object->typent_code;
+		// Gender: translation of typent code if it exists (like typent_array() does), otherwise label of dictionary
+		$gender = '';
+		if (!empty($object->typent_code)) {
+			$gender = $langs->transnoentities($object->typent_code);
+			if ($gender == $object->typent_code) {
+				$gender = (string) dol_getIdFromCode($db, $object->typent_code, 'c_typent', 'code', 'libelle');
+			}
+			if ($gender == '-') {
+				$gender = '';
+			}
+		}
+		$substitutionarray['patient_gender'] = $gender;
+		$substitutionarray['patient_gender_code'] = $object->typent_code;
 		$substitutionarray['patient_socialnum']=$object->tva_intra;
 
 		if (is_array($object->array_options)) {
