@@ -57,6 +57,7 @@ $langs->loadLangs(array("companies", "commercial", "customers", "suppliers", "bi
 $action = GETPOST('action', 'aZ09');
 $massaction = GETPOST('massaction', 'alpha');
 $toselect = GETPOST('toselect', 'array:int');
+$confirm = GETPOST('confirm', 'alpha');
 $contextpage = GETPOST('contextpage', 'aZ') ?GETPOST('contextpage', 'aZ') : 'patientlist';
 $optioncss=GETPOST('optioncss', 'alpha');
 $mode=GETPOST("mode", 'alpha');
