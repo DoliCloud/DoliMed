@@ -191,6 +191,13 @@ class pdf_medicalrecord extends ModeleThirdPartyDoc
 
 		$outputlangs->loadLangs(array("main", "companies", "cabinetmed@cabinetmed"));
 
+		// The medical record must not be generated for a user without the right to read medical data
+		if (!is_object($user) || !$user->hasRight('cabinetmed', 'read')) {
+			$langs->load("errors");
+			$this->error = $langs->trans("ErrorForbidden");
+			return 0;
+		}
+
 		// Definition of $dir and $file
 		$entity = isset($object->entity) ? $object->entity : 1;
 		$basedir = empty($conf->societe->multidir_output[$entity]) ? $conf->societe->dir_output : $conf->societe->multidir_output[$entity];

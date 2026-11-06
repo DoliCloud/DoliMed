@@ -66,6 +66,7 @@ $mode=GETPOST("mode", 'alpha');
 $socid = GETPOST('socid', 'int');
 if ($user->socid) $socid=$user->socid;
 $result = restrictedArea($user, 'societe', $socid, '');
+if (!$user->hasRight('cabinetmed', 'read')) accessforbidden();
 
 $search_all=trim(GETPOST('search_all', 'alphanohtml'));
 $search_cti=preg_replace('/^0+/', '', preg_replace('/[^0-9]/', '', GETPOST('search_cti', 'alphanohtml')));	// Phone number without any special chars

@@ -529,8 +529,8 @@ if ($action != 'presend') {
 
 	$filedir=$conf->societe->dir_output.'/'.$object->id;
 	$urlsource=$_SERVER["PHP_SELF"]."?socid=".$object->id;
-	$genallowed=$user->rights->societe->creer;
-	$delallowed=$user->rights->societe->supprimer;
+	$genallowed = ($user->hasRight('societe', 'creer') && $user->hasRight('cabinetmed', 'write'));
+	$delallowed = ($user->hasRight('societe', 'supprimer') && $user->hasRight('cabinetmed', 'write'));
 
 	$var=true;
 

@@ -208,7 +208,7 @@ if ($socid > 0) {
 	/*
 	print '<tr height="80"><td class="tdtop">'.$langs->trans("Classes").'</td>';
 	print '<td class="tdtop">';
-	if ($action == 'edit' && $user->rights->societe->creer)
+	if ($action == 'edit' && $user->hasRight('societe', 'creer') && $user->hasRight('cabinetmed', 'write'))
 	{
 		print "<input type=\"hidden\" name=\"socid\" value=\"".$object->id."\">";
 

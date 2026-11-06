@@ -586,7 +586,7 @@ if (isModEnabled('category') && $user->hasRight('categorie', 'lire')) {
 		print '<td colspan="3" class="maxwidthonsmartphone">';
 		$userlist = $form->select_dolusers('', '', 0, null, 0, '', '', 0, 0, 0, '', 0, '', '', 0, 1);
 		// Note: If user has no right to "see all thirdparties", we force selection of sale representative to him, so after creation he can see the record.
-		$selected = (count(GETPOST('commercial', 'array')) > 0 ? GETPOST('commercial', 'array') : (GETPOST('commercial', 'int') > 0 ? array(GETPOST('commercial', 'int')) : (empty($user->rights->societe->client->voir)?array($user->id):array())));
+		$selected = (count(GETPOST('commercial', 'array')) > 0 ? GETPOST('commercial', 'array') : (GETPOST('commercial', 'int') > 0 ? array(GETPOST('commercial', 'int')) : (!$user->hasRight('societe', 'client', 'voir')?array($user->id):array())));
 		if (empty($selected)) $selected=array($user->id);
 		print $form->multiselectarray('commercial', $userlist, $selected, null, null, null, null, "90%");
 		print '</td></tr>';

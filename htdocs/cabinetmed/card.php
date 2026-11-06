@@ -120,6 +120,13 @@ if ($user->socid > 0 && in_array($action, array('add', 'update', 'merge', 'confi
 	accessforbidden();
 }
 $result = restrictedArea($user, 'societe', $socid, '&societe', '', 'fk_soc', 'rowid', 0);
+if (!$user->hasRight('cabinetmed', 'read')) {
+	accessforbidden();
+}
+$writeactions = array('add', 'update', 'update_extras', 'merge', 'confirm_merge', 'confirm_delete', 'set_thirdparty', 'set_incoterms', 'builddoc', 'remove_file');
+if (in_array($action, $writeactions) && !$user->hasRight('cabinetmed', 'write')) {
+	accessforbidden();
+}
 
 
 
@@ -834,7 +841,7 @@ if (empty($reshook)) {
 	// Actions to build doc
 	$id = $socid;
 	$upload_dir = $conf->societe->dir_output;
-	$permissiontoadd=$user->rights->societe->creer;
+	$permissiontoadd = $user->hasRight('societe', 'creer');
 	include DOL_DOCUMENT_ROOT.'/core/actions_builddoc.inc.php';
 }
 

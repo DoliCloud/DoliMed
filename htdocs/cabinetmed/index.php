@@ -51,6 +51,7 @@ if ($user->socid) {
 
 // Security check
 $result=restrictedArea($user, 'societe', 0, '', '', '', '');
+if (!$user->hasRight('cabinetmed', 'read')) accessforbidden();
 
 $thirdparty_static = new Patient($db);
 $consultation_static = new CabinetmedCons($db);

@@ -112,7 +112,7 @@ if ($id > 0 || !empty($ref)) {
 }
 
 // Permissions
-$permissiontoadd = $user->hasRight('societe', 'creer'); // Used by the include of actions_linkedfiles.inc.php and actions_builddoc.inc.php
+$permissiontoadd = ($user->hasRight('societe', 'creer') && $user->hasRight('cabinetmed', 'write')); // Used by the include of actions_linkedfiles.inc.php and actions_builddoc.inc.php
 
 // Security check
 $socid = $id;

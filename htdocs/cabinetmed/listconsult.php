@@ -120,8 +120,8 @@ if (!$user->hasRight('cabinetmed', 'read')) {
 	accessforbidden();
 }
 
-$permissiontoread = $user->rights->societe->lire;
-$permissiontodelete = $user->rights->societe->supprimer;
+$permissiontoread = $user->hasRight('societe', 'lire');
+$permissiontodelete = $user->hasRight('societe', 'supprimer');
 
 
 /*

@@ -36,7 +36,7 @@
  */
 function cabinetmed_completesubstitutionarray(&$substitutionarray, $langs, $object, $parameters = null)
 {
-	global $conf, $db, $extrafields;
+	global $conf, $db, $extrafields, $user;
 
 	dol_include_once('/cabinetmed/class/patient.class.php');
 	dol_include_once('/cabinetmed/class/cabinetmedcons.class.php');
@@ -166,8 +166,9 @@ function cabinetmed_completesubstitutionarray(&$substitutionarray, $langs, $obje
 
 	// Consultation + Exams
 	// The consultation and exams must belong to the patient of the document, to avoid disclosure of data of another patient
+	// Medical content is substituted only for users allowed to read medical data
 	$patientid = 0;
-	if (is_object($object)) {
+	if (is_object($object) && is_object($user) && $user->hasRight('cabinetmed', 'read')) {
 		if (in_array($object->element, array('societe', 'thirdparty'))) {
 			$patientid = (int) $object->id;
 		} elseif (!empty($object->socid)) {
