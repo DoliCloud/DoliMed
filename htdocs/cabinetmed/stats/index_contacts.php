@@ -55,8 +55,8 @@ dol_include_once("/cabinetmed/class/cabinetmedstats.class.php");
 $WIDTH=500;
 $HEIGHT=200;
 
-$userid=GETPOST('userid', 'int'); if ($userid < 0) $userid=0;
-$socid=GETPOST('socid', 'int'); if ($socid < 0) $socid=0;
+$userid=GETPOSTINT('userid'); if ($userid < 0) $userid=0;
+$socid=GETPOSTINT('socid'); if ($socid < 0) $socid=0;
 // Security check
 if ($user->socid > 0) {
 	$action = '';
@@ -69,10 +69,10 @@ $endyear=$year;
 
 $mode = GETPOST("mode", 'alpha')?GETPOST("mode", 'alpha'):'customer';
 
-$limit = GETPOST('limit', 'int') ? GETPOST('limit', 'int') : $conf->liste_limit;
+$limit = GETPOSTINT('limit') ? GETPOSTINT('limit') : $conf->liste_limit;
 $sortfield = GETPOST('sortfield', 'aZ09comma');
 $sortorder = GETPOST('sortorder', 'aZ09comma');
-$page = GETPOSTISSET('pageplusone') ? (GETPOST('pageplusone') - 1) : GETPOST("page", 'int');
+$page = GETPOSTISSET('pageplusone') ? (GETPOST('pageplusone') - 1) : GETPOSTINT('page');
 if (empty($page) || $page < 0 || GETPOST('button_search', 'alpha') || GETPOST('button_removefilter', 'alpha')) {
 	// If $page is not defined, or '' or -1 or if we click on clear filters
 	$page = 0;

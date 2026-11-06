@@ -62,7 +62,7 @@ $month=GETPOSTINT("month");
 $search_sale=GETPOSTINT('search_sale');
 
 // Security check
-$socid =GETPOST('socid', 'int');
+$socid =GETPOSTINT('socid');
 if ($user->socid > 0) $socid = $user->socid;
 //if (!$user->hasRight('cabinetmed', 'lire'))
 //accessforbidden();

@@ -54,6 +54,8 @@ class box_patients extends ModeleBoxes
 		global $conf, $user;
 
 		$this->db = $db;
+
+		$this->hidden = !($user->hasRight('cabinetmed', 'read') && $user->hasRight('societe', 'lire'));
 	}
 
 	/**
@@ -74,7 +76,7 @@ class box_patients extends ModeleBoxes
 
 		$this->info_box_head = array('text' => $langs->trans("BoxTitleLastModifiedPatients", $max));
 
-		if ($user->hasRight('societe', 'lire')) {
+		if ($user->hasRight('cabinetmed', 'read') && $user->hasRight('societe', 'lire')) {
 			$sql = "SELECT s.nom, s.rowid as socid, s.datec, s.tms, s.status";
 			$sql.= " FROM ".MAIN_DB_PREFIX."societe as s";
 			if (!$user->hasRight('societe', 'client', 'voir') && !$user->socid) {
@@ -130,7 +132,8 @@ class box_patients extends ModeleBoxes
 			} else {
 				$this->info_box_contents[0][0] = array(	'td' => 'align="left"',
 														'maxlength'=>500,
-														'text' => ($db->error().' sql='.$sql));
+														'text' => $langs->trans("Error"));
+				dol_syslog(get_class($this)."::loadBox ".$db->lasterror(), LOG_ERR);
 			}
 		} else {
 			$this->info_box_contents[0][0] = array('align' => 'left',

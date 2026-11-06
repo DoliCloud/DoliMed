@@ -53,7 +53,7 @@ include_once "./class/cabinetmedcons.class.php";
  */
 
 $action = GETPOST("action");
-$id=GETPOST('id', 'int');  // Id consultation
+$id=GETPOSTINT('id');  // Id consultation
 
 $langs->load("companies");
 $langs->load("bills");
@@ -61,7 +61,7 @@ $langs->load("banks");
 $langs->load("cabinetmed@cabinetmed");
 
 // Security check
-$socid = GETPOST('socid', 'int');
+$socid = GETPOSTINT('socid');
 if ($user->socid) $socid=$user->socid;
 $result = restrictedArea($user, 'societe', $socid);
 
@@ -70,10 +70,10 @@ if (!$user->hasRight('cabinetmed', 'read')) accessforbidden();
 $mesgarray=array();
 
 // Load variable for pagination
-$limit = GETPOST('limit', 'int') ? GETPOST('limit', 'int') : $conf->liste_limit;
+$limit = GETPOSTINT('limit') ? GETPOSTINT('limit') : $conf->liste_limit;
 $sortfield = GETPOST('sortfield', 'aZ09comma');
 $sortorder = GETPOST('sortorder', 'aZ09comma');
-$page = GETPOSTISSET('pageplusone') ? (GETPOST('pageplusone') - 1) : GETPOST("page", 'int');
+$page = GETPOSTISSET('pageplusone') ? (GETPOST('pageplusone') - 1) : GETPOSTINT('page');
 if (empty($page) || $page < 0 || GETPOST('button_search', 'alpha') || GETPOST('button_removefilter', 'alpha')) {
 	// If $page is not defined, or '' or -1 or if we click on clear filters
 	$page = 0;

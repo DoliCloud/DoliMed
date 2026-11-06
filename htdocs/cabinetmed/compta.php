@@ -55,11 +55,11 @@ if (! $year_start) {
 
 // Define modecompta ('CREANCES-DETTES' or 'RECETTES-DEPENSES')
 $modecompta= GETPOST("modecompta", 'aZ09') ? GETPOST("modecompta", 'aZ09') : getDolGlobalString('COMPTA_MODE');
-$search_sale=GETPOST('search_sale', 'int');
+$search_sale=GETPOSTINT('search_sale');
 
 
 // Security check
-$socid = GETPOST('socid', 'int');
+$socid = GETPOSTINT('socid');
 if ($user->socid > 0) $socid = $user->socid;
 //if (!$user->hasRight('cabinetmed', 'lire'))
 //accessforbidden();

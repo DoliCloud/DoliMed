@@ -44,7 +44,7 @@ dol_include_once('/cabinetmed/class/cabinetmedcons.class.php');
 
 $langs->load("companies");
 
-$socid = GETPOST('socid', 'int');
+$socid = GETPOSTINT('socid');
 if ($user->socid) {
 	$socid = $user->socid;
 }
@@ -124,7 +124,7 @@ if (!empty($search_sale) && $search_sale != '-1') {
 		$sql .= " OR NOT EXISTS (SELECT sc.fk_soc FROM ".MAIN_DB_PREFIX."societe_commerciaux as sc WHERE sc.fk_soc = s.rowid))";
 	}
 }
-if ($socid && !getDolGlobalSring('MAIN_DISABLE_RESTRICTION_ON_THIRDPARTY_FOR_EXTERNAL')) {
+if ($socid && !getDolGlobalString('MAIN_DISABLE_RESTRICTION_ON_THIRDPARTY_FOR_EXTERNAL')) {
 	$sql.= " AND s.rowid = ".((int) $socid);
 }
 

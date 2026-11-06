@@ -55,10 +55,10 @@ $contextpage= GETPOST('contextpage', 'aZ')?GETPOST('contextpage', 'aZ'):'consult
 $mode       = GETPOST('mode', 'aZ'); // The output mode ('list', 'kanban', 'hierarchy', 'calendar', ...)
 
 // Load variable for pagination
-$limit = GETPOST('limit', 'int')?GETPOST('limit', 'int'):$conf->liste_limit;
+$limit = GETPOSTINT('limit')?GETPOSTINT('limit'):$conf->liste_limit;
 $sortfield = GETPOST('sortfield', 'aZ09comma');
 $sortorder = GETPOST('sortorder', 'aZ09comma');
-$page = GETPOSTISSET('pageplusone') ? (GETPOST('pageplusone') - 1) : GETPOST("page", 'int');
+$page = GETPOSTISSET('pageplusone') ? (GETPOST('pageplusone') - 1) : GETPOSTINT('page');
 if (empty($page) || $page < 0 || GETPOST('button_search', 'alpha') || GETPOST('button_removefilter', 'alpha')) {
 	// If $page is not defined, or '' or -1 or if we click on clear filters
 	$page = 0;
@@ -75,11 +75,11 @@ $search_code = GETPOST("search_code", 'alpha');
 $search_ref  = GETPOST("search_ref", 'alpha');
 
 // Load sale and categ filters
-$search_sale         = GETPOST("search_sale", "int");
-$search_categ        = GETPOST("search_categ", "int");
+$search_sale         = GETPOSTINT('search_sale');
+$search_categ        = GETPOSTINT('search_categ');
 $search_motifprinc   = GETPOST("search_motifprinc", "alpha");
 $search_diaglesprinc = GETPOST("search_diaglesprinc", "alpha");
-$search_contactid    = GETPOST("search_contactid", "int");
+$search_contactid    = GETPOSTINT('search_contactid');
 $search_datecons     = dol_mktime(0, 0, 0, GETPOSTINT('search_dateconsmonth'), GETPOSTINT('search_dateconsday'), GETPOSTINT('search_dateconsyear'));
 
 $object = new CabinetmedCons($db);
@@ -214,7 +214,7 @@ $sql.= ' AND c.entity IN ('.getEntity('societe', 1).')';
 if ($search_datecons > 0) {
 	$sql.=" AND c.datecons = '".$db->idate($search_datecons)."'";
 }
-//if ($datecons > 0) $sql.= dolSqlDateFilter("c.datecons", GETPOST('consday', 'int'), GETPOST('consmonth', 'int'), GETPOST('consyear', 'int'));
+//if ($datecons > 0) $sql.= dolSqlDateFilter("c.datecons", GETPOSTINT('consday'), GETPOSTINT('consmonth'), GETPOSTINT('consyear'));
 
 if ($search_motifprinc) {
 	$label= dol_getIdFromCode($db, $search_motifprinc, 'cabinetmed_motifcons', 'code', 'label');

@@ -57,8 +57,8 @@ require_once "./lib/cabinetmed.lib.php";
 $optioncss = GETPOST('optioncss', 'aZ09');
 
 $action=GETPOST("action");
-$id=GETPOST('id', 'int');  // Id consultation
-$fk_agenda=GETPOST('fk_agenda', 'int');	// Id event if consultation is created from an event
+$id=GETPOSTINT('id');  // Id consultation
+$fk_agenda=GETPOSTINT('fk_agenda');	// Id event if consultation is created from an event
 
 $langs->load("companies");
 $langs->load("bills");
@@ -68,7 +68,7 @@ $langs->load("cabinetmed@cabinetmed");
 $contextpage= GETPOST('contextpage', 'aZ')?GETPOST('contextpage', 'aZ'):'consultationthirdpartylist';   // To manage different context of search
 
 // Security check
-$socid = GETPOST('socid', 'int');
+$socid = GETPOSTINT('socid');
 if ($user->socid) {
 	$socid=$user->socid;
 }
@@ -81,10 +81,10 @@ if (!$user->hasRight('cabinetmed', 'read')) {
 $mesgarray=array();
 
 // Load variable for pagination
-$limit = GETPOST('limit', 'int')?GETPOST('limit', 'int'):$conf->liste_limit;
+$limit = GETPOSTINT('limit')?GETPOSTINT('limit'):$conf->liste_limit;
 $sortfield = GETPOST("sortfield", 'alpha');
 $sortorder = GETPOST('sortorder', 'aZ09comma');
-$page = GETPOSTISSET('pageplusone') ? (GETPOST('pageplusone') - 1) : GETPOST("page", 'int');
+$page = GETPOSTISSET('pageplusone') ? (GETPOST('pageplusone') - 1) : GETPOSTINT('page');
 if (empty($page) || $page == -1 || GETPOST('button_search', 'alpha') || GETPOST('button_removefilter', 'alpha') || (empty($toselect) && $massaction === '0')) { $page = 0; }     // If $page is not defined, or '' or -1 or if we click on clear filters or if we select empty mass action
 $offset = $limit * $page;
 $pageprev = $page - 1;
@@ -196,7 +196,7 @@ if (empty($reshook)) {
 		if (! GETPOST('cancel', 'alpha')) {
 			$error=0;
 
-			$datecons=dol_mktime(0, 0, 0, GETPOST("consmonth", 'int'), GETPOST("consday", 'int'), GETPOST("consyear", 'int'));
+			$datecons=dol_mktime(0, 0, 0, GETPOSTINT('consmonth'), GETPOSTINT('consday'), GETPOSTINT('consyear'));
 
 			if ($action == 'update') {
 				$result=$object->fetch($id);
@@ -212,7 +212,7 @@ if (empty($reshook)) {
 				$object->datecons = $datecons;
 			} else {
 				$object->datecons = $datecons;
-				$object->fk_soc = GETPOST("socid", 'int');
+				$object->fk_soc = $socid;
 			}
 
 			$amount=array();
@@ -1242,7 +1242,7 @@ if ($action == '' || $action == 'list' || $action == 'delete') {
 
 	// Confirm delete consultation
 	if (GETPOST("action") == 'delete') {
-		$formconfirm = $form->formconfirm($_SERVER["PHP_SELF"]."?socid=".$socid.'&id='.GETPOST('id', 'int'), $langs->trans("DeleteAConsultation"), $langs->trans("ConfirmDeleteConsultation"), "confirm_delete", '', 0, 1);
+		$formconfirm = $form->formconfirm($_SERVER["PHP_SELF"]."?socid=".$socid.'&id='.GETPOSTINT('id'), $langs->trans("DeleteAConsultation"), $langs->trans("ConfirmDeleteConsultation"), "confirm_delete", '', 0, 1);
 		print $formconfirm;
 	}
 

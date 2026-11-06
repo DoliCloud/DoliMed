@@ -63,11 +63,11 @@ $action = GETPOST('action');
 // Initialize technical object to manage hooks of page. Note that conf->hooks_modules contains array array
 $hookmanager->initHooks(array('thirdpartycard','globalcard'));
 
-$id = GETPOST('socid', 'int');
+$id = GETPOSTINT('socid');
 $ref= GETPOST('ref');
 
 // Security check
-$socid = GETPOST('socid', 'int');
+$socid = GETPOSTINT('socid');
 if ($user->socid) $socid=$user->socid;
 $result = restrictedArea($user, 'societe', $socid);
 if (!$user->hasRight('cabinetmed', 'read')) accessforbidden();
@@ -85,13 +85,13 @@ if ($reshook < 0) setEventMessages($hookmanager->error, $hookmanager->errors, 'e
 
 if (empty($reshook)) {
 	if ($action == 'addcontact' && $user->hasRight('societe', 'creer')) {
-		if (GETPOST("contactid", "int") && GETPOST("type")) {
+		if (GETPOSTINT('contactid') && GETPOST("type")) {
 			$result = 0;
 			$societe = new Societe($db);
 			$result = $societe->fetch($socid);
 
 			if ($result > 0 && $socid > 0) {
-				$result = $societe->add_contact(GETPOST("contactid", 'int'), GETPOST("type"), GETPOST("source"));
+				$result = $societe->add_contact(GETPOSTINT('contactid'), GETPOST("type"), GETPOST("source"));
 			}
 
 			if ($result >= 0) {
@@ -111,8 +111,17 @@ if (empty($reshook)) {
 	// bascule du statut d'un contact
 	if ($action == 'swapstatut' && $user->hasRight('societe', 'creer')) {
 		$object = new Societe($db);
-		if ($object->fetch(GETPOST('facid', 'int'))) {
-			$result=$object->swapContactStatus(GETPOST('ligne', 'int'));
+		if ($object->fetch($socid) > 0) {
+			// The contact line must belong to the patient, because swapContactStatus() does not check it
+			$lineid = GETPOSTINT('ligne');
+			$lineids = array();
+			foreach (array_merge($object->liste_contact(-1, 'internal'), $object->liste_contact(-1, 'external')) as $contactline) {
+				$lineids[] = (int) $contactline['rowid'];
+			}
+			if (!in_array($lineid, $lineids)) {
+				accessforbidden();
+			}
+			$result=$object->swapContactStatus($lineid);
 		} else {
 			dol_print_error($db);
 		}
@@ -122,7 +131,7 @@ if (empty($reshook)) {
 	if ($action == 'deleteline' && $user->hasRight('societe', 'creer')) {
 		$societe = new Societe($db);
 		$societe->fetch($socid);
-		$result = $societe->delete_contact(GETPOST("lineid", 'int'));
+		$result = $societe->delete_contact(GETPOSTINT('lineid'));
 
 		if ($result >= 0) {
 			Header("Location: contact.php?socid=".$societe->id);

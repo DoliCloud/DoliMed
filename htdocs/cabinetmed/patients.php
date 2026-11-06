@@ -63,7 +63,7 @@ $optioncss=GETPOST('optioncss', 'alpha');
 $mode=GETPOST("mode", 'alpha');
 
 // Security check
-$socid = GETPOST('socid', 'int');
+$socid = GETPOSTINT('socid');
 if ($user->socid) $socid=$user->socid;
 $result = restrictedArea($user, 'societe', $socid, '');
 if (!$user->hasRight('cabinetmed', 'read')) accessforbidden();
@@ -99,9 +99,9 @@ $search_idprof4 = trim(GETPOST('search_idprof4', 'alpha'));
 $search_idprof5 = trim(GETPOST('search_idprof5', 'alpha'));
 $search_idprof6 = trim(GETPOST('search_idprof6', 'alpha'));
 $search_vat = trim(GETPOST('search_vat', 'alpha'));
-$search_sale = GETPOST("search_sale", 'int');
-$search_categ_cus = GETPOST("search_categ_cus", 'int');
-$search_categ_sup = GETPOST("search_categ_sup", 'int');
+$search_sale = GETPOSTINT('search_sale');
+$search_categ_cus = GETPOSTINT('search_categ_cus');
+$search_categ_sup = GETPOSTINT('search_categ_sup');
 $search_country = GETPOST("search_country", 'aZ09');
 $search_type_thirdparty = GETPOST("search_type_thirdparty", 'intcomma');
 $search_status = GETPOST("search_status", 'int');
@@ -111,10 +111,10 @@ $search_import_key  = trim(GETPOST("search_import_key", "alpha"));
 $search_parent_name = trim(GETPOST('search_parent_name', 'alpha'));
 
 // Load sale and categ filters
-$search_sale = GETPOST("search_sale", "int");
-$search_categ = GETPOST("search_categ", "int");
+$search_sale = GETPOSTINT('search_sale');
+$search_categ = GETPOSTINT('search_categ');
 $search_diagles = GETPOST("search_diagles", "alphanohtml");
-$search_contactid = GETPOST("search_contactid", "int");
+$search_contactid = GETPOSTINT('search_contactid');
 
 $type = GETPOST('type', 'alpha');
 
@@ -122,10 +122,10 @@ $type = GETPOST('type', 'alpha');
 $diroutputmassaction = $conf->societe->dir_output . '/temp/massgeneration/'.$user->id;
 
 // Load variable for pagination
-$limit = GETPOST('limit', 'int')?GETPOST('limit', 'int'):$conf->liste_limit;
+$limit = GETPOSTINT('limit')?GETPOSTINT('limit'):$conf->liste_limit;
 $sortfield = GETPOST('sortfield', 'aZ09comma');
 $sortorder = GETPOST('sortorder', 'aZ09comma');
-$page = GETPOSTISSET('pageplusone') ? (GETPOST('pageplusone') - 1) : GETPOST("page", 'int');
+$page = GETPOSTISSET('pageplusone') ? (GETPOST('pageplusone') - 1) : GETPOSTINT('page');
 if (!$sortorder) {
 	$sortorder = "ASC";
 }
@@ -689,7 +689,7 @@ if ($user->hasRight("societe", "creer")) {
 if ($user->hasRight("societe", "creer")) {
 	$arrayofmassactions['presetcommercial'] = img_picto('', 'user', 'class="pictofixedwidth"').$langs->trans("AllocateCommercial");
 }
-if (GETPOST('nomassaction', 'int') || in_array($massaction, array('presend', 'predelete', 'preaffecttag', 'preenable', 'preclose'))) {
+if (GETPOSTINT('nomassaction') || in_array($massaction, array('presend', 'predelete', 'preaffecttag', 'preenable', 'preclose'))) {
 	$arrayofmassactions = array();
 }
 if ($user->hasRight('societe', 'supprimer')) {

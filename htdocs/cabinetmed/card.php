@@ -74,7 +74,7 @@ $cancel		= GETPOST('cancel', 'alpha');
 $backtopage = GETPOST('backtopage', 'alpha');
 $confirm	= GETPOST('confirm', 'alpha');
 
-$socid		= GETPOST('socid', 'int')?GETPOST('socid', 'int'):GETPOST('id', 'int');
+$socid		= GETPOSTINT('socid')?GETPOSTINT('socid'):GETPOSTINT('id');
 if ($user->socid) $socid=$user->socid;
 if (empty($socid) && $action == 'view') $action='create';
 
@@ -152,7 +152,7 @@ if (empty($reshook)) {
 
 	if ($action == 'confirm_merge' && $confirm == 'yes' && $user->hasRight('societe', 'creer') && $user->hasRight('societe', 'supprimer')) {
 		$error = 0;
-		$soc_origin_id = GETPOST('soc_origin', 'int');
+		$soc_origin_id = GETPOSTINT('soc_origin');
 		$soc_origin = new Societe($db);
 
 		// The origin thirdparty will be deleted, so user must also have access to it
@@ -397,14 +397,14 @@ if (empty($reshook)) {
 			} else {
 				$object->name              = GETPOST('name')?GETPOST('name', 'alpha'):GETPOST('nom', 'alpha');
 			}
-			$object->entity					= (GETPOSTISSET('entity')?GETPOST('entity', 'int'):$conf->entity);
+			$object->entity					= (GETPOSTISSET('entity')?GETPOSTINT('entity'):$conf->entity);
 			$object->name_alias				= GETPOST('name_alias');
 			$object->parent					= GETPOSTISSET('parent_company_id') ? GETPOSTINT('parent_company_id') : $object->parent;
 			$object->address				= GETPOST('address');
 			$object->zip					= GETPOST('zipcode', 'alpha');
 			$object->town					= GETPOST('town', 'alpha');
-			$object->country_id				= GETPOST('country_id', 'int');
-			$object->state_id				= GETPOST('state_id', 'int');
+			$object->country_id				= GETPOSTINT('country_id');
+			$object->state_id				= GETPOSTINT('state_id');
 
 			$object->socialnetworks = array();
 			if (isModEnabled('socialnetworks')) {
@@ -449,9 +449,9 @@ if (empty($reshook)) {
 			$object->localtax1_value		= GETPOST('lt1', 'alpha');
 			$object->localtax2_value		= GETPOST('lt2', 'alpha');
 
-			$object->forme_juridique_code  = GETPOST('forme_juridique_code', 'int');
-			$object->effectif_id           = GETPOST('effectif_id', 'int');
-			$object->typent_id				= GETPOST('typent_id', 'int');
+			$object->forme_juridique_code  = GETPOSTINT('forme_juridique_code');
+			$object->effectif_id           = GETPOSTINT('effectif_id');
+			$object->typent_id				= GETPOSTINT('typent_id');
 
 			$object->typent_code			= dol_getIdFromCode($db, $object->typent_id, 'c_typent', 'id', 'code');	// Force typent_code too so check in verify() will be done on new type
 
@@ -480,7 +480,7 @@ if (empty($reshook)) {
 				$object->code_fournisseur = 'auto';
 			}
 
-			$object->commercial_id         = GETPOST('commercial_id', 'int');
+			$object->commercial_id         = GETPOSTINT('commercial_id');
 
 			$object->default_lang          = GETPOST('default_lang');
 
@@ -494,7 +494,7 @@ if (empty($reshook)) {
 
 			// Incoterms
 			if (isModEnabled("incoterm")) {
-				$object->fk_incoterms		= GETPOST('incoterm_id', 'int');
+				$object->fk_incoterms		= GETPOSTINT('incoterm_id');
 				$object->location_incoterms	= GETPOST('location_incoterms', 'alpha');
 			}
 
@@ -815,16 +815,16 @@ if (empty($reshook)) {
 	if ($action == 'set_thirdparty' && $user->hasRight('societe', 'creer')) {
 		$object->fetch($socid);
 		if (method_exists($object, 'set_parent')) {
-			$result = $object->set_parent(GETPOST('editparentcompany', 'int'));
+			$result = $object->set_parent(GETPOSTINT('editparentcompany'));
 		} else {
-			$result = $object->setParent(GETPOST('editparentcompany', 'int'));
+			$result = $object->setParent(GETPOSTINT('editparentcompany'));
 		}
 	}
 
 	// Set incoterm
 	if ($action == 'set_incoterms' && isModEnabled("incoterm") && $user->hasRight('societe', 'creer')) {
 		$object->fetch($socid);
-		$result = $object->setIncoterms(GETPOST('incoterm_id', 'int'), GETPOST('location_incoterms', 'alpha'));
+		$result = $object->setIncoterms(GETPOSTINT('incoterm_id'), GETPOST('location_incoterms', 'alpha'));
 	}
 
 	$id=$socid;

@@ -103,6 +103,12 @@ class ActionsCabinetmed
 		$ret=0;
 		dol_syslog(get_class($this).'::executeHooks action='.$action);
 
+		// The core page of files of a thirdparty must not show the files of a patient to a user without the right to read medical data
+		if (isset($parameters['currentcontext']) && $parameters['currentcontext'] == 'thirdpartydocument'
+			&& is_object($object) && $object->canvas == 'patient@cabinetmed' && !$user->hasRight('cabinetmed', 'read')) {
+			accessforbidden();
+		}
+
 		$arraytmp=dol_getdate(dol_now());
 
 		// Define cabinetmed context
@@ -157,7 +163,11 @@ class ActionsCabinetmed
 		require_once dol_buildpath('/cabinetmed/lib/cabinetmed.lib.php', 0);
 
 		// Hook called when asking to add a new record
-		if ($action == 'convertintopatient' && !empty($object) && in_array($object->element, array('societe', 'thirdparty')) && $user->hasRight('societe', 'creer')) {
+		if ($action == 'convertintopatient' && !empty($object) && in_array($object->element, array('societe', 'thirdparty')) && $user->hasRight('societe', 'creer') && $user->hasRight('cabinetmed', 'write')) {
+			// The action name is not in the list of actions protected by main.inc.php, so the CSRF token is checked here
+			if (!GETPOST('token', 'alpha') || !hash_equals((string) currentToken(), (string) GETPOST('token', 'alpha'))) {
+				accessforbidden('Bad value for CSRF token');
+			}
 			$sql = 'UPDATE '.MAIN_DB_PREFIX."societe as s SET canvas = 'patient@cabinetmed' WHERE rowid = ".((int) $object->id);
 
 			$resql = $db->query($sql);
@@ -257,6 +267,53 @@ class ActionsCabinetmed
 
 
 	/**
+	 * Refuse the download, by core document.php or viewimage.php, of a file of a patient to a user without the right to read medical data
+	 *
+	 * @param	array<string,mixed>	$parameters		Array of parameters
+	 * @param	stdClass			$object			Object (not used)
+	 * @param	string				$action			Action
+	 * @param	HookManager			$hookmanager	Hook manager
+	 * @return	int									<0 if access refused, 0 otherwise
+	 */
+	public function downloadDocument($parameters, &$object, &$action, $hookmanager)
+	{
+		global $langs, $user;
+
+		if (!in_array($parameters['modulepart'], array('societe', 'company', 'thirdparty')) || $user->hasRight('cabinetmed', 'read')) {
+			return 0;
+		}
+		// A file shared with a public link stays available
+		if (GETPOST('hashp', 'aZ09')) {
+			return 0;
+		}
+
+		// The first level of the directory of thirdparty files is the id of the thirdparty
+		$tmp = explode('/', ltrim((string) $parameters['original_file'], '/'));
+		$socid = (int) $tmp[0];
+		if ($socid <= 0) {
+			return 0;
+		}
+
+		$sql = "SELECT s.canvas FROM ".$this->db->prefix()."societe as s";
+		$sql .= " WHERE s.rowid = ".((int) $socid)." AND s.entity IN (".getEntity('societe').")";
+		$resql = $this->db->query($sql);
+		if (!$resql) {
+			dol_syslog(get_class($this)."::downloadDocument ".$this->db->lasterror(), LOG_ERR);
+			$this->errors[] = $langs->trans("Error");
+			return -1;
+		}
+		$obj = $this->db->fetch_object($resql);
+		$this->db->free($resql);
+		if ($obj && $obj->canvas == 'patient@cabinetmed') {
+			$this->errors[] = $langs->trans("NotEnoughPermissions");
+			return -1;
+		}
+
+		return 0;
+	}
+
+
+	/**
 	 * Add statistics line
 	 *
 	 * @param	array	$parameters		Array of parameters
@@ -264,7 +321,11 @@ class ActionsCabinetmed
 	 */
 	public function addStatisticLine($parameters)
 	{
-		global $langs;
+		global $langs, $user;
+
+		if (!$user->hasRight('cabinetmed', 'read')) {
+			return 0;
+		}
 		$langs->load("cabinetmed@cabinetmed");
 
 		$board=new Cabinetmedcons($this->db);
@@ -397,7 +458,7 @@ class ActionsCabinetmed
 
 		if ($parameters['currentcontext'] == 'thirdpartycard' && !empty($object) && $object->canvas != 'patient@cabinetmed') {
 			if ($action != 'edit') {
-				print dolGetButtonAction($langs->transnoentitiesnoconv('ConvertIntoPatientDesc'), img_picto('', 'user-injured', 'class="pictofixedwidth"').$langs->trans('ConvertIntoPatient'), 'default', dol_buildpath('/societe/card.php', 1).'?socid='.$object->id.'&action=convertintopatient&token='.newToken(), '', $user->hasRight('societe', 'creer'));
+				print dolGetButtonAction($langs->transnoentitiesnoconv('ConvertIntoPatientDesc'), img_picto('', 'user-injured', 'class="pictofixedwidth"').$langs->trans('ConvertIntoPatient'), 'default', dol_buildpath('/societe/card.php', 1).'?socid='.$object->id.'&action=convertintopatient&token='.newToken(), '', $user->hasRight('societe', 'creer') && $user->hasRight('cabinetmed', 'write'));
 			}
 		}
 	}

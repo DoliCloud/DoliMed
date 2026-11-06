@@ -60,7 +60,7 @@ if (empty($action)) $action='edit';
 $hookmanager->initHooks(array('thirdpartycard', 'antecedantcard', 'globalcard'));
 
 // Security check
-$socid = GETPOST('socid', 'int');
+$socid = GETPOSTINT('socid');
 if ($user->socid) $socid=$user->socid;
 $result = restrictedArea($user, 'societe', $socid);
 

@@ -29,7 +29,7 @@ if (empty($conf) || ! is_object($conf)) {
 }
 
 if (!isset($socid)) {
-	$socid = GETPOST('socid', 'int');
+	$socid = GETPOSTINT('socid');
 }
 if (empty($error)) {
 	$error = 0;

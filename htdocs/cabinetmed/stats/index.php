@@ -54,8 +54,8 @@ dol_include_once("/cabinetmed/class/cabinetmedstats.class.php");
 $WIDTH=DolGraph::getDefaultGraphSizeForStats('width', 500);
 $HEIGHT=DolGraph::getDefaultGraphSizeForStats('height', 200);
 
-$userid=GETPOST('userid', 'int'); if ($userid < 0) $userid=0;
-$socid=GETPOST('socid', 'int'); if ($socid < 0) $socid=0;
+$userid=GETPOSTINT('userid'); if ($userid < 0) $userid=0;
+$socid=GETPOSTINT('socid'); if ($socid < 0) $socid=0;
 // Security check
 if ($user->socid > 0) {
 	$action = '';

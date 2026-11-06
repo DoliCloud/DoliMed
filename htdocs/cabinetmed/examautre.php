@@ -56,7 +56,7 @@ include_once "./class/cabinetmedexamother.class.php";
 $action = GETPOST("action");
 $optioncss = GETPOST('optioncss');
 
-$id=GETPOST('id', 'int');  // Id consultation
+$id=GETPOSTINT('id');  // Id consultation
 
 $langs->load("companies");
 $langs->load("bills");
@@ -66,10 +66,10 @@ $langs->load("cabinetmed@cabinetmed");
 $mesgarray=array();
 
 // Load variable for pagination
-$limit = GETPOST('limit', 'int')?GETPOST('limit', 'int'):$conf->liste_limit;
+$limit = GETPOSTINT('limit')?GETPOSTINT('limit'):$conf->liste_limit;
 $sortfield = GETPOST("sortfield", 'aZ09comma');
 $sortorder = GETPOST('sortorder', 'aZ09comma');
-$page = GETPOSTISSET('pageplusone') ? (GETPOST('pageplusone') - 1) : GETPOST("page", 'int');
+$page = GETPOSTISSET('pageplusone') ? (GETPOST('pageplusone') - 1) : GETPOSTINT('page');
 if (empty($page) || $page == -1 || GETPOST('button_search', 'alpha') || GETPOST('button_removefilter', 'alpha') || (empty($toselect) && $massaction === '0')) { $page = 0; }     // If $page is not defined, or '' or -1 or if we click on clear filters or if we select empty mass action
 $offset = $limit * $page;
 $pageprev = $page - 1;
@@ -84,7 +84,7 @@ $object = $examother;
 $hookmanager->initHooks(array('thirdpartycard','examothercard','globalcard'));
 
 // Security check
-$socid = GETPOST('socid', 'int');
+$socid = GETPOSTINT('socid');
 if ($user->socid) $socid=$user->socid;
 $result = restrictedArea($user, 'societe', $socid);
 
@@ -101,6 +101,11 @@ if ($id > 0) {
 	$result = restrictedArea($user, 'societe', $examother->fk_soc);
 }
 if (in_array($action, array('add', 'update', 'confirm_delete')) && (!$user->hasRight('cabinetmed', 'write') || !($socid > 0))) {
+	accessforbidden();
+}
+// An exam older than the lock delay (in days) can no more be modified or deleted
+$delaytolock = getDolGlobalInt('CABINETMED_DELAY_TO_LOCK_RECORD');
+if (in_array($action, array('update', 'delete', 'confirm_delete')) && $id > 0 && $delaytolock > 0 && $examother->dateexam < (dol_now() - $delaytolock * 24 * 3600)) {
 	accessforbidden();
 }
 $usercandelete = $user->hasRight('societe', 'supprimer');
@@ -485,7 +490,7 @@ if ($action == '' || $action == 'delete') {
 if ($action == '' || $action == 'delete') {
 	// Confirm delete exam
 	if (GETPOST("action") == 'delete') {
-		$formconfirm = $form->formconfirm($_SERVER["PHP_SELF"]."?socid=".$socid.'&id='.GETPOST('id', 'int'), $langs->trans("DeleteAnExam"), $langs->trans("ConfirmDeleteExam"), "confirm_delete", '', 0, 1);
+		$formconfirm = $form->formconfirm($_SERVER["PHP_SELF"]."?socid=".$socid.'&id='.GETPOSTINT('id'), $langs->trans("DeleteAnExam"), $langs->trans("ConfirmDeleteExam"), "confirm_delete", '', 0, 1);
 		print $formconfirm;
 	}
 
@@ -550,7 +555,7 @@ if ($action == '' || $action == 'delete') {
 			print '<td align="right">';
 			//$conf->global->CABINETMED_DELAY_TO_LOCK_RECORD = 1;
 			if ($usercanupdate) {
-				if (!getDolGlobalInt('CABINETMED_DELAY_TO_LOCK_RECORD') || ($db->jdate($obj->dateexam) >= (dol_now() - (getDolGlobalInt('CABINETMED_DELAY_TO_LOCK_RECORD') * 24 * 60)))) {
+				if (!getDolGlobalInt('CABINETMED_DELAY_TO_LOCK_RECORD') || ($db->jdate($obj->dateexam) >= (dol_now() - (getDolGlobalInt('CABINETMED_DELAY_TO_LOCK_RECORD') * 24 * 3600)))) {
 					print '<a class="reposition editfielda" href="'.$_SERVER["PHP_SELF"].'?socid='.$obj->fk_soc.'&id='.$obj->rowid.'&action=edit&token='.newToken().'">'.img_edit().'</a>';
 				} else {
 					print '<a class="reposition editfielda disabled" href="#" title="'.$langs->trans("Locked").'">'.img_edit('', 0, 'class="disabled"').'</a>';
@@ -558,7 +563,7 @@ if ($action == '' || $action == 'delete') {
 			}
 			if ($usercandelete) {
 				print ' &nbsp; ';
-				if (!getDolGlobalInt('CABINETMED_DELAY_TO_LOCK_RECORD') || ($db->jdate($obj->dateexam) >= (dol_now() - (getDolGlobalInt('CABINETMED_DELAY_TO_LOCK_RECORD') * 24 * 60)))) {
+				if (!getDolGlobalInt('CABINETMED_DELAY_TO_LOCK_RECORD') || ($db->jdate($obj->dateexam) >= (dol_now() - (getDolGlobalInt('CABINETMED_DELAY_TO_LOCK_RECORD') * 24 * 3600)))) {
 					print '<a class="reposition" href="'.$_SERVER["PHP_SELF"].'?socid='.$obj->fk_soc.'&id='.$obj->rowid.'&action=delete&token='.newToken().'">'.img_delete().'</a>';
 				} else {
 					print '<a class="reposition disabled" href="#" title="'.$langs->trans("Locked").'">'.img_delete('', 'class="disabled"').'</a>';

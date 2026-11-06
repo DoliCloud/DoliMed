@@ -63,7 +63,7 @@ $hookmanager->initHooks(array('thirdpartycard','globalcard'));
 
 
 // Security check
-$socid = GETPOST('socid', 'int');
+$socid = GETPOSTINT('socid');
 if ($user->socid) $socid=$user->socid;
 $result = restrictedArea($user, 'societe', $socid, '&societe');
 
@@ -87,7 +87,7 @@ if (empty($reshook)) {
 
 		$db->begin();
 
-		$result=$object->update_note(dol_html_entity_decode(dol_htmlcleanlastbr(GETPOST('note_private', 'restricthtml')?GETPOST('note_private', 'restricthtml'):GETPOST('note', 'restricthtml')), ENT_QUOTES), '_private');
+		$result=$object->update_note(dol_html_entity_decode(dol_htmlcleanlastbr(GETPOST('note_private', 'restricthtml')?GETPOST('note_private', 'restricthtml'):GETPOST('note', 'restricthtml')), ENT_QUOTES | ENT_HTML5, 'UTF-8', 1), '_private');
 		if ($result < 0) {
 			$error++;
 			$errors[]=$object->errors;
