@@ -327,8 +327,8 @@ if ($limit > 0 && $limit != $conf->liste_limit) {
 if ($search_nom != '')          $param = "&search_nom=".urlencode($search_nom);
 if ($search_code != '')         $param.= "&search_code=".urlencode($search_code);
 if ($search_ville != '')        $param.= "&search_ville=".urlencode($search_ville);
-if ($search_categ > 0)          $param.= '&search_categ='.urlencode($search_categ);
-if ($search_sale > 0)	        $param.= '&search_sale='.urlencode($search_sale);
+if ($search_categ > 0)          $param.= '&search_categ='.urlencode((string) $search_categ);
+if ($search_sale > 0)	        $param.= '&search_sale='.urlencode((string) $search_sale);
 if ($search_motifprinc != '')	$param.= '&search_motifprinc='.urlencode($search_motifprinc);
 if ($search_diaglesprinc != '')	$param.= '&search_diaglesprinc='.urlencode($search_diaglesprinc);
 if ($search_contactid != '')	$param.= '&search_contactid='.urlencode($search_contactid);

@@ -173,6 +173,9 @@ if (empty($reshook)) {
 			if (!$error) {
 				// TODO Move the merge function into class of object.
 
+				// The introspection of the tables must not run into the SQL transaction below
+				$deliveryTableList = $db->DDLListTables((string) $conf->db->name, $db->prefix().'delivery');
+
 				$db->begin();
 
 				// Recopy some data
@@ -256,11 +259,15 @@ if (empty($reshook)) {
 						'FactureFournisseur' => '/fourn/class/fournisseur.facture.class.php',
 						'SupplierProposal' => '/supplier_proposal/class/supplier_proposal.class.php',
 						'ProductFournisseur' => '/fourn/class/fournisseur.product.class.php',
-						'Livraison' => '/livraison/class/livraison.class.php',
 						'Product' => '/product/class/product.class.php',
 						'Project' => '/projet/class/project.class.php',
 						'User' => '/user/class/user.class.php',
 					);
+
+					// The table of the delivery notes may not be installed
+					if (!empty($deliveryTableList)) {
+						$objects['Delivery'] = '/delivery/class/delivery.class.php';
+					}
 
 					//First, all core objects must update their tables
 					foreach ($objects as $object_name => $object_file) {

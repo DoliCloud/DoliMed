@@ -37,7 +37,7 @@ DOLIBARR_HTDOCS=/path/to/dolibarr/htdocs dev/tools/phpstan/phpstan.sh
 dev/tools/phpstan/phpstan.sh einvoicing/class/document.class.php
 ```
 
-The script pins PHPStan 2.1.12, the version the Dolibarr core runs in its own CI, and caches the
+The script pins PHPStan 2.1.56, the version the Dolibarr core runs in its own CI, and caches the
 phar and the analysis cache in `.run-phpstan/`, which git ignores. Nothing to install.
 
 ## Level: the posture of the core, copied

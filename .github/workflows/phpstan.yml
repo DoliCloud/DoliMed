@@ -36,7 +36,7 @@ concurrency:
 
 env:
   # The version the Dolibarr core runs in its own CI, and the one dev/tools/phpstan/phpstan.sh pins.
-  PHPSTAN_VERSION: 2.1.12
+  PHPSTAN_VERSION: 2.1.56
 
 jobs:
   # Which cores to analyse against. A pull request answers on the two ends of the supported range,

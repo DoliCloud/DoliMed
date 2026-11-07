@@ -621,8 +621,8 @@ if ($limit > 0 && $limit != $conf->liste_limit) {
 	$param .= '&limit='.((int) $limit);
 }
 if ($search_all != '')     $param = "&search_all=".urlencode($search_all);
-if ($search_categ_cus > 0) $param.= '&search_categ_cus='.urlencode($search_categ_cus);
-if ($search_categ_sup > 0) $param.= '&search_categ_sup='.urlencode($search_categ_sup);
+if ($search_categ_cus > 0) $param.= '&search_categ_cus='.urlencode((string) $search_categ_cus);
+if ($search_categ_sup > 0) $param.= '&search_categ_sup='.urlencode((string) $search_categ_sup);
 if ($search_sale > 0)	   $param.= '&search_sale='.urlencode($search_sale);
 if ($search_id > 0)        $param.= "&search_id=".urlencode($search_id);
 if ($search_nom != '')     $param.= "&search_nom=".urlencode($search_nom);

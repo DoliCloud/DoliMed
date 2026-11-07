@@ -21,7 +21,7 @@ parameters:
 		-
 			message: '#^Parameter \#3 \$value of function dolibarr_set_const expects string, int given\.$#'
 			identifier: argument.type
-			count: 3
+			count: 1
 			path: ../../../htdocs/cabinetmed/admin/admin.php
 
 		-
@@ -45,6 +45,12 @@ parameters:
 		-
 			message: '#^Function llxHeader invoked with 3 parameters, 0 required\.$#'
 			identifier: arguments.count
+			count: 1
+			path: ../../../htdocs/cabinetmed/card.php
+
+		-
+			message: '#^Parameter \#2 \$key of function dol_getIdFromCode expects string, int given\.$#'
+			identifier: argument.type
 			count: 1
 			path: ../../../htdocs/cabinetmed/card.php
 
@@ -145,30 +151,6 @@ parameters:
 			path: ../../../htdocs/cabinetmed/consultations.php
 
 		-
-			message: '#^Parameter \#4 \$month of function dol_mktime expects int, array\|string given\.$#'
-			identifier: argument.type
-			count: 1
-			path: ../../../htdocs/cabinetmed/consultations.php
-
-		-
-			message: '#^Parameter \#5 \$day of function dol_mktime expects int, array\|string given\.$#'
-			identifier: argument.type
-			count: 1
-			path: ../../../htdocs/cabinetmed/consultations.php
-
-		-
-			message: '#^Parameter \#6 \$year of function dol_mktime expects int, array\|string given\.$#'
-			identifier: argument.type
-			count: 1
-			path: ../../../htdocs/cabinetmed/consultations.php
-
-		-
-			message: '#^Variable \$oldconsult might not be defined\.$#'
-			identifier: variable.undefined
-			count: 6
-			path: ../../../htdocs/cabinetmed/consultations.php
-
-		-
 			message: '#^Function llxHeader invoked with 3 parameters, 0 required\.$#'
 			identifier: arguments.count
 			count: 1
@@ -247,36 +229,6 @@ parameters:
 			path: ../../../htdocs/cabinetmed/exambio.php
 
 		-
-			message: '#^Parameter \#1 \$year of function dol_get_first_day expects int, array\|string given\.$#'
-			identifier: argument.type
-			count: 2
-			path: ../../../htdocs/cabinetmed/export.php
-
-		-
-			message: '#^Parameter \#1 \$year of function dol_get_last_day expects int, array\|string given\.$#'
-			identifier: argument.type
-			count: 2
-			path: ../../../htdocs/cabinetmed/export.php
-
-		-
-			message: '#^Parameter \#2 \$month of function dol_get_first_day expects int, array\|string given\.$#'
-			identifier: argument.type
-			count: 1
-			path: ../../../htdocs/cabinetmed/export.php
-
-		-
-			message: '#^Parameter \#2 \$month of function dol_get_last_day expects int, array\|string given\.$#'
-			identifier: argument.type
-			count: 1
-			path: ../../../htdocs/cabinetmed/export.php
-
-		-
-			message: '#^Unable to resolve the template type T in call to function dol_clone$#'
-			identifier: argument.templateType
-			count: 2
-			path: ../../../htdocs/cabinetmed/export.php
-
-		-
 			message: '#^Function llxHeader invoked with 3 parameters, 0 required\.$#'
 			identifier: arguments.count
 			count: 1
@@ -342,18 +294,6 @@ parameters:
 			count: 1
 			path: ../../../htdocs/cabinetmed/traitetallergies.php
 		-
-			message: '#^Property CommonObject\:\:\$country_id \(int\) does not accept array\<mixed\>\|string\.$#'
-			identifier: assign.propertyType
-			count: 1
-			path: ../../../htdocs/cabinetmed/card.php
-
-		-
-			message: '#^Property CommonObject\:\:\$state_id \(int\) does not accept array\<mixed\>\|string\.$#'
-			identifier: assign.propertyType
-			count: 1
-			path: ../../../htdocs/cabinetmed/card.php
-
-		-
 			message: '#^Property CabinetmedCons\:\:\$fields \(array\<string, array\{type\: string, label\: string, enabled\: int\<0, 2\>\|string, position\: int, notnull\?\: int, visible\: int\<\-6, 5\>\|string, alwayseditable\?\: int\<0, 1\>, noteditable\?\: int\<0, 1\>, \.\.\.\}\>\) does not accept default value of type array\{rowid\: array\{type\: ''integer'', label\: ''TechnicalID'', picto\: ''fa\-file'', enabled\: ''1'', position\: 10, notnull\: 1, visible\: ''\-1''\}, entity\: array\{type\: ''integer'', label\: ''Entity'', picto\: ''fa\-file'', enabled\: ''1'', position\: 15, notnull\: 1, visible\: ''\-2'', default\: ''1'', \.\.\.\}, fk_soc\: array\{type\: ''integer\:Societe…'', label\: ''ThirdParty'', picto\: ''company'', enabled\: ''1'', position\: 20, notnull\: 0, visible\: ''\-1'', css\: ''maxwidth500…'', \.\.\.\}, datecons\: array\{type\: ''date'', label\: ''Date'', picto\: ''company'', enabled\: ''1'', position\: 25, notnull\: 1, visible\: ''\-1''\}, typepriseencharge\: array\{type\: ''varchar\(8\)'', label\: ''TypePriseEnCharge'', picto\: ''company'', enabled\: ''1'', position\: 30, notnull\: 0, visible\: ''\-1''\}, motifconsprinc\: array\{type\: ''varchar\(64\)'', label\: ''MotifPrincipal'', picto\: ''company'', enabled\: ''1'', position\: 35, notnull\: 0, visible\: ''\-1''\}, diaglesprinc\: array\{type\: ''varchar\(64\)'', label\: ''DiagLesPrincipal'', picto\: ''company'', enabled\: ''1'', position\: 40, notnull\: 0, visible\: ''\-1''\}, motifconssec\: array\{type\: ''text'', label\: ''MotifSecondaires'', picto\: ''company'', enabled\: ''1'', position\: 45, notnull\: 0, visible\: ''\-1''\}, \.\.\.\}\.$#'
 			identifier: property.defaultValue
 			count: 1
@@ -364,48 +304,6 @@ parameters:
 			identifier: missingType.property
 			count: 1
 			path: ../../../htdocs/cabinetmed/class/patient.class.php
-
-		-
-			message: '#^Parameter \#4 \$month of function dol_mktime expects int, array\<mixed\>\|string given\.$#'
-			identifier: argument.type
-			count: 1
-			path: ../../../htdocs/cabinetmed/consultations.php
-
-		-
-			message: '#^Parameter \#5 \$day of function dol_mktime expects int, array\<mixed\>\|string given\.$#'
-			identifier: argument.type
-			count: 1
-			path: ../../../htdocs/cabinetmed/consultations.php
-
-		-
-			message: '#^Parameter \#6 \$year of function dol_mktime expects int, array\<mixed\>\|string given\.$#'
-			identifier: argument.type
-			count: 1
-			path: ../../../htdocs/cabinetmed/consultations.php
-
-		-
-			message: '#^Parameter \#1 \$year of function dol_get_first_day expects int, array\<mixed\>\|string given\.$#'
-			identifier: argument.type
-			count: 2
-			path: ../../../htdocs/cabinetmed/export.php
-
-		-
-			message: '#^Parameter \#1 \$year of function dol_get_last_day expects int, array\<mixed\>\|string given\.$#'
-			identifier: argument.type
-			count: 2
-			path: ../../../htdocs/cabinetmed/export.php
-
-		-
-			message: '#^Parameter \#2 \$month of function dol_get_first_day expects int, array\<mixed\>\|string given\.$#'
-			identifier: argument.type
-			count: 1
-			path: ../../../htdocs/cabinetmed/export.php
-
-		-
-			message: '#^Parameter \#2 \$month of function dol_get_last_day expects int, array\<mixed\>\|string given\.$#'
-			identifier: argument.type
-			count: 1
-			path: ../../../htdocs/cabinetmed/export.php
 
 		-
 			message: '#^Parameter \#3 \$mode of class CabinetMedStats constructor expects int, array\<mixed\>\|string given\.$#'

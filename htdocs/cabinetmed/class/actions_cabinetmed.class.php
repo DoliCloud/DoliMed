@@ -273,7 +273,7 @@ class ActionsCabinetmed
 	 * @param	stdClass			$object			Object (not used)
 	 * @param	string				$action			Action
 	 * @param	HookManager			$hookmanager	Hook manager
-	 * @return	int									<0 if access refused, 0 otherwise
+	 * @return	int									-1 if access refused, 0 otherwise
 	 */
 	public function downloadDocument($parameters, &$object, &$action, $hookmanager)
 	{
@@ -317,7 +317,7 @@ class ActionsCabinetmed
 	 * Add statistics line
 	 *
 	 * @param	array	$parameters		Array of parameters
-	 * @return	void
+	 * @return	int						0
 	 */
 	public function addStatisticLine($parameters)
 	{
