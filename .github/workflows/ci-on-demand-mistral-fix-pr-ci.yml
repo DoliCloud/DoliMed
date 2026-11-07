@@ -39,7 +39,7 @@ env:
   PROJECT_DESCRIPTION: "DoliMed, an external module for the Dolibarr ERP/CRM to manage medical offices (patients, consultations, prescriptions...). The module lives in htdocs/cabinetmed/."
   # Directory with one subdirectory per module (empty = the repository is a single module)
   MODULES_DIR: "htdocs"
-  FAILED_LABEL: ai-ci-fix-failed
+  FAILED_LABEL: ai-pr-failed
   # Dolibarr core the fix is checked against with PHPStan (oldest version supported by the modules)
   DOLIBARR_CORE: "20.0.0"
   # Checks that can't be fixed by a change of code
