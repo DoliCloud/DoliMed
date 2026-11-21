@@ -151,6 +151,7 @@ class modCabinetMed extends DolibarrModules
 							21=>array('SOCIETE_DISABLE_PROSPECTS','chaine','1','Hide prospect features',1,'current',1),
 							22=>array('SOCIETE_DISABLE_PARENTCOMPANY','chaine','1','Hide parent company field',1,'current',1),
 							23=>array('CABINETMED_HIDETHIRPARTIESMENU','chaine','1','Hide thirdparties',0,'current',1),					// Not visible
+						24=>array('CABINETMED_TRANSIFEX_PROJECT','chaine','dolibarr-association/dolimed','Transifex project of the module used to store translations of module keys',0,'allentities',1),
 
 							99=>array('MAIN_ALLOW_OLD_VAR_OBJ_IN_DOL_EVAL','chaine','1','Compatibility of DoliMed with v23.0.0',1,'current',1)
 		);
