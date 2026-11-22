@@ -629,7 +629,7 @@ class pdf_medicalrecord extends ModeleThirdPartyDoc
 		// Fetch consultations for this patient
 		$sql = "SELECT c.rowid, c.datecons, c.typevisit, c.motifconsprinc, c.motifconssec,";
 		$sql .= " c.diaglesprinc, c.diaglessec, c.hdm, c.examenclinique, c.examenprescrit,";
-		$sql .= " c.traitementprescrit, c.comment, c.fk_user";
+		$sql .= " c.traitementprescrit, c.infiltration, c.comment, c.fk_user";
 		$sql .= " FROM ".MAIN_DB_PREFIX."cabinetmed_cons as c";
 		$sql .= " WHERE c.fk_soc = ".((int) $object->id);
 		$sql .= " AND c.entity IN (".getEntity('cabinetmed_cons').")";
@@ -713,6 +713,7 @@ class pdf_medicalrecord extends ModeleThirdPartyDoc
 				'ExamensCliniques' => $obj->examenclinique,
 				'ExamensPrescrits' => $obj->examenprescrit,
 				'TreatmentSugested' => $obj->traitementprescrit,
+				'Infiltrations' => $obj->infiltration,
 				'Commentaires' => $obj->comment,
 			);
 
