@@ -1,6 +1,6 @@
 # ChangeLog
 
-## 24
+## 24.0
 
 - FIX compatibility with v24 and PHP 8.5. Need Dolibarr v20 min.
 - Need PHP 7.2 min.
