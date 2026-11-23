@@ -18,7 +18,7 @@ packages:
     git-branch: 'develop'
     git-system: 'github'
     cover: 'https://raw.githubusercontent.com/DoliCloud/DoliMed/develop/htdocs/cabinetmed/img/dolimed_logo.png'
-    current_version: "24.0"
+    current_version: "24.1"
     dolibarrmin: "20.0"
     dolibarrmax: "24.0"
     phpmin: "7.2"

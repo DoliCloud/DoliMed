@@ -1,5 +1,11 @@
 # ChangeLog
 
+## 24.1
+
+- FIX #15 Mass actions with confirmation step never run in patient list.
+- FIX #9 File attachments broken in documents.php with Dolibarr 21.0.1.
+- NEW Add Infiltration field on medical record PDF.
+
 ## 24.0
 
 - FIX compatibility with v24 and PHP 8.5. Need Dolibarr v20 min.
